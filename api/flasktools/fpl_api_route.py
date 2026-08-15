@@ -5,8 +5,9 @@ from flask import Blueprint, request, session
 from flask_cors import CORS
 from squadtools import OptimiseRunner, get_user_jsons
 from persistence import DB_Handler
+from premierlearning.fpl_apis import *
 
-bp = Blueprint('login', __name__, url_prefix='/')
+bp = Blueprint('login', __name__, url_prefix='/api')
 CORS(bp)
 
 
@@ -24,8 +25,8 @@ def get_all_players():
 
 
 @bp.route('/general', methods=(['GET']))
-def get_current_gw():
-    return requests.get('https://fantasy.premierleague.com/api/bootstrap-static/').json()
+def get_general():
+    return requests.get(GENERAL).json()
 
 
 @bp.route('/team', methods=(['GET']))
@@ -40,8 +41,7 @@ def optimise_by_login():
 @bp.route('/login', methods=(['POST']))
 def login():
     request_data = request.get_json()
-
-    session['user_json'] = get_user_jsons(request_data['username'], request_data['password'])
+    session['user_json'] = get_user_jsons(int(request_data['manager_id']))
     return {'user_json': session['user_json']}
 
 
@@ -65,7 +65,7 @@ def logout():
 def optimise_by_login_2():
     if 'user_json' not in session:
         return {'transfers': None, 'suggestedTeams': None}
-    optimise_runner = OptimiseRunner(session['user_json'])
+    optimise_runner = OptimiseRunner(session['user_json']['fpl_api']['manager_id'])
     optimise_runner.run()
     transfers = optimise_runner.get_transfers_json()
     suggestedTeams = optimise_runner.get_future_starting_teams()

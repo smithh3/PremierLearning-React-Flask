@@ -72,7 +72,7 @@ const FilterReducer = (state: FilterOptions, action: FilterActions) => {
 export type SetSortCallback = (sortOption: SortOption) => void;
 
 const SearchZone: FC<SearchProps> = ({ players }) => {
-   const [sortBy, setSortBy] = useState<SortOption>(SortOptions.Default);
+   const [sortBy, setSortBy] = useState<SortOption>(SortOptions.PointsGW);
    const [filter, dispatchFilter] = useReducer(FilterReducer, defaultFilterOptions);
 
    const setSortCallback = useCallback(

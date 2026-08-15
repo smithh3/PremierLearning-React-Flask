@@ -2,11 +2,11 @@ from typing import List, TypedDict
 
 
 class StatWindow(TypedDict):
-    last: int
-    last_3_avg: float
+    # last: int
+    # last_3_avg: float
     last_5_avg: float
     avg: float
-    deviation: float
+    # deviation: float
 
 
 class PastStats(TypedDict):
@@ -19,7 +19,7 @@ class PastStats(TypedDict):
     goals_conceded: StatWindow
     bonus: StatWindow
     saves: StatWindow
-    ict_index: StatWindow
+    # ict_index: StatWindow
     minutes: StatWindow
     conceded_2_plus: StatWindow
     conceded_4_plus: StatWindow
@@ -37,7 +37,7 @@ class GameStats(TypedDict):
     goals_conceded: float
     bonus: float
     saves: float
-    ict_index: float
+    # ict_index: float
     minutes: float
     conceded_2_plus: float
     conceded_4_plus: float
@@ -50,17 +50,21 @@ STAT_KEYS = [
     'total_points',
     'goals_scored',
     'assists',
-    'yellow_cards',
-    'red_cards',
+    # 'yellow_cards',
+    # 'red_cards',
     'clean_sheets',
     'goals_conceded',
-    'bonus',
+    # 'bonus',
     'minutes',
     # 'penalties_saved',
     # 'penalties_missed',
     # 'own_goals'
     'saves',
-    'ict_index'
+    # 'ict_index',
+    'expected_goals',
+    'expected_assists',
+    'expected_goal_involvements',
+    'expected_goals_conceded'
 ]
 
 # These keys are for data that needs to be processed from the fpl api
@@ -87,11 +91,11 @@ def get_default_game_stats() -> GameStats:
 
 def get_default_stat_window() -> StatWindow:
     stat_window: StatWindow = {
-        'last': 0,
-        'last_3_avg': 0,
+        # 'last': 0,
+        # 'last_3_avg': 0,
         'last_5_avg': 0,
         'avg': 0,
-        'deviation': 0
+        # 'deviation': 0
     }
     return stat_window
 
@@ -136,28 +140,43 @@ STANDARD_STAT_KEYS = [
     'team_last_season_finish',
     'opponent_last_season_finish',
     'played_last_season',
-    'last_season_points_per_min'
+    'last_season_points_per_min',
+    'new_stats_included'
 ]
-
 
 POINTS_KEYS = [
     'total_points',
-    'ict_index',
-    'bonus'
+    # 'ict_index',
+    # 'bonus',
+    'expected_goals',
+    'expected_assists',
+    'expected_goal_involvements',
+    'expected_goals_conceded'
+]
+
+NEW_STATS = [
+    'expected_goals',
+    'expected_assists',
+    'expected_goal_involvements',
+    'expected_goals_conceded'
 ]
 
 GOALS_KEYS = [
     'goals_scored',
     'assists',
     'bonus',
-    'ict_index'
+    'ict_index',
+    'expected_goals',
+    'expected_assists',
+    'expected_goal_involvements'
 ]
 
 DEF_KEYS = [
     'clean_sheets',
     'goals_conceded',
     'saves',
-    'bonus'
+    'bonus',
+    'expected_goals_conceded'
 ]
 
 OTHER_KEYS = [
@@ -166,7 +185,11 @@ OTHER_KEYS = [
     'goals_scored',
     'assists',
     'saves',
-    'clean_sheets'
+    'clean_sheets',
+    'expected_goals',
+    'expected_assists',
+    'expected_goal_involvements',
+    'expected_goals_conceded'
 ]
 
 def get_input_keys(key) -> List[str]:
@@ -186,12 +209,16 @@ def get_input_keys(key) -> List[str]:
 def get_inputs_from_data_key(clean_matches: List[CleanMatch], special_keys: List[str], include_standard_stats) -> list:
     inputs = []
     for clean_match in clean_matches:
-        clean_match_array = []
+        clean_match_array = {}
         if include_standard_stats:
             for data_key in STANDARD_STAT_KEYS:
-                clean_match_array.append(clean_match[data_key])
+                clean_match_array[data_key] = clean_match[data_key]
         for data_key in special_keys:
-            clean_match_array.extend(clean_match['past_stats'][data_key].values())
+            last_n_stats = clean_match['past_stats'][data_key]
+            last_n_stats_with_name = {}
+            for last_n_key, val in last_n_stats.items():
+                last_n_stats_with_name[f'{data_key}_{last_n_key}'] = val
+            clean_match_array.update(last_n_stats_with_name)
         inputs.append(clean_match_array)
     return inputs
 
@@ -199,5 +226,5 @@ def get_inputs_from_data_key(clean_matches: List[CleanMatch], special_keys: List
 def get_outputs_from_data_key(clean_matches: List[CleanMatch], key_name: str) -> list:
     outputs = []
     for clean_match in clean_matches:
-        outputs.append(clean_match['game_stats'][key_name])
+        outputs.append({ key_name: clean_match['game_stats'][key_name] })
     return outputs

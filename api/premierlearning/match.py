@@ -1,6 +1,6 @@
 from datetime import datetime
 from abc import ABC, abstractmethod
-from premierlearning.clean_match import STAT_KEYS, CleanMatch, GameStats, PastStats, get_default_game_stats, get_default_past_stats, get_default_stat_window
+from premierlearning.clean_match import STAT_KEYS, NEW_STATS, CleanMatch, GameStats, PastStats, get_default_game_stats, get_default_past_stats, get_default_stat_window
 
 
 class RawMatch(ABC):
@@ -20,6 +20,11 @@ class RawMatch(ABC):
             self.gameweek,
             self.opponent
         )
+    
+    def within_n_gameweeks(self, current_gameweek, n):
+        if self.gameweek is None:
+            return False
+        return self.gameweek - current_gameweek <= n
 
 
 def string_to_bool(true_or_false):
@@ -61,6 +66,7 @@ class AbstractMatch(RawMatch):
 
         self.past_stats: PastStats = get_default_past_stats()
         self.game_stats: GameStats = get_default_game_stats()
+        self.new_stats_included = True
 
     
     @abstractmethod
@@ -93,6 +99,8 @@ class AbstractMatch(RawMatch):
     
     def to_clean_match(self) -> CleanMatch:
         clean_match: CleanMatch = {
+            'player_name': self.player.get_name(),
+            'player_id': self.player.id,
             'is_valid': self.valid_for_learning,
             'matches_played': self.matches_played,
             # 'points': self.stat_windows['points'],
@@ -115,7 +123,8 @@ class AbstractMatch(RawMatch):
             'opponent_last_season_finish': self.opponent_team.last_season_finish,
             'played_last_season': int(self.player.played_last_season),
             'last_season_points_per_min': self.player.points_per_min_last_season,
-            'game_stats': self.game_stats
+            'game_stats': self.game_stats,
+            'new_stats_included': 1 if self.new_stats_included else 0
             # 'points_out': self.points
             # 'goals_out': self.goals_scored,
             # 'assists_out': self.assists
@@ -134,7 +143,12 @@ class PastMatch(AbstractMatch):
         # self.ict = float(match_json['ict_index'])
         
         # self.average_ict_in_previous_matches = 0
+
+        self.new_stats_included = NEW_STATS[0] in match_json
+
         for key in STAT_KEYS:
+            if key in NEW_STATS and not self.new_stats_included:
+                continue
             self.game_stats[key] = float(match_json[key])
         
         if self.game_stats['goals_conceded'] >= 2:
@@ -233,9 +247,9 @@ class FutureMatch(AbstractMatch):
         return self.team.team_match_dict[self.fixture_id]
 
     def update_points_based_on_expected_minutes(self):
-        if self.game_stats['minutes'] <= 40 or self.past_stats['chance_to_play']['last_3_avg'] < 0.44 or self.matches_played < 3:
+        if self.game_stats['minutes'] <= 40 or self.past_stats['chance_to_play']['last_5_avg'] < 0.44 or self.matches_played < 3:
             self.points = 0
-        if self.chance_of_playing is not None:
+        if self.chance_of_playing is not None and self.chance_of_playing < 0.65:
             self.points = self.chance_of_playing * self.points / 100
 
     def get_opponent_id(self, match_json):
@@ -251,10 +265,7 @@ class FutureMatch(AbstractMatch):
         except:
             return None
 
-    def within_n_gameweeks(self, current_gameweek, n):
-        if self.gameweek is None:
-            return False
-        return self.gameweek - current_gameweek <= n
+    
     
     def calc_points_from_stats(self):
         self.points = 1 # for assuming they play

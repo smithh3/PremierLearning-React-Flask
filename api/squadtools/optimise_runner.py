@@ -1,16 +1,16 @@
-from .user_squad import UserSquad
+from .user_squad import AbstractSquad
 from persistence import DB_Handler
 
 import json
 
 class OptimiseRunner:
 
-    def __init__(self, user_json):
+    def __init__(self, id):
         self.nope = None
         self.squad = None
         self.transfers = None
         self.csrftoken = None
-        self.user_json = user_json
+        self.manager_id = id
         self.player_dict = None
     
     def get_ids(self):
@@ -24,17 +24,25 @@ class OptimiseRunner:
         self.player_dict = db_handler.get_player_objects()
         db_handler.close_connection()
 
-        self.squad = UserSquad(self.user_json, self.player_dict, elements_dict)
+        # self.squad = UserSquad(self.user_json, self.player_dict, elements_dict)
+        self.squad = AbstractSquad(self.player_dict, elements_dict)
+        self.squad.populate_from_manager_id(self.manager_id)
     
     def write_top_30_info(self):
-        players_select = sorted(self.player_dict.values(), reverse=True, key=lambda p : p.future_matches[0].points)
-        with open('top_players.txt', 'w') as file:
-            for i in range(30):
-                file.write(str(players_select[i]) + '\n')
+        # players_select = sorted(self.player_dict.values(), reverse=True, key=lambda p : p.future_matches[0].points)
+        matches_count = 5
+        players_select = sorted(self.player_dict.values(), reverse=True, key=lambda p : p.get_points_within_n_gameweeks(self.squad.next_gameweek, matches_count))
+        with open('top_players.csv', 'w', encoding='utf-8') as file:
+            for i in range(60):
+                file.write(f'{str(players_select[i])},'
+                           f'pred:{sum(match.points for match in players_select[i].future_matches[:5]):.1f},'
+                           f'prev:{sum(match.points for match in players_select[i].matches[-5:]):.1f},'
+                           f'{",".join(f"{match.opponent}:{match.points:.1f}" for match in players_select[i].future_matches[:5])}\n')
         
     def run(self):
         self.populate_squad()
         self.write_top_30_info()
+        # players = sorted((p for p in self.player_dict.values() if p.current_cost <= 53 and p.position == 3), reverse=True, key=lambda p : p.get_points_between_gameweeks(6, 10, 1, 0, 0))
         self.transfers = self.squad.make_sensible_transfers()
     
     def get_transfers(self):

@@ -12,7 +12,9 @@ if __name__ == '__main__':
     with open('../.vscode/fantasy_login.json') as json_file:
         fantasy_login = json.load(json_file)
     with app.app_context():
-        opt = OptimiseRunner(get_user_jsons(fantasy_login['EMAIL'], fantasy_login['PASSWORD']))
+        # opt = OptimiseRunner(get_user_jsons(fantasy_login['EMAIL'], fantasy_login['PASSWORD']))
+        get_user_jsons(fantasy_login['ID'])
+        opt = OptimiseRunner(fantasy_login['ID'])
         opt.run()
         # print(opt.get_transfers())
         # opt.squad.get_suggested_transfers(15)

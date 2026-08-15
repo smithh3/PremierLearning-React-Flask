@@ -73,16 +73,16 @@ class UserSquad(AbstractSquad):
 
         return request_payload
     
-    def get_starting_teams_json(self):
-        starting_teams = {}
-        for gw, team in self.future_starting_teams.items():
-            starting_teams[gw] = {
-                'starters': list(player.id for player in team.players),
-                'bench': list(player.id for player in team.bench),
-                'captain': team.captain.id,
-                'vc': team.vice_captain.id
-            }
-        return starting_teams
+    # def get_starting_teams_json(self):
+    #     starting_teams = {}
+    #     for gw, team in self.future_starting_teams.items():
+    #         starting_teams[gw] = {
+    #             'starters': list(player.id for player in team.players),
+    #             'bench': list(player.id for player in team.bench),
+    #             'captain': team.captain.id,
+    #             'vc': team.vice_captain.id
+    #         }
+    #     return starting_teams
 
     def log_in_and_make_transfers(self, email, password):
         request_payload = self.format_transfer_requests()

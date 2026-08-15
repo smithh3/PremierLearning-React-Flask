@@ -55,8 +55,7 @@ interface LoginState {
 }
 
 const LoginForm: FC<LoginProps> = ({ setUser, setUserTeam, setTab }) => {
-   const [password, setPassword] = useState<string>('');
-   const [email, setEmail] = useState<string>('');
+   const [managerId, setManagerId] = useState<string>('');
    const [loginState, setLoginState] = useState<LoginState>({
       fail: false,
       loggingIn: false
@@ -75,8 +74,7 @@ const LoginForm: FC<LoginProps> = ({ setUser, setUserTeam, setTab }) => {
             'Content-Type': 'application/json'
          },
          body: JSON.stringify({
-            'username': email,
-            'password': password
+            'manager_id': managerId
          })
       }).then(res => res.json()).then(data => {
          setLoginState({
@@ -86,14 +84,12 @@ const LoginForm: FC<LoginProps> = ({ setUser, setUserTeam, setTab }) => {
          setUser({
             name: data.user_json.user.name,
             loggedIn: data.user_json.user.loggedIn
-            
          });
          if (!data.user_json.user.loggedIn) {
             setLoginState({
                ...loginState,
                fail: true
             });
-            setPassword('');
          }
          else {
             let priceMap: Map<number, number> = new Map<number, number>();
@@ -101,14 +97,14 @@ const LoginForm: FC<LoginProps> = ({ setUser, setUserTeam, setTab }) => {
             for (let pickIdx in picks) {
                priceMap.set(picks[pickIdx].element, picks[pickIdx].selling_price);
             }
-            let info: TeamInfo = {
-               sellingPrices: priceMap,
-               value: data.user_json.fpl_api.picks.transfers.value / 10,
-               bank: data.user_json.fpl_api.picks.transfers.bank / 10,
-            };
+            // let info: TeamInfo = {
+            //    sellingPrices: priceMap,
+            //    value: data.user_json.fpl_api.entry_history.value / 10,
+            //    bank: data.user_json.fpl_api.entry_history.bank / 10,
+            // };
             setUserTeam({
                teamIDs: data.user_json.user.teamIDs,
-               teamInfo: info,
+               teamInfo: null,
                suggestedTeams: null,
                transfers: null,
                loading: false
@@ -123,8 +119,7 @@ const LoginForm: FC<LoginProps> = ({ setUser, setUserTeam, setTab }) => {
          {loginState.fail && 'credentials invalid, try again'}
          {loginState.loggingIn ? 'logging in' : 
             <form onSubmit={handleSubmit}>
-               <div><input type="text" name="email" placeholder="email" onChange={event => setEmail(event.target.value)} value={email} /></div>
-               <div><input type="password" name="password" placeholder="password" onChange={event => setPassword(event.target.value)} value={password} /></div>
+               <div><input type="text" name="manager_id" placeholder="id" onChange={event => setManagerId(event.target.value)} value={managerId} /></div>
                <div><button className='general' type="submit">Log in</button></div>
             </form>}
       </div>

@@ -1,5 +1,6 @@
 import sys
 import requests
+import os
 import os.path
 from premierlearning.clean_match import BUILT_KEYS, CHANCE_TO_PLAY, STAT_KEYS, get_input_keys
 
@@ -30,7 +31,7 @@ class Runner:
         self.populate_past_seasons()
         self.process_player_matches()
 
-        self.calculate_player_ict_and_points_regression()
+        # self.calculate_player_ict_and_points_regression()
 
         print('Preparing data for learning...')
 
@@ -47,10 +48,19 @@ class Runner:
     def update_persisted_data_if_outdated(self):
         fantasy_json_from_api = self.get_request_json(FANTASY_API)
 
+        if not self.api_matches_configured_season(fantasy_json_from_api):
+            api_yr = self.get_api_season_year(fantasy_json_from_api)
+            print(
+                f'Skipping live FPL update: API is season {api_yr}/{api_yr + 1 if api_yr is not None else "?"} '
+                f'but SEASON_YR={SEASON_YR} (season_{SEASON_YR}_{SEASON_YR + 1}). '
+                f'Past seasons like 25/26 are loaded from local vaastav data, not the live API.'
+            )
+            return
+
         update_all = self.should_update_data(fantasy_json_from_api)
 
         if update_all:
-            print('Getting latest data...')
+            print(f'Getting latest data for season_{SEASON_YR}_{SEASON_YR + 1}...')
             self.persist_json(FANTASY_JSON_FILE_LOCATION % (SEASON_YR, SEASON_YR + 1), fantasy_json_from_api)
 
         if update_all or not os.path.isfile(FIXTURES_JSON_FILE_LOCATION % (SEASON_YR, SEASON_YR + 1)):
@@ -74,6 +84,21 @@ class Runner:
             return requests.get(uri).json()
         except:
             return None
+
+    @staticmethod
+    def get_api_season_year(fantasy_json_from_api):
+        """Infer season start year (e.g. 26 for 26/27) from GW1 deadline."""
+        if not fantasy_json_from_api or 'events' not in fantasy_json_from_api:
+            return None
+        try:
+            gw1 = next(event for event in fantasy_json_from_api['events'] if event.get('id') == 1)
+            return int(gw1['deadline_time'][:4]) % 100
+        except (StopIteration, KeyError, TypeError, ValueError):
+            return None
+
+    def api_matches_configured_season(self, fantasy_json_from_api):
+        api_yr = self.get_api_season_year(fantasy_json_from_api)
+        return api_yr is not None and api_yr == SEASON_YR
 
     def should_update_data(self, fantasy_json_from_api):
         if '--update' in sys.argv:
@@ -111,11 +136,11 @@ class Runner:
                         player_last_season.played_last_season = True
     
     def process_player_matches(self):
-        # last_szn = next(szn for szn in self.past_seasons if szn.years[0] == self.current_season.years[0] - 1)
-        # if self.current_season.next_gameweek < 12:
-        #     for player in self.current_season.players:
-        #         if player.code in last_szn.player_code_dict:
-        #             player.attach_last_szn_matches(last_szn.player_code_dict[player.code])
+        last_szn = next(szn for szn in self.past_seasons if szn.years[0] == self.current_season.years[0] - 1)
+        if self.current_season.next_gameweek < 12:
+            for player in self.current_season.players:
+                if player.code in last_szn.player_code_dict:
+                    player.attach_last_szn_matches(last_szn.player_code_dict[player.code])
         
         for player in self.current_season.players:
             player.process_matches()
@@ -179,7 +204,10 @@ class Runner:
         clean_matches = self.populate_formatted_match_data()
 
         valid_clean_matches = [match for match in clean_matches if match['is_valid']]
-
+        count = 0
+        for match in valid_clean_matches:
+            match['id'] = count
+            count += 1
         future_matches = []
         future_clean_matches = []
         for player in self.current_season.players:
@@ -187,10 +215,17 @@ class Runner:
                 future_matches.append(future_match)
                 future_clean_matches.append(future_match.to_clean_match())
         
+        count = 0
+        for match in future_clean_matches:
+            match['id'] = count
+            count += 1
+
         learnt_stats = {}
-        for key in STAT_KEYS + BUILT_KEYS:
-            learnt_stats[key] = get_avg_predictions(valid_clean_matches, future_clean_matches, get_input_keys(key), key, True)
-        
+        # for key in STAT_KEYS + BUILT_KEYS:
+        #     learnt_stats[key] = get_avg_predictions(valid_clean_matches, future_clean_matches, get_input_keys(key), key, True)
+        learnt_stats['total_points'] = get_avg_predictions(valid_clean_matches, future_clean_matches, get_input_keys('total_points'), 'total_points', True)
+        learnt_stats['minutes'] = get_avg_predictions(valid_clean_matches, future_clean_matches, get_input_keys('minutes'), 'minutes', True)
+
         learnt_stats[CHANCE_TO_PLAY] = get_avg_predictions(clean_matches, future_clean_matches, get_input_keys(CHANCE_TO_PLAY), CHANCE_TO_PLAY, False)
 
         def set_zero_if_neg(val):
@@ -199,9 +234,11 @@ class Runner:
             return val
 
         for i in range(len(future_matches)):
-            for key in STAT_KEYS + BUILT_KEYS + [CHANCE_TO_PLAY]:
-                future_matches[i].game_stats[key] = set_zero_if_neg(learnt_stats[key][i][0])
-            future_matches[i].calc_points_from_stats()
+            for stat_key in ['total_points', 'minutes', CHANCE_TO_PLAY]:
+            # for key in STAT_KEYS + BUILT_KEYS + [CHANCE_TO_PLAY]:
+                future_matches[i].game_stats[stat_key] = set_zero_if_neg(learnt_stats[stat_key][i][0])
+            # future_matches[i].calc_points_from_stats()
+            future_matches[i].points = future_matches[i].game_stats['total_points']
             future_matches[i].set_minutes_from_stats()
             future_matches[i].update_points_based_on_expected_minutes()
 
@@ -237,5 +274,6 @@ class Runner:
 
     @staticmethod
     def persist_json(file_path, json_data):
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
         with open(file_path, 'w') as file:
             json.dump(json_data, file)

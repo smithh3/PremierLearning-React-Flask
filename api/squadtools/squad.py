@@ -5,15 +5,16 @@ import math
 from abc import ABC
 from pulp import LpMaximize, LpProblem, lpSum, LpVariable, PULP_CBC_CMD
 
-from premierlearning import get_next_gameweek
+# from premierlearning import get_next_gameweek
 from premierlearning import Transfer
 from premierlearning import RawPlayer
+from premierlearning.fpl_apis import *
 # from .logged_in_action_performer import pick_team, get_player_ids, make_transfers, get_manager_id
 
-MANAGER_API = 'https://fantasy.premierleague.com/api/entry/%i/'
-MANAGER_PICKS_API = 'https://fantasy.premierleague.com/api/entry/%i/event/%i/picks/'
-MANAGER_TRANSFERS_API = 'https://fantasy.premierleague.com/api/entry/%i/transfers/'
-MANAGER_GAMEWEEK_API = 'https://fantasy.premierleague.com/api/entry/%i/history/'
+# MANAGER_API = 'https://fantasy.premierleague.com/api/entry/%i/'
+# MANAGER_PICKS_API = 'https://fantasy.premierleague.com/api/entry/%i/event/%i/picks/'
+# MANAGER_TRANSFERS_API = 'https://fantasy.premierleague.com/api/entry/%i/transfers/'
+# MANAGER_GAMEWEEK_API = 'https://fantasy.premierleague.com/api/entry/%i/history/'
 BUDGET = 1000
 MAX_PLAYERS_PER_TEAM = 3
 
@@ -22,7 +23,7 @@ class AbstractSquad(ABC):
 
     def __init__(self, player_dict, element_types):
         self.squad = []
-        self.next_gameweek = self.get_next_gameweek()
+        self.next_gameweek = get_next_gameweek()
         self.element_types = element_types
         self.player_dict = player_dict
         self.wrapped_player_dict = {}
@@ -33,17 +34,17 @@ class AbstractSquad(ABC):
         self.future_starting_teams = {}
         self.bank = 0
         self.bench_boost_gw = 0
-        self.free_hit_gw = 0
+        self.free_hit_gw = 34
 
         self.populate_wrapped_player_dict(self.player_dict)
-    
-    def get_next_gameweek(self):
-        return get_next_gameweek()
+
 
     def populate_from_manager_id(self, manager_id):
         self.manager_id = manager_id
         manager_json = requests.get(MANAGER_API % manager_id).json()
         last_gameweek = manager_json['current_event']
+        if last_gameweek is None:
+            return
 
         manager_picks_json = requests.get(MANAGER_PICKS_API % (manager_id, last_gameweek)).json()
 
@@ -88,18 +89,14 @@ class AbstractSquad(ABC):
     def get_manager_free_transfers(manager_gameweeks):
         free_transfers = 0
         for gameweek in manager_gameweeks['current']:
-            free_transfers = AbstractSquad.get_free_transfers_next_week(free_transfers, gameweek['event_transfers'])
+            free_transfers = AbstractSquad.get_free_transfers_next_week(gameweek['event_transfers'])
         return free_transfers
 
     @staticmethod
-    def get_free_transfers_next_week(current_free_transfers, transfers_made):
-        if transfers_made == 0:
-            current_free_transfers += 1
-        elif transfers_made >= 2:
-            current_free_transfers = 1
-        if current_free_transfers >= 2:
-            current_free_transfers = 2
-        return current_free_transfers
+    def get_free_transfers_next_week(transfers_made):
+        if transfers_made > 0:
+            return 1
+        return 2
 
     def build_from_scratch(self):
         squad_ids = self.get_optimised_squad_ids(self.next_gameweek, self.next_gameweek + 5, 15)
@@ -303,6 +300,7 @@ class AbstractSquad(ABC):
             #
             # for transfer in suggested_transfers:
             #     self.make_transfer(transfer)
+        print("\n".join(str(tt) for tt in strategy['transfer_tuple']))
         return strategy
 
     def get_accurate_points_for_strategy(self, transfer_strategy):
@@ -330,7 +328,7 @@ class AbstractSquad(ABC):
                 if transfer_count > temp_free_transfers:
                     valid_scheme = False
                     break
-                temp_free_transfers = self.get_free_transfers_next_week(temp_free_transfers, transfer_count)
+                temp_free_transfers = self.get_free_transfers_next_week(transfer_count)
 
             temp_free_transfers = free_transfers
             if valid_scheme:
@@ -435,6 +433,17 @@ class AbstractSquad(ABC):
     @staticmethod
     def transfers_made(old_squad_ids, new_squad_ids):
         return sum(list(1 for _ in new_squad_ids if _ not in old_squad_ids))
+    
+    def get_starting_teams_json(self):
+        starting_teams = {}
+        for gw, team in self.future_starting_teams.items():
+            starting_teams[gw] = {
+                'starters': list(player.id for player in team.players),
+                'bench': list(player.id for player in team.bench),
+                'captain': team.captain.id,
+                'vc': team.vice_captain.id
+            }
+        return starting_teams
 
 
 class WrappedPlayer:

@@ -1,23 +1,51 @@
 import requests
+# from squadtools.squad import MANAGER_API
+from premierlearning.fpl_apis import *
 
-from squadtools.squad import MANAGER_API
-
-REDIRECT_URI = 'https://users.premierleague.com/'
-LOGIN_URL = 'https://users.premierleague.com/accounts/login/'
-PICK_TEAM_URL = 'https://fantasy.premierleague.com/my-team'
-PICK_TEAM_API = 'https://fantasy.premierleague.com/api/my-team'
-TRANSFERS_API = 'https://fantasy.premierleague.com/api/transfers/'
-ME_API = 'https://fantasy.premierleague.com/api/me/'
+# REDIRECT_URI = 'https://users.premierleague.com/'
+# LOGIN_URL = 'https://users.premierleague.com/accounts/login/'
+# PICK_TEAM_URL = 'https://fantasy.premierleague.com/my-team'
+# PICK_TEAM_API = 'https://fantasy.premierleague.com/api/my-team'
+# TRANSFERS_API = 'https://fantasy.premierleague.com/api/transfers/'
+# ME_API = 'https://fantasy.premierleague.com/api/me/'
 
 
 def get_squad_ids(user_json):
+    if 'picks' not in user_json:
+        return None
     squad_ids = []
     for element in user_json['picks']:
         squad_ids.append(element['element'])
     return squad_ids
 
+def get_user_jsons(manager_id):
+    user_json = {
+        'user': {
+            'name': '',
+            'loggedIn': False,
+            'teamIDs': []
+        },
+        'fpl_api': {
+            'manager_id': None,
+            'manager_json': None,
+            'picks': None
+        }
+    }
+    with requests.Session() as client:
+        manager = client.get(MANAGER_API % manager_id).json()
+        if 'id' in manager:
+            gw = get_current_gameweek()
+            user_json['fpl_api']['manager_id'] = manager_id
+            user_json['fpl_api']['manager_json'] = manager
+            user_json['fpl_api']['picks'] = client.get(MANAGER_PICKS_API % (manager_id, gw)).json()
 
-def get_user_jsons(username, password):
+            user_json['user']['name'] = '%s %s' % (manager['player_first_name'], manager['player_last_name'])
+            user_json['user']['loggedIn'] = True
+            user_json['user']['teamIDs'] = get_squad_ids(user_json['fpl_api']['picks'])
+    return user_json
+
+
+def get_user_jsons_login(username, password):
     user_json = {
         'user': {
             'name': '',

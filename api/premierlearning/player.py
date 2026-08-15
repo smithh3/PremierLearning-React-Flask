@@ -4,6 +4,8 @@ from abc import ABC
 
 from premierlearning.clean_match import BUILT_KEYS, STAT_KEYS, PastStats, StatWindow, get_default_past_stats
 from .match import PastMatch, FutureMatch
+from .config_constants import SEASON_YR, PLAYER_JSON_FILE_LOCATION
+from .helper_functions import read_json
 
 
 class RawPlayer(ABC):
@@ -50,6 +52,24 @@ class RawPlayer(ABC):
         if n == free_hit_gw:
             bench_multiplier = 0
         return sum(fixture.points for fixture in (self.future_matches + self.matches) if fixture.gameweek == n) * bench_multiplier
+
+    def get_price_at_gw(self, gw):
+        player_file_path = PLAYER_JSON_FILE_LOCATION % (SEASON_YR, SEASON_YR + 1) + str(self.id) + '.json'
+        player_json = read_json(player_file_path)
+        for past_gw in player_json['history']:
+            if past_gw['round'] == gw:
+                return past_gw['value']
+        return player_json['history'][0]['value']
+    
+    def get_name(self):
+        return f'{self.first_name} {self.last_name}'
+
+    def get_points_within_n_gameweeks(self, current_gameweek, n):
+        return sum(fixture.points for fixture in self.future_matches
+                   if fixture.within_n_gameweeks(current_gameweek, n))
+    
+    def __str__(self):
+        return self.__repr__()
 
 
 class Player(RawPlayer):
@@ -287,11 +307,11 @@ class Player(RawPlayer):
     
     def get_stat_window(self, stats_list) -> StatWindow:
         return {
-            'last': stats_list[-1],
-            'last_3_avg': sum(stats_list[-3:]) / len(stats_list[-3:]),
+            # 'last': stats_list[-1],
+            # 'last_3_avg': sum(stats_list[-3:]) / len(stats_list[-3:]),
             'last_5_avg': sum(stats_list[-5:]) / len(stats_list[-5:]),
             'avg': sum(stats_list) / len(stats_list),
-            'deviation': numpy.std(numpy.array(stats_list))
+            # 'deviation': numpy.std(numpy.array(stats_list))
         }
     
     # def get_final_stats_initial_values(self):
@@ -318,11 +338,9 @@ class Player(RawPlayer):
     #     self.minutes_so_far = minutes_so_far
 
     def calculate_points_over_next_5_gameweeks(self):
-        self.points_over_next_5_gameweeks = self.get_points_within_n_gameweeks(5)
+        self.points_over_next_5_gameweeks = self.get_points_within_n_gameweeks(self.current_gameweek, 5)
 
-    def get_points_within_n_gameweeks(self, n):
-        return sum(fixture.points for fixture in self.future_matches
-                   if fixture.within_n_gameweeks(self.current_gameweek, n))
+    
 
     # def get_recent_game_minutes(self):
     #     minutes = 0

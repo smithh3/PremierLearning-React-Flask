@@ -7,12 +7,12 @@ from abc import ABC, abstractmethod
 
 from .player import Player
 from .team import Team
+from .config_constants import SEASON_YR, PLAYER_JSON_FILE_LOCATION, VAASTAV_CSV_YEARS
+from .helper_functions import read_json
 
-SEASON_YR = 21
 
 FANTASY_JSON_FILE_LOCATION = 'data/season_%i_%i/fantasy.json'
 FIXTURES_JSON_FILE_LOCATION = 'data/season_%i_%i/fixtures.json'
-PLAYER_JSON_FILE_LOCATION = 'data/season_%i_%i/players/player_'
 PAST_SEASON_TEAMS_CSV_LOCATION = 'data/season_%i_%i/teams.csv'
 PAST_SEASON_FIXTURES_LOCATION = 'data/season_%i_%i/fixtures'
 PAST_SEASON_PLAYERS_DIR = 'data/season_%i_%i/players'
@@ -21,17 +21,10 @@ PAST_SEASON_RAW_DATA_LOCATION = 'data/season_%i_%i/raw.json'
 LAST_SEASON_TEAM_STANDINGS_LOCATION = 'data/season_%i_%i/last_season_team_standings.json'
 
 
-def read_json(file_path):
-    try:
-        with open(file_path) as file:
-            return json.load(file)
-    except:
-        pass
 
-
-def get_next_gameweek():
-        fantasy_json = read_json(FANTASY_JSON_FILE_LOCATION % (SEASON_YR, SEASON_YR + 1))
-        return next(event['id'] for event in fantasy_json['events'] if event['is_next'])
+# def get_next_gameweek():
+#         fantasy_json = read_json(FANTASY_JSON_FILE_LOCATION % (SEASON_YR, SEASON_YR + 1))
+#         return next(event['id'] for event in fantasy_json['events'] if event['is_next'])
 
 
 class Season(ABC):
@@ -132,13 +125,13 @@ class PastSeason(Season):
         self.set_up_season()
 
     def populate_fixtures_json(self):
-        if self.years[0] == 20:
+        if self.years[0] not in VAASTAV_CSV_YEARS:
             self.fixtures_json = read_json(PAST_SEASON_FIXTURES_LOCATION % self.years + '.json')
         else:
             self.fixtures_json = self.read_csv(PAST_SEASON_FIXTURES_LOCATION % self.years + '.csv')
 
     def populate_players(self):
-        if self.years[0] == 20:
+        if self.years[0] not in VAASTAV_CSV_YEARS:
             self.populate_players_json()
         else:
             elements = self.read_csv(PAST_SEASON_ELEMENTS_FILE % self.years)
@@ -154,7 +147,7 @@ class PastSeason(Season):
                 self.players.append(Player(None, elements_dict[player_id], player_json, self.teams, self.current_gameweek))
 
     def populate_teams(self):
-        if self.years[0] == 20:
+        if self.years[0] not in VAASTAV_CSV_YEARS:
             self.populate_teams_json()
         else:
             if self.years[0] == 18:
