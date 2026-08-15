@@ -35,6 +35,8 @@ class AbstractSquad(ABC):
         self.bank = 0
         self.bench_boost_gw = 0
         self.free_hit_gw = 34
+        self.manager_id = None
+        self.built_from_scratch = False
 
         self.populate_wrapped_player_dict(self.player_dict)
 
@@ -44,9 +46,23 @@ class AbstractSquad(ABC):
         manager_json = requests.get(MANAGER_API % manager_id).json()
         last_gameweek = manager_json['current_event']
         if last_gameweek is None:
+            # Preseason / no picks yet — build an initial £100m squad from predictions
+            print('No current_event on manager entry; building initial squad from scratch')
+            self.built_from_scratch = True
+            self.build_from_scratch()
             return
 
-        manager_picks_json = requests.get(MANAGER_PICKS_API % (manager_id, last_gameweek)).json()
+        manager_picks_resp = requests.get(MANAGER_PICKS_API % (manager_id, last_gameweek))
+        if not manager_picks_resp.ok:
+            print(
+                f'Could not load picks for GW{last_gameweek} ({manager_picks_resp.status_code}); '
+                'building initial squad from scratch'
+            )
+            self.built_from_scratch = True
+            self.build_from_scratch()
+            return
+
+        manager_picks_json = manager_picks_resp.json()
 
         manager_transfers = requests.get(MANAGER_TRANSFERS_API % manager_id).json()
         manager_gameweeks = requests.get(MANAGER_GAMEWEEK_API % manager_id).json()
@@ -63,6 +79,12 @@ class AbstractSquad(ABC):
         squad_ids = []
         for element in manager_picks_json['picks']:
             squad_ids.append(element['element'])
+
+        if not squad_ids:
+            print('Manager has no picks; building initial squad from scratch')
+            self.built_from_scratch = True
+            self.build_from_scratch()
+            return
 
         self.populate_squad(squad_ids)
 

@@ -61,10 +61,9 @@ STAT_KEYS = [
     # 'own_goals'
     'saves',
     # 'ict_index',
-    'expected_goals',
-    'expected_assists',
     'expected_goal_involvements',
-    'expected_goals_conceded'
+    'expected_goals_conceded',
+    'defensive_contribution'
 ]
 
 # These keys are for data that needs to be processed from the fpl api
@@ -144,21 +143,32 @@ STANDARD_STAT_KEYS = [
     'new_stats_included'
 ]
 
+# Fixture-level opponent descriptors shared across a prediction horizon
+OPPONENT_FEATURE_KEYS = [
+    'is_home',
+    'opponent_average_points',
+    'opponent_average_scored',
+    'opponent_average_conceded',
+    'opponent_last_season_finish',
+]
+
+PLAYER_STANDARD_STAT_KEYS = [
+    key for key in STANDARD_STAT_KEYS if key not in OPPONENT_FEATURE_KEYS
+]
+
 POINTS_KEYS = [
     'total_points',
     # 'ict_index',
     # 'bonus',
-    'expected_goals',
-    'expected_assists',
     'expected_goal_involvements',
-    'expected_goals_conceded'
+    'expected_goals_conceded',
+    'defensive_contribution'
 ]
 
 NEW_STATS = [
-    'expected_goals',
-    'expected_assists',
     'expected_goal_involvements',
-    'expected_goals_conceded'
+    'expected_goals_conceded',
+    'defensive_contribution'
 ]
 
 GOALS_KEYS = [
@@ -166,8 +176,6 @@ GOALS_KEYS = [
     'assists',
     'bonus',
     'ict_index',
-    'expected_goals',
-    'expected_assists',
     'expected_goal_involvements'
 ]
 
@@ -176,7 +184,8 @@ DEF_KEYS = [
     'goals_conceded',
     'saves',
     'bonus',
-    'expected_goals_conceded'
+    'expected_goals_conceded',
+    'defensive_contribution'
 ]
 
 OTHER_KEYS = [
@@ -186,10 +195,9 @@ OTHER_KEYS = [
     'assists',
     'saves',
     'clean_sheets',
-    'expected_goals',
-    'expected_assists',
     'expected_goal_involvements',
-    'expected_goals_conceded'
+    'expected_goals_conceded',
+    'defensive_contribution'
 ]
 
 def get_input_keys(key) -> List[str]:
@@ -206,12 +214,14 @@ def get_input_keys(key) -> List[str]:
     return [key]
 
 
-def get_inputs_from_data_key(clean_matches: List[CleanMatch], special_keys: List[str], include_standard_stats) -> list:
+def get_inputs_from_data_key(clean_matches: List[CleanMatch], special_keys: List[str], include_standard_stats,
+                             include_opponent_features: bool = True) -> list:
     inputs = []
+    standard_keys = STANDARD_STAT_KEYS if include_opponent_features else PLAYER_STANDARD_STAT_KEYS
     for clean_match in clean_matches:
         clean_match_array = {}
         if include_standard_stats:
-            for data_key in STANDARD_STAT_KEYS:
+            for data_key in standard_keys:
                 clean_match_array[data_key] = clean_match[data_key]
         for data_key in special_keys:
             last_n_stats = clean_match['past_stats'][data_key]
@@ -221,6 +231,10 @@ def get_inputs_from_data_key(clean_matches: List[CleanMatch], special_keys: List
             clean_match_array.update(last_n_stats_with_name)
         inputs.append(clean_match_array)
     return inputs
+
+
+def get_opponent_feature_vector(clean_match: CleanMatch) -> list:
+    return [float(clean_match[key]) for key in OPPONENT_FEATURE_KEYS]
 
 
 def get_outputs_from_data_key(clean_matches: List[CleanMatch], key_name: str) -> list:

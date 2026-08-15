@@ -147,7 +147,8 @@ class PastMatch(AbstractMatch):
         self.new_stats_included = NEW_STATS[0] in match_json
 
         for key in STAT_KEYS:
-            if key in NEW_STATS and not self.new_stats_included:
+            # Optional era-specific fields (xGI, defcon, …): leave default 0 if absent
+            if key in NEW_STATS and key not in match_json:
                 continue
             self.game_stats[key] = float(match_json[key])
         

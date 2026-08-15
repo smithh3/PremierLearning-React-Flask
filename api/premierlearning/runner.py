@@ -2,7 +2,12 @@ import sys
 import requests
 import os
 import os.path
-from premierlearning.clean_match import BUILT_KEYS, CHANCE_TO_PLAY, STAT_KEYS, get_input_keys
+from premierlearning.clean_match import (
+    BUILT_KEYS, CHANCE_TO_PLAY, STAT_KEYS, get_input_keys, get_opponent_feature_vector, OPPONENT_FEATURE_KEYS
+)
+from premierlearning.config_constants import POINTS_HORIZON, SEASON_YR
+import numpy
+
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
@@ -35,9 +40,13 @@ class Runner:
 
         print('Preparing data for learning...')
 
-        self.learn()
+        horizon_only = '--horizon-only' in sys.argv
+        self.learn(horizon_only=horizon_only)
 
         self.current_season.calculate_player_points_over_next_5_gameweeks()
+
+        if horizon_only:
+            self.print_top_players_next_horizon(100)
 
         self.persist_players()
 
@@ -200,7 +209,7 @@ class Runner:
         # pyplot.show()
 
 
-    def learn(self):
+    def learn(self, horizon_only: bool = False):
         clean_matches = self.populate_formatted_match_data()
 
         valid_clean_matches = [match for match in clean_matches if match['is_valid']]
@@ -220,29 +229,164 @@ class Runner:
             match['id'] = count
             count += 1
 
-        learnt_stats = {}
-        # for key in STAT_KEYS + BUILT_KEYS:
-        #     learnt_stats[key] = get_avg_predictions(valid_clean_matches, future_clean_matches, get_input_keys(key), key, True)
-        learnt_stats['total_points'] = get_avg_predictions(valid_clean_matches, future_clean_matches, get_input_keys('total_points'), 'total_points', True)
-        learnt_stats['minutes'] = get_avg_predictions(valid_clean_matches, future_clean_matches, get_input_keys('minutes'), 'minutes', True)
+        if not horizon_only:
+            learnt_stats = {}
+            # Horizon-1: per-match points (fixture shape) + minutes / chance to play
+            learnt_stats['total_points'] = get_avg_predictions(
+                valid_clean_matches, future_clean_matches, get_input_keys('total_points'), 'total_points', True, horizon=1
+            )
+            learnt_stats['minutes'] = get_avg_predictions(
+                valid_clean_matches, future_clean_matches, get_input_keys('minutes'), 'minutes', True, horizon=1
+            )
+            learnt_stats[CHANCE_TO_PLAY] = get_avg_predictions(
+                clean_matches, future_clean_matches, get_input_keys(CHANCE_TO_PLAY), CHANCE_TO_PLAY, False, horizon=1
+            )
 
-        learnt_stats[CHANCE_TO_PLAY] = get_avg_predictions(clean_matches, future_clean_matches, get_input_keys(CHANCE_TO_PLAY), CHANCE_TO_PLAY, False)
+            def set_zero_if_neg(val):
+                if val < 0:
+                    return 0
+                return val
 
-        def set_zero_if_neg(val):
-            if val < 0:
-                return 0
-            return val
+            for i in range(len(future_matches)):
+                for stat_key in ['total_points', 'minutes', CHANCE_TO_PLAY]:
+                    future_matches[i].game_stats[stat_key] = set_zero_if_neg(learnt_stats[stat_key][i][0])
+                future_matches[i].points = future_matches[i].game_stats['total_points']
+                future_matches[i].set_minutes_from_stats()
 
-        for i in range(len(future_matches)):
-            for stat_key in ['total_points', 'minutes', CHANCE_TO_PLAY]:
-            # for key in STAT_KEYS + BUILT_KEYS + [CHANCE_TO_PLAY]:
-                future_matches[i].game_stats[stat_key] = set_zero_if_neg(learnt_stats[stat_key][i][0])
-            # future_matches[i].calc_points_from_stats()
-            future_matches[i].points = future_matches[i].game_stats['total_points']
-            future_matches[i].set_minutes_from_stats()
-            future_matches[i].update_points_based_on_expected_minutes()
+        # Horizon-N: stabler total, then redistribute using horizon-1 week weights
+        # (equal split when horizon-only / no h1 weights)
+        horizon = POINTS_HORIZON
+        horizon_train = self.build_horizon_training_data(horizon)
+        horizon_pred = self.build_horizon_predict_data(horizon)
+        if horizon_train['player_clean'] and horizon_pred['player_clean']:
+            horizon_totals = get_avg_predictions(
+                horizon_train['player_clean'],
+                horizon_pred['player_clean'],
+                get_input_keys('total_points'),
+                'total_points',
+                True,
+                horizon=horizon,
+                opponent_learn=horizon_train['opponents'],
+                opponent_pred=horizon_pred['opponents'],
+                output_learn=horizon_train['labels'],
+            )
+            self.redistribute_horizon_points(horizon_pred['players'], horizon_totals, horizon)
+        else:
+            print(f'Skipping horizon={horizon} model (insufficient training or predict rows)')
 
-    
+        if not horizon_only:
+            for future_match in future_matches:
+                future_match.update_points_based_on_expected_minutes()
+
+    def print_top_players_next_horizon(self, n: int = 100):
+        horizon = POINTS_HORIZON
+        ranked = sorted(
+            self.current_season.players,
+            key=lambda p: p.points_over_next_5_gameweeks,
+            reverse=True,
+        )[:n]
+        print(f'\nTop {n} players by predicted points over next {horizon} gameweeks:')
+        print(f'{"#":>3}  {"Player":<28}  {"Pos":<4}  {"Team":<16}  {"Pts":>6}')
+        for i, player in enumerate(ranked, start=1):
+            print(
+                f'{i:>3}  {player.get_name():<28}  {str(player.position):<4}  '
+                f'{str(player.team_name):<16}  {player.points_over_next_5_gameweeks:>6.1f}'
+            )
+
+    def build_horizon_training_data(self, horizon: int):
+        player_clean = []
+        opponents = []
+        labels = []
+        seasons = list(self.past_seasons) + [self.current_season]
+        n_opp = len(OPPONENT_FEATURE_KEYS)
+
+        for season in seasons:
+            for player in season.players:
+                matches = player.matches
+                for i, match in enumerate(matches):
+                    if not match.valid_for_learning:
+                        continue
+                    if i + horizon > len(matches):
+                        continue
+                    window = matches[i:i + horizon]
+                    clean = match.to_clean_match()
+                    opp_matrix = [get_opponent_feature_vector(m.to_clean_match()) for m in window]
+                    if any(len(row) != n_opp for row in opp_matrix):
+                        continue
+                    player_clean.append(clean)
+                    opponents.append(opp_matrix)
+                    labels.append(sum(float(m.points) for m in window))
+
+        return {
+            'player_clean': player_clean,
+            'opponents': numpy.array(opponents, dtype=float) if opponents else numpy.empty((0, horizon, n_opp)),
+            'labels': numpy.array(labels, dtype=float).reshape(-1, 1) if labels else numpy.empty((0, 1)),
+        }
+
+    def build_horizon_predict_data(self, horizon: int):
+        player_clean = []
+        opponents = []
+        players = []
+        n_opp = len(OPPONENT_FEATURE_KEYS)
+        zero_opp = [0.0] * n_opp
+
+        for player in self.current_season.players:
+            futs = player.future_matches[:horizon]
+            if not futs:
+                continue
+            player_clean.append(futs[0].to_clean_match())
+            opp_matrix = [get_opponent_feature_vector(m.to_clean_match()) for m in futs]
+            while len(opp_matrix) < horizon:
+                opp_matrix.append(list(zero_opp))
+            opponents.append(opp_matrix)
+            players.append(player)
+
+        return {
+            'player_clean': player_clean,
+            'opponents': numpy.array(opponents, dtype=float) if opponents else numpy.empty((0, horizon, n_opp)),
+            'players': players,
+        }
+
+    def redistribute_horizon_points(self, players, horizon_totals, horizon: int):
+        """Allocate horizon total T across next fixtures: final_i = T * (p_i / sum p)."""
+        max_reasonable_total = 12.0 * horizon
+        failed_sanity = []
+        for player, total_pred in zip(players, horizon_totals):
+            T = float(total_pred[0]) if hasattr(total_pred, '__len__') else float(total_pred)
+            if T < 0:
+                T = 0
+            futs = player.future_matches[:horizon]
+            if not futs:
+                continue
+            weights = [max(0.0, float(m.points)) for m in futs]
+            weight_sum = sum(weights)
+
+            if T > max_reasonable_total or (weight_sum > 0 and T > weight_sum * 2.5):
+                failed_sanity.append(
+                    f'{player.get_name()}: T={T:.1f} h1_sum={weight_sum:.1f}'
+                )
+
+            if weight_sum <= 0:
+                share = T / len(futs)
+                for match in futs:
+                    match.points = share
+                    match.game_stats['total_points'] = share
+            else:
+                for match, weight in zip(futs, weights):
+                    points = T * (weight / weight_sum)
+                    match.points = points
+                    match.game_stats['total_points'] = points
+
+        if failed_sanity:
+            print(
+                f'Horizon redistribute sanity check failed for {len(failed_sanity)} players '
+                f'(T > {max_reasonable_total:.0f} or T > 2.5× h1 sum); scores still applied:'
+            )
+            for line in failed_sanity[:20]:
+                print(f'  {line}')
+            if len(failed_sanity) > 20:
+                print(f'  ... and {len(failed_sanity) - 20} more')
+
     def persist_players(self):
         print('Connecting to database')
         db_handler = DB_Handler()

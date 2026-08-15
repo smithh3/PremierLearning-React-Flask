@@ -42,7 +42,11 @@ class OptimiseRunner:
     def run(self):
         self.populate_squad()
         self.write_top_30_info()
-        # players = sorted((p for p in self.player_dict.values() if p.current_cost <= 53 and p.position == 3), reverse=True, key=lambda p : p.get_points_between_gameweeks(6, 10, 1, 0, 0))
+        if self.squad.built_from_scratch:
+            print('Initial squad built from scratch (15 players). Skipping transfer suggestions.')
+            print('Squad:', ', '.join(p.get_name() for p in self.squad.squad))
+            self.transfers = None
+            return
         self.transfers = self.squad.make_sensible_transfers()
     
     def get_transfers(self):
