@@ -40,11 +40,16 @@ class AbstractSquad(ABC):
 
         self.populate_wrapped_player_dict(self.player_dict)
 
+    def is_pre_gw1(self):
+        return get_current_gameweek() == 0 and self.next_gameweek <= 1
 
     def populate_from_manager_id(self, manager_id):
         self.manager_id = manager_id
         manager_json = requests.get(MANAGER_API % manager_id).json()
         last_gameweek = manager_json['current_event']
+        if last_gameweek is None and self.is_pre_gw1():
+            last_gameweek = 1
+            print('Pre-GW1: loading GW1 picks with unlimited free transfers')
         if last_gameweek is None:
             # Preseason / no picks yet — build an initial £100m squad from predictions
             print('No current_event on manager entry; building initial squad from scratch')
@@ -74,6 +79,8 @@ class AbstractSquad(ABC):
             pass
 
         self.free_transfers = self.get_manager_free_transfers(manager_gameweeks)
+        if self.is_pre_gw1():
+            self.free_transfers = 15
 
         self.squad.clear()
         squad_ids = []
@@ -135,6 +142,12 @@ class AbstractSquad(ABC):
         starters_model = LpProblem(name="optimise-squad", sense=LpMaximize)
 
         valid_player_ids = list(i for i in self.wrapped_player_dict.keys())
+        selectable_ids = load_selectable_player_ids()
+        if selectable_ids:
+            valid_player_ids = [
+                player_id for player_id in valid_player_ids
+                if player_id in squad_keys or player_id in selectable_ids
+            ]
 
         x = {i: LpVariable(name=f"x_{i}", cat="Binary") for i in valid_player_ids}
         y1 = {i: LpVariable(name=f"y1_{i}", cat="Binary") for i in valid_player_ids}
@@ -275,10 +288,15 @@ class AbstractSquad(ABC):
             pick_starting_lineup_model += lpSum(x[i] * int(self.player_dict[i].position == element_type['id'])
                                                 for i in squad_ids) <= element_type['squad_max_play']
 
-        # Objective function
-        pick_starting_lineup_model += lpSum(x[i] * self.player_dict[i].get_points_in_gameweek_n(gameweek, 1, 0, 0)
-                                            # * int(self.player_dict[i].get_recent_game_minutes() > 150)
-                                            for i in squad_ids)
+        # Objective function: injured/unavailable players should not start
+        fit_ids = load_selectable_player_ids()
+        pick_starting_lineup_model += lpSum(
+            x[i] * (
+                self.player_dict[i].get_points_in_gameweek_n(gameweek, 1, 0, 0)
+                if (not fit_ids or i in fit_ids) else -1000
+            )
+            for i in squad_ids
+        )
 
         pick_starting_lineup_model.solve(PULP_CBC_CMD(msg=0))
 
@@ -304,6 +322,16 @@ class AbstractSquad(ABC):
         return suggested_transfers
 
     def make_sensible_transfers(self):
+        if self.is_pre_gw1():
+            self.free_transfers = 15
+            suggested_transfers = self.get_suggested_transfers(15)
+            print('Pre-GW1: all squad changes are free transfers')
+            print("\n".join(str(transfer) for transfer in suggested_transfers))
+            return {
+                'scheme': (len(suggested_transfers),),
+                'transfer_tuple': tuple(suggested_transfers),
+                'points': 0,
+            }
         best_five_transfers = self.get_suggested_transfers(5)
         strategy = None
         if len(best_five_transfers) > 0:
@@ -488,12 +516,15 @@ class StartingSquad:
     def __init__(self, player_dict, starter_ids, bench_ids, gameweek):
         self.gameweek = gameweek
         self.players = list(player_dict[i] for i in starter_ids)
-        self.players.sort(key=lambda player_: player_.get_points_in_gameweek_n(gameweek, 1, 0, 0), reverse=True)
-
-        self.points = 0
+        # Captain / VC = highest predicted points in this GW (not display order)
+        self.players.sort(
+            key=lambda player_: player_.get_points_in_gameweek_n(gameweek, 1, 0, 0),
+            reverse=True,
+        )
         self.captain = self.players[0]
         self.vice_captain = self.players[1]
 
+        self.points = 0
         self.players.sort(key=lambda player_: player_.position)
         for player in self.players:
             player_points = player.get_points_in_gameweek_n(gameweek, 1, 0, 0)
@@ -503,7 +534,10 @@ class StartingSquad:
 
         self.bench = list(player_dict[i] for i in bench_ids if player_dict[i].position != 1)
         bench_keeper = next(player_dict[i] for i in bench_ids if player_dict[i].position == 1)
-        self.bench.sort(key=lambda player_: player_.get_points_in_gameweek_n(gameweek, 1, 0, 0), reverse=True)
+        self.bench.sort(
+            key=lambda player_: player_.get_points_in_gameweek_n(gameweek, 1, 0, 0),
+            reverse=True,
+        )
         self.bench.insert(0, bench_keeper)
 
     def __str__(self):

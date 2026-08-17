@@ -54,35 +54,29 @@ class DB_Handler:
             self.persist_future_match(future_match)
     
     def persist_future_match(self, match):
-        self.cursor.execute('''insert into future_matches (player_id, minutes, points, gameweek, opponent)
-            values (?, ?, ?, ?, ?)''', match.format_as_db_insert())
+        self.cursor.execute('''insert into future_matches (player_id, minutes, points, gameweek, opponent, points_error)
+            values (?, ?, ?, ?, ?, ?)''', match.format_as_future_db_insert())
     
     def persist_match(self, match):
         self.cursor.execute('''insert into matches (player_id, minutes, points, gameweek, opponent)
             values (?, ?, ?, ?, ?)''', match.format_as_db_insert())
-    
-    def add_match_to_dict(self, matches_dict, match, player_id):
-        if match['gameweek'] is None:
-            match['gameweek'] = 0
-        if player_id not in matches_dict:
-            matches_dict[player_id] = {match['gameweek']: [match]}
-        else:
-            if match['gameweek'] not in matches_dict[player_id]:
-                matches_dict[player_id][match['gameweek']] = [match]
-            else:
-                matches_dict[player_id][match['gameweek']].append(match)
 
     def get_future_match_jsons(self):
+        """player_id -> list of future match dicts in persist order."""
         future_matches = {}
-        for db_future_match in self.cursor.execute('select player_id, minutes, points, gameweek, opponent from future_matches').fetchall():
+        for db_future_match in self.cursor.execute(
+            'select player_id, minutes, points, gameweek, opponent, points_error '
+            'from future_matches order by id'
+        ).fetchall():
             player_id = db_future_match[0]
             future_match = {
                 'minutes': db_future_match[1],
                 'points': db_future_match[2],
                 'gameweek': db_future_match[3],
-                'opponent': db_future_match[4]
+                'opponent': db_future_match[4],
+                'points_error': db_future_match[5] if len(db_future_match) > 5 else 0.0,
             }
-            self.add_match_to_dict(future_matches, future_match, player_id)
+            future_matches.setdefault(player_id, []).append(future_match)
         return future_matches
 
     @staticmethod
@@ -93,11 +87,15 @@ class DB_Handler:
         match.points = match_json['points']
         match.gameweek = match_json['gameweek']
         match.opponent = match_json['opponent']
+        match.points_error = float(match_json.get('points_error') or 0.0)
         return match
     
     def get_match_jsons(self):
+        """player_id -> list of past match dicts in persist order (carry then this season)."""
         matches = {}
-        for db_match in self.cursor.execute('select player_id, minutes, points, gameweek, opponent from matches').fetchall():
+        for db_match in self.cursor.execute(
+            'select player_id, minutes, points, gameweek, opponent from matches order by id'
+        ).fetchall():
             player_id = db_match[0]
             match = {
                 'minutes': db_match[1],
@@ -105,7 +103,7 @@ class DB_Handler:
                 'gameweek': db_match[3],
                 'opponent': db_match[4]
             }
-            self.add_match_to_dict(matches, match, player_id)
+            matches.setdefault(player_id, []).append(match)
         return matches
 
     def get_player_jsons(self):
@@ -114,9 +112,6 @@ class DB_Handler:
         future_matches = self.get_future_match_jsons()
         for db_player in self.cursor.execute('select id, first_name, surname, team_id, team, current_cost, position, code from players').fetchall():
             player_id = db_player[0]
-            player_matches = {}
-            if player_id in matches:
-                player_matches = matches[player_id]
             player = {
                 'id': player_id,
                 'first_name': db_player[1],
@@ -126,8 +121,8 @@ class DB_Handler:
                 'current_cost': db_player[5],
                 'position': db_player[6],
                 'code': db_player[7],
-                'matches': player_matches,
-                'future_matches': future_matches[player_id]
+                'matches': matches.get(player_id, []),
+                'future_matches': future_matches.get(player_id, [])
             }
             players[player_id] = player
         return players
@@ -145,17 +140,13 @@ class DB_Handler:
             player.current_cost = player_json['current_cost']
             player.position = player_json['position']
             player.code = player_json['code']
-            matches = []
-
-            for match_jsons in player_json['matches'].values():
-                for match_json in match_jsons:
-                    matches.append(self.convert_match_from_json(player_id, match_json))
-            player.matches = matches
-            future_matches = []
-
-            for future_match_jsons in player_json['future_matches'].values():
-                for future_match_json in future_match_jsons:
-                    future_matches.append(self.convert_match_from_json(player_id, future_match_json))
-            player.future_matches = future_matches
+            player.matches = [
+                self.convert_match_from_json(player_id, match_json)
+                for match_json in player_json['matches']
+            ]
+            player.future_matches = [
+                self.convert_match_from_json(player_id, future_match_json)
+                for future_match_json in player_json['future_matches']
+            ]
             players[player_id] = player
         return players

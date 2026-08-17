@@ -4,5 +4,10 @@ PLAYER_JSON_FILE_LOCATION = 'data/season_%i_%i/players/player_'
 # Past seasons that use vaastav-style CSV (players_raw.csv, fixtures.csv, players/*/gw.csv)
 VAASTAV_CSV_YEARS = (18, 19, 23, 24, 25)
 
-# Multi-match points horizon (shared opponent encoder + redistribute)
+# Points total window for the multi-GW flat model (summed team xg/xc + redistribute)
 POINTS_HORIZON = 5
+
+# Early-season prior: (last_pp90 + 0.5 * two_season_pp90) * exp(-matches_played / tau)
+# At matches_played=0 → weight 1; fades toward 0 as this-season apps grow.
+PRIOR_EARLY_TAU = 6.0
+TWO_SEASON_PRIOR_SCALE = 0.5

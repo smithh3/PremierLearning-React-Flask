@@ -25,5 +25,6 @@ create table future_matches (
     minutes real not null,
     points real not null,
     gameweek integer,
-    opponent varchar(255)
+    opponent varchar(255),
+    points_error real not null default 0
 );

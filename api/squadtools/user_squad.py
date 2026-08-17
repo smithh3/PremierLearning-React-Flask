@@ -1,5 +1,5 @@
 from .squad import AbstractSquad
-from .logged_in_action_performer import make_transfers
+from .logged_in_action_performer import make_transfers, pick_team
 
 class UserSquad(AbstractSquad):
 
@@ -19,9 +19,12 @@ class UserSquad(AbstractSquad):
         except:
             pass
 
-        self.free_transfers = manager_picks_json['transfers']['limit']
-        if self.free_transfers is None:
+        if self.is_pre_gw1():
             self.free_transfers = 15
+        else:
+            self.free_transfers = manager_picks_json['transfers']['limit']
+            if self.free_transfers is None:
+                self.free_transfers = 15
 
         self.squad.clear()
         squad_ids = []
@@ -88,3 +91,16 @@ class UserSquad(AbstractSquad):
         request_payload = self.format_transfer_requests()
         make_transfers(request_payload, email, password)
         self.staged_transfers.clear()
+
+    def log_in_and_pick_team(self, email, password):
+        self.populate_future_starting_teams(5)
+        starting_team = self.future_starting_teams[self.next_gameweek]
+        print('Starting XI:')
+        for player in starting_team.players:
+            print('  %s' % player)
+        print('Bench:')
+        for player in starting_team.bench:
+            print('  %s' % player)
+        print('Captain: %s' % starting_team.captain)
+        print('Vice-captain: %s' % starting_team.vice_captain)
+        pick_team(self.pick_team_request_format(), email, password)

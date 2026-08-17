@@ -1,4 +1,7 @@
 from typing import List, TypedDict
+import sys
+
+# from premierlearning.config_constants import PRIOR_EARLY_TAU, TWO_SEASON_PRIOR_SCALE
 
 
 class StatWindow(TypedDict):
@@ -75,6 +78,13 @@ BUILT_KEYS = [
 
 CHANCE_TO_PLAY = 'chance_to_play'
 
+# Past-stat keys stored as per-minute rates (not raw totals)
+PER_MINUTE_STAT_KEYS = set(STAT_KEYS + BUILT_KEYS) - {'minutes'}
+
+
+def use_team_expectancies() -> bool:
+    return '--no-team-expectancies' not in sys.argv
+
 
 def get_default_past_stats() -> PastStats:
     stats: PastStats = {}
@@ -101,9 +111,9 @@ def get_default_stat_window() -> StatWindow:
 
 class CleanMatch(TypedDict):
     is_valid: bool
+    is_valid_for_minutes: bool
     matches_played: int
     past_stats: PastStats
-    ict_point_deviation: float
     is_gkp: int
     is_def: int
     is_mid: int
@@ -115,20 +125,54 @@ class CleanMatch(TypedDict):
     opponent_average_points: float
     opponent_average_scored: float
     opponent_average_conceded: float
-    team_last_season_finish: int
-    opponent_last_season_finish: int
+    team_xg_over_n: float
+    team_xc_over_n: float
+    team_xg_last_5: float
+    team_xc_last_5: float
     played_last_season: int
-    last_season_points_per_min: float
+    last_season_points_per_90: float
+    last_season_xgi_per_90: float
+    two_season_prior_points_per_90: float
+    new_stats_included: int
+    # Position-gated interactions
+    defcon_avg_x_new_stats_x_non_att: float
+    team_xg_over_n_x_outfield: float
+    # last_season_prior_x_early: float
     game_stats: GameStats
 
 
-STANDARD_STAT_KEYS = [
+# Base player / context features (no ict; fixture difficulty via team xg/xc).
+#
+# Season-start experiment notes (pair with player.py form comment):
+#   - matches_played was briefly commented out when it mismatched train/serve;
+#     blanking it made zero-form players worse — keep it on for now.
+#   - played_last_season / two_season_prior / last_season_prior_x_early were
+#     tried as early-season priors; left off while we rely on carry form +
+#     last_season_*_per_90 instead. Re-enable and retrain to A/B.
+_BASE_STANDARD = [
     'matches_played',
-    'ict_point_deviation',
     'is_gkp',
     'is_def',
     'is_mid',
     'is_att',
+    # 'played_last_season',  # temporarily disabled — early-season prior experiment
+    'last_season_points_per_90',
+    'last_season_xgi_per_90',
+    # 'two_season_prior_points_per_90',  # temporarily disabled — see PRIOR_* in config
+    'new_stats_included',
+]
+
+_INTERACTION_KEYS = [
+    # defcon only meaningful for non-attackers, and only when new stats exist
+    'defcon_avg_x_new_stats_x_non_att',
+    # team attack xG for outfield only (not GK)
+    'team_xg_over_n_x_outfield',
+    # OLD early-season prior interaction (needs PRIOR_EARLY_TAU import):
+    # # prior fades as this-season appearances grow: (last + 0.5*two_ago) * exp(-apps/tau)
+    # 'last_season_prior_x_early',
+]
+
+_LEGACY_FIXTURE_KEYS = [
     'is_home',
     'team_average_points',
     'team_average_scored',
@@ -136,25 +180,63 @@ STANDARD_STAT_KEYS = [
     'opponent_average_points',
     'opponent_average_scored',
     'opponent_average_conceded',
-    'team_last_season_finish',
-    'opponent_last_season_finish',
-    'played_last_season',
-    'last_season_points_per_min',
-    'new_stats_included'
 ]
 
-# Fixture-level opponent descriptors shared across a prediction horizon
-OPPONENT_FEATURE_KEYS = [
+_EXPECTANCY_FIXTURE_KEYS = [
+    'team_xg_over_n',
+    'team_xc_over_n',
+    'team_xg_last_5',
+    'team_xc_last_5',
+]
+
+LEGACY_OPPONENT_FEATURE_KEYS = [
     'is_home',
     'opponent_average_points',
     'opponent_average_scored',
     'opponent_average_conceded',
-    'opponent_last_season_finish',
 ]
 
-PLAYER_STANDARD_STAT_KEYS = [
-    key for key in STANDARD_STAT_KEYS if key not in OPPONENT_FEATURE_KEYS
-]
+# Flat expectancy model: team xg/xc live in _EXPECTANCY_FIXTURE_KEYS only (no separate opp tower)
+EXPECTANCY_OPPONENT_FEATURE_KEYS = []
+
+
+def apply_feature_interactions(clean: dict) -> None:
+    """Position-gated products; call after team_xg_over_n is finalized."""
+    non_att = int(bool(clean.get('is_gkp') or clean.get('is_def') or clean.get('is_mid')))
+    outfield = int(bool(clean.get('is_att') or clean.get('is_mid') or clean.get('is_def')))
+    new_stats = float(clean.get('new_stats_included') or 0)
+    past = clean.get('past_stats') or {}
+    defcon_avg = float((past.get('defensive_contribution') or {}).get('avg') or 0)
+    team_xg_n = float(clean.get('team_xg_over_n') or 0)
+
+    # OLD early-season prior (pair with 'last_season_prior_x_early' in _INTERACTION_KEYS):
+    # last_pp90 = float(clean.get('last_season_points_per_90') or 0)
+    # two_pp90 = float(clean.get('two_season_prior_points_per_90') or 0)
+    # apps = float(clean.get('matches_played') or 0)
+    # prior_blend = last_pp90 + TWO_SEASON_PRIOR_SCALE * two_pp90
+    # early_weight = math.exp(-apps / PRIOR_EARLY_TAU)  # 1.0 at 0 apps
+
+    clean['defcon_avg_x_new_stats_x_non_att'] = new_stats * defcon_avg * non_att
+    clean['team_xg_over_n_x_outfield'] = team_xg_n * outfield
+    # clean['last_season_prior_x_early'] = prior_blend * early_weight
+
+
+def get_standard_stat_keys() -> List[str]:
+    if use_team_expectancies():
+        return list(_BASE_STANDARD) + list(_EXPECTANCY_FIXTURE_KEYS) + list(_INTERACTION_KEYS)
+    return list(_BASE_STANDARD) + list(_LEGACY_FIXTURE_KEYS) + list(_INTERACTION_KEYS)
+
+
+def get_opponent_feature_keys() -> List[str]:
+    if use_team_expectancies():
+        return list(EXPECTANCY_OPPONENT_FEATURE_KEYS)
+    return list(LEGACY_OPPONENT_FEATURE_KEYS)
+
+
+def get_player_standard_stat_keys() -> List[str]:
+    opp_keys = set(get_opponent_feature_keys())
+    return [key for key in get_standard_stat_keys() if key not in opp_keys]
+
 
 POINTS_KEYS = [
     'total_points',
@@ -210,14 +292,18 @@ def get_input_keys(key) -> List[str]:
     elif key in ('clean_sheets', 'goals_conceded', 'saves', 'conceded_2_plus', 'conceded_4_plus'):
         return DEF_KEYS
     elif key in ('minutes_60_plus', 'minutes'):
-        return ['minutes']
+        # Same form towers as points, plus minutes history and chance-to-play
+        return list(POINTS_KEYS) + ['minutes', CHANCE_TO_PLAY]
     return [key]
 
 
 def get_inputs_from_data_key(clean_matches: List[CleanMatch], special_keys: List[str], include_standard_stats,
                              include_opponent_features: bool = True) -> list:
     inputs = []
-    standard_keys = STANDARD_STAT_KEYS if include_opponent_features else PLAYER_STANDARD_STAT_KEYS
+    standard_keys = get_standard_stat_keys()
+    if not include_opponent_features:
+        opp_keys = set(get_opponent_feature_keys())
+        standard_keys = [k for k in standard_keys if k not in opp_keys]
     for clean_match in clean_matches:
         clean_match_array = {}
         if include_standard_stats:
@@ -234,7 +320,7 @@ def get_inputs_from_data_key(clean_matches: List[CleanMatch], special_keys: List
 
 
 def get_opponent_feature_vector(clean_match: CleanMatch) -> list:
-    return [float(clean_match[key]) for key in OPPONENT_FEATURE_KEYS]
+    return [float(clean_match[key]) for key in get_opponent_feature_keys()]
 
 
 def get_outputs_from_data_key(clean_matches: List[CleanMatch], key_name: str) -> list:

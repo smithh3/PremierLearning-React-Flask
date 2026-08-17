@@ -2,14 +2,17 @@ import sys
 import requests
 import os
 import os.path
-from premierlearning.clean_match import (
-    BUILT_KEYS, CHANCE_TO_PLAY, STAT_KEYS, get_input_keys, get_opponent_feature_vector, OPPONENT_FEATURE_KEYS
-)
-from premierlearning.config_constants import POINTS_HORIZON, SEASON_YR
-import numpy
-
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
+from premierlearning.clean_match import (
+    BUILT_KEYS, CHANCE_TO_PLAY, STAT_KEYS, get_input_keys,
+    get_inputs_from_data_key, use_team_expectancies, apply_feature_interactions
+)
+from premierlearning.config_constants import POINTS_HORIZON, SEASON_YR
+from premierlearning.player import Player, MIN_APPEARANCES_TO_PREDICT, AVG_WINDOW, LAST_5_WINDOW
+from premierlearning.team_expectancy import run_team_expectancies, print_future_scorelines
+import numpy
 
 from premierlearning.learning import *
 
@@ -31,28 +34,286 @@ class Runner:
     def run(self):
         self.update_persisted_data_if_outdated()
 
+        team_only = '--team-only' in sys.argv
+        horizon_only = '--horizon-only' in sys.argv
+        minutes_only = '--minutes-only' in sys.argv
+        expectancies = use_team_expectancies()
+        if use_linear_model():
+            print('Linear-only mode: RidgeCV for team + player predictions (no neural nets)')
+
         print('Setting up players and teams...')
         self.current_season = CurrentSeason()
         self.populate_past_seasons()
+
+        if expectancies or team_only:
+            print('Running team expectancies...')
+            run_team_expectancies(self.past_seasons, self.current_season)
+
+        if team_only:
+            print_future_scorelines(self.current_season)
+            print('Team-only run finished')
+            return
+
         self.process_player_matches()
 
-        # self.calculate_player_ict_and_points_regression()
+        if horizon_only:
+            self.print_sample_horizon_feature_columns()
+        if minutes_only:
+            self.print_sample_minutes_feature_columns()
 
         print('Preparing data for learning...')
-
-        horizon_only = '--horizon-only' in sys.argv
-        self.learn(horizon_only=horizon_only)
+        self.learn(horizon_only=horizon_only, minutes_only=minutes_only)
 
         self.current_season.calculate_player_points_over_next_5_gameweeks()
 
         if horizon_only:
             self.print_top_players_next_horizon(100)
+        if minutes_only:
+            self.print_top_players_next_match_minutes(200)
 
         self.persist_players()
 
-        # self.populate_squad()
+    def print_sample_horizon_feature_columns(self):
+        """Print predict-time inputs and one in-season train row (form = last ≤5 before that GW)."""
+        targets = [
+            ('Erling', 'Haaland'),
+            ('Bruno', 'Fernandes'),  # matches "Bruno Borges Fernandes"
+        ]
+        found = []
+        for first, last in targets:
+            player = next(
+                (
+                    p for p in self.current_season.players
+                    if last.lower() in (p.last_name or '').lower()
+                    and first.lower() in (p.first_name or '').lower()
+                ),
+                None,
+            )
+            if player is None:
+                print(f'Could not find player matching {first} {last}')
+            else:
+                found.append(player)
 
-        # print()
+        if not found:
+            return
+
+        points_keys = get_input_keys('total_points')
+        horizon = POINTS_HORIZON
+        min_played = 3
+        # Prefer a completed past season so the TRAIN example has full prior history
+        past_by_code = {}
+        for season in sorted(self.past_seasons, key=lambda s: s.years[0], reverse=True):
+            for p in season.players:
+                if p.code not in past_by_code:
+                    past_by_code[p.code] = (p, season.years)
+
+        print('\n=== Sample horizon model columns (validation) ===')
+        for player in found:
+            # Same predict row the horizon model scores
+            futs = player.future_matches[:horizon]
+            if futs:
+                clean = futs[0].to_clean_match()
+                xg_sum, xc_sum = self._sum_team_xg_xc(futs)
+                clean['team_xg_over_n'] = xg_sum
+                clean['team_xc_over_n'] = xc_sum
+                apply_feature_interactions(clean)
+                feats = get_inputs_from_data_key(
+                    [clean], points_keys, True, include_opponent_features=True
+                )[0]
+                prior_apps = [
+                    m for m in player.matches if self._match_minutes(m) > 0
+                ]
+                print(
+                    f'\n{player.get_name()} ({player.team_name}) — PREDICT '
+                    f'(exact model input row)'
+                )
+                self._print_form_appearance_breakdown(prior_apps)
+                print('  target: (future — not known)')
+                self._print_model_input_features(feats)
+
+            # Same filters as build_horizon_training_data (last eligible row)
+            train_entry = past_by_code.get(player.code)
+            train_player = train_entry[0] if train_entry else player
+            train_season_years = train_entry[1] if train_entry else self.current_season.years
+            sample = None
+            for i, match in enumerate(train_player.matches):
+                if getattr(match, 'is_last_season_carry', False):
+                    continue
+                if not match.valid_for_learning:
+                    continue
+                if i + horizon > len(train_player.matches):
+                    continue
+                window = train_player.matches[i:i + horizon]
+                played = self._played_in_window(window)
+                if len(played) < min_played:
+                    continue
+                prior_apps = [
+                    m for m in train_player.matches[:i]
+                    if self._match_minutes(m) > 0
+                ]
+                clean = match.to_clean_match()
+                xg_sum, xc_sum = self._sum_team_xg_xc(window)
+                clean['team_xg_over_n'] = xg_sum
+                clean['team_xc_over_n'] = xc_sum
+                apply_feature_interactions(clean)
+                sample = {
+                    'match': match,
+                    'clean': clean,
+                    'target': self._pooled_points_per_90(played),
+                    'played': len(played),
+                    'prior_apps': prior_apps,
+                    'season': train_season_years,
+                }
+
+            if sample is None:
+                print(
+                    f'\n{player.get_name()}: no eligible TRAIN window '
+                    f'(≥{min_played}/{horizon} appearances in-window)'
+                )
+                continue
+
+            match = sample['match']
+            feats = get_inputs_from_data_key(
+                [sample['clean']], points_keys, True, include_opponent_features=True
+            )[0]
+            print(
+                f'\n{player.get_name()} — TRAIN {sample["season"]} '
+                f'GW{match.gameweek} vs {match.opponent} ({"H" if match.home else "A"}) '
+                f'(exact model input row; target window {sample["played"]}/{horizon} played)'
+            )
+            self._print_form_appearance_breakdown(sample['prior_apps'])
+            print(f'  target (points/90 over window): {sample["target"]:.6f}')
+            self._print_model_input_features(feats)
+        print('=== End sample columns ===\n')
+
+    def _print_model_input_features(self, feats):
+        """Print the exact dict that becomes the model feature vector."""
+        # Display aliases: form xGI keys are often read as "xg" but are goal involvements
+        aliases = {
+            'expected_goal_involvements_last_5_avg': 'xgi_last_5_avg',
+            'expected_goal_involvements_avg': 'xgi_avg',
+        }
+        print('  --- model input features (exact) ---')
+        for key, val in feats.items():
+            label = aliases.get(key, key)
+            if isinstance(val, float):
+                print(f'  {label}: {val:.6f}')
+            else:
+                print(f'  {label}: {val}')
+
+    def _print_form_appearance_breakdown(self, prior_apps):
+        """Show appearance windows that should match total_points_last_5_avg / avg."""
+        def fmt(window):
+            if not window:
+                return '(none)'
+            bits = [
+                f'GW{getattr(m, "gameweek", "?")}:'
+                f'{float(m.points):.0f}pts/{self._match_minutes(m):.0f}m'
+                for m in window
+            ]
+            pp90 = self._pooled_points_per_90(window)
+            return f'{", ".join(bits)} → pp90={pp90:.4f}'
+
+        print(f'  form appearances available: {len(prior_apps)}')
+        print(f'  last_{LAST_5_WINDOW} (should = total_points_last_5_avg): {fmt(prior_apps[-LAST_5_WINDOW:])}')
+        print(f'  last_{AVG_WINDOW} (should = total_points_avg): {fmt(prior_apps[-AVG_WINDOW:])}')
+
+    def print_sample_minutes_feature_columns(self):
+        """Print one minutes training row per sample player (features + target minutes)."""
+        targets = [
+            ('Erling', 'Haaland'),
+            ('Bruno', 'Fernandes'),
+        ]
+        found = []
+        for first, last in targets:
+            player = next(
+                (
+                    p for p in self.current_season.players
+                    if last.lower() in (p.last_name or '').lower()
+                    and first.lower() in (p.first_name or '').lower()
+                ),
+                None,
+            )
+            if player is None:
+                print(f'Could not find player matching {first} {last}')
+            else:
+                found.append(player)
+
+        if not found:
+            return
+
+        minutes_keys = get_input_keys('minutes')
+        past_by_code = {}
+        for season in sorted(self.past_seasons, key=lambda s: s.years[0], reverse=True):
+            for p in season.players:
+                if p.code not in past_by_code:
+                    past_by_code[p.code] = (p, season.years)
+
+        print('\n=== Sample minutes model columns (validation) ===')
+        for player in found:
+            futs = player.future_matches[:1]
+            if futs:
+                clean = futs[0].to_clean_match()
+                feats = get_inputs_from_data_key(
+                    [clean], minutes_keys, True, include_opponent_features=True
+                )[0]
+                print(
+                    f'\n{player.get_name()} ({player.team_name}) — PREDICT next match'
+                )
+                print('  target: (future — not known)')
+                self._print_model_input_features(feats)
+
+            train_entry = past_by_code.get(player.code)
+            train_player = train_entry[0] if train_entry else player
+            train_season_years = train_entry[1] if train_entry else self.current_season.years
+            sample = None
+            for match in train_player.matches:
+                if getattr(match, 'is_last_season_carry', False):
+                    continue
+                if not getattr(match, 'valid_for_minutes', False):
+                    continue
+                clean = match.to_clean_match()
+                sample = {
+                    'match': match,
+                    'clean': clean,
+                    'target': float(match.game_stats.get('minutes', 0) or 0),
+                    'season': train_season_years,
+                }
+
+            if sample is None:
+                print(f'\n{player.get_name()}: no eligible TRAIN minutes row')
+                continue
+
+            match = sample['match']
+            feats = get_inputs_from_data_key(
+                [sample['clean']], minutes_keys, True, include_opponent_features=True
+            )[0]
+            print(
+                f'\n{player.get_name()} — TRAIN {sample["season"]} '
+                f'GW{match.gameweek} vs {match.opponent} ({"H" if match.home else "A"})'
+            )
+            print(f'  target (minutes): {sample["target"]:.6f}')
+            self._print_model_input_features(feats)
+        print('=== End sample minutes columns ===\n')
+
+    def print_top_players_next_match_minutes(self, n: int = 200):
+        ranked = []
+        for player in self.current_season.players:
+            if player.matches_played < MIN_APPEARANCES_TO_PREDICT:
+                continue
+            if not player.future_matches:
+                continue
+            mins = float(player.future_matches[0].game_stats.get('minutes', 0) or 0)
+            ranked.append((player, mins))
+        ranked.sort(key=lambda x: x[1], reverse=True)
+        ranked = ranked[:n]
+        print(f'\nTop {n} players by predicted minutes in next match:')
+        print(f'{"#":>3}  {"Player":<28}  {"Pos":<4}  {"Team":<16}  {"Mins":>6}')
+        for i, (player, mins) in enumerate(ranked, start=1):
+            print(
+                f'{i:>3}  {player.get_name():<28}  {str(player.position):<4}  '
+                f'{str(player.team_name):<16}  {mins:>6.1f}'
+            )
 
     def update_persisted_data_if_outdated(self):
         fantasy_json_from_api = self.get_request_json(FANTASY_API)
@@ -143,19 +404,49 @@ class Runner:
                     if season.years[0] - 1 in player.history_past:
                         player_last_season.points_per_min_last_season = player.history_past[season.years[0] - 1]
                         player_last_season.played_last_season = True
+                    if season.years[0] - 1 in player.history_past_xgi:
+                        player_last_season.xgi_per_min_last_season = player.history_past_xgi[season.years[0] - 1]
+                    if season.years[0] - 2 in player.history_past:
+                        player_last_season.points_per_min_two_seasons_ago = player.history_past[season.years[0] - 2]
     
     def process_player_matches(self):
-        last_szn = next(szn for szn in self.past_seasons if szn.years[0] == self.current_season.years[0] - 1)
-        if self.current_season.next_gameweek < 12:
-            for player in self.current_season.players:
-                if player.code in last_szn.player_code_dict:
-                    player.attach_last_szn_matches(last_szn.player_code_dict[player.code])
-        
-        for player in self.current_season.players:
-            player.process_matches()
-        for season in self.past_seasons:
+        # Oldest → newest so each season can carry form from the prior year into early-GW train rows
+        # (same prefix predict uses on the current season).
+        seasons_chrono = sorted(self.past_seasons, key=lambda s: s.years[0])
+        by_year = {s.years[0]: s for s in seasons_chrono}
+
+        for season in seasons_chrono:
+            prev = by_year.get(season.years[0] - 1)
+            if prev is not None:
+                for player in season.players:
+                    if player.code in prev.player_code_dict:
+                        prev_player = prev.player_code_dict[player.code]
+                        player.attach_last_szn_matches(prev_player)
+                        # Prefer actual prior-season match xGI when available (API history often 0 pre-22/23)
+                        xgi_pm = Player.xgi_per_min_from_matches(prev_player)
+                        if xgi_pm > 0:
+                            player.xgi_per_min_last_season = xgi_pm
             for player in season.players:
                 player.process_matches()
+
+        if self.current_season.next_gameweek < 12:
+            last_szn = by_year.get(self.current_season.years[0] - 1)
+            if last_szn is None:
+                last_szn = next(
+                    (s for s in self.past_seasons if s.years[0] == self.current_season.years[0] - 1),
+                    None,
+                )
+            if last_szn is not None:
+                for player in self.current_season.players:
+                    if player.code in last_szn.player_code_dict:
+                        prev_player = last_szn.player_code_dict[player.code]
+                        player.attach_last_szn_matches(prev_player)
+                        xgi_pm = Player.xgi_per_min_from_matches(prev_player)
+                        if xgi_pm > 0:
+                            player.xgi_per_min_last_season = xgi_pm
+
+        for player in self.current_season.players:
+            player.process_matches()
 
 
     def populate_formatted_match_data(self):
@@ -209,38 +500,87 @@ class Runner:
         # pyplot.show()
 
 
-    def learn(self, horizon_only: bool = False):
+    def learn(self, horizon_only: bool = False, minutes_only: bool = False):
         clean_matches = self.populate_formatted_match_data()
 
         valid_clean_matches = [match for match in clean_matches if match['is_valid']]
+        minutes_clean_matches = [
+            match for match in clean_matches if match.get('is_valid_for_minutes')
+        ]
         count = 0
         for match in valid_clean_matches:
             match['id'] = count
             count += 1
+        count = 0
+        for match in minutes_clean_matches:
+            match['id'] = count
+            count += 1
         future_matches = []
         future_clean_matches = []
+        skipped_low_apps = 0
         for player in self.current_season.players:
+            if player.matches_played < MIN_APPEARANCES_TO_PREDICT:
+                skipped_low_apps += 1
+                for future_match in player.future_matches:
+                    future_match.points = 0
+                    future_match.game_stats['total_points'] = 0
+                    future_match.game_stats['minutes'] = 0
+                continue
             for future_match in player.future_matches:
                 future_matches.append(future_match)
                 future_clean_matches.append(future_match.to_clean_match())
-        
+        if skipped_low_apps:
+            print(
+                f'Skipping predict for {skipped_low_apps} players with '
+                f'<{MIN_APPEARANCES_TO_PREDICT} appearances (incl. last-season carry)'
+            )
+
         count = 0
         for match in future_clean_matches:
             match['id'] = count
             count += 1
 
+        if minutes_only:
+            minutes_preds = get_avg_predictions(
+                minutes_clean_matches, future_clean_matches, get_input_keys('minutes'),
+                'minutes', True
+            )
+            for i, future_match in enumerate(future_matches):
+                mins = float(minutes_preds[i][0])
+                if mins < 0:
+                    mins = 0.0
+                mins = min(90.0, mins)
+                future_match.game_stats['minutes'] = mins
+                future_match.set_minutes_from_stats()
+            return
+
+        # Per-match error margins from |residual| Ridge (heteroscedastic)
+        points_errors, _ = fit_and_predict_points_error_margins(
+            valid_clean_matches, future_clean_matches, get_input_keys('total_points'), True
+        )
+        for future_match, err in zip(future_matches, points_errors):
+            future_match.points_error = float(err)
+
         if not horizon_only:
             learnt_stats = {}
-            # Horizon-1: per-match points (fixture shape) + minutes / chance to play
+            # Horizon-1: points/90 per fixture (same construction as h5 / last_5), then × mins/90
+            h1_pp90_labels = numpy.array(
+                [[self._clean_match_points_per_90(m)] for m in valid_clean_matches],
+                dtype=float,
+            )
             learnt_stats['total_points'] = get_avg_predictions(
-                valid_clean_matches, future_clean_matches, get_input_keys('total_points'), 'total_points', True, horizon=1
+                valid_clean_matches, future_clean_matches, get_input_keys('total_points'),
+                'total_points', True, output_learn=h1_pp90_labels, log_targets=True
             )
             learnt_stats['minutes'] = get_avg_predictions(
-                valid_clean_matches, future_clean_matches, get_input_keys('minutes'), 'minutes', True, horizon=1
+                minutes_clean_matches, future_clean_matches, get_input_keys('minutes'),
+                'minutes', True
             )
-            learnt_stats[CHANCE_TO_PLAY] = get_avg_predictions(
-                clean_matches, future_clean_matches, get_input_keys(CHANCE_TO_PLAY), CHANCE_TO_PLAY, False, horizon=1
-            )
+            # Unused in points pipeline (old minutes/chance gating commented out)
+            # learnt_stats[CHANCE_TO_PLAY] = get_avg_predictions(
+            #     clean_matches, future_clean_matches, get_input_keys(CHANCE_TO_PLAY),
+            #     CHANCE_TO_PLAY, False
+            # )
 
             def set_zero_if_neg(val):
                 if val < 0:
@@ -248,40 +588,54 @@ class Runner:
                 return val
 
             for i in range(len(future_matches)):
-                for stat_key in ['total_points', 'minutes', CHANCE_TO_PLAY]:
-                    future_matches[i].game_stats[stat_key] = set_zero_if_neg(learnt_stats[stat_key][i][0])
-                future_matches[i].points = future_matches[i].game_stats['total_points']
+                pp90 = set_zero_if_neg(learnt_stats['total_points'][i][0])
+                mins = min(90.0, set_zero_if_neg(learnt_stats['minutes'][i][0]))
+                # chance = set_zero_if_neg(learnt_stats[CHANCE_TO_PLAY][i][0])
+                future_matches[i].game_stats['minutes'] = mins
+                # future_matches[i].game_stats[CHANCE_TO_PLAY] = chance
+                # Expected fixture points = predicted pp90 × predicted minutes / 90
+                points = pp90 * mins / 90.0
+                future_matches[i].game_stats['total_points'] = points
+                future_matches[i].points = points
                 future_matches[i].set_minutes_from_stats()
 
-        # Horizon-N: stabler total, then redistribute using horizon-1 week weights
-        # (equal split when horizon-only / no h1 weights)
+        # Next-N GW: label = points/90 over appearances in the exact next-N fixtures
+        # (≥3 appearances required). Total T = pp90 × expected_mins/90; split by h1 fixture weights.
         horizon = POINTS_HORIZON
         horizon_train = self.build_horizon_training_data(horizon)
         horizon_pred = self.build_horizon_predict_data(horizon)
         if horizon_train['player_clean'] and horizon_pred['player_clean']:
-            horizon_totals = get_avg_predictions(
+            horizon_pp90 = get_avg_predictions(
                 horizon_train['player_clean'],
                 horizon_pred['player_clean'],
                 get_input_keys('total_points'),
                 'total_points',
                 True,
-                horizon=horizon,
-                opponent_learn=horizon_train['opponents'],
-                opponent_pred=horizon_pred['opponents'],
                 output_learn=horizon_train['labels'],
+                log_targets=True,
             )
-            self.redistribute_horizon_points(horizon_pred['players'], horizon_totals, horizon)
+            self.redistribute_horizon_points(horizon_pred['players'], horizon_pp90, horizon)
         else:
-            print(f'Skipping horizon={horizon} model (insufficient training or predict rows)')
+            print(f'Skipping next-{horizon} points model (insufficient training or predict rows)')
 
-        if not horizon_only:
-            for future_match in future_matches:
-                future_match.update_points_based_on_expected_minutes()
+        for future_match in future_matches:
+            future_match.update_points_based_on_expected_minutes()
+
+    @staticmethod
+    def _clean_match_points_per_90(clean_match) -> float:
+        pts = float(clean_match['game_stats'].get('total_points', 0) or 0)
+        mins = float(clean_match['game_stats'].get('minutes', 0) or 0)
+        if mins <= 0:
+            return 0.0
+        return pts * 90.0 / mins
 
     def print_top_players_next_horizon(self, n: int = 100):
         horizon = POINTS_HORIZON
         ranked = sorted(
-            self.current_season.players,
+            (
+                p for p in self.current_season.players
+                if p.matches_played >= MIN_APPEARANCES_TO_PREDICT
+            ),
             key=lambda p: p.points_over_next_5_gameweeks,
             reverse=True,
         )[:n]
@@ -293,12 +647,44 @@ class Runner:
                 f'{str(player.team_name):<16}  {player.points_over_next_5_gameweeks:>6.1f}'
             )
 
+    @staticmethod
+    def _sum_team_xg_xc(matches):
+        xg = sum(float(getattr(m.team_match, 'predicted_xg', 0.0) or 0.0) for m in matches)
+        xc = sum(float(getattr(m.team_match, 'predicted_xc', 0.0) or 0.0) for m in matches)
+        return xg, xc
+
+    @staticmethod
+    def _match_minutes(match) -> float:
+        if getattr(match, 'game_stats', None):
+            return float(match.game_stats.get('minutes', 0) or 0)
+        return float(getattr(match, 'minutes', 0) or 0)
+
+    @classmethod
+    def _played_in_window(cls, window):
+        """Appearances inside this exact fixture window only (no extending)."""
+        return [m for m in window if cls._match_minutes(m) > 0]
+
+    @classmethod
+    def _pooled_points_per_90(cls, played_matches) -> float:
+        """Same construction as total_points_last_5_avg: sum(pts)*90 / sum(mins)."""
+        pts = sum(float(m.points) for m in played_matches)
+        mins = sum(cls._match_minutes(m) for m in played_matches)
+        if mins <= 0:
+            return 0.0
+        return pts * 90.0 / mins
+
     def build_horizon_training_data(self, horizon: int):
+        """Rows at match i: label = points/90 over played games in matches[i:i+horizon].
+
+        Exact window only (no stretching). Requires ≥3 appearances inside those
+        `horizon` fixtures. Past form is still the usual last-5 window; future
+        difficulty is team xg/xc summed over the same fixture window.
+        """
         player_clean = []
-        opponents = []
         labels = []
+        skipped_low_apps = 0
         seasons = list(self.past_seasons) + [self.current_season]
-        n_opp = len(OPPONENT_FEATURE_KEYS)
+        min_played = 3
 
         for season in seasons:
             for player in season.players:
@@ -309,61 +695,89 @@ class Runner:
                     if i + horizon > len(matches):
                         continue
                     window = matches[i:i + horizon]
-                    clean = match.to_clean_match()
-                    opp_matrix = [get_opponent_feature_vector(m.to_clean_match()) for m in window]
-                    if any(len(row) != n_opp for row in opp_matrix):
+                    played = self._played_in_window(window)
+                    if len(played) < min_played:
+                        skipped_low_apps += 1
                         continue
+                    clean = match.to_clean_match()
+                    xg_sum, xc_sum = self._sum_team_xg_xc(window)
+                    clean['team_xg_over_n'] = xg_sum
+                    clean['team_xc_over_n'] = xc_sum
+                    apply_feature_interactions(clean)
                     player_clean.append(clean)
-                    opponents.append(opp_matrix)
-                    labels.append(sum(float(m.points) for m in window))
+                    labels.append(self._pooled_points_per_90(played))
 
+        for i, clean in enumerate(player_clean):
+            clean['id'] = i
+
+        print(
+            f'Horizon-{horizon} train rows: {len(player_clean)} '
+            f'(skipped {skipped_low_apps} windows with <{min_played} appearances in-window)'
+        )
         return {
             'player_clean': player_clean,
-            'opponents': numpy.array(opponents, dtype=float) if opponents else numpy.empty((0, horizon, n_opp)),
             'labels': numpy.array(labels, dtype=float).reshape(-1, 1) if labels else numpy.empty((0, 1)),
         }
 
     def build_horizon_predict_data(self, horizon: int):
+        """One row per player: last-5 form + team xg/xc summed over next `horizon` fixtures."""
         player_clean = []
-        opponents = []
         players = []
-        n_opp = len(OPPONENT_FEATURE_KEYS)
-        zero_opp = [0.0] * n_opp
 
         for player in self.current_season.players:
+            if player.matches_played < MIN_APPEARANCES_TO_PREDICT:
+                continue
             futs = player.future_matches[:horizon]
             if not futs:
                 continue
-            player_clean.append(futs[0].to_clean_match())
-            opp_matrix = [get_opponent_feature_vector(m.to_clean_match()) for m in futs]
-            while len(opp_matrix) < horizon:
-                opp_matrix.append(list(zero_opp))
-            opponents.append(opp_matrix)
+            clean = futs[0].to_clean_match()
+            xg_sum, xc_sum = self._sum_team_xg_xc(futs)
+            clean['team_xg_over_n'] = xg_sum
+            clean['team_xc_over_n'] = xc_sum
+            apply_feature_interactions(clean)
+            player_clean.append(clean)
             players.append(player)
+
+        for i, clean in enumerate(player_clean):
+            clean['id'] = i
 
         return {
             'player_clean': player_clean,
-            'opponents': numpy.array(opponents, dtype=float) if opponents else numpy.empty((0, horizon, n_opp)),
             'players': players,
         }
 
-    def redistribute_horizon_points(self, players, horizon_totals, horizon: int):
-        """Allocate horizon total T across next fixtures: final_i = T * (p_i / sum p)."""
+    def _expected_minutes_over_horizon(self, player, futs, horizon: int) -> float:
+        """Minutes scale to turn predicted pp90 into a points total for redistribute."""
+        pred_mins = sum(min(90.0, self._match_minutes(m)) for m in futs)
+        if pred_mins > 0:
+            return pred_mins
+        avg_mins = float(player.past_stats.get('minutes', {}).get('last_5_avg', 0) or 0)
+        return min(90.0, avg_mins) * horizon
+
+    def redistribute_horizon_points(self, players, horizon_pp90_preds, horizon: int):
+        """Convert horizon pp90 → window total T via expected minutes; split by h1 fixture weights.
+
+        Sum of next-`horizon` points equals T; each fixture's share follows the ratio of
+        h1 expected points (already pp90 × minutes/90 when full learn ran).
+        """
         max_reasonable_total = 12.0 * horizon
         failed_sanity = []
-        for player, total_pred in zip(players, horizon_totals):
-            T = float(total_pred[0]) if hasattr(total_pred, '__len__') else float(total_pred)
-            if T < 0:
-                T = 0
+        for player, pred in zip(players, horizon_pp90_preds):
+            pp90 = float(pred[0]) if hasattr(pred, '__len__') else float(pred)
+            if pp90 < 0:
+                pp90 = 0.0
             futs = player.future_matches[:horizon]
             if not futs:
                 continue
+            expected_mins = self._expected_minutes_over_horizon(player, futs, horizon)
+            T = pp90 * expected_mins / 90.0 if expected_mins > 0 else 0.0
+
             weights = [max(0.0, float(m.points)) for m in futs]
             weight_sum = sum(weights)
 
             if T > max_reasonable_total or (weight_sum > 0 and T > weight_sum * 2.5):
                 failed_sanity.append(
-                    f'{player.get_name()}: T={T:.1f} h1_sum={weight_sum:.1f}'
+                    f'{player.get_name()}: T={T:.1f} pp90={pp90:.1f} h1_sum={weight_sum:.1f}'
                 )
 
             if weight_sum <= 0:
