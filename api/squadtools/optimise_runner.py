@@ -53,19 +53,27 @@ class OptimiseRunner:
             for i in range(60):
                 player = players_select[i]
                 err = 0.0
-                if player.future_matches:
+                next_futs = list(player.future_matches[:matches_count]) if player.future_matches else []
+                if next_futs:
                     next_errs = [
                         float(getattr(m, 'points_error', 0.0) or 0.0)
-                        for m in player.future_matches[:matches_count]
+                        for m in next_futs
                     ]
                     err = sum(next_errs) / len(next_errs) if next_errs else 0.0
                 prev_pts = self._last_n_appearance_points(player, matches_count)
+                pred_pts = sum(float(m.points or 0) for m in next_futs)
+                pred_mins = sum(self._match_minutes(m) for m in next_futs)
+                fixture_bits = ','.join(
+                    f'{m.opponent}:{float(m.points or 0):.1f}/{self._match_minutes(m):.0f}'
+                    for m in next_futs
+                )
                 file.write(
                     f'{str(player)},'
-                    f'pred:{sum(match.points for match in player.future_matches[:5]):.1f},'
-                    f'prev:{prev_pts:.1f},'
+                    f'pred:{pred_pts / matches_count:.1f},'
+                    f'pred_mins:{pred_mins / matches_count:.0f},'
+                    f'prev:{prev_pts / matches_count:.1f},'
                     f'err:{err:.2f},'
-                    f'{",".join(f"{match.opponent}:{match.points:.1f}" for match in player.future_matches[:5])}\n'
+                    f'{fixture_bits}\n'
                 )
         
     def run(self):

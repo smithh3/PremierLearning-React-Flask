@@ -1,22 +1,27 @@
-from dataclasses import dataclass
-from typing import List, Optional
+from dataclasses import asdict, dataclass
+from datetime import datetime
+from pathlib import Path
+from typing import Dict, List, Optional
+import json
+import os
 import numpy
 import sys
 import csv
 import tensorflow as tf
 
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.losses import MeanSquaredError, MeanAbsoluteError, Huber
 from tensorflow.keras.metrics import RootMeanSquaredError, MeanAbsoluteError as MAE
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau, ModelCheckpoint
-from tensorflow.keras.optimizers import AdamW
+from tensorflow.keras.optimizers import Adam
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression, RidgeCV
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 from sklearn.decomposition import PCA
 from sklearn.model_selection import train_test_split, cross_val_predict
+from scipy.stats import kendalltau
 
 from premierlearning.clean_match import (
     CleanMatch, get_inputs_from_data_key, get_outputs_from_data_key
@@ -50,10 +55,285 @@ EPOCH_MAP = {
 
 EPOCHS = 8
 BATCH_SIZE = 32
-REPS = 1
+HORIZON_REPS_FLAG = '--horizon-reps'
+RUN_METRICS_DIR = Path('run_metrics/horizon_reps')
+LAST_HORIZON_METRICS_DIR = None
+
+# Player net: sweep-3 trial 02_l2_2e-3 (dropout body + L2 2e-3)
+LEARNING_RATE = 5e-4  # was 1e-3
+EARLY_STOPPING_PATIENCE = 25  # was 10
+REDUCE_LR_PATIENCE = 8  # was 5
+REDUCE_LR_MIN = 1e-5
+L2 = 2e-3
+WEIGHT_DECAY = 1e-4
+WIDTH_MULT = 1.5  # sweep-1 trial 09 (was 1.0 option-6 baseline)
+N_HIDDEN = 3  # sweep-1 trial 09 (was 2 option-6 baseline)
+DROPOUT_1 = 0.1
+DROPOUT_2 = 0.05
+HUBER_DELTA = 1.8
+REDUCE_LR_FACTOR = 0.5
+
+
+@dataclass
+class PlayerNetHParams:
+    learning_rate: float = LEARNING_RATE
+    l2: float = L2
+    weight_decay: float = WEIGHT_DECAY
+    early_stopping_patience: int = EARLY_STOPPING_PATIENCE
+    reduce_lr_patience: int = REDUCE_LR_PATIENCE
+    reduce_lr_factor: float = REDUCE_LR_FACTOR
+    reduce_lr_min: float = REDUCE_LR_MIN
+    width_mult: float = WIDTH_MULT
+    n_hidden: int = N_HIDDEN
+    huber_delta: float = HUBER_DELTA
+    batch_size: int = BATCH_SIZE
+    average_all_reps: bool = False
+    val_mae_keep_ratio: float = 1.08  # drop reps worse than 8% over best val MAE
+    dropout_1: float = DROPOUT_1
+    dropout_2: float = DROPOUT_2
+    loss: str = 'huber'  # historic alt: 'mae'
+    optimizer: str = 'adamw'  # 'adamw' or 'adam'
+
+    def as_dict(self) -> dict:
+        return asdict(self)
+
+    @classmethod
+    def from_env(cls) -> 'PlayerNetHParams':
+        def env(name, default, cast):
+            raw = os.environ.get(name)
+            if raw is None or raw == '':
+                return default
+            if cast is bool:
+                return raw.strip().lower() in ('1', 'true', 'yes')
+            return cast(raw)
+
+        return cls(
+            learning_rate=env('PL_LEARNING_RATE', LEARNING_RATE, float),
+            l2=env('PL_L2', L2, float),
+            weight_decay=env('PL_WEIGHT_DECAY', WEIGHT_DECAY, float),
+            early_stopping_patience=env('PL_EARLY_STOPPING_PATIENCE', EARLY_STOPPING_PATIENCE, int),
+            reduce_lr_patience=env('PL_REDUCE_LR_PATIENCE', REDUCE_LR_PATIENCE, int),
+            reduce_lr_factor=env('PL_REDUCE_LR_FACTOR', REDUCE_LR_FACTOR, float),
+            reduce_lr_min=env('PL_REDUCE_LR_MIN', REDUCE_LR_MIN, float),
+            width_mult=env('PL_WIDTH_MULT', WIDTH_MULT, float),
+            n_hidden=env('PL_N_HIDDEN', N_HIDDEN, int),
+            huber_delta=env('PL_HUBER_DELTA', HUBER_DELTA, float),
+            batch_size=env('PL_BATCH_SIZE', BATCH_SIZE, int),
+            average_all_reps=env('PL_AVERAGE_ALL_REPS', False, bool),
+            val_mae_keep_ratio=env('PL_VAL_MAE_KEEP_RATIO', 1.08, float),
+            dropout_1=env('PL_DROPOUT_1', DROPOUT_1, float),
+            dropout_2=env('PL_DROPOUT_2', DROPOUT_2, float),
+            loss=env('PL_LOSS', 'huber', str),
+            optimizer=env('PL_OPTIMIZER', 'adamw', str),
+        )
+
+
+def build_adamw(learning_rate, weight_decay):
+    """AdamW on TF 2.11+ Keras, or tensorflow-addons on TF 2.4."""
+    try:
+        from tensorflow.keras.optimizers import AdamW
+        return AdamW(learning_rate=learning_rate, weight_decay=weight_decay)
+    except ImportError:
+        pass
+    try:
+        from tensorflow_addons.optimizers import AdamW
+        return AdamW(learning_rate=learning_rate, weight_decay=weight_decay)
+    except ImportError as exc:
+        raise ImportError(
+            'AdamW needs TensorFlow >= 2.11 or tensorflow-addons (for TF 2.4). '
+            'Install tensorflow-addons or upgrade TensorFlow.'
+        ) from exc
+
+
+def _build_optimizer(hp: PlayerNetHParams):
+    """Adam vs AdamW with the same learning_rate; weight_decay only applies to AdamW."""
+    name = (hp.optimizer or 'adamw').strip().lower()
+    if name == 'adam':
+        return Adam(learning_rate=hp.learning_rate), 'Adam'
+    if name in ('adamw', 'adam_w'):
+        return build_adamw(hp.learning_rate, hp.weight_decay), 'AdamW'
+    raise ValueError("Unknown optimizer %s (use 'adam' or 'adamw')" % hp.optimizer)
+
+
 if '--quick' in sys.argv:
     EPOCHS = 2
-    # REPS = 2
+
+
+def parse_horizon_reps() -> int:
+    """Independent fits for the horizon model only; default 1 unless --horizon-reps N."""
+    for i, arg in enumerate(sys.argv):
+        if arg == HORIZON_REPS_FLAG and i + 1 < len(sys.argv):
+            try:
+                n = int(sys.argv[i + 1])
+                if n < 1:
+                    raise ValueError
+                return n
+            except ValueError:
+                raise SystemExit(f'{HORIZON_REPS_FLAG} requires a positive integer')
+        if arg.startswith(HORIZON_REPS_FLAG + '='):
+            try:
+                n = int(arg.split('=', 1)[1])
+                if n < 1:
+                    raise ValueError
+                return n
+            except ValueError:
+                raise SystemExit(f'{HORIZON_REPS_FLAG} requires a positive integer')
+    return 1
+
+
+def _flatten_predictions(preds) -> numpy.ndarray:
+    return numpy.asarray(preds, dtype=float).reshape(-1)
+
+
+def compute_rep_agreement(all_rep_preds, top_k: int = 20) -> Optional[dict]:
+    """Run-to-run agreement across independent fits (ranking + prediction spread)."""
+    reps = [_flatten_predictions(p) for p in all_rep_preds]
+    n_reps = len(reps)
+    if n_reps < 2:
+        return None
+
+    stacked = numpy.stack(reps, axis=0)
+    per_player_std = numpy.std(stacked, axis=0, ddof=0)
+
+    taus = []
+    top_k_jaccards = []
+    for i in range(n_reps):
+        for j in range(i + 1, n_reps):
+            tau, _ = kendalltau(reps[i], reps[j])
+            taus.append(float(tau) if tau == tau else 1.0)
+            top_i = set(numpy.argsort(-reps[i])[:top_k])
+            top_j = set(numpy.argsort(-reps[j])[:top_k])
+            top_k_jaccards.append(len(top_i & top_j) / len(top_i | top_j))
+
+    return {
+        'n_reps': n_reps,
+        'mean_kendall_tau': round(float(numpy.mean(taus)), 4),
+        'min_kendall_tau': round(float(numpy.min(taus)), 4),
+        f'top_{top_k}_jaccard_mean': round(float(numpy.mean(top_k_jaccards)), 4),
+        f'top_{top_k}_jaccard_min': round(float(numpy.min(top_k_jaccards)), 4),
+        'pred_std_mean': round(float(per_player_std.mean()), 4),
+        'pred_std_p90': round(float(numpy.percentile(per_player_std, 90)), 4),
+        'pred_std_max': round(float(per_player_std.max()), 4),
+    }
+
+
+def print_rep_agreement(all_rep_preds, top_k: int = 20):
+    agreement = compute_rep_agreement(all_rep_preds, top_k=top_k)
+    if agreement:
+        print({f'rep agreement ({agreement["n_reps"]} fits)': agreement})
+
+
+def _round_stats(stats: dict) -> dict:
+    rounded = {}
+    for key, value in stats.items():
+        if isinstance(value, float):
+            rounded[key] = round(value, 6)
+        else:
+            rounded[key] = value
+    return rounded
+
+
+def _write_text_report(path: Path, title: str, sections: Dict[str, dict]):
+    lines = [title, '=' * len(title), '']
+    for section_name, payload in sections.items():
+        lines.append(section_name)
+        lines.append('-' * len(section_name))
+        if isinstance(payload, dict):
+            lines.append(json.dumps(payload, indent=2, sort_keys=True))
+        elif isinstance(payload, list):
+            for item in payload:
+                lines.append(str(item))
+        else:
+            lines.append(str(payload))
+        lines.append('')
+    path.write_text('\n'.join(lines), encoding='utf-8')
+
+
+def _horizon_metrics_dir() -> Path:
+    sweep_dir = os.environ.get('PL_SWEEP_DIR')
+    trial = os.environ.get('PL_SWEEP_TRIAL')
+    if sweep_dir and trial:
+        run_dir = Path(sweep_dir) / trial
+        run_dir.mkdir(parents=True, exist_ok=True)
+        return run_dir
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    run_dir = RUN_METRICS_DIR / timestamp
+    run_dir.mkdir(parents=True, exist_ok=True)
+    return run_dir
+
+
+def get_last_horizon_metrics_dir():
+    """Resolve the metrics folder at write time (import * would freeze a None)."""
+    if LAST_HORIZON_METRICS_DIR is not None:
+        return LAST_HORIZON_METRICS_DIR
+    sweep_dir = os.environ.get('PL_SWEEP_DIR')
+    trial = os.environ.get('PL_SWEEP_TRIAL')
+    if sweep_dir and trial:
+        return Path(sweep_dir) / trial
+    return None
+
+
+def save_horizon_rep_run_metrics(
+    ml_data: 'MLData',
+    rep_stats: List[dict],
+    baselines: dict,
+    agreement: Optional[dict],
+    reps_used_for_avg: int,
+    selection_threshold: float,
+):
+    """Persist one directory per multi-rep horizon session for later comparison."""
+    global LAST_HORIZON_METRICS_DIR
+    run_dir = _horizon_metrics_dir()
+    LAST_HORIZON_METRICS_DIR = run_dir
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+
+    session_meta = {
+        'timestamp': timestamp,
+        'argv': sys.argv,
+        'sweep_trial': os.environ.get('PL_SWEEP_TRIAL'),
+        'output_key': ml_data.output_key,
+        'log_targets': ml_data.ln_inputs,
+        'n_reps_requested': len(rep_stats),
+        'n_reps_averaged': reps_used_for_avg,
+        'selection_threshold_val_mae': round(selection_threshold, 6) if selection_threshold else None,
+        'n_train_rows': int(ml_data.input_learn.shape[0]),
+        'n_test_rows': int(ml_data.input_test.shape[0]),
+        'n_predict_rows': int(ml_data.input_to_pred.shape[0]),
+    }
+    payload = {
+        'session': session_meta,
+        'model_config': ml_data.model_config,
+        'baselines': _round_stats(baselines),
+        'rep_agreement': agreement or {},
+        'rep_stats': [_round_stats(s) for s in rep_stats],
+        'feature_columns': ml_data.player_feature_columns,
+    }
+    (run_dir / 'summary.json').write_text(json.dumps(payload, indent=2), encoding='utf-8')
+    _write_text_report(
+        run_dir / 'summary.txt',
+        f'Horizon multi-rep run {timestamp}',
+        {
+            'session': session_meta,
+            'model_config': ml_data.model_config,
+            'baselines': _round_stats(baselines),
+            'rep_agreement': agreement or {},
+            'feature_columns': ml_data.player_feature_columns,
+        },
+    )
+
+    for i, stats in enumerate(rep_stats, start=1):
+        _write_text_report(
+            run_dir / f'rep_{i:02d}.txt',
+            f'Horizon rep {i}/{len(rep_stats)} — {timestamp}',
+            {
+                'session': session_meta,
+                'model_config': ml_data.model_config,
+                'rep_stats': _round_stats(stats),
+                'feature_columns': ml_data.player_feature_columns,
+            },
+        )
+
+    print(f'Saved horizon rep metrics to {run_dir.resolve()}')
 
 
 def get_linear_predictions(ml_data):
@@ -93,21 +373,82 @@ def get_linear_predictions(ml_data):
     preds = lin_pipe.predict(X_pred)
     if ml_data.ln_inputs:
         preds = numpy.expm1(preds)
-    return [numpy.asarray([float(p)], dtype=float) for p in preds]
+    pred_list = [numpy.asarray([float(p)], dtype=float) for p in preds]
+    pred_flat = _flatten_predictions(pred_list)
+    ridge = lin_pipe.named_steps['ridge']
+    pca = lin_pipe.named_steps['pca']
+    ml_data.model_config = {
+        'optimizer': 'RidgeCV',
+        'model': 'ridge',
+        'pca_var_explained': 0.95,
+        'ridge_alpha': float(getattr(ridge, 'alpha_', 0.0) or 0.0),
+        'pca_components': int(getattr(pca, 'n_components_', 0) or 0),
+        'n_features': int(ml_data.input_learn.shape[1]),
+        'loss': 'mse',
+        'log_targets': bool(ml_data.ln_inputs),
+    }
+    fit_stats = {
+        'epochs_ran': 0,
+        'test_mae': float(mae),
+        'test_rmse': float(rmse),
+        'best_val_mae': float(mae),
+        'pred_min': float(pred_flat.min()) if pred_flat.size else 0.0,
+        'pred_max': float(pred_flat.max()) if pred_flat.size else 0.0,
+        'pred_mean': float(pred_flat.mean()) if pred_flat.size else 0.0,
+        'kept_for_avg': True,
+        'rep_index': 1,
+    }
+    return pred_list, fit_stats
 
 
-def orig_rmse(y_true_log, y_pred_log):
+class OrigRMSE(tf.keras.metrics.Metric):
     """RMSE on original scale when training targets are log1p-transformed."""
-    y_true = tf.math.expm1(y_true_log)
-    y_pred = tf.math.expm1(y_pred_log)
-    return tf.sqrt(tf.reduce_mean(tf.square(y_true - y_pred)))
+
+    def __init__(self, name='orig_rmse', **kwargs):
+        super().__init__(name=name, **kwargs)
+        self.sse = self.add_weight(name='sse', initializer='zeros')
+        self.count = self.add_weight(name='count', initializer='zeros')
+
+    def update_state(self, y_true, y_pred, sample_weight=None):
+        y_true = tf.math.expm1(tf.cast(y_true, tf.float32))
+        y_pred = tf.math.expm1(tf.cast(y_pred, tf.float32))
+        self.sse.assign_add(tf.reduce_sum(tf.square(y_true - y_pred)))
+        self.count.assign_add(tf.cast(tf.size(y_true), tf.float32))
+
+    def result(self):
+        return tf.sqrt(tf.math.divide_no_nan(self.sse, self.count))
+
+    def reset_state(self):
+        self.sse.assign(0.0)
+        self.count.assign(0.0)
+
+    def reset_states(self):
+        self.reset_state()
 
 
-def orig_mae(y_true_log, y_pred_log):
+class OrigMAE(tf.keras.metrics.Metric):
     """MAE on original scale when training targets are log1p-transformed."""
-    y_true = tf.math.expm1(y_true_log)
-    y_pred = tf.math.expm1(y_pred_log)
-    return tf.reduce_mean(tf.abs(y_true - y_pred))
+
+    def __init__(self, name='orig_mae', **kwargs):
+        super().__init__(name=name, **kwargs)
+        self.abs_err = self.add_weight(name='abs_err', initializer='zeros')
+        self.count = self.add_weight(name='count', initializer='zeros')
+
+    def update_state(self, y_true, y_pred, sample_weight=None):
+        y_true = tf.math.expm1(tf.cast(y_true, tf.float32))
+        y_pred = tf.math.expm1(tf.cast(y_pred, tf.float32))
+        self.abs_err.assign_add(tf.reduce_sum(tf.abs(y_true - y_pred)))
+        self.count.assign_add(tf.cast(tf.size(y_true), tf.float32))
+
+    def result(self):
+        return tf.math.divide_no_nan(self.abs_err, self.count)
+
+    def reset_state(self):
+        self.abs_err.assign(0.0)
+        self.count.assign(0.0)
+
+    def reset_states(self):
+        self.reset_state()
 
 
 class MLData:
@@ -141,7 +482,7 @@ class MLData:
         )
         self.input_to_pred = numpy.array([list(x.values()) for x in inputs_pred_with_headings], dtype=float)
 
-        if output_key == 'total_points':
+        if output_key == 'total_points' and not os.environ.get('PL_SWEEP_TRIAL'):
             self.write_clean_data_csvs(
                 inputs_with_headings, outputs_with_headings, inputs_pred_with_headings,
                 clean_matches, input_to_pred
@@ -153,8 +494,13 @@ class MLData:
 
         if log_targets:
             self.set_options(ln_inputs=True)
+        self._inputs_prepared = False
+        self.hparams = PlayerNetHParams.from_env()
+        self.model_config = None
 
-    def setup_model(self):
+    def prepare_inputs(self):
+        if self._inputs_prepared:
+            return
         if self.ln_inputs:
             self.output_learn[self.output_learn < 0] = 0
             self.output_learn = numpy.log1p(self.output_learn)
@@ -164,30 +510,67 @@ class MLData:
         self.input_learn = self.scaler.transform(self.input_learn)
         self.input_to_pred = self.scaler.transform(self.input_to_pred)
         self.input_test = self.scaler.transform(self.input_test)
-
         self.validate_inputs()
-        # Smaller net + stronger L2 / weight decay → stabler rankings across runs
-        reg = tf.keras.regularizers.l2(1e-3)
+        self._inputs_prepared = True
+
+    def _hidden_sizes(self, n_in: int) -> list:
+        hp = self.hparams
+        net_size = max(8, int(n_in * hp.width_mult))
+        sizes = [net_size]
+        if hp.n_hidden >= 2:
+            sizes.append(max(4, net_size // 2))
+        if hp.n_hidden >= 3:
+            sizes.append(max(2, net_size // 4))
+        if hp.n_hidden >= 4:
+            sizes.append(max(2, net_size // 8))
+        return sizes
+
+    def setup_model(self):
+        self.prepare_inputs()
+        if getattr(self, 'model', None) is not None:
+            del self.model
+        hp = self.hparams
+        # 1.5× width, 3 layers + L2 1e-3 (sweep-1 trial 09; stabler horizon ranks)
+        reg = tf.keras.regularizers.l2(hp.l2)
         n_in = self.input_learn.shape[1]
-        net_size = max(8, n_in)  # was 1.5× features, 3 hidden layers
+        hidden_layers = self._hidden_sizes(n_in)
+        dropouts = [hp.dropout_1, hp.dropout_2]
         self.model = Sequential()
         self.model.add(Dense(
-            net_size, kernel_regularizer=reg, input_shape=(n_in,), activation='relu'
+            hidden_layers[0], kernel_regularizer=reg, input_shape=(n_in,), activation='relu'
         ))
-        self.model.add(Dense(max(4, net_size // 2), kernel_regularizer=reg, activation='relu'))
+        if dropouts[0] > 0:
+            self.model.add(Dropout(dropouts[0]))
+        for i, units in enumerate(hidden_layers[1:], start=1):
+            self.model.add(Dense(units, kernel_regularizer=reg, activation='relu'))
+            if i < len(dropouts) and dropouts[i] > 0:
+                self.model.add(Dropout(dropouts[i]))
         self.model.add(Dense(1))
+        loss_name = (hp.loss or 'huber').lower()
+        opt, opt_label = _build_optimizer(hp)
+        self.model_config = {
+            **hp.as_dict(),
+            'hidden_layers': hidden_layers,
+            'n_features': int(n_in),
+            'max_epochs': EPOCH_MAP.get(self.output_key, EPOCHS),
+            'loss': f'MAE' if loss_name == 'mae' else f'Huber(delta={hp.huber_delta})',
+            'optimizer': opt_label,
+        }
         print(
-            f'Model capacity: hidden=[{net_size}, {max(4, net_size // 2)}], '
-            f'l2=1e-3, weight_decay=1e-4 (n_features={n_in})'
+            f'Model capacity: hidden={hidden_layers}, optimizer={opt_label}, '
+            f'l2={hp.l2}, weight_decay={hp.weight_decay}, lr={hp.learning_rate} '
+            f'(n_features={n_in}, loss={self.model_config["loss"]})'
         )
 
-        opt = AdamW(learning_rate=1e-3, weight_decay=1e-4)
-        huber_loss = Huber(delta=1.8)
+        if loss_name == 'mae':
+            loss_fn = MeanAbsoluteError()
+        else:
+            loss_fn = Huber(delta=hp.huber_delta)
         if self.ln_inputs:
-            metrics = [orig_rmse, orig_mae]
+            metrics = [OrigRMSE(), OrigMAE()]
         else:
             metrics = [RootMeanSquaredError(), MAE()]
-        self.model.compile(loss=huber_loss, optimizer=opt, metrics=metrics)
+        self.model.compile(loss=loss_fn, optimizer=opt, metrics=metrics)
 
     def set_options(self, ln_inputs=None):
         self.ln_inputs = ln_inputs if ln_inputs else self.ln_inputs
@@ -242,21 +625,56 @@ class MLData:
         else:
             epochs = EPOCHS
 
+        hp = self.hparams
+        # callbacks = [
+        #     EarlyStopping(monitor=f"val_{self.mae_name}", patience=10, restore_best_weights=True),
+        #     ReduceLROnPlateau(monitor=f"val_{self.rmse_name}", factor=0.5, patience=5),
+        # ]
         callbacks = [
-            EarlyStopping(monitor=f"val_{self.mae_name}", patience=10, restore_best_weights=True),
-            ReduceLROnPlateau(monitor=f"val_{self.rmse_name}", factor=0.5, patience=5),
+            EarlyStopping(
+                monitor=f"val_{self.mae_name}",
+                patience=hp.early_stopping_patience,
+                restore_best_weights=True,
+            ),
+            ReduceLROnPlateau(
+                monitor=f"val_{self.rmse_name}",
+                factor=hp.reduce_lr_factor,
+                patience=hp.reduce_lr_patience,
+                min_lr=hp.reduce_lr_min,
+            ),
         ]
         history = self.model.fit(
             self.input_learn, self.output_learn,
-            epochs=epochs, batch_size=BATCH_SIZE, validation_split=0.2,
+            epochs=epochs, batch_size=hp.batch_size, validation_split=0.2,
             verbose=2, callbacks=callbacks, shuffle=True
         )
+        epochs_ran = len(history.history['loss'])
+        val_mae_key = f'val_{self.mae_name}'
+        val_rmse_key = f'val_{self.rmse_name}'
+        fit_stats = {
+            'epochs_ran': epochs_ran,
+            'max_epochs': epochs,
+            'train_mae': float(history.history[self.mae_name][-1]),
+            'train_rmse': float(history.history[self.rmse_name][-1]),
+            'best_val_mae': float(min(history.history[val_mae_key])),
+            'final_val_mae': float(history.history[val_mae_key][-1]),
+            'best_val_rmse': float(min(history.history[val_rmse_key])),
+            'final_val_rmse': float(history.history[val_rmse_key][-1]),
+            'selection_rmse': float(history.history[self.rmse_name][-1]),
+        }
+        if 'lr' in history.history:
+            fit_stats['final_lr'] = float(history.history['lr'][-1])
         print({
-            'model absolute error': history.history[self.mae_name][-1],
-            'model rms error': history.history[self.rmse_name][-1]
+            'epochs_ran': fit_stats['epochs_ran'],
+            'model absolute error': fit_stats['train_mae'],
+            'model rms error': fit_stats['train_rmse'],
+            'best val mae': fit_stats['best_val_mae'],
         })
 
         test_loss, test_mae, test_rmse = self.model.evaluate(self.input_test, self.output_test, verbose=0)
+        fit_stats['test_loss'] = float(test_loss)
+        fit_stats['test_mae'] = float(test_mae)
+        fit_stats['test_rmse'] = float(test_rmse)
         print({
             "test loss": test_loss,
             "test_orig_rmse": test_mae,
@@ -268,7 +686,12 @@ class MLData:
         if self.ln_inputs:
             results = numpy.expm1(results)
 
-        return results, history.history[self.rmse_name][-1]
+        pred_flat = _flatten_predictions(results)
+        fit_stats['pred_min'] = float(pred_flat.min())
+        fit_stats['pred_max'] = float(pred_flat.max())
+        fit_stats['pred_mean'] = float(pred_flat.mean())
+
+        return results, fit_stats
 
 
 def calc_baselines(ml_data: MLData):
@@ -362,38 +785,89 @@ def fit_linear_points_error_margin(clean_matches, input_keys, include_standard_s
 
 
 def get_avg_predictions(clean_matches, input_pred, input_keys, output_key, include_standard_stats,
-                        output_learn=None, log_targets: bool = False):
-        print('Getting predictions for %s...' % output_key)
-        is_quick = '--quick' in sys.argv
-        if is_quick:
-            print("(quick run)")
-        ml_data = MLData(
-            clean_matches, input_pred, input_keys, output_key, include_standard_stats,
-            output_learn=output_learn, log_targets=log_targets
+                        output_learn=None, log_targets: bool = False, reps: int = 1):
+    print('Getting predictions for %s...' % output_key)
+    if reps > 1:
+        print(f'  ({reps} independent fits; rep agreement reported after training)')
+    is_quick = '--quick' in sys.argv
+    if is_quick:
+        print("(quick run)")
+    ml_data = MLData(
+        clean_matches, input_pred, input_keys, output_key, include_standard_stats,
+        output_learn=output_learn, log_targets=log_targets
+    )
+    baselines = calc_baselines(ml_data)
+    print(baselines)
+    print('Model input columns:')
+    for col in ml_data.player_feature_columns:
+        print(f'  {col}')
+
+    if use_linear_model():
+        preds, stats = get_linear_predictions(ml_data)
+        save_horizon_rep_run_metrics(
+            ml_data,
+            rep_stats=[stats],
+            baselines=baselines,
+            agreement=None,
+            reps_used_for_avg=1,
+            selection_threshold=0.0,
         )
-        print(calc_baselines(ml_data))
-        print('Model input columns:')
-        for col in ml_data.player_feature_columns:
-            print(f'  {col}')
+        return preds
 
-        if use_linear_model():
-            return get_linear_predictions(ml_data)
-
+    preds_and_stats = []
+    for rep in range(reps):
+        if reps > 1:
+            print(f'  fit {rep + 1}/{reps}...')
         ml_data.setup_model()
+        preds_and_stats.append(ml_data.get_predictions())
 
-        preds_and_loss = []
-        for _ in range(REPS):
-            preds_and_loss.append(ml_data.get_predictions())
+    if reps > 1:
+        agreement = compute_rep_agreement([m[0] for m in preds_and_stats])
+        print_rep_agreement([m[0] for m in preds_and_stats])
+    else:
+        agreement = None
 
-        min_loss = min(m[1] for m in preds_and_loss)
+    hp = ml_data.hparams
+    if hp.average_all_reps or len(preds_and_stats) == 1:
+        kept_idx = list(range(len(preds_and_stats)))
+        selection_threshold = None
+        rule = 'all reps'
+    else:
+        maes = [float(m[1]['best_val_mae']) for m in preds_and_stats]
+        best_mae = min(maes)
+        selection_threshold = best_mae * hp.val_mae_keep_ratio
+        kept_idx = [i for i, mae in enumerate(maes) if mae <= selection_threshold]
+        if not kept_idx:
+            kept_idx = [int(numpy.argmin(maes))]
+        rule = (
+            f'best_val_mae ≤ {selection_threshold:.4f} '
+            f'(best {best_mae:.4f} × {hp.val_mae_keep_ratio:g})'
+        )
 
-        model_predictions = [m[0] for m in preds_and_loss if m[1] <= min_loss * 1.2]
+    for i, (_pred, stats) in enumerate(preds_and_stats):
+        stats['kept_for_avg'] = i in kept_idx
+        stats['rep_index'] = i + 1
 
-        averaged_predictions = []
-        for i in range(len(model_predictions[0])):
-            single_match_predictions = []
-            for prediction_array in model_predictions:
-                single_match_predictions.append(prediction_array[i])
-            averaged_predictions.append(sum(single_match_predictions) / len(single_match_predictions))
+    model_predictions = [preds_and_stats[i][0] for i in kept_idx]
+    if reps > 1:
+        dropped = [i + 1 for i in range(len(preds_and_stats)) if i not in kept_idx]
+        print(f'  averaging {len(model_predictions)}/{reps} fits ({rule})')
+        if dropped:
+            print(f'  dropped reps {dropped} (best_val_mae too high)')
+        save_horizon_rep_run_metrics(
+            ml_data,
+            rep_stats=[m[1] for m in preds_and_stats],
+            baselines=baselines,
+            agreement=agreement,
+            reps_used_for_avg=len(model_predictions),
+            selection_threshold=selection_threshold or 0.0,
+        )
 
-        return averaged_predictions
+    averaged_predictions = []
+    for i in range(len(model_predictions[0])):
+        single_match_predictions = []
+        for prediction_array in model_predictions:
+            single_match_predictions.append(prediction_array[i])
+        averaged_predictions.append(sum(single_match_predictions) / len(single_match_predictions))
+
+    return averaged_predictions

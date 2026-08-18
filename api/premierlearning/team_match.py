@@ -32,6 +32,20 @@ class TeamMatch:
         self.conceded_season_avg = 0.0
         self.predicted_xg = 0.0
         self.predicted_xc = 0.0
+        # FPL fixture difficulty rating (1 easy – 5 hard) for this side and the opponent.
+        self.fixture_difficulty = self._side_difficulty(home)
+        self.opp_fixture_difficulty = self._side_difficulty(not home)
+
+    def _side_difficulty(self, home):
+        key = 'team_h_difficulty' if home else 'team_a_difficulty'
+        raw = self.fixture_json.get(key)
+        try:
+            val = float(raw)
+            if 1.0 <= val <= 5.0:
+                return val
+        except (TypeError, ValueError):
+            pass
+        return 3.0
 
     def get_goals_scored(self, h_or_a):
         return self.fixture_json['team_%s_score' % h_or_a]

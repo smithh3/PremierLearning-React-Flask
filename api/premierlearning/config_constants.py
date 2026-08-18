@@ -11,3 +11,5 @@ POINTS_HORIZON = 5
 # At matches_played=0 → weight 1; fades toward 0 as this-season apps grow.
 PRIOR_EARLY_TAU = 6.0
 TWO_SEASON_PRIOR_SCALE = 0.5
+# Last-season second half for minutes priors (DNP-inclusive fixture count)
+HALF_SEASON_FIXTURES = 19

@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 import time
 from pathlib import Path
 
@@ -20,19 +21,106 @@ class FplLoginError(RuntimeError):
     pass
 
 
+def credentials_path():
+    override = os.environ.get('FPL_CREDENTIALS_PATH', '').strip()
+    if override:
+        return Path(override)
+    return CREDENTIALS_PATH
+
+
 def load_credentials():
-    with open(CREDENTIALS_PATH, encoding='utf-8') as json_file:
-        return json.load(json_file)
+    credentials = {}
+    path = credentials_path()
+    if path.is_file():
+        with open(path, encoding='utf-8') as json_file:
+            loaded = json.load(json_file)
+            if isinstance(loaded, dict):
+                credentials.update(loaded)
+
+    env_map = {
+        'EMAIL': 'FPL_EMAIL',
+        'PASSWORD': 'FPL_PASSWORD',
+        'REFRESH_TOKEN': 'FPL_REFRESH_TOKEN',
+        'ID': 'FPL_ID',
+    }
+    for key, env_name in env_map.items():
+        value = os.environ.get(env_name, '').strip()
+        if value:
+            credentials[key] = value
+
+    if not credentials.get('EMAIL') or not credentials.get('PASSWORD'):
+        raise FplLoginError(
+            'FPL credentials missing. Set FPL_EMAIL and FPL_PASSWORD, or provide %s' % path
+        )
+    return credentials
 
 
 def save_refresh_token(refresh_token):
-    credentials = load_credentials()
-    if credentials.get('REFRESH_TOKEN') == refresh_token:
+    if not refresh_token:
         return
-    credentials['REFRESH_TOKEN'] = refresh_token
-    with open(CREDENTIALS_PATH, 'w', encoding='utf-8') as json_file:
-        json.dump(credentials, json_file, indent=4)
-        json_file.write('\n')
+    current = None
+    try:
+        current = load_credentials().get('REFRESH_TOKEN')
+    except FplLoginError:
+        current = None
+    if current == refresh_token:
+        return
+
+    path = credentials_path()
+    write_json = path.is_file() or bool(os.environ.get('FPL_CREDENTIALS_PATH', '').strip())
+    if write_json:
+        try:
+            data = {}
+            if path.is_file():
+                with open(path, encoding='utf-8') as json_file:
+                    loaded = json.load(json_file)
+                    if isinstance(loaded, dict):
+                        data.update(loaded)
+            data['REFRESH_TOKEN'] = refresh_token
+            path.parent.mkdir(parents=True, exist_ok=True)
+            with open(path, 'w', encoding='utf-8') as json_file:
+                json.dump(data, json_file, indent=4)
+                json_file.write('\n')
+            print('Saved FPL refresh token to %s' % path)
+        except OSError as exc:
+            print('Could not write FPL refresh token to %s: %s' % (path, exc))
+
+    token_file = os.environ.get('FPL_REFRESH_TOKEN_FILE', '').strip()
+    if token_file:
+        try:
+            token_path = Path(token_file)
+            token_path.parent.mkdir(parents=True, exist_ok=True)
+            token_path.write_text(refresh_token, encoding='utf-8')
+            print('Saved FPL refresh token to %s' % token_path)
+        except OSError as exc:
+            print('Could not write FPL_REFRESH_TOKEN_FILE: %s' % exc)
+
+    secret_arn = os.environ.get('FPL_REFRESH_SECRET_ARN', '').strip()
+    if secret_arn:
+        _update_refresh_token_secret(secret_arn, refresh_token)
+
+
+def _update_refresh_token_secret(secret_arn, refresh_token):
+    try:
+        import boto3
+    except ImportError:
+        print('boto3 is not installed; skipping Secrets Manager refresh-token update')
+        return
+    try:
+        client = boto3.client('secretsmanager')
+        current = client.get_secret_value(SecretId=secret_arn)
+        payload = {}
+        raw = current.get('SecretString') or '{}'
+        loaded = json.loads(raw)
+        if isinstance(loaded, dict):
+            payload.update(loaded)
+        if payload.get('REFRESH_TOKEN') == refresh_token:
+            return
+        payload['REFRESH_TOKEN'] = refresh_token
+        client.put_secret_value(SecretId=secret_arn, SecretString=json.dumps(payload))
+        print('Updated REFRESH_TOKEN in Secrets Manager')
+    except Exception as exc:
+        print('Could not update Secrets Manager refresh token: %s' % exc)
 
 
 def auth_headers(client):
@@ -77,12 +165,28 @@ def refresh_access_token(refresh_token):
         timeout=30,
     )
     if not response.ok:
+        print('FPL token refresh failed: %s %s' % (response.status_code, response.text[:300]))
         return None
     tokens = response.json()
     if not tokens.get('access_token'):
+        print('FPL token refresh returned no access_token')
         return None
     tokens['method'] = 'refresh'
     return tokens
+
+
+def _session_is_authed(client):
+    try:
+        response = authed_get(client, ME_API)
+        print('GET %s -> %s' % (ME_API, response.status_code))
+        if not response.ok:
+            print(response.text[:500])
+            return False
+        player = (response.json() or {}).get('player') or {}
+        return bool(player.get('entry'))
+    except Exception as exc:
+        print('Could not verify FPL session: %s' % exc)
+        return False
 
 
 def login(client, username, password):
@@ -100,6 +204,11 @@ def login(client, username, password):
         tokens = browser_login(username, password)
 
     apply_tokens(client, tokens)
+    if tokens.get('method') == 'refresh' and not _session_is_authed(client):
+        print('Refreshed token could not call /api/me/; signing in with email/password')
+        tokens = browser_login(username, password)
+        apply_tokens(client, tokens)
+
     new_refresh = tokens.get('refresh_token')
     if new_refresh:
         save_refresh_token(new_refresh)
@@ -115,9 +224,8 @@ def browser_login(username, password):
             "FPL login needs Playwright. Run: pip install playwright && playwright install chromium"
         ) from exc
 
-    force_headless = os.getenv('FPL_LOGIN_HEADLESS', '').strip() in ('1', 'true', 'True')
     last_error = None
-    for headless in ((True,) if force_headless else (False,)):
+    for headless in ((True,) if _want_headless() else (False,)):
         try:
             return _browser_login_once(username, password, headless, PlaywrightTimeout, sync_playwright)
         except FplLoginError as exc:
@@ -126,56 +234,62 @@ def browser_login(username, password):
     raise last_error
 
 
+def _want_headless():
+    env = os.getenv('FPL_LOGIN_HEADLESS', '').strip().lower()
+    if env in ('1', 'true', 'yes'):
+        return True
+    if env in ('0', 'false', 'no'):
+        return False
+    return os.path.exists('/.dockerenv') or not sys.stdout.isatty()
+
+
+def _chromium_launch_args():
+    if _want_headless() or os.path.exists('/.dockerenv'):
+        return ['--disable-dev-shm-usage', '--no-sandbox', '--disable-gpu']
+    return []
+
+
 def _browser_login_once(username, password, headless, PlaywrightTimeout, sync_playwright):
     with sync_playwright() as playwright:
-        browser = playwright.chromium.launch(headless=headless)
+        browser = playwright.chromium.launch(headless=headless, args=_chromium_launch_args())
         context = browser.new_context(
             viewport={'width': 1280, 'height': 800},
             user_agent=FPL_USER_AGENT,
         )
-        _seed_cookie_consent(context)
         page = context.new_page()
         popups = []
         page.on('popup', lambda p: popups.append(p))
         try:
             page.goto('%s/' % FPL_ORIGIN, wait_until='domcontentloaded')
+            _wait_for_landing(page, popups)
+            print('FPL landing url=%s' % page.url)
             _dismiss_cookie_banner(page, popups)
-            _click_first(page, popups, [
-                "a:has-text('Log in')",
-                "button:has-text('Log in')",
-                "a:has-text('Sign In')",
-                "button:has-text('Sign In')",
-                "a[href*='login']",
-            ])
-            page.wait_for_timeout(2500)
-            target = popups[-1] if popups else page
-            try:
-                target.wait_for_load_state('domcontentloaded', timeout=10000)
-            except PlaywrightTimeout:
-                pass
+            _click_login(page, popups)
+            target = _wait_for_idp(page, popups, PlaywrightTimeout)
+            print('FPL login form url=%s' % target.url)
             _dismiss_cookie_banner(target, popups)
             _fill_first(target, popups, [
+                '#username',
+                "input[name='username']",
                 "input[placeholder*='mail']",
                 "input[placeholder*='Mail']",
                 "input[type='email']",
                 "input[name='email']",
                 "input[name='login']",
                 '#email',
-                '#username',
             ], username)
             _fill_first(target, popups, [
+                '#password',
                 "input[placeholder*='assword']",
                 "input[type='password']",
                 "input[name='password']",
-                '#password',
             ], password)
-            _click_first(target, popups, [
+            _require_click(target, popups, [
                 'button#btnSignIn',
-                "button:has-text('Sign in')",
                 "button:has-text('Sign In')",
                 "button[type='submit']",
                 "input[type='submit']",
-            ])
+            ], timeout_ms=10000, force=False)
             _wait_for_login_success(page, popups, PlaywrightTimeout)
 
             oidc_user = _wait_for_oidc_user(page)
@@ -224,12 +338,90 @@ def _find_visible(page, popups, selectors, timeout_ms):
     return None
 
 
-def _click_first(page, popups, selectors):
-    locator = _find_visible(page, popups, selectors, 4000)
+def _dump_login_debug(page, popups, label):
+    target = _active_page(page, popups)
+    print('%s url=%s' % (label, getattr(target, 'url', '')))
+    try:
+        print('%s body=%s' % (label, (_page_text(target) or '')[:400]))
+    except Exception as exc:
+        print('%s body_error=%s' % (label, exc))
+
+
+def _wait_for_landing(page, popups):
+    selectors = (
+        "button:has-text('Log in'), "
+        "a:has-text('Log in'), "
+        "#onetrust-accept-btn-handler, "
+        "button:has-text('Accept All Cookies')"
+    )
+    try:
+        page.wait_for_selector(selectors, timeout=45000)
+    except Exception:
+        _dump_login_debug(page, popups, 'landing wait failed')
+        raise FplLoginError('FPL landing page did not show Log in or cookie banner (url=%s)' % page.url)
+    try:
+        page.wait_for_url('**/en/**', timeout=5000)
+    except Exception:
+        pass
+
+
+def _click_login(page, popups):
+    target = _active_page(page, popups)
+    try:
+        loc = target.get_by_role('button', name='Log in')
+        loc.first.click(timeout=15000)
+        print('Clicked Log in')
+        return
+    except Exception as exc:
+        print('get_by_role Log in failed: %s' % exc)
+    if _click_first(page, popups, [
+        "button:has-text('Log in')",
+        "a:has-text('Log in')",
+        "button:has-text('Sign In')",
+        "a:has-text('Sign In')",
+        "a[href*='login']",
+    ], timeout_ms=10000, force=False):
+        print('Clicked Log in (selector fallback)')
+        return
+    _dump_login_debug(page, popups, 'log in click failed')
+    raise FplLoginError('Could not click Log in (url=%s)' % getattr(target, 'url', ''))
+
+
+def _click_first(page, popups, selectors, timeout_ms=4000, force=True):
+    locator = _find_visible(page, popups, selectors, timeout_ms)
     if locator is None:
         return False
-    locator.click(force=True)
+    locator.click(force=force)
     return True
+
+
+def _require_click(page, popups, selectors, timeout_ms=4000, force=True):
+    if _click_first(page, popups, selectors, timeout_ms=timeout_ms, force=force):
+        return True
+    target = _active_page(page, popups)
+    raise FplLoginError(
+        'Could not click %s (url=%s)' % (selectors[0], getattr(target, 'url', ''))
+    )
+
+
+def _wait_for_idp(page, popups, PlaywrightTimeout):
+    deadline = time.time() + 30
+    while time.time() < deadline:
+        target = _active_page(page, popups)
+        url = getattr(target, 'url', '') or ''
+        if 'account.premierleague.com' in url:
+            try:
+                target.wait_for_load_state('domcontentloaded', timeout=8000)
+            except PlaywrightTimeout:
+                pass
+            return target
+        if _find_visible(target, popups, ['#username', "input[name='username']"], 400):
+            return target
+        page.wait_for_timeout(400)
+    target = _active_page(page, popups)
+    raise FplLoginError(
+        'Log in did not open the FPL account page (url=%s)' % getattr(target, 'url', '')
+    )
 
 
 def _fill_first(page, popups, selectors, value):
@@ -297,7 +489,8 @@ def _wait_for_login_success(page, popups, PlaywrightTimeout):
     current = _active_page(page, popups).url
     if 'account.premierleague.com' in current or 'login' in current.lower():
         raise FplLoginError(
-            'FPL login did not complete (still on %s). Update the stored password in .vscode/fantasy_login.json if it changed.' % current
+            'FPL login did not complete (still on %s). Update FPL_PASSWORD or the stored password in %s if it changed.'
+            % (current, credentials_path())
         )
 
 
@@ -367,23 +560,32 @@ def _hide_cookie_banner_js(page):
         pass
 
 
-def _dismiss_cookie_banner(page, popups, wait_ms=8000):
+def _dismiss_cookie_banner(page, popups, wait_ms=10000):
     deadline = time.time() + wait_ms / 1000.0
+    accepted = False
     while time.time() < deadline:
         target = _active_page(page, popups)
         locator = _find_visible(target, popups, COOKIE_SELECTORS, 700)
         if locator is not None:
             try:
-                locator.click(force=True)
+                locator.click()
+                accepted = True
                 print('Accepted cookies')
             except Exception:
-                pass
-            page.wait_for_timeout(400)
-        _hide_cookie_banner_js(target)
+                try:
+                    locator.click(force=True)
+                    accepted = True
+                    print('Accepted cookies (force)')
+                except Exception:
+                    pass
+            page.wait_for_timeout(600)
+        if accepted:
+            _hide_cookie_banner_js(target)
         if not _cookie_banner_visible(target, popups):
             return True
         page.wait_for_timeout(300)
-    _hide_cookie_banner_js(_active_page(page, popups))
+    if accepted:
+        _hide_cookie_banner_js(_active_page(page, popups))
     return False
 
 
@@ -409,13 +611,16 @@ def fetch_me(client):
     for _ in range(5):
         response = authed_get(client, ME_API)
         last = response
+        print('GET %s -> %s' % (ME_API, response.status_code))
         if not response.ok:
+            print(response.text[:500])
             time.sleep(1)
             continue
         payload = response.json()
         player = payload.get('player') or {}
         if player.get('entry'):
             return payload
+        print('/api/me/ had no player.entry: %s' % list(payload.keys()))
         time.sleep(1)
     if last is not None and last.ok:
         return last.json()

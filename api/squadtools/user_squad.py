@@ -13,10 +13,16 @@ class UserSquad(AbstractSquad):
         manager_json = self.user_json['fpl_api']['manager_json']
         manager_picks_json = self.user_json['fpl_api']['picks']
 
+        if not manager_picks_json or not manager_picks_json.get('picks'):
+            print('Logged-in my-team has no picks; building initial squad from scratch')
+            self.built_from_scratch = True
+            self.build_from_scratch()
+            return
+
         try:
             self.budget = manager_json['last_deadline_value'] + manager_json['last_deadline_bank']
             self.bank = manager_json['last_deadline_bank']
-        except:
+        except Exception:
             pass
 
         if self.is_pre_gw1():

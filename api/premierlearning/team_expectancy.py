@@ -14,9 +14,7 @@ from tensorflow.keras.layers import Dense
 from tensorflow.keras.losses import Huber
 from tensorflow.keras.metrics import MeanAbsoluteError as MAE, RootMeanSquaredError
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.optimizers import AdamW
-
-from premierlearning.learning import use_linear_model
+from premierlearning.learning import build_adamw, use_linear_model
 
 TEAM_FEATURE_KEYS = [
     'team_scored_last_5',
@@ -28,6 +26,8 @@ TEAM_FEATURE_KEYS = [
     'opp_conceded_last_5',
     'opp_conceded_avg',
     'is_home',
+    'fixture_difficulty',
+    'opp_fixture_difficulty',
 ]
 
 TEAM_EPOCHS = 2 if '--quick' in sys.argv else 500
@@ -45,6 +45,8 @@ def feature_row(team_match, opp_match, team=None, opp_team=None):
         'opp_conceded_last_5': float(opp_match.conceded_last_5_avg),
         'opp_conceded_avg': float(opp_match.conceded_season_avg),
         'is_home': float(1 if team_match.home else 0),
+        'fixture_difficulty': float(team_match.fixture_difficulty),
+        'opp_fixture_difficulty': float(team_match.opp_fixture_difficulty),
     }
 
 
@@ -190,7 +192,7 @@ def train_team_goals_model_linear(X, y):
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, random_state=42, shuffle=True
     )
-    # No PCA — only 9 team features; PCA(0.95) can collapse too aggressively.
+    # No PCA — only a handful of team features; PCA(0.95) can collapse too aggressively.
     pipe = Pipeline([
         ("scaler", StandardScaler(with_mean=True, with_std=True)),
         ("ridge", RidgeCV(alphas=numpy.logspace(-3, 3, 13), store_cv_values=False)),
@@ -232,7 +234,7 @@ def train_team_goals_model(X, y):
     ])
     model.compile(
         loss=Huber(delta=1.0),
-        optimizer=AdamW(learning_rate=1e-3, weight_decay=1e-5),
+        optimizer=build_adamw(1e-3, 1e-5),
         metrics=[RootMeanSquaredError(), MAE()],
     )
     callbacks = [

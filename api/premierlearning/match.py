@@ -1,10 +1,13 @@
 from datetime import datetime
 from abc import ABC, abstractmethod
+import math
+
 from premierlearning.clean_match import (
     STAT_KEYS, NEW_STATS, CleanMatch, GameStats, PastStats,
     get_default_game_stats, get_default_past_stats, get_default_stat_window,
     apply_feature_interactions,
 )
+from premierlearning.config_constants import PRIOR_EARLY_TAU, HALF_SEASON_FIXTURES
 from premierlearning.helper_functions import coerce_bool, coerce_optional_int
 
 
@@ -139,29 +142,120 @@ class AbstractMatch(RawMatch):
             'last_season_xgi_per_90': (
                 getattr(self.player, 'xgi_per_min_last_season', 0) or 0
             ) * 90.0,
+            'last_season_minutes': float(getattr(self.player, 'minutes_last_season', 0) or 0),
+            'last_season_mins_per_match': float(
+                getattr(self.player, 'last_season_mins_per_match', 0) or 0
+            ),
+            'last_season_fixtures': int(
+                getattr(self.player, 'last_season_fixtures', 0) or 0
+            ),
+            'last_7_mins_per_match': float(
+                getattr(self.player, 'last_7_mins_per_match', 0) or 0
+            ),
             'two_season_prior_points_per_90': (
                 getattr(self.player, 'points_per_min_two_seasons_ago', 0) or 0
             ) * 90.0,
+            'two_season_prior_mins_per_match': float(
+                getattr(self.player, 'two_season_prior_mins_per_match', 0) or 0
+            ),
+            'last_season_h2_mins_per_match': float(
+                getattr(self.player, 'last_season_h2_mins_per_match', 0) or 0
+            ),
+            'last_two_seasons_mins_per_match': float(
+                getattr(self.player, 'last_two_seasons_mins_per_match', 0) or 0
+            ),
+            'last_season_h2_fixture_frac': float(
+                getattr(self.player, 'last_season_h2_fixture_frac', 0) or 0
+            ),
+            'changed_club': self.player.changed_club_feature(self.matches_played),
+            'club_move_team_diff': self.player.club_move_team_diff_feature(),
             'game_stats': self.game_stats,
             'new_stats_included': 1 if self.new_stats_included else 0
         }
+        mins_last_1, mins_last_2, mins_last_5 = self._mins_recency_windows()
+        clean_match['mins_last_1'] = mins_last_1
+        clean_match['mins_last_2_avg'] = mins_last_2
+        clean_match['mins_last_5_avg'] = mins_last_5
+        clean_match['last_7_pts_per_appearance'] = self._last_n_pts_per_appearance(7)
         xg5, xc5 = self._past_team_xg_xc(5)
         clean_match['team_xg_last_5'] = xg5
         clean_match['team_xc_last_5'] = xc5
         apply_feature_interactions(clean_match)
         return clean_match
 
-    def _past_team_xg_xc(self, n: int = 5):
-        """Sum of team predicted xg/xc over the previous n appearances."""
-        matches = self.player.matches
+    def _prior_matches(self):
+        """Fixtures strictly before this row (all player.matches for a FutureMatch)."""
         prior = []
-        for match in matches:
+        for match in self.player.matches:
             if match is self:
                 break
             prior.append(match)
         else:
-            # FutureMatch / not in list — use all past appearances
-            prior = list(matches)
+            prior = list(self.player.matches)
+        return prior
+
+    @staticmethod
+    def _mean_or_zero(values):
+        if not values:
+            return 0.0
+        return sum(values) / len(values)
+
+    def _last_season_fixture_mins(self):
+        """Last-season fixtures including DNPs (not appearance-only carry)."""
+        mins = []
+        for match in getattr(self.player, 'last_szn_matches', None) or []:
+            if getattr(match, 'is_last_season_carry', False):
+                continue
+            mins.append(float(match.game_stats.get('minutes') or 0))
+        return mins
+
+    def _h2_fixture_mins(self):
+        """Second-half last-season fixtures including DNPs (short seasons: all rows)."""
+        ls_mins = self._last_season_fixture_mins()
+        return ls_mins[-HALF_SEASON_FIXTURES:]
+
+    def _mins_recency_windows(self):
+        """Last 1/2/5 fixtures including DNPs, stretching into last-season H2.
+
+        This-season games are used as-is. Missing slots are H2 fixtures, blended
+        toward H2 mins/match with weight exp(-this_season_fixtures / tau).
+        """
+        this_mins = []
+        for match in self._prior_matches():
+            if getattr(match, 'is_last_season_carry', False):
+                continue
+            this_mins.append(float(match.game_stats.get('minutes') or 0))
+
+        h2_mins = self._h2_fixture_mins()
+        h2_mpm = float(getattr(self.player, 'last_season_h2_mins_per_match', 0) or 0)
+        early_w = math.exp(-len(this_mins) / PRIOR_EARLY_TAU)
+
+        def window_n(n):
+            this_part = this_mins[-n:]
+            need = n - len(this_part)
+            if need <= 0:
+                return AbstractMatch._mean_or_zero(this_part)
+            fill = h2_mins[-need:] if h2_mins else []
+            if len(fill) < need:
+                fill = [h2_mpm] * (need - len(fill)) + list(fill)
+            blended_fill = [early_w * h2_mpm + (1.0 - early_w) * x for x in fill]
+            return AbstractMatch._mean_or_zero(blended_fill + this_part)
+
+        return window_n(1), window_n(2), window_n(5)
+
+    def _last_n_pts_per_appearance(self, n: int = 7) -> float:
+        """Mean FPL points over the last n appearances (minutes > 0). Form, not availability."""
+        pts = []
+        for match in self._prior_matches():
+            minutes = float(match.game_stats.get('minutes') or 0)
+            if minutes <= 0:
+                continue
+            pts.append(float(match.game_stats.get('total_points') or 0))
+        return AbstractMatch._mean_or_zero(pts[-n:])
+
+    def _past_team_xg_xc(self, n: int = 5):
+        """Sum of team predicted xg/xc over the previous n appearances."""
+        prior = self._prior_matches()
         window = prior[-n:]
         xg = sum(float(getattr(m.team_match, 'predicted_xg', 0.0) or 0.0) for m in window)
         xc = sum(float(getattr(m.team_match, 'predicted_xc', 0.0) or 0.0) for m in window)

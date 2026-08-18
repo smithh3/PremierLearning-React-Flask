@@ -1,3 +1,4 @@
+import json
 import requests
 
 from premierlearning.fpl_apis import *
@@ -79,6 +80,9 @@ def pick_team(request_payload, username, password):
         login(client, username, password)
         manager_id = fetch_me(client)['player']['entry']
         pick_response = authed_post(client, '%s/%i/' % (PICK_TEAM_API, manager_id), json=request_payload)
+        print('POST %s/%s/ payload=%s' % (
+            PICK_TEAM_API, manager_id, json.dumps(request_payload)[:2000]
+        ))
         print('POST %s/%s/ -> %s' % (PICK_TEAM_API, manager_id, pick_response.status_code))
         print(pick_response.text[:2000])
         if not pick_response.ok:
@@ -94,6 +98,7 @@ def pick_team(request_payload, username, password):
 def make_transfers(request_payload, username, password):
     with requests.Session() as client:
         login(client, username, password)
+        print('POST %s payload=%s' % (TRANSFERS_API, json.dumps(request_payload)[:2000]))
         make_transfers_response = authed_post(client, TRANSFERS_API, json=request_payload)
         print('POST %s -> %s' % (TRANSFERS_API, make_transfers_response.status_code))
         print(make_transfers_response.text[:2000])

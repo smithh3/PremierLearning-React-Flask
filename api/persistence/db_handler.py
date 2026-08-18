@@ -1,19 +1,68 @@
+import os
 import sqlite3
+from pathlib import Path
+from urllib.parse import urlparse, unquote
 
 from flask import g
 
 from premierlearning import RawMatch
 from premierlearning import RawPlayer
 
-DATABASE = '../database/fantasy.db'
-DROP = '../database/drop_tables.sql'
-SCHEMA = '../database/schema.sql'
+_DB_DIR = Path(__file__).resolve().parents[2] / 'database'
+DATABASE = str(_DB_DIR / 'fantasy.db')
+DROP = str(_DB_DIR / 'drop_tables.sql')
+SCHEMA = str(_DB_DIR / 'schema.sql')
+POSTGRES_DROP = str(_DB_DIR / 'drop_tables.postgres.sql')
+POSTGRES_SCHEMA = str(_DB_DIR / 'schema.postgres.sql')
+
+
+def database_config():
+    url = os.environ.get('DATABASE_URL', '').strip()
+    path = os.environ.get('DATABASE_PATH', '').strip()
+    if url.startswith('postgres://') or url.startswith('postgresql://'):
+        if url.startswith('postgres://'):
+            url = 'postgresql://' + url[len('postgres://'):]
+        return 'postgres', url
+    if url.startswith('sqlite:///'):
+        raw = url[len('sqlite:///'):]
+        return 'sqlite', raw
+    if path:
+        return 'sqlite', path
+    return 'sqlite', DATABASE
+
+
+def _connect_postgres(url):
+    import psycopg2
+    parsed = urlparse(url)
+    connect_kwargs = {
+        'host': parsed.hostname,
+        'port': parsed.port or 5432,
+        'user': unquote(parsed.username or ''),
+        'password': unquote(parsed.password or ''),
+        'dbname': (parsed.path or '/postgres').lstrip('/') or 'postgres',
+    }
+    sslmode = None
+    if parsed.query:
+        for part in parsed.query.split('&'):
+            if part.startswith('sslmode='):
+                sslmode = part.split('=', 1)[1]
+    if sslmode:
+        connect_kwargs['sslmode'] = sslmode
+    return psycopg2.connect(**connect_kwargs)
 
 
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
-        db = g._database = sqlite3.connect(DATABASE)
+        kind, target = database_config()
+        g._database_kind = kind
+        if kind == 'postgres':
+            db = g._database = _connect_postgres(target)
+        else:
+            parent = os.path.dirname(os.path.abspath(target))
+            if parent:
+                os.makedirs(parent, exist_ok=True)
+            db = g._database = sqlite3.connect(target)
     return db
 
 
@@ -26,40 +75,63 @@ def close_connection(exception):
 class DB_Handler:
 
     def __init__(self):
+        self.kind = getattr(g, '_database_kind', None) or database_config()[0]
         self.connection = get_db()
+        self.kind = getattr(g, '_database_kind', self.kind)
         self.cursor = self.connection.cursor()
-    
+
     def close_connection(self):
         self.cursor.close()
         self.connection.close()
 
+    def _sql(self, sql):
+        if self.kind == 'postgres':
+            return sql.replace('?', '%s')
+        return sql
+
     def run_sql_script(self, path):
         with open(path) as f:
-            self.cursor.executescript(f.read())
+            script = f.read()
+        if self.kind == 'postgres':
+            statements = [part.strip() for part in script.split(';') if part.strip()]
+            for statement in statements:
+                self.cursor.execute(statement)
+            return
+        self.cursor.executescript(script)
 
     def init_db(self):
-        self.run_sql_script(DROP)
-        self.run_sql_script(SCHEMA)
-    
+        if self.kind == 'postgres':
+            self.run_sql_script(POSTGRES_DROP)
+            self.run_sql_script(POSTGRES_SCHEMA)
+        else:
+            self.run_sql_script(DROP)
+            self.run_sql_script(SCHEMA)
+
     def persist_players(self, players):
         for player in players:
             self.persist_player(player)
 
     def persist_player(self, player):
-        self.cursor.execute('''insert into players (id, first_name, surname, team_id, team, current_cost, position, code)
-            values (?, ?, ?, ?, ?, ?, ?, ?)''', player.format_as_db_insert())
+        self.cursor.execute(self._sql(
+            '''insert into players (id, first_name, surname, team_id, team, current_cost, position, code)
+            values (?, ?, ?, ?, ?, ?, ?, ?)'''
+        ), player.format_as_db_insert())
         for match in player.matches:
             self.persist_match(match)
         for future_match in player.future_matches:
             self.persist_future_match(future_match)
-    
+
     def persist_future_match(self, match):
-        self.cursor.execute('''insert into future_matches (player_id, minutes, points, gameweek, opponent, points_error)
-            values (?, ?, ?, ?, ?, ?)''', match.format_as_future_db_insert())
-    
+        self.cursor.execute(self._sql(
+            '''insert into future_matches (player_id, minutes, points, gameweek, opponent, points_error)
+            values (?, ?, ?, ?, ?, ?)'''
+        ), match.format_as_future_db_insert())
+
     def persist_match(self, match):
-        self.cursor.execute('''insert into matches (player_id, minutes, points, gameweek, opponent)
-            values (?, ?, ?, ?, ?)''', match.format_as_db_insert())
+        self.cursor.execute(self._sql(
+            '''insert into matches (player_id, minutes, points, gameweek, opponent)
+            values (?, ?, ?, ?, ?)'''
+        ), match.format_as_db_insert())
 
     def get_future_match_jsons(self):
         """player_id -> list of future match dicts in persist order."""
@@ -89,7 +161,7 @@ class DB_Handler:
         match.opponent = match_json['opponent']
         match.points_error = float(match_json.get('points_error') or 0.0)
         return match
-    
+
     def get_match_jsons(self):
         """player_id -> list of past match dicts in persist order (carry then this season)."""
         matches = {}
@@ -110,7 +182,9 @@ class DB_Handler:
         players = {}
         matches = self.get_match_jsons()
         future_matches = self.get_future_match_jsons()
-        for db_player in self.cursor.execute('select id, first_name, surname, team_id, team, current_cost, position, code from players').fetchall():
+        for db_player in self.cursor.execute(
+            'select id, first_name, surname, team_id, team, current_cost, position, code from players'
+        ).fetchall():
             player_id = db_player[0]
             player = {
                 'id': player_id,

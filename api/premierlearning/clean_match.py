@@ -1,7 +1,8 @@
 from typing import List, TypedDict
+import math
 import sys
 
-# from premierlearning.config_constants import PRIOR_EARLY_TAU, TWO_SEASON_PRIOR_SCALE
+from premierlearning.config_constants import PRIOR_EARLY_TAU
 
 
 class StatWindow(TypedDict):
@@ -132,11 +133,27 @@ class CleanMatch(TypedDict):
     played_last_season: int
     last_season_points_per_90: float
     last_season_xgi_per_90: float
+    last_season_minutes: float
+    last_season_mins_per_match: float
+    last_season_fixtures: int
+    last_7_mins_per_match: float
     two_season_prior_points_per_90: float
+    two_season_prior_mins_per_match: float
+    last_season_h2_mins_per_match: float
+    last_two_seasons_mins_per_match: float
+    last_season_h2_fixture_frac: float
+    changed_club: int
+    club_move_team_diff: float
     new_stats_included: int
     # Position-gated interactions
     defcon_avg_x_new_stats_x_non_att: float
     team_xg_over_n_x_outfield: float
+    early_x_last_season_mins: float
+    ls_mpm_x_new_club: float
+    mins_last_1: float
+    mins_last_2_avg: float
+    mins_last_5_avg: float
+    last_7_pts_per_appearance: float
     # last_season_prior_x_early: float
     game_stats: GameStats
 
@@ -156,9 +173,15 @@ _BASE_STANDARD = [
     'is_mid',
     'is_att',
     # 'played_last_season',  # temporarily disabled — early-season prior experiment
+    # last_season_*_per_90 are points-rate priors; excluded from the minutes net
+    # (see MINUTES_EXCLUDE_STANDARD_KEYS) so super-subs don't look like starters.
     'last_season_points_per_90',
     'last_season_xgi_per_90',
     # 'two_season_prior_points_per_90',  # temporarily disabled — see PRIOR_* in config
+    # changed_club temporarily disabled — binary 0/1 was boosting movers (e.g. Anderson)
+    # instead of punishing early minutes/points. Detection still runs on the player;
+    # re-enable here once encoded differently (see chat notes).
+    # 'changed_club',
     'new_stats_included',
 ]
 
@@ -171,6 +194,49 @@ _INTERACTION_KEYS = [
     # # prior fades as this-season appearances grow: (last + 0.5*two_ago) * exp(-apps/tau)
     # 'last_season_prior_x_early',
 ]
+
+LAST_SEASON_MINUTES_CAP = 38.0 * 90.0  # scale last-season minutes to ~[0, 1]
+
+# Minutes-only root features (not in points / horizon nets).
+# H2 = second half of last season; 2s = prev2 season + H1 of last season.
+# Recency stretches into H2 and blends toward H2 mins/match near GW0.
+MINUTES_ONLY_ROOT_KEYS = [
+    'early_x_last_season_mins',
+    'last_season_h2_mins_per_match',
+    'last_two_seasons_mins_per_match',
+    'last_season_h2_fixture_frac',
+    'ls_mpm_x_new_club',
+    'mins_last_1',
+    'mins_last_2_avg',
+    'mins_last_5_avg',
+    'last_7_pts_per_appearance',
+]
+MINUTES_ONLY_ROOT_DEFAULTS = {
+    'early_x_last_season_mins': 0.0,
+    'last_season_h2_mins_per_match': 0.0,
+    'last_two_seasons_mins_per_match': 0.0,
+    'last_season_h2_fixture_frac': 0.0,
+    'ls_mpm_x_new_club': 0.0,
+    'mins_last_1': 0.0,
+    'mins_last_2_avg': 0.0,
+    'mins_last_5_avg': 0.0,
+    'last_7_pts_per_appearance': 0.0,
+}
+
+# Dropped from the minutes net: points-rate priors, fixture xG/xC, and the
+# new-stats flag. Appearance-only past_stats (minutes_last_5_avg / chance_to_play)
+# are also skipped in get_inputs_from_data_key — they exclude DNPs via carry.
+MINUTES_EXCLUDE_STANDARD_KEYS = {
+    'last_season_points_per_90',
+    'last_season_xgi_per_90',
+    'defcon_avg_x_new_stats_x_non_att',
+    'team_xg_over_n_x_outfield',
+    'new_stats_included',
+    'team_xg_over_n',
+    'team_xc_over_n',
+    'team_xg_last_5',
+    'team_xc_last_5',
+}
 
 _LEGACY_FIXTURE_KEYS = [
     'is_home',
@@ -218,6 +284,17 @@ def apply_feature_interactions(clean: dict) -> None:
 
     clean['defcon_avg_x_new_stats_x_non_att'] = new_stats * defcon_avg * non_att
     clean['team_xg_over_n_x_outfield'] = team_xg_n * outfield
+    # Minutes only (included via MINUTES_ONLY_ROOT_KEYS): early-season weight
+    # times last-season minutes volume. No raw GW 0-3 flag.
+    apps = float(clean.get('matches_played') or 0)
+    last_mins = float(clean.get('last_season_minutes') or 0)
+    early_weight = math.exp(-apps / PRIOR_EARLY_TAU)
+    volume = min(1.0, last_mins / LAST_SEASON_MINUTES_CAP) if LAST_SEASON_MINUTES_CAP else 0.0
+    clean['early_x_last_season_mins'] = early_weight * volume
+    h2_mpm = float(clean.get('last_season_h2_mins_per_match') or 0)
+    # H2 mins/match × new-club factor (1.0 if same club / new-to-PL).
+    club_factor = float(clean.get('club_move_team_diff') or 1.0)
+    clean['ls_mpm_x_new_club'] = h2_mpm * club_factor
     # clean['last_season_prior_x_early'] = prior_blend * early_weight
 
 
@@ -292,8 +369,10 @@ def get_input_keys(key) -> List[str]:
     elif key in ('clean_sheets', 'goals_conceded', 'saves', 'conceded_2_plus', 'conceded_4_plus'):
         return DEF_KEYS
     elif key in ('minutes_60_plus', 'minutes'):
-        # Same form towers as points, plus minutes history and chance-to-play
-        return list(POINTS_KEYS) + ['minutes', CHANCE_TO_PLAY]
+        # Minutes net does not use appearance-only past_stats (minutes last_5 / avg
+        # or chance_to_play). Recency + priors live in MINUTES_ONLY_ROOT_KEYS.
+        # Keep 'minutes' in the list so get_inputs_from_data_key enables minutes_mode.
+        return ['minutes']
     return [key]
 
 
@@ -306,10 +385,23 @@ def get_inputs_from_data_key(clean_matches: List[CleanMatch], special_keys: List
         standard_keys = [k for k in standard_keys if k not in opp_keys]
     for clean_match in clean_matches:
         clean_match_array = {}
+        minutes_mode = any(k in special_keys for k in ('minutes', 'minutes_60_plus'))
         if include_standard_stats:
             for data_key in standard_keys:
+                if minutes_mode and data_key in MINUTES_EXCLUDE_STANDARD_KEYS:
+                    continue
                 clean_match_array[data_key] = clean_match[data_key]
+            if minutes_mode:
+                for data_key in MINUTES_ONLY_ROOT_KEYS:
+                    val = clean_match.get(data_key)
+                    if val is None:
+                        val = MINUTES_ONLY_ROOT_DEFAULTS.get(data_key, 0.0)
+                    clean_match_array[data_key] = float(val)
         for data_key in special_keys:
+            if minutes_mode:
+                # Skip past_stats minutes / chance_to_play: carry is appearance-only
+                # (DNPs dropped), which is the opposite of what the minutes net needs.
+                continue
             last_n_stats = clean_match['past_stats'][data_key]
             last_n_stats_with_name = {}
             for last_n_key, val in last_n_stats.items():

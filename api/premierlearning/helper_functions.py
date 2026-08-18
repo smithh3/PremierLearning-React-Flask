@@ -36,3 +36,16 @@ def coerce_optional_int(value):
 def score_is_present(value):
     """True if a fixture/player row has a real score (match has been played)."""
     return coerce_optional_int(value) is not None
+
+
+def effective_minutes_for_points(mins: float) -> float:
+    """Map predicted minutes before pp90 × mins / 90.
+
+    Below 70: identity. From 70 → 80 up to 90 → 90, easing toward 90 so
+    70–90 predicted minutes are not linearly haircut.
+    """
+    m = max(0.0, min(90.0, float(mins or 0)))
+    if m < 70.0:
+        return m
+    t = (m - 70.0) / 20.0
+    return 80.0 + 10.0 * (t ** 0.5)

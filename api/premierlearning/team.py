@@ -8,6 +8,12 @@ class Team:
         self.team_dict = team_dict
         self.id = int(team_dict['id'])
         self.name = team_dict['short_name']
+        # Stable across seasons (FPL season team ids reshuffle — use this for club-change checks)
+        raw_code = team_dict.get('code')
+        try:
+            self.code = int(raw_code) if raw_code not in ('', None) else None
+        except (TypeError, ValueError):
+            self.code = None
 
         self.last_season_finish = self.find_last_season_finish(last_season_team_standings)
 
