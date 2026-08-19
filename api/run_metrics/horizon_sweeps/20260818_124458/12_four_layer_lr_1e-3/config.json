@@ -1,0 +1,14 @@
+{
+  "name": "12_four_layer_lr_1e-3",
+  "note": "4 layers + LR 1e-3. v1 14 had best tau (0.921) but Jaccard trap 0.43 on a 1x net ending at 2 units. 1.5x dropout body + faster LR aims to keep tau and Haaland without the trap.",
+  "env": {
+    "PL_WIDTH_MULT": "1.5",
+    "PL_N_HIDDEN": "4",
+    "PL_DROPOUT_1": "0.1",
+    "PL_DROPOUT_2": "0.05",
+    "PL_L2": "0.001",
+    "PL_LEARNING_RATE": "0.001"
+  },
+  "extra_args": [],
+  "reps": 5
+}

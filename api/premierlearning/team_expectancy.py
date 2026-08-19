@@ -1,4 +1,5 @@
 """Team goals expectancy model: predict goals scored from pre-match form."""
+import json
 import sys
 from collections import defaultdict
 
@@ -286,39 +287,75 @@ def apply_predictions(trained, seasons):
         away_match.predicted_xc = home_xg
 
 
-def run_team_expectancies(past_seasons, current_season):
+def fit_team_expectancy_once(past_seasons, current_season):
     seasons = list(past_seasons) + [current_season]
     seed_form_from_last_season(current_season, past_seasons)
     X, y = build_training_rows(seasons)
     if len(X) < 50:
         print(f'Skipping team expectancies (only {len(X)} training rows)')
+        return None
+    return train_team_goals_model(X, y)
+
+
+def apply_team_expectancy_model(model, past_seasons, current_season):
+    if model is None:
         return False
-    model = train_team_goals_model(X, y)
+    seasons = list(past_seasons) + [current_season]
+    seed_form_from_last_season(current_season, past_seasons)
     apply_predictions(model, seasons)
     print('Team expectancies applied to all fixtures')
     return True
 
 
-def print_future_scorelines(current_season):
-    """Print predicted scorelines for unfinished fixtures, grouped by gameweek."""
+def run_team_expectancies(past_seasons, current_season):
+    model = fit_team_expectancy_once(past_seasons, current_season)
+    return apply_team_expectancy_model(model, past_seasons, current_season)
+
+
+SCORELINES_PATH = 'predicted_scorelines.json'
+
+
+def collect_future_scorelines(current_season):
+    """Unfinished fixtures with predicted home/away xG, sorted by gameweek."""
     by_fixture = index_fixture_sides([current_season])
-    by_gw = defaultdict(list)
+    rows = []
     for sides in by_fixture.values():
         if 'home' not in sides or 'away' not in sides:
             continue
         home_team, home_match = sides['home']
         away_team, away_match = sides['away']
         if int(home_match.id) in home_team.team_match_dict:
-            continue  # finished
-        event = home_match.event or 0
-        by_gw[event].append((home_team, home_match, away_team, away_match))
+            continue
+        rows.append({
+            'gameweek': int(home_match.event or 0),
+            'fixture_id': int(home_match.id),
+            'home': home_team.name,
+            'away': away_team.name,
+            'home_xg': float(getattr(home_match, 'predicted_xg', 0) or 0),
+            'away_xg': float(getattr(away_match, 'predicted_xg', 0) or 0),
+        })
+    rows.sort(key=lambda row: (row['gameweek'], row['fixture_id']))
+    return rows
 
+
+def write_future_scorelines(current_season, path=SCORELINES_PATH):
+    rows = collect_future_scorelines(current_season)
+    with open(path, 'w', encoding='utf-8') as file:
+        json.dump(rows, file)
+    print('Wrote %d predicted scorelines to %s' % (len(rows), path))
+    return rows
+
+
+def print_future_scorelines(current_season):
+    """Print predicted scorelines for unfinished fixtures, grouped by gameweek."""
+    rows = collect_future_scorelines(current_season)
     print('\nPredicted team scorelines:')
-    for gw in sorted(by_gw.keys()):
-        print(f'\nGameweek {gw}')
-        rows = sorted(by_gw[gw], key=lambda r: r[1].id)
-        for home_team, home_match, away_team, away_match in rows:
-            print(
-                f'{home_team.name} {home_match.predicted_xg:.2f} - '
-                f'{away_match.predicted_xg:.2f} {away_team.name}'
-            )
+    gameweek = None
+    for row in rows:
+        if row['gameweek'] != gameweek:
+            gameweek = row['gameweek']
+            print('\nGameweek %s' % gameweek)
+        print(
+            '%s %.2f - %.2f %s'
+            % (row['home'], row['home_xg'], row['away_xg'], row['away'])
+        )

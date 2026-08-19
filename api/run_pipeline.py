@@ -1,0 +1,285 @@
+"""Run premierlearning then squadtools in one process.
+
+Environment:
+  RUN_LEARNING=1          Train and persist players (default 0).
+  APPLY_TRANSFERS=true    Submit transfers + starting XI to FPL.
+  APPLY_TEAM_SELECTION=true  Submit captain/starters only.
+  SUGGEST_TRANSFERS=true  Print suggestions without submitting (default if no apply flag).
+  PREMIERLEARNING_ARGS    Extra argv for learning, e.g. "--horizon-only --horizon-reps 5".
+  APPLY_WITHIN_HOURS      If set, refuse apply unless the next GW deadline is within this many hours.
+  LOGIN_ONLY=1            Skip learning and squadtools; only verify FPL login.
+  FPL_STATUS_CHECK=1      Print HTTP/Playwright status for FPL URLs, then exit.
+  SKIP_FPL_EGRESS_CHECK=1 Skip the runtime egress-IP / FPL 200 probe.
+  LEARNING_DONE_QUEUE_URL If set, publish an SQS message after a successful persist (phase 2).
+  NOTIFY_EMAIL            If set, email HTML player predictions (and suggested transfers) via SES.
+  SES_FROM_EMAIL          SES From address (defaults to NOTIFY_EMAIL; must be a verified identity).
+"""
+import os
+import shlex
+import sys
+from datetime import datetime, timezone
+
+from flask import Flask
+
+
+def _flag(name, default=False):
+    raw = os.environ.get(name)
+    if raw is None:
+        return default
+    return raw.strip().lower() in ('1', 'true', 'yes', 'on')
+
+
+def _discover_egress_ip():
+    import requests
+    for url in ('https://checkip.amazonaws.com', 'https://ifconfig.me'):
+        try:
+            ip = (requests.get(url, timeout=10).text or '').strip().split()[0]
+            if ip:
+                return ip
+        except Exception as exc:
+            print('egress_ip lookup failed url=%s err=%s' % (url, exc))
+    return 'unknown'
+
+
+def _fpl_egress_preflight():
+    """Discover the NAT public IP FPL will see, and refuse to continue on a 403.
+
+    Fargate never uses a hardcoded public IP. Private-subnet default route points
+    at the NAT ENI; AWS may assign a new public address if that instance is
+    stopped and started. This probe reads whatever we egress as right now.
+    """
+    if _flag('SKIP_FPL_EGRESS_CHECK'):
+        print('Skipping FPL egress check (SKIP_FPL_EGRESS_CHECK=1)')
+        return
+    import requests
+    from premierlearning.fpl_apis import FPL_USER_AGENT, GENERAL
+
+    egress_ip = _discover_egress_ip()
+    print('egress_ip=%s (discovered at runtime, not hardcoded)' % egress_ip)
+    try:
+        response = requests.get(
+            GENERAL, timeout=30, headers={'User-Agent': FPL_USER_AGENT},
+        )
+    except Exception as exc:
+        raise SystemExit('FPL bootstrap unreachable from egress_ip=%s: %s' % (egress_ip, exc))
+    print(
+        'fpl_bootstrap=%s bytes=%s egress_ip=%s'
+        % (response.status_code, len(response.content or b''), egress_ip)
+    )
+    if response.status_code == 403:
+        raise SystemExit(
+            'FPL returned 403 from egress_ip=%s. Stop/start the NAT EC2 to get a new '
+            'auto-assigned public IP, then retry. Do not attach an Elastic IP.'
+            % egress_ip
+        )
+    if response.status_code != 200:
+        raise SystemExit(
+            'FPL bootstrap HTTP %s from egress_ip=%s' % (response.status_code, egress_ip)
+        )
+
+
+def _deadline_guard():
+    hours = os.environ.get('APPLY_WITHIN_HOURS', '').strip()
+    if not hours:
+        return
+    limit = float(hours)
+    from premierlearning.fpl_apis import GENERAL
+    import requests
+    events = requests.get(GENERAL, timeout=30).json().get('events') or []
+    next_event = next((event for event in events if event.get('is_next')), None)
+    if next_event is None:
+        next_event = next((event for event in events if event.get('is_current')), None)
+    if next_event is None:
+        raise SystemExit('APPLY_WITHIN_HOURS is set but bootstrap-static has no current/next event')
+    deadline = next_event.get('deadline_time')
+    if not deadline:
+        raise SystemExit('Next event has no deadline_time')
+    deadline_dt = datetime.strptime(deadline.replace('Z', '+00:00'), '%Y-%m-%dT%H:%M:%S%z')
+    now = datetime.now(timezone.utc)
+    remaining = (deadline_dt - now).total_seconds() / 3600.0
+    print('Next GW %s deadline in %.1f hours (limit %.1f)' % (next_event.get('id'), remaining, limit))
+    if remaining > limit:
+        raise SystemExit(
+            'Refusing to apply: next deadline is %.1f hours away (APPLY_WITHIN_HOURS=%s)'
+            % (remaining, hours)
+        )
+
+
+def _publish_learning_done():
+    queue_url = os.environ.get('LEARNING_DONE_QUEUE_URL', '').strip()
+    if not queue_url:
+        return
+    try:
+        import json
+        import boto3
+        from premierlearning.fpl_apis import get_next_gameweek
+        body = {
+            'run_id': datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ'),
+            'gameweek': get_next_gameweek(),
+        }
+        boto3.client('sqs').send_message(QueueUrl=queue_url, MessageBody=json.dumps(body))
+        print('Published learning-done message to SQS: %s' % body)
+    except Exception as exc:
+        raise SystemExit('Learning finished but SQS publish failed: %s' % exc)
+
+
+def run_learning():
+    from premierlearning.runner import Runner
+    extra = shlex.split(os.environ.get('PREMIERLEARNING_ARGS', ''))
+    sys.argv = ['premierlearning'] + extra
+    print('Running premierlearning %s' % extra)
+    runner = Runner()
+    runner.run()
+    _publish_learning_done()
+
+
+def run_squadtools():
+    apply_transfers = _flag('APPLY_TRANSFERS')
+    apply_team_selection = _flag('APPLY_TEAM_SELECTION')
+    suggest_transfers = _flag('SUGGEST_TRANSFERS')
+    if not apply_transfers and not apply_team_selection and not suggest_transfers:
+        suggest_transfers = True
+        print('No apply flag set; defaulting to SUGGEST_TRANSFERS=true')
+    if apply_transfers or apply_team_selection:
+        _deadline_guard()
+    from squadtools.__main__ import main as squadtools_main
+    print(
+        'Running squadtools apply_transfers=%s apply_team_selection=%s suggest_transfers=%s'
+        % (apply_transfers, apply_team_selection, suggest_transfers)
+    )
+    squadtools_main(
+        apply_transfers=apply_transfers,
+        apply_team_selection=apply_team_selection,
+        suggest_transfers=suggest_transfers,
+    )
+
+
+def run_login_only():
+    from premierlearning.fpl_auth import load_credentials
+    from squadtools.logged_in_action_performer import get_user_jsons_login
+    creds = load_credentials()
+    print('LOGIN_ONLY: attempting FPL login as %s' % creds['EMAIL'])
+    user_json = get_user_jsons_login(creds['EMAIL'], creds['PASSWORD'])
+    print('LOGIN_ONLY loggedIn=%s manager_id=%s squad_size=%s' % (
+        user_json['user']['loggedIn'],
+        user_json['fpl_api']['manager_id'],
+        len(user_json['user']['teamIDs'] or []),
+    ))
+    if not user_json['user']['loggedIn']:
+        raise SystemExit('FPL login check failed')
+
+
+def run_status_check():
+    import requests
+    from premierlearning.fpl_apis import FPL_ORIGIN, FPL_USER_AGENT, GENERAL, ME_API, OIDC_TOKEN_URL
+
+    headers = {'User-Agent': FPL_USER_AGENT}
+    urls = [
+        FPL_ORIGIN + '/',
+        GENERAL,
+        ME_API,
+        OIDC_TOKEN_URL,
+    ]
+    print('egress_ip=%s (discovered at runtime, not hardcoded)' % _discover_egress_ip())
+    print('=== requests ===')
+    for url in urls:
+        try:
+            response = requests.get(url, timeout=30, headers=headers, allow_redirects=True)
+            interesting = {
+                key: response.headers.get(key)
+                for key in (
+                    'server', 'via', 'cf-ray', 'cf-mitigated', 'x-cache',
+                    'x-amz-cf-id', 'retry-after', 'content-type',
+                )
+                if response.headers.get(key)
+            }
+            print(
+                'http_status=%s url=%s final=%s bytes=%s headers=%s head=%s'
+                % (
+                    response.status_code,
+                    url,
+                    response.url,
+                    len(response.content or b''),
+                    interesting,
+                    (response.text or '')[:180].replace('\n', ' '),
+                )
+            )
+        except Exception as exc:
+            print('http_error url=%s err=%s' % (url, exc))
+
+    print('=== playwright ===')
+    from playwright.sync_api import sync_playwright
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(
+            headless=True,
+            args=['--disable-dev-shm-usage', '--no-sandbox', '--disable-gpu'],
+        )
+        page = browser.new_page(user_agent=FPL_USER_AGENT)
+        try:
+            response = page.goto(FPL_ORIGIN + '/', wait_until='domcontentloaded', timeout=45000)
+            body = ''
+            try:
+                body = page.locator('body').inner_text(timeout=5000) or ''
+            except Exception as exc:
+                body = 'body_error %s' % exc
+            print(
+                'pw_status=%s pw_url=%s pw_bytes=%s pw_body=%s'
+                % (
+                    None if response is None else response.status,
+                    page.url,
+                    len(page.content()),
+                    body[:180].replace('\n', ' | '),
+                )
+            )
+            page.wait_for_timeout(8000)
+            body2 = ''
+            try:
+                body2 = page.locator('body').inner_text(timeout=5000) or ''
+            except Exception as exc:
+                body2 = 'body_error %s' % exc
+            print(
+                'pw_status2=%s pw_url2=%s pw_bytes2=%s pw_body2=%s'
+                % (
+                    None if response is None else response.status,
+                    page.url,
+                    len(page.content()),
+                    body2[:180].replace('\n', ' | '),
+                )
+            )
+        finally:
+            browser.close()
+    print('FPL_STATUS_CHECK done')
+
+
+def main():
+    app = Flask(__name__)
+    with app.app_context():
+        if _flag('FPL_STATUS_CHECK'):
+            run_status_check()
+            return
+        _fpl_egress_preflight()
+        if _flag('LOGIN_ONLY'):
+            run_login_only()
+            return
+        if _flag('RUN_LEARNING'):
+            run_learning()
+        else:
+            print('Skipping learning (RUN_LEARNING is not set)')
+        run_apply = (
+            _flag('APPLY_TRANSFERS')
+            or _flag('APPLY_TEAM_SELECTION')
+            or _flag('SUGGEST_TRANSFERS')
+            or not _flag('RUN_LEARNING')
+        )
+        skip_apply = _flag('SKIP_SQUADTOOLS')
+        if skip_apply:
+            print('Skipping squadtools (SKIP_SQUADTOOLS=1)')
+            return
+        if run_apply:
+            run_squadtools()
+        else:
+            print('Learning-only run; not starting squadtools')
+
+
+if __name__ == '__main__':
+    main()

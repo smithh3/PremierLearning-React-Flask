@@ -1,0 +1,25 @@
+Horizon-5 hyperparameter sweep comparison
+Higher kendall/jaccard and lower pred_std = stabler ranks.
+haaland_pts is 5-GW total in --horizon-only mode (not h1 pp90).
+
+trial                             tau      j20     pstd     reps   epochs     H_rk    H_pts  testMAE
+----------------------------------------------------------------------------------------------------
+02_avg_all_reps                0.8219   0.6088   0.1847      5/5     76.0        1     32.3   2.8235
+    Force-average all 5 even if a rep has bad best_val_mae (contrast to default 8% trim).
+03_lr_1e-3                     0.8552   0.7339   0.1332      5/5     73.2        1     31.7   2.8575
+    Original AdamW LR. Faster, more init-sensitive.
+04_lr_1e-4                                                     /                                    
+    Slower steps into the regularized basin; more epochs.
+05_l2_weaker_1e-4                                              /                                    
+06_l2_stronger_5e-3                                            /                                    
+07_wd_stronger_1e-3                                            /                                    
+08_smaller_net_0.5x                                            /                                    
+09_old_capacity_1.5x_3layer                                    /                                    
+10_patience_40                                                 /                                    
+11_huber_1.0                                                   /                                    
+12_one_hidden_layer                                            /                                    
+13_three_hidden_layers                                         /                                    
+14_four_hidden_layers                                          /                                    
+15_historic_pre_option6                                        /                                    
+16_historic_dropout                                            /                                    
+17_historic_mae_loss                                           /                                    

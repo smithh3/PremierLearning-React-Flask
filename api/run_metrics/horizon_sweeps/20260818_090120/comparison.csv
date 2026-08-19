@@ -1,0 +1,16 @@
+trial,ok,optimizer,mean_kendall_tau,min_kendall_tau,top_20_jaccard_mean,top_20_jaccard_min,pred_std_mean,pred_std_max,n_reps_averaged,n_reps_requested,mean_epochs_ran,mean_test_mae,mean_pred_mean,mean_pred_max,haaland_rank,haaland_pts,fernandes_rank,fernandes_pts,note,env
+01_control_dropout,True,AdamW,0.9341,0.916,0.8623,0.8182,0.0669,1.6433,5,5,81.4,2.7859,4.333,12.216,1,32.4,2,27.7,"Replay sweep-2 winner: 1.5×, 3 layers, L2 1e-3, LR 5e-4, Dropout 0.1/0.05.","{""PL_DROPOUT_1"": ""0.1"", ""PL_DROPOUT_2"": ""0.05"", ""PL_N_HIDDEN"": ""3"", ""PL_WIDTH_MULT"": ""1.5""}"
+02_l2_2e-3,True,AdamW,0.9637,0.9487,0.9238,0.9048,0.0497,1.0338,5,5,82.4,2.7997,4.219,15.506,1,32.5,2,26.4,Dropout body + L2 2e-3 (stack the two v2 winners).,"{""PL_DROPOUT_1"": ""0.1"", ""PL_DROPOUT_2"": ""0.05"", ""PL_L2"": ""0.002"", ""PL_N_HIDDEN"": ""3"", ""PL_WIDTH_MULT"": ""1.5""}"
+03_lr_1e-3,True,AdamW,0.9263,0.8981,0.9429,0.9048,0.0891,1.0434,5,5,83.4,2.7513,4.277,12.084,1,31.8,2,26.6,Dropout body + LR 1e-3 (v2 02 lifted Jaccard and Haaland on 09 body).,"{""PL_DROPOUT_1"": ""0.1"", ""PL_DROPOUT_2"": ""0.05"", ""PL_LEARNING_RATE"": ""0.001"", ""PL_N_HIDDEN"": ""3"", ""PL_WIDTH_MULT"": ""1.5""}"
+04_drop_0.2_0.1,True,AdamW,0.9271,0.8925,0.8552,0.7391,0.095,2.0565,5,5,95.6,2.8157,4.273,16.055,1,31.5,2,27.1,"More dropout, still below historic 0.3/0.1 (that recipe had weak L2).","{""PL_DROPOUT_1"": ""0.2"", ""PL_DROPOUT_2"": ""0.1"", ""PL_N_HIDDEN"": ""3"", ""PL_WIDTH_MULT"": ""1.5""}"
+05_drop_0.05_0.05,False,,,,,,,,,,,,,,,,,,,
+06_drop_first_only,False,,,,,,,,,,,,,,,,,,,
+07_l2_1.5e-3,False,,,,,,,,,,,,,,,,,,,
+08_wd_0,False,,,,,,,,,,,,,,,,,,,
+09_drop_0.15_0.08,False,,,,,,,,,,,,,,,,,,,
+10_l2_2e-3_lr_1e-3,False,,,,,,,,,,,,,,,,,,,
+11_2.0x_l2_2e-3,False,,,,,,,,,,,,,,,,,,,
+12_four_layer_lr_1e-3,False,,,,,,,,,,,,,,,,,,,
+13_adam_lr_1e-3,False,,,,,,,,,,,,,,,,,,,
+14_huber_1_patience_40,False,,,,,,,,,,,,,,,,,,,
+15_historic_drop_l2_2e-3,False,,,,,,,,,,,,,,,,,,,

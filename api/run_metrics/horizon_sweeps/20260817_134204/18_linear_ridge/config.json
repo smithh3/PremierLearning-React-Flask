@@ -1,0 +1,9 @@
+{
+  "name": "18_linear_ridge",
+  "note": "RidgeCV baseline on the same features/split as the nets. No AdamW, no hidden layers.",
+  "env": {},
+  "extra_args": [
+    "--linear"
+  ],
+  "reps": 1
+}

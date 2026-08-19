@@ -1,0 +1,16 @@
+{
+  "name": "11_drop_0.05_l2_2.5e-3",
+  "note": "v4 07 Jaccard mean + v4 09 tau L2, both on the wd 0 body.",
+  "env": {
+    "PL_WIDTH_MULT": "1.5",
+    "PL_N_HIDDEN": "3",
+    "PL_DROPOUT_1": "0.05",
+    "PL_DROPOUT_2": "0.05",
+    "PL_L2": "0.0025",
+    "PL_LEARNING_RATE": "0.0005",
+    "PL_WEIGHT_DECAY": "0",
+    "PL_OPTIMIZER": "adamw"
+  },
+  "extra_args": [],
+  "reps": 5
+}

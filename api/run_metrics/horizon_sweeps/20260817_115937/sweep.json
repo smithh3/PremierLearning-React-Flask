@@ -1,0 +1,147 @@
+{
+  "id": "20260817_115937",
+  "reps": 5,
+  "trials": [
+    {
+      "name": "01_baseline",
+      "note": "Current defaults after option 6 + slower train.",
+      "env": {}
+    },
+    {
+      "name": "02_avg_all_reps",
+      "note": "Same net; average all 5 fits (no 1.2x train-RMSE filter). Last run kept 1/5.",
+      "env": {
+        "PL_AVERAGE_ALL_REPS": "1"
+      }
+    },
+    {
+      "name": "03_lr_1e-3",
+      "note": "Original AdamW LR. Faster, more init-sensitive.",
+      "env": {
+        "PL_LEARNING_RATE": "0.001"
+      }
+    },
+    {
+      "name": "04_lr_1e-4",
+      "note": "Slower steps into the regularized basin; more epochs.",
+      "env": {
+        "PL_LEARNING_RATE": "0.0001",
+        "PL_EARLY_STOPPING_PATIENCE": "40"
+      }
+    },
+    {
+      "name": "05_l2_weaker_1e-4",
+      "note": "Closer to old 3e-5 L2. Tests if 1e-3 is over-shrinking stars.",
+      "env": {
+        "PL_L2": "0.0001"
+      }
+    },
+    {
+      "name": "06_l2_stronger_5e-3",
+      "note": "Heavier L2. Expect stabler ranks, more compressed scores.",
+      "env": {
+        "PL_L2": "0.005"
+      }
+    },
+    {
+      "name": "07_wd_stronger_1e-3",
+      "note": "Stronger AdamW weight decay (was 1e-4).",
+      "env": {
+        "PL_WEIGHT_DECAY": "0.001"
+      }
+    },
+    {
+      "name": "08_smaller_net_0.5x",
+      "note": "Half-width net. Fewer equally-good solutions that reorder top-20.",
+      "env": {
+        "PL_WIDTH_MULT": "0.5"
+      }
+    },
+    {
+      "name": "09_old_capacity_1.5x_3layer",
+      "note": "Pre-option-6 size (1.5x, 3 layers) with CURRENT L2/LR. Isolates capacity vs 15 historic recipe.",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3"
+      }
+    },
+    {
+      "name": "10_patience_40",
+      "note": "Longer EarlyStopping + slower LR decay.",
+      "env": {
+        "PL_EARLY_STOPPING_PATIENCE": "40",
+        "PL_REDUCE_LR_PATIENCE": "12"
+      }
+    },
+    {
+      "name": "11_huber_1.0",
+      "note": "Tighter Huber (was 1.8). Less influence from huge pp90 outliers.",
+      "env": {
+        "PL_HUBER_DELTA": "1.0"
+      }
+    },
+    {
+      "name": "12_one_hidden_layer",
+      "note": "Depth 1. Most constrained net - fewest ways to reorder a tight top-20.",
+      "env": {
+        "PL_N_HIDDEN": "1"
+      }
+    },
+    {
+      "name": "13_three_hidden_layers",
+      "note": "Depth 3 at current width (1x). Historic shape was 3 layers; this isolates depth only.",
+      "env": {
+        "PL_N_HIDDEN": "3"
+      }
+    },
+    {
+      "name": "14_four_hidden_layers",
+      "note": "Depth 4 at current width. Extra capacity; likely more rank jitter.",
+      "env": {
+        "PL_N_HIDDEN": "4"
+      }
+    },
+    {
+      "name": "15_historic_pre_option6",
+      "note": "Replay pre-option-6 recipe: 1.5x width, 3 layers, L2=3e-5, wd=1e-5, lr=1e-3, patience=10/5.",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_L2": "0.00003",
+        "PL_WEIGHT_DECAY": "0.00001",
+        "PL_LEARNING_RATE": "0.001",
+        "PL_EARLY_STOPPING_PATIENCE": "10",
+        "PL_REDUCE_LR_PATIENCE": "5"
+      }
+    },
+    {
+      "name": "16_historic_dropout",
+      "note": "Same historic 3-layer net with the Dropout(0.3)/Dropout(0.1) that used to be commented in.",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_L2": "0.00003",
+        "PL_WEIGHT_DECAY": "0.00001",
+        "PL_LEARNING_RATE": "0.001",
+        "PL_EARLY_STOPPING_PATIENCE": "10",
+        "PL_REDUCE_LR_PATIENCE": "5",
+        "PL_DROPOUT_1": "0.3",
+        "PL_DROPOUT_2": "0.1"
+      }
+    },
+    {
+      "name": "17_historic_mae_loss",
+      "note": "Historic comment: MAE \"looked to be working quite well if huber does not work out\".",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_L2": "0.00003",
+        "PL_WEIGHT_DECAY": "0.00001",
+        "PL_LEARNING_RATE": "0.001",
+        "PL_EARLY_STOPPING_PATIENCE": "10",
+        "PL_REDUCE_LR_PATIENCE": "5",
+        "PL_LOSS": "mae"
+      }
+    }
+  ]
+}

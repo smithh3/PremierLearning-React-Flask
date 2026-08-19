@@ -1,0 +1,25 @@
+Horizon-5 hyperparameter sweep comparison (v2)
+Control: 1.5× width, 3 layers, L2 1e-3, LR 5e-4, wd 1e-4 (sweep-1 trial 09).
+Higher kendall/jaccard and lower pred_std = stabler ranks.
+haaland_pts is 5-GW total in --horizon-only mode (not h1 pp90).
+
+trial                             tau      j20     pstd     reps   epochs     H_rk    H_pts  testMAE
+----------------------------------------------------------------------------------------------------
+01_control_09                  0.9058   0.7728   0.0901      5/5     74.6        1     31.4    2.869
+    Replay sweep-1 winner: 1.5× width, 3 layers, current L2/LR/wd. New-seed control.
+02_lr_1e-3                     0.8696   0.7872   0.1185      5/5     67.4        1     32.2   2.7897
+    09 body + LR 1e-3 (03 helped on small net; 21 Adam 1e-3 had highest Haaland).
+03_1.5x_2layer                 0.8728   0.6518    0.128      5/5     76.8        1     31.8   2.8019
+    Unconfound width vs depth: 1.5× width, 2 layers only.
+04_2.0x_3layer                 0.9069   0.7425   0.0994      5/5     69.4        1     32.0   2.8552
+    More capacity: 2.0× width, 3 layers (09 was 1.5×).
+05_l2_3e-4                     0.7678   0.6617   0.2058      5/5     76.8        1     30.8    2.754
+    Slightly weaker L2 on 09 body (05 jumped 10× to 1e-4 on small net).
+06_l2_2e-3                     0.9045   0.7801   0.1142      5/5     59.0        1     31.9   2.8219
+    Slightly stronger L2 on 09 body (06 was 5e-3 on small net).
+07_wd_1e-3                     0.8632    0.751   0.1175      5/5     66.6        1     29.9   2.7735
+    Stronger AdamW wd on 09 body (07 lost on small net only).
+08_patience_40                 0.8898   0.7423   0.1063      5/5    109.8        1     33.3   2.7803
+    Longer EarlyStopping + slower LR decay on 09 body (10 gave Haaland 31.8 on 01).
+09_dropout_light               0.9356   0.8797   0.0715      5/5     69.0        1     32.3   2.8348
+    Light dropout on 09 + current L2 (not historic weak-L2 recipe).

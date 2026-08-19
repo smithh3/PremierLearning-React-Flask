@@ -1,0 +1,10 @@
+{
+  "name": "20_adamw_wd_0",
+  "note": "AdamW with decoupled weight decay off. Same as 01 except wd=0; pair with 19 (Adam) and 07 (wd=1e-3).",
+  "env": {
+    "PL_OPTIMIZER": "adamw",
+    "PL_WEIGHT_DECAY": "0"
+  },
+  "extra_args": [],
+  "reps": 5
+}

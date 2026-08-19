@@ -1,0 +1,12 @@
+{
+  "name": "05_drop_0.05_0.05",
+  "note": "Lighter dropout: is 0.1 already too much?",
+  "env": {
+    "PL_WIDTH_MULT": "1.5",
+    "PL_N_HIDDEN": "3",
+    "PL_DROPOUT_1": "0.05",
+    "PL_DROPOUT_2": "0.05"
+  },
+  "extra_args": [],
+  "reps": 5
+}

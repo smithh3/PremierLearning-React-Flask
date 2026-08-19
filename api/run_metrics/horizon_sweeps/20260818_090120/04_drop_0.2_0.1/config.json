@@ -1,0 +1,12 @@
+{
+  "name": "04_drop_0.2_0.1",
+  "note": "More dropout, still below historic 0.3/0.1 (that recipe had weak L2).",
+  "env": {
+    "PL_WIDTH_MULT": "1.5",
+    "PL_N_HIDDEN": "3",
+    "PL_DROPOUT_1": "0.2",
+    "PL_DROPOUT_2": "0.1"
+  },
+  "extra_args": [],
+  "reps": 5
+}

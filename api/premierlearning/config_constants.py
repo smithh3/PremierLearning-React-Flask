@@ -13,3 +13,7 @@ PRIOR_EARLY_TAU = 6.0
 TWO_SEASON_PRIOR_SCALE = 0.5
 # Last-season second half for minutes priors (DNP-inclusive fixture count)
 HALF_SEASON_FIXTURES = 19
+# Predict-only: drop DNP runs of this length from minutes features, but only if
+# the player appeared in the last RETURN_CONSECUTIVE_APPS fixtures (back in side).
+INJURY_DNP_STREAK = 3
+RETURN_CONSECUTIVE_APPS = 2

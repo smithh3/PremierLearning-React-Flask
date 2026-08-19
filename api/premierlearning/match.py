@@ -7,7 +7,12 @@ from premierlearning.clean_match import (
     get_default_game_stats, get_default_past_stats, get_default_stat_window,
     apply_feature_interactions,
 )
-from premierlearning.config_constants import PRIOR_EARLY_TAU, HALF_SEASON_FIXTURES
+from premierlearning.config_constants import (
+    PRIOR_EARLY_TAU,
+    HALF_SEASON_FIXTURES,
+    INJURY_DNP_STREAK,
+    RETURN_CONSECUTIVE_APPS,
+)
 from premierlearning.helper_functions import coerce_bool, coerce_optional_int
 
 
@@ -172,7 +177,15 @@ class AbstractMatch(RawMatch):
             'game_stats': self.game_stats,
             'new_stats_included': 1 if self.new_stats_included else 0
         }
-        mins_last_1, mins_last_2, mins_last_5 = self._mins_recency_windows()
+        injury_adj = self._predict_injury_adjusted_minutes()
+        if injury_adj is not None:
+            # Frac stays raw coverage (n/19). Shrinking it would look like a
+            # mid-season arrival rather than a thinner available-minutes sample.
+            clean_match['last_season_h2_mins_per_match'] = injury_adj['h2_mpm']
+            clean_match['last_two_seasons_mins_per_match'] = injury_adj['two_s_mpm']
+        mins_last_1, mins_last_2, mins_last_5 = self._mins_recency_windows(
+            injury_adj
+        )
         clean_match['mins_last_1'] = mins_last_1
         clean_match['mins_last_2_avg'] = mins_last_2
         clean_match['mins_last_5_avg'] = mins_last_5
@@ -214,20 +227,111 @@ class AbstractMatch(RawMatch):
         ls_mins = self._last_season_fixture_mins()
         return ls_mins[-HALF_SEASON_FIXTURES:]
 
-    def _mins_recency_windows(self):
-        """Last 1/2/5 fixtures including DNPs, stretching into last-season H2.
-
-        This-season games are used as-is. Missing slots are H2 fixtures, blended
-        toward H2 mins/match with weight exp(-this_season_fixtures / tau).
-        """
+    def _this_season_fixture_mins(self):
         this_mins = []
         for match in self._prior_matches():
             if getattr(match, 'is_last_season_carry', False):
                 continue
             this_mins.append(float(match.game_stats.get('minutes') or 0))
+        return this_mins
 
-        h2_mins = self._h2_fixture_mins()
-        h2_mpm = float(getattr(self.player, 'last_season_h2_mins_per_match', 0) or 0)
+    def _use_injury_dnp_skip(self):
+        """Train rows keep real DNP streaks. Predict overrides in FutureMatch."""
+        return False
+
+    @staticmethod
+    def _recent_n_played(mins, n=RETURN_CONSECUTIVE_APPS):
+        if len(mins) < n:
+            return False
+        return all(m > 0 for m in mins[-n:])
+
+    @staticmethod
+    def _drop_long_dnp_streaks_tagged(tagged, min_streak=INJURY_DNP_STREAK):
+        """Drop contiguous DNP runs of length >= min_streak. Keep 1–2 (rotation)."""
+        out = []
+        i = 0
+        n = len(tagged)
+        while i < n:
+            if tagged[i][1] <= 0:
+                j = i
+                while j < n and tagged[j][1] <= 0:
+                    j += 1
+                if j - i < min_streak:
+                    out.extend(tagged[i:j])
+                i = j
+            else:
+                out.append(tagged[i])
+                i += 1
+        return out
+
+    def _minutes_timeline_tagged(self):
+        """Chronological (bucket, minutes) for prev2, last-season H1/H2, this season."""
+        tagged = []
+        for match in getattr(self.player, 'prev2_szn_matches', None) or []:
+            tagged.append((
+                'prev2',
+                float(match.game_stats.get('minutes') or getattr(match, 'minutes', 0) or 0),
+            ))
+        ls_mins = self._last_season_fixture_mins()
+        if len(ls_mins) <= HALF_SEASON_FIXTURES:
+            h1, h2 = [], ls_mins
+        else:
+            h1 = ls_mins[:-HALF_SEASON_FIXTURES]
+            h2 = ls_mins[-HALF_SEASON_FIXTURES:]
+        tagged.extend(('h1', m) for m in h1)
+        tagged.extend(('h2', m) for m in h2)
+        tagged.extend(('this', m) for m in self._this_season_fixture_mins())
+        return tagged
+
+    def _predict_injury_adjusted_minutes(self):
+        """If predict and last two fixtures were appearances, drop 3+ DNP streaks.
+
+        Returns None when the skip does not apply (train, or not yet back).
+        last_7_pts_per_appearance is already appearance-only; last-season minutes
+        volume is a sum so dropped zeros do not change it.
+        """
+        if not self._use_injury_dnp_skip():
+            return None
+        tagged = self._minutes_timeline_tagged()
+        gate_mins = [m for bucket, m in tagged if bucket != 'prev2']
+        if not AbstractMatch._recent_n_played(gate_mins):
+            return None
+        filtered = AbstractMatch._drop_long_dnp_streaks_tagged(tagged)
+
+        def bucket_mins(name, rows):
+            return [m for b, m in rows if b == name]
+
+        this_mins = bucket_mins('this', filtered)
+        h2_mins = bucket_mins('h2', filtered)
+        two_s_mins = bucket_mins('prev2', filtered) + bucket_mins('h1', filtered)
+        h2_raw = bucket_mins('h2', tagged)
+        h2_mpm = AbstractMatch._mean_or_zero(h2_mins or h2_raw)
+        two_s_mpm = AbstractMatch._mean_or_zero(two_s_mins)
+        if not two_s_mins:
+            two_s_mpm = float(
+                getattr(self.player, 'last_two_seasons_mins_per_match', 0) or 0
+            )
+        return {
+            'this_mins': this_mins,
+            'h2_mins': h2_mins,
+            'h2_mpm': h2_mpm,
+            'two_s_mpm': two_s_mpm,
+        }
+
+    def _mins_recency_windows(self, injury_adj=None):
+        """Last 1/2/5 fixtures including DNPs, stretching into last-season H2.
+
+        This-season games are used as-is. Missing slots are H2 fixtures, blended
+        toward H2 mins/match with weight exp(-this_season_fixtures / tau).
+        """
+        if injury_adj is not None:
+            this_mins = list(injury_adj['this_mins'])
+            h2_mins = list(injury_adj['h2_mins'])
+            h2_mpm = float(injury_adj['h2_mpm'] or 0)
+        else:
+            this_mins = self._this_season_fixture_mins()
+            h2_mins = self._h2_fixture_mins()
+            h2_mpm = float(getattr(self.player, 'last_season_h2_mins_per_match', 0) or 0)
         early_w = math.exp(-len(this_mins) / PRIOR_EARLY_TAU)
 
         def window_n(n):
@@ -354,6 +458,9 @@ class FutureMatch(AbstractMatch):
         # self.player_point_deviation_per_game = player.point_deviation_per_game
 
         self.fixture_date = self.get_fixture_date(future_match_json['kickoff_time'])
+
+    def _use_injury_dnp_skip(self):
+        return True
     
     def get_gw(self, match_json: dict):
         return coerce_optional_int(match_json.get('event'))

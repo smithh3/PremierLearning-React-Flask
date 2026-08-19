@@ -1,0 +1,14 @@
+{
+  "name": "15_historic_pre_option6",
+  "note": "Replay pre-option-6 recipe: 1.5x width, 3 layers, L2=3e-5, wd=1e-5, lr=1e-3, patience=10/5.",
+  "env": {
+    "PL_WIDTH_MULT": "1.5",
+    "PL_N_HIDDEN": "3",
+    "PL_L2": "0.00003",
+    "PL_WEIGHT_DECAY": "0.00001",
+    "PL_LEARNING_RATE": "0.001",
+    "PL_EARLY_STOPPING_PATIENCE": "10",
+    "PL_REDUCE_LR_PATIENCE": "5"
+  },
+  "reps": 5
+}

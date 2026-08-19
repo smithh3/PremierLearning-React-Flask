@@ -1,0 +1,17 @@
+Horizon-5 hyperparameter sweep comparison
+Control: 1.5x, 3 layers, Dropout 0.1/0.05, L2 2.25e-3, LR 5e-4, AdamW wd 0, ReduceLR 0.3 (20260819_085557 trial 06). 10 reps.
+Higher kendall/jaccard and lower pred_std = stabler ranks.
+haaland_pts is 5-GW total in --horizon-only mode (not h1 pp90).
+
+trial                             tau      j20     pstd     reps   epochs     H_rk    H_pts  testMAE
+----------------------------------------------------------------------------------------------------
+01_control                     0.9054   0.8072   0.2087    10/10     48.9        1     32.3   2.9286
+    Bake / this-run 06: L2 2.25e-3 + ReduceLR 0.3. Best Jaccard and min J this run; tau 0.960. 10-rep check.
+02_rlr_0.5                     0.9399   0.8478   0.0977    10/10     53.7        1     32.6    2.818
+    Previous bake (v5 02 / this-run 01): same body, ReduceLR 0.5. Tau held 0.973 then 0.964; min J did not (0.905 then 0.739).
+03_lr_6e-4                      0.941    0.816   0.1039    10/10     62.3        1     32.6   2.8585
+    This-run 02 / v5 07: LR 6e-4, ReduceLR 0.5. High tau both sweeps; Jaccard 0.943 then 0.889. Exact replay, not stacked on 0.3.
+04_l2_2e-3                                                     /                                    
+    v4 winner 02_wd_0: L2 2e-3, ReduceLR 0.5. min J 0.905 that run; v5 control replay was fragile (tau 0.914, pstd 0.136).
+05_lr_6e-4_rlr_0.3                                             /                                    
+06_huber_1.4                                                   /                                    

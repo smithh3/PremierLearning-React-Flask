@@ -1,0 +1,16 @@
+{
+  "name": "12_lr_7.5e-4_wd_0",
+  "note": "LR 7.5e-4 + wd 0. Cautious LR plus v3 08 Jaccard \u2014 not the failed v3 10 1e-3 stack.",
+  "env": {
+    "PL_WIDTH_MULT": "1.5",
+    "PL_N_HIDDEN": "3",
+    "PL_DROPOUT_1": "0.1",
+    "PL_DROPOUT_2": "0.05",
+    "PL_L2": "0.002",
+    "PL_LEARNING_RATE": "0.00075",
+    "PL_WEIGHT_DECAY": "0",
+    "PL_OPTIMIZER": "adamw"
+  },
+  "extra_args": [],
+  "reps": 5
+}

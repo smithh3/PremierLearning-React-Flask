@@ -1,0 +1,249 @@
+0.28s - Expected: c:\Users\hal\.cursor\extensions\ms-python.debugpy-2026.6.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd_attach_to_process\attach_amd64.dll to exist.
+Setting up players and teams...
+Running team expectancies...
+Seeded early-season form for 20 teams from season (25, 26)
+Promoted/new team prior (bottom-3 PL rates scored=0.97 conceded=1.82): COV, HUL, IPS
+Training team goals expectancy model (neural net)...
+Training rows: 5030; max epochs: 500
+Team model input columns:
+  team_scored_last_5
+  team_scored_avg
+  team_conceded_last_5
+  team_conceded_avg
+  opp_scored_last_5
+  opp_scored_avg
+  opp_conceded_last_5
+  opp_conceded_avg
+  is_home
+Epoch 1/500
+101/101 - 2s - loss: 1.0866 - root_mean_squared_error: 1.9369 - mean_absolute_error: 1.4794 - val_loss: 0.9623 - val_root_mean_squared_error: 1.7913 - val_mean_absolute_error: 1.3552 - lr: 0.0010 - 2s/epoch - 24ms/step
+Epoch 2/500
+101/101 - 0s - loss: 0.9810 - root_mean_squared_error: 1.8229 - mean_absolute_error: 1.3851 - val_loss: 0.8960 - val_root_mean_squared_error: 1.7189 - val_mean_absolute_error: 1.3055 - lr: 0.0010 - 283ms/epoch - 3ms/step
+Epoch 3/500
+101/101 - 0s - loss: 0.8765 - root_mean_squared_error: 1.7047 - mean_absolute_error: 1.2967 - val_loss: 0.6802 - val_root_mean_squared_error: 1.4486 - val_mean_absolute_error: 1.0890 - lr: 0.0010 - 282ms/epoch - 3ms/step
+Epoch 4/500
+101/101 - 0s - loss: 0.6279 - root_mean_squared_error: 1.3406 - mean_absolute_error: 1.0147 - val_loss: 0.5454 - val_root_mean_squared_error: 1.2157 - val_mean_absolute_error: 0.9188 - lr: 0.0010 - 282ms/epoch - 3ms/step
+Epoch 5/500
+101/101 - 0s - loss: 0.5745 - root_mean_squared_error: 1.2497 - mean_absolute_error: 0.9604 - val_loss: 0.5277 - val_root_mean_squared_error: 1.1809 - val_mean_absolute_error: 0.9050 - lr: 0.0010 - 284ms/epoch - 3ms/step
+Epoch 6/500
+101/101 - 0s - loss: 0.5651 - root_mean_squared_error: 1.2358 - mean_absolute_error: 0.9512 - val_loss: 0.5233 - val_root_mean_squared_error: 1.1759 - val_mean_absolute_error: 0.8998 - lr: 0.0010 - 306ms/epoch - 3ms/step
+Epoch 7/500
+101/101 - 0s - loss: 0.5609 - root_mean_squared_error: 1.2288 - mean_absolute_error: 0.9479 - val_loss: 0.5207 - val_root_mean_squared_error: 1.1717 - val_mean_absolute_error: 0.8976 - lr: 0.0010 - 294ms/epoch - 3ms/step
+Epoch 8/500
+101/101 - 0s - loss: 0.5576 - root_mean_squared_error: 1.2229 - mean_absolute_error: 0.9445 - val_loss: 0.5186 - val_root_mean_squared_error: 1.1644 - val_mean_absolute_error: 0.8964 - lr: 0.0010 - 295ms/epoch - 3ms/step
+Epoch 9/500
+101/101 - 0s - loss: 0.5557 - root_mean_squared_error: 1.2236 - mean_absolute_error: 0.9423 - val_loss: 0.5175 - val_root_mean_squared_error: 1.1577 - val_mean_absolute_error: 0.8962 - lr: 0.0010 - 299ms/epoch - 3ms/step
+Epoch 10/500
+101/101 - 0s - loss: 0.5529 - root_mean_squared_error: 1.2160 - mean_absolute_error: 0.9399 - val_loss: 0.5183 - val_root_mean_squared_error: 1.1679 - val_mean_absolute_error: 0.8951 - lr: 0.0010 - 284ms/epoch - 3ms/step
+Epoch 11/500
+101/101 - 0s - loss: 0.5523 - root_mean_squared_error: 1.2196 - mean_absolute_error: 0.9384 - val_loss: 0.5178 - val_root_mean_squared_error: 1.1543 - val_mean_absolute_error: 0.8978 - lr: 0.0010 - 276ms/epoch - 3ms/step
+Epoch 12/500
+101/101 - 0s - loss: 0.5512 - root_mean_squared_error: 1.2163 - mean_absolute_error: 0.9373 - val_loss: 0.5166 - val_root_mean_squared_error: 1.1559 - val_mean_absolute_error: 0.8958 - lr: 0.0010 - 316ms/epoch - 3ms/step
+Epoch 13/500
+101/101 - 0s - loss: 0.5506 - root_mean_squared_error: 1.2139 - mean_absolute_error: 0.9376 - val_loss: 0.5167 - val_root_mean_squared_error: 1.1551 - val_mean_absolute_error: 0.8957 - lr: 0.0010 - 306ms/epoch - 3ms/step
+Epoch 14/500
+101/101 - 0s - loss: 0.5495 - root_mean_squared_error: 1.2140 - mean_absolute_error: 0.9361 - val_loss: 0.5178 - val_root_mean_squared_error: 1.1533 - val_mean_absolute_error: 0.8978 - lr: 0.0010 - 289ms/epoch - 3ms/step
+Epoch 15/500
+101/101 - 0s - loss: 0.5486 - root_mean_squared_error: 1.2107 - mean_absolute_error: 0.9347 - val_loss: 0.5169 - val_root_mean_squared_error: 1.1577 - val_mean_absolute_error: 0.8955 - lr: 0.0010 - 284ms/epoch - 3ms/step
+Epoch 16/500
+101/101 - 0s - loss: 0.5483 - root_mean_squared_error: 1.2126 - mean_absolute_error: 0.9342 - val_loss: 0.5178 - val_root_mean_squared_error: 1.1551 - val_mean_absolute_error: 0.8973 - lr: 0.0010 - 290ms/epoch - 3ms/step
+Epoch 17/500
+101/101 - 0s - loss: 0.5478 - root_mean_squared_error: 1.2102 - mean_absolute_error: 0.9340 - val_loss: 0.5172 - val_root_mean_squared_error: 1.1554 - val_mean_absolute_error: 0.8967 - lr: 0.0010 - 295ms/epoch - 3ms/step
+Epoch 18/500
+101/101 - 0s - loss: 0.5469 - root_mean_squared_error: 1.2099 - mean_absolute_error: 0.9330 - val_loss: 0.5173 - val_root_mean_squared_error: 1.1532 - val_mean_absolute_error: 0.8971 - lr: 0.0010 - 295ms/epoch - 3ms/step
+Epoch 19/500
+101/101 - 0s - loss: 0.5473 - root_mean_squared_error: 1.2098 - mean_absolute_error: 0.9334 - val_loss: 0.5184 - val_root_mean_squared_error: 1.1517 - val_mean_absolute_error: 0.8987 - lr: 0.0010 - 275ms/epoch - 3ms/step
+Epoch 20/500
+101/101 - 0s - loss: 0.5461 - root_mean_squared_error: 1.2064 - mean_absolute_error: 0.9323 - val_loss: 0.5170 - val_root_mean_squared_error: 1.1560 - val_mean_absolute_error: 0.8957 - lr: 0.0010 - 281ms/epoch - 3ms/step
+{'team_model_train_mae': 0.9322915077209473, 'team_model_test_mae': 0.9514371990328043, 'team_model_test_rmse': 1.2178760785736291, 'epochs_ran': 20, 'pred_range': (0.5372693538665771, 3.1607980728149414)}
+Team expectancies applied to all fixtures
+
+=== Sample horizon model columns (validation) ===
+
+Erling Haaland (MCI) — PREDICT (exact model input row)
+  form appearances available: 7
+  last_5 (should = total_points_last_5_avg): GW33:6pts/90m, GW33:7pts/90m, GW35:7pts/90m, GW36:11pts/90m, GW37:9pts/90m → pp90=8.0000
+  last_7 (should = total_points_avg): GW30:2pts/90m, GW32:2pts/90m, GW33:6pts/90m, GW33:7pts/90m, GW35:7pts/90m, GW36:11pts/90m, GW37:9pts/90m → pp90=6.2857
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  last_season_points_per_90: 7.284118
+  last_season_xgi_per_90: 0.858551
+  new_stats_included: 1
+  team_xg_over_n: 8.359054
+  team_xc_over_n: 4.587036
+  team_xg_last_5: 7.850057
+  team_xc_last_5: 4.878713
+  defcon_avg_x_new_stats_x_non_att: 0.000000
+  team_xg_over_n_x_outfield: 8.359054
+  total_points_last_5_avg: 8.000000
+  total_points_avg: 6.285714
+  xgi_last_5_avg: 0.918000
+  xgi_avg: 0.788571
+  expected_goals_conceded_last_5_avg: 1.446000
+  expected_goals_conceded_avg: 1.272857
+  defensive_contribution_last_5_avg: 2.600000
+  defensive_contribution_avg: 3.000000
+
+Erling Haaland — TRAIN (25, 26) GW35 vs EVE (A) (exact model input row; target window 3/5 played)
+  form appearances available: 39
+  last_5 (should = total_points_last_5_avg): GW29:2pts/90m, GW30:2pts/90m, GW32:2pts/90m, GW33:6pts/90m, GW33:7pts/90m → pp90=3.8000
+  last_7 (should = total_points_avg): GW26:5pts/45m, GW27:6pts/90m, GW29:2pts/90m, GW30:2pts/90m, GW32:2pts/90m, GW33:6pts/90m, GW33:7pts/90m → pp90=4.6154
+  target (points/90 over window): 9.000000
+  --- model input features (exact) ---
+  matches_played: 32
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  last_season_points_per_90: 5.953947
+  last_season_xgi_per_90: 0.787500
+  new_stats_included: 1
+  team_xg_over_n: 8.081894
+  team_xc_over_n: 4.381050
+  team_xg_last_5: 8.033237
+  team_xc_last_5: 4.776463
+  defcon_avg_x_new_stats_x_non_att: 0.000000
+  team_xg_over_n_x_outfield: 8.081894
+  total_points_last_5_avg: 3.800000
+  total_points_avg: 4.615385
+  xgi_last_5_avg: 0.610000
+  xgi_avg: 0.569231
+  expected_goals_conceded_last_5_avg: 0.976000
+  expected_goals_conceded_avg: 0.941538
+  defensive_contribution_last_5_avg: 3.600000
+  defensive_contribution_avg: 3.538462
+
+Bruno Borges Fernandes (MUN) — PREDICT (exact model input row)
+  form appearances available: 7
+  last_5 (should = total_points_last_5_avg): GW34:5pts/90m, GW35:5pts/90m, GW36:3pts/90m, GW37:9pts/90m, GW38:14pts/90m → pp90=7.2000
+  last_7 (should = total_points_avg): GW32:4pts/90m, GW33:6pts/90m, GW34:5pts/90m, GW35:5pts/90m, GW36:3pts/90m, GW37:9pts/90m, GW38:14pts/90m → pp90=6.5714
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 6.900489
+  last_season_xgi_per_90: 0.677423
+  new_stats_included: 1
+  team_xg_over_n: 6.887888
+  team_xc_over_n: 4.710054
+  team_xg_last_5: 6.590059
+  team_xc_last_5: 5.873032
+  defcon_avg_x_new_stats_x_non_att: 6.428571
+  team_xg_over_n_x_outfield: 6.887888
+  total_points_last_5_avg: 7.200000
+  total_points_avg: 6.571429
+  xgi_last_5_avg: 0.618000
+  xgi_avg: 0.531429
+  expected_goals_conceded_last_5_avg: 1.248000
+  expected_goals_conceded_avg: 1.454286
+  defensive_contribution_last_5_avg: 7.200000
+  defensive_contribution_avg: 6.428571
+
+Bruno Borges Fernandes — TRAIN (25, 26) GW34 vs BRE (H) (exact model input row; target window 5/5 played)
+  form appearances available: 37
+  last_5 (should = total_points_last_5_avg): GW29:8pts/90m, GW30:10pts/90m, GW31:13pts/90m, GW32:4pts/90m, GW33:6pts/90m → pp90=8.2000
+  last_7 (should = total_points_avg): GW27:2pts/90m, GW28:13pts/90m, GW29:8pts/90m, GW30:10pts/90m, GW31:13pts/90m, GW32:4pts/90m, GW33:6pts/90m → pp90=8.0000
+  target (points/90 over window): 7.200000
+  --- model input features (exact) ---
+  matches_played: 30
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 5.190587
+  last_season_xgi_per_90: 0.531588
+  new_stats_included: 1
+  team_xg_over_n: 6.590059
+  team_xc_over_n: 5.873032
+  team_xg_last_5: 6.913271
+  team_xc_last_5: 5.360802
+  defcon_avg_x_new_stats_x_non_att: 5.857143
+  team_xg_over_n_x_outfield: 6.590059
+  total_points_last_5_avg: 8.200000
+  total_points_avg: 8.000000
+  xgi_last_5_avg: 0.754000
+  xgi_avg: 0.731429
+  expected_goals_conceded_last_5_avg: 1.844000
+  expected_goals_conceded_avg: 1.460000
+  defensive_contribution_last_5_avg: 7.400000
+  defensive_contribution_avg: 5.857143
+=== End sample columns ===
+
+Preparing data for learning...
+Skipping predict for 177 players with <3 appearances (incl. last-season carry)
+Fitting horizon-1 linear models for per-match points error...
+Linear horizon-1 OOF RMSE: 2.960; per-match |residual| model — future err mean=2.244 range=(0.000, 7.855)
+Horizon-5 train rows: 52627 (skipped 6798 windows with <3 appearances in-window)
+Horizon-5 model: 5 independent fits (--horizon-reps)
+Getting predictions for total_points...
+  (5 independent fits; rep agreement reported after training)
+{'mean baseline absolute error': 1.7825351968067815, 'mean baseline rms error': 3.141196122978334, 'median baseline absolute error': 1.7158397758577892, 'median baseline rms error': 3.189251121605052, 'linear regression absolute error': 1.61657558992295, 'linear regression rms error': 2.9649931890673273}
+Model input columns:
+  matches_played
+  is_gkp
+  is_def
+  is_mid
+  is_att
+  last_season_points_per_90
+  last_season_xgi_per_90
+  new_stats_included
+  team_xg_over_n
+  team_xc_over_n
+  team_xg_last_5
+  team_xc_last_5
+  defcon_avg_x_new_stats_x_non_att
+  team_xg_over_n_x_outfield
+  total_points_last_5_avg
+  total_points_avg
+  expected_goal_involvements_last_5_avg
+  expected_goal_involvements_avg
+  expected_goals_conceded_last_5_avg
+  expected_goals_conceded_avg
+  defensive_contribution_last_5_avg
+  defensive_contribution_avg
+  fit 1/5...
+All inputs/outputs have matching shapes and valid numeric values
+Model capacity: hidden=[22, 11], l2=0.001, weight_decay=0.0001, lr=0.0005 (n_features=22, loss=Huber(delta=1.8))
+Epoch 1/500
+Traceback (most recent call last):
+  File "c:\Users\hal\.cursor\extensions\ms-python.debugpy-2026.6.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd.py", line 3740, in <module>
+    main()
+  File "c:\Users\hal\.cursor\extensions\ms-python.debugpy-2026.6.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd.py", line 3725, in main
+    globals = debugger.run(setup["file"], None, None, is_module)
+  File "c:\Users\hal\.cursor\extensions\ms-python.debugpy-2026.6.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd.py", line 2709, in run
+    return self._exec(is_module, entry_point_fn, module_name, file, globals, locals)
+  File "c:\Users\hal\.cursor\extensions\ms-python.debugpy-2026.6.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd.py", line 2728, in _exec
+    globals = pydevd_runpy._run_module_as_main(module_name, alter_argv=False)
+  File "c:\Users\hal\.cursor\extensions\ms-python.debugpy-2026.6.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\_pydevd_bundle\pydevd_runpy.py", line 228, in _run_module_as_main
+    return _run_code(code, main_globals, None, "__main__", mod_spec)
+  File "c:\Users\hal\.cursor\extensions\ms-python.debugpy-2026.6.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\_pydevd_bundle\pydevd_runpy.py", line 118, in _run_code
+    exec(code, run_globals)
+  File "C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\premierlearning\__main__.py", line 11, in <module>
+    runner.run()
+  File "C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\premierlearning\runner.py", line 65, in run
+    self.learn(horizon_only=horizon_only, minutes_only=minutes_only)
+  File "C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\premierlearning\runner.py", line 630, in learn
+    horizon_pp90 = get_avg_predictions(
+  File "C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\premierlearning\learning.py", line 708, in get_avg_predictions
+    print(baselines)
+  File "C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\premierlearning\learning.py", line 541, in get_predictions
+    callbacks = [
+  File "c:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\venv\lib\site-packages\keras\src\utils\traceback_utils.py", line 70, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+  File "C:\Users\hal\AppData\Local\Temp\__autograph_generated_file2k0se313.py", line 15, in tf__train_function
+    retval_ = ag__.converted_call(ag__.ld(step_function), (ag__.ld(self), ag__.ld(iterator)), None, fscope)
+TypeError: in user code:
+
+    File "c:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\venv\lib\site-packages\keras\src\engine\training.py", line 1338, in train_function  *
+        return step_function(self, iterator)
+
+    TypeError: tf__get_linear_predictions() takes 1 positional argument but 2 were given
+

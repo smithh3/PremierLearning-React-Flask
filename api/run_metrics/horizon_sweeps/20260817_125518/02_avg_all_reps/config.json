@@ -1,0 +1,8 @@
+{
+  "name": "02_avg_all_reps",
+  "note": "Force-average all 5 even if a rep has bad best_val_mae (contrast to default 8% trim).",
+  "env": {
+    "PL_AVERAGE_ALL_REPS": "1"
+  },
+  "reps": 5
+}

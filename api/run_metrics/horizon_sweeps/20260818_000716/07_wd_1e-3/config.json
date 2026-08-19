@@ -1,0 +1,11 @@
+{
+  "name": "07_wd_1e-3",
+  "note": "Stronger AdamW wd on 09 body (07 lost on small net only).",
+  "env": {
+    "PL_WIDTH_MULT": "1.5",
+    "PL_N_HIDDEN": "3",
+    "PL_WEIGHT_DECAY": "0.001"
+  },
+  "extra_args": [],
+  "reps": 5
+}

@@ -1,0 +1,38 @@
+Horizon-5 hyperparameter sweep comparison
+Higher kendall/jaccard and lower pred_std = stabler ranks.
+haaland_pts is 5-GW total in --horizon-only mode (not h1 pp90).
+
+trial                             tau      j20     pstd     reps   epochs     H_rk    H_pts  testMAE
+----------------------------------------------------------------------------------------------------
+02_avg_all_reps                                                /                                    
+    Force-average all 5 even if a rep has bad best_val_mae (contrast to default 8% trim).
+03_lr_1e-3                                                     /                                    
+    Original AdamW LR. Faster, more init-sensitive.
+04_lr_1e-4                                                     /                                    
+    Slower steps into the regularized basin; more epochs.
+05_l2_weaker_1e-4                                              /                                    
+    Closer to old 3e-5 L2. Tests if 1e-3 is over-shrinking stars.
+06_l2_stronger_5e-3                                            /                                    
+    Heavier L2. Expect stabler ranks, more compressed scores.
+07_wd_stronger_1e-3                                            /                                    
+    Stronger AdamW weight decay (was 1e-4).
+08_smaller_net_0.5x                                            /                                    
+    Half-width net. Fewer equally-good solutions that reorder top-20.
+09_old_capacity_1.5x_3layer                                    /                                    
+    Pre-option-6 size (1.5x, 3 layers) with CURRENT L2/LR. Isolates capacity vs 15 historic recipe.
+10_patience_40                                                 /                                    
+    Longer EarlyStopping + slower LR decay.
+11_huber_1.0                                                   /                                    
+    Tighter Huber (was 1.8). Less influence from huge pp90 outliers.
+12_one_hidden_layer                                            /                                    
+    Depth 1. Most constrained net - fewest ways to reorder a tight top-20.
+13_three_hidden_layers                                         /                                    
+    Depth 3 at current width (1x). Historic shape was 3 layers; this isolates depth only.
+14_four_hidden_layers                                          /                                    
+    Depth 4 at current width. Extra capacity; likely more rank jitter.
+15_historic_pre_option6                                        /                                    
+    Replay pre-option-6 recipe: 1.5x width, 3 layers, L2=3e-5, wd=1e-5, lr=1e-3, patience=10/5.
+16_historic_dropout                                            /                                    
+    Same historic 3-layer net with the Dropout(0.3)/Dropout(0.1) that used to be commented in.
+17_historic_mae_loss                                           /                                    
+    Historic comment: MAE "looked to be working quite well if huber does not work out".

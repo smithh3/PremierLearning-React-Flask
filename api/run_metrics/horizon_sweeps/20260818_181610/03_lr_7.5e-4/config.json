@@ -1,0 +1,16 @@
+{
+  "name": "03_lr_7.5e-4",
+  "note": "LR 7.5e-4. v3 03 (1e-3) helped Jaccard; v3 10 (1e-3 + L2 2e-3) was a min-Jaccard trap.",
+  "env": {
+    "PL_WIDTH_MULT": "1.5",
+    "PL_N_HIDDEN": "3",
+    "PL_DROPOUT_1": "0.1",
+    "PL_DROPOUT_2": "0.05",
+    "PL_L2": "0.002",
+    "PL_LEARNING_RATE": "0.00075",
+    "PL_WEIGHT_DECAY": "0.0001",
+    "PL_OPTIMIZER": "adamw"
+  },
+  "extra_args": [],
+  "reps": 5
+}

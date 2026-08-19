@@ -1,0 +1,10 @@
+{
+  "name": "04_lr_1e-4",
+  "note": "Slower steps into the regularized basin; more epochs.",
+  "env": {
+    "PL_LEARNING_RATE": "0.0001",
+    "PL_EARLY_STOPPING_PATIENCE": "40"
+  },
+  "extra_args": [],
+  "reps": 5
+}

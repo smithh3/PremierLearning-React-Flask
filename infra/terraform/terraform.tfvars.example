@@ -1,0 +1,20 @@
+aws_region = "eu-west-2"
+name_prefix = "premierlearning"
+image_tag = "latest"
+
+# Phase 0: keep these false. Prove login with a manual ECS run first.
+enable_schedule = false
+enable_split    = false
+apply_transfers = false
+run_learning    = false
+
+pipeline_cpu    = "1024"
+pipeline_memory = "2048"
+premierlearning_args = "--horizon-only --horizon-reps 5"
+
+# $10 estimated-charges alarm (us-east-1 billing metric). Confirm the SNS
+# subscription email, and enable Billing -> Billing preferences -> Receive Billing Alerts.
+billing_email = "haljsmith97@gmail.com"
+
+# SES identity + Fargate predictions email. Click the AWS verify link sent to this inbox.
+notify_email = "haljsmith97@gmail.com"

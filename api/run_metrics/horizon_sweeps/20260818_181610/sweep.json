@@ -1,0 +1,175 @@
+{
+  "id": "20260818_181610",
+  "sweep": "v4",
+  "reps": 5,
+  "trials": [
+    {
+      "name": "01_control_l2_2e-3",
+      "note": "Replay sweep-3 winner: 1.5\u00d7, 3 layers, Dropout 0.1/0.05, L2 2e-3, LR 5e-4, AdamW wd 1e-4.",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0.05",
+        "PL_L2": "0.002",
+        "PL_LEARNING_RATE": "0.0005",
+        "PL_WEIGHT_DECAY": "0.0001",
+        "PL_OPTIMIZER": "adamw"
+      }
+    },
+    {
+      "name": "02_wd_0",
+      "note": "L2 2e-3 body + wd 0 (v3 08 had the best Jaccard 0.962; \u03c4 and Haaland were the cost).",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0.05",
+        "PL_L2": "0.002",
+        "PL_LEARNING_RATE": "0.0005",
+        "PL_WEIGHT_DECAY": "0",
+        "PL_OPTIMIZER": "adamw"
+      }
+    },
+    {
+      "name": "03_lr_7.5e-4",
+      "note": "LR 7.5e-4. v3 03 (1e-3) helped Jaccard; v3 10 (1e-3 + L2 2e-3) was a min-Jaccard trap.",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0.05",
+        "PL_L2": "0.002",
+        "PL_LEARNING_RATE": "0.00075",
+        "PL_WEIGHT_DECAY": "0.0001",
+        "PL_OPTIMIZER": "adamw"
+      }
+    },
+    {
+      "name": "04_drop_first_only",
+      "note": "Dropout 0.1 / 0 on L2 2e-3 (v3 06 had \u03c4 0.955 but pred_max 18.6).",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0",
+        "PL_L2": "0.002",
+        "PL_LEARNING_RATE": "0.0005",
+        "PL_WEIGHT_DECAY": "0.0001",
+        "PL_OPTIMIZER": "adamw"
+      }
+    },
+    {
+      "name": "05_l2_2.5e-3",
+      "note": "Slightly stronger L2. v3 07 showed 1.5e-3 is not between 1e-3 and 2e-3; probe above the peak.",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0.05",
+        "PL_L2": "0.0025",
+        "PL_LEARNING_RATE": "0.0005",
+        "PL_WEIGHT_DECAY": "0.0001",
+        "PL_OPTIMIZER": "adamw"
+      }
+    },
+    {
+      "name": "06_l2_3e-3",
+      "note": "L2 3e-3. Watch Haaland compression vs 02 control 32.5.",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0.05",
+        "PL_L2": "0.003",
+        "PL_LEARNING_RATE": "0.0005",
+        "PL_WEIGHT_DECAY": "0.0001",
+        "PL_OPTIMIZER": "adamw"
+      }
+    },
+    {
+      "name": "07_drop_0.05_0.05",
+      "note": "Lighter dropout now that L2 2e-3 is doing the shrink (v3 05 was on L2 1e-3).",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.05",
+        "PL_DROPOUT_2": "0.05",
+        "PL_L2": "0.002",
+        "PL_LEARNING_RATE": "0.0005",
+        "PL_WEIGHT_DECAY": "0.0001",
+        "PL_OPTIMIZER": "adamw"
+      }
+    },
+    {
+      "name": "08_adam",
+      "note": "Plain Adam, wd 0, keep LR 5e-4 (v3 13 Adam+1e-3 had Haaland 33.2 and min J 0.739).",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0.05",
+        "PL_L2": "0.002",
+        "PL_LEARNING_RATE": "0.0005",
+        "PL_WEIGHT_DECAY": "0",
+        "PL_OPTIMIZER": "adam"
+      }
+    },
+    {
+      "name": "09_wd_0_l2_2.5e-3",
+      "note": "wd 0 + L2 2.5e-3. Jaccard from v3 08 with a bit more L2 than the control.",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0.05",
+        "PL_L2": "0.0025",
+        "PL_LEARNING_RATE": "0.0005",
+        "PL_WEIGHT_DECAY": "0",
+        "PL_OPTIMIZER": "adamw"
+      }
+    },
+    {
+      "name": "10_adam_l2_2.5e-3",
+      "note": "Adam + L2 2.5e-3. Extra shrink as the Jaccard counterweight for the Haaland optimizer.",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0.05",
+        "PL_L2": "0.0025",
+        "PL_LEARNING_RATE": "0.0005",
+        "PL_WEIGHT_DECAY": "0",
+        "PL_OPTIMIZER": "adam"
+      }
+    },
+    {
+      "name": "11_drop_first_l2_2.5e-3",
+      "note": "Dropout 0.1/0 + L2 2.5e-3. Regularize v3 06 rogue pred_max without adding second-layer dropout.",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0",
+        "PL_L2": "0.0025",
+        "PL_LEARNING_RATE": "0.0005",
+        "PL_WEIGHT_DECAY": "0.0001",
+        "PL_OPTIMIZER": "adamw"
+      }
+    },
+    {
+      "name": "12_lr_7.5e-4_wd_0",
+      "note": "LR 7.5e-4 + wd 0. Cautious LR plus v3 08 Jaccard \u2014 not the failed v3 10 1e-3 stack.",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0.05",
+        "PL_L2": "0.002",
+        "PL_LEARNING_RATE": "0.00075",
+        "PL_WEIGHT_DECAY": "0",
+        "PL_OPTIMIZER": "adamw"
+      }
+    }
+  ]
+}

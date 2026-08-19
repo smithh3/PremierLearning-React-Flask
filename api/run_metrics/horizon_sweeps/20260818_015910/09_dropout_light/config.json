@@ -1,0 +1,12 @@
+{
+  "name": "09_dropout_light",
+  "note": "Light dropout on 09 + current L2 (not historic weak-L2 recipe).",
+  "env": {
+    "PL_WIDTH_MULT": "1.5",
+    "PL_N_HIDDEN": "3",
+    "PL_DROPOUT_1": "0.1",
+    "PL_DROPOUT_2": "0.05"
+  },
+  "extra_args": [],
+  "reps": 5
+}

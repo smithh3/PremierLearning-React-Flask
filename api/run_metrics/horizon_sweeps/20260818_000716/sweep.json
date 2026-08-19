@@ -1,0 +1,87 @@
+{
+  "id": "20260818_000716",
+  "sweep": "v2",
+  "reps": 5,
+  "trials": [
+    {
+      "name": "01_control_09",
+      "note": "Replay sweep-1 winner: 1.5\u00d7 width, 3 layers, current L2/LR/wd. New-seed control.",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3"
+      }
+    },
+    {
+      "name": "02_lr_1e-3",
+      "note": "09 body + LR 1e-3 (03 helped on small net; 21 Adam 1e-3 had highest Haaland).",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_LEARNING_RATE": "0.001"
+      }
+    },
+    {
+      "name": "03_1.5x_2layer",
+      "note": "Unconfound width vs depth: 1.5\u00d7 width, 2 layers only.",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "2"
+      }
+    },
+    {
+      "name": "04_2.0x_3layer",
+      "note": "More capacity: 2.0\u00d7 width, 3 layers (09 was 1.5\u00d7).",
+      "env": {
+        "PL_WIDTH_MULT": "2.0",
+        "PL_N_HIDDEN": "3"
+      }
+    },
+    {
+      "name": "05_l2_3e-4",
+      "note": "Slightly weaker L2 on 09 body (05 jumped 10\u00d7 to 1e-4 on small net).",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_L2": "0.0003"
+      }
+    },
+    {
+      "name": "06_l2_2e-3",
+      "note": "Slightly stronger L2 on 09 body (06 was 5e-3 on small net).",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_L2": "0.002"
+      }
+    },
+    {
+      "name": "07_wd_1e-3",
+      "note": "Stronger AdamW wd on 09 body (07 lost on small net only).",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_WEIGHT_DECAY": "0.001"
+      }
+    },
+    {
+      "name": "08_patience_40",
+      "note": "Longer EarlyStopping + slower LR decay on 09 body (10 gave Haaland 31.8 on 01).",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_EARLY_STOPPING_PATIENCE": "40",
+        "PL_REDUCE_LR_PATIENCE": "12"
+      }
+    },
+    {
+      "name": "09_dropout_light",
+      "note": "Light dropout on 09 + current L2 (not historic weak-L2 recipe).",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0.05"
+      }
+    }
+  ]
+}

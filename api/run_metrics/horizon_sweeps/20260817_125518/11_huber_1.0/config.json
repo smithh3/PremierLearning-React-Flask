@@ -1,0 +1,8 @@
+{
+  "name": "11_huber_1.0",
+  "note": "Tighter Huber (was 1.8). Less influence from huge pp90 outliers.",
+  "env": {
+    "PL_HUBER_DELTA": "1.0"
+  },
+  "reps": 5
+}

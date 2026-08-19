@@ -1,0 +1,6 @@
+-r requirements.txt
+boto3>=1.26.0,<1.35.0
+psycopg2-binary>=2.9.0,<2.10.0
+# AdamW for TensorFlow 2.4.1 in the Docker image (native Keras AdamW is TF >= 2.11).
+tensorflow-addons==0.12.1
+typeguard==2.13.3

@@ -155,6 +155,13 @@ class AbstractSquad(ABC):
         y3 = {i: LpVariable(name=f"y3_{i}", cat="Binary") for i in valid_player_ids}
         z = {i: LpVariable(name=f"z_{i}", cat="Binary") for i in valid_player_ids}
 
+        gameweeks = list(range(int(gameweek_from), int(gameweek_to) + 1))
+        # One captain per GW; extra predicted points so unique high-ceiling starters are preferred.
+        c = {
+            gw: {i: LpVariable(name=f"c_{gw}_{i}", cat="Binary") for i in valid_player_ids}
+            for gw in gameweeks
+        }
+
         # Constraint for budget
         starters_model += (lpSum(x[i] * self.wrapped_player_dict[i].selling_price +
                                  y1[i] * self.wrapped_player_dict[i].selling_price +
@@ -207,7 +214,15 @@ class AbstractSquad(ABC):
                                  z[i] * int(i in squad_keys)
                                  for i in valid_player_ids) >= 15 - allowed_transfers, "number_of_transfers")
 
-        # Objective function
+        for gw in gameweeks:
+            starters_model += (
+                lpSum(c[gw][i] for i in valid_player_ids) == 1,
+                f"one_captain_gw_{gw}",
+            )
+            for i in valid_player_ids:
+                starters_model += c[gw][i] <= x[i]
+
+        # Objective: starter/bench points + a second copy of the captain's points each GW.
         starters_model += lpSum(
             x[i] * self.wrapped_player_dict[i].player
             .get_points_between_gameweeks(gameweek_from, gameweek_to, 1, self.bench_boost_gw, self.free_hit_gw)
@@ -219,7 +234,14 @@ class AbstractSquad(ABC):
             .get_points_between_gameweeks(gameweek_from, gameweek_to, 0.05, self.bench_boost_gw, self.free_hit_gw)
             + z[i] * self.wrapped_player_dict[i].player
             .get_points_between_gameweeks(gameweek_from, gameweek_to, 0.05, self.bench_boost_gw, self.free_hit_gw)
-            for i in valid_player_ids)
+            for i in valid_player_ids
+        ) + lpSum(
+            c[gw][i] * self.wrapped_player_dict[i].player.get_points_in_gameweek_n(
+                gw, 1, self.bench_boost_gw, self.free_hit_gw
+            )
+            for gw in gameweeks
+            for i in valid_player_ids
+        )
 
         starters_model.solve(PULP_CBC_CMD(msg=0))
         return self.get_player_ids_from_solved_model(starters_model)
@@ -227,9 +249,14 @@ class AbstractSquad(ABC):
     @staticmethod
     def get_player_ids_from_solved_model(model):
         ids = []
+        squad_prefixes = ('x_', 'y1_', 'y2_', 'y3_', 'z_')
         for var in model.variables():
-            if var.value() == 1:
-                ids.append(int(var.name.split('_')[1]))
+            if var.value() != 1:
+                continue
+            name = var.name
+            if not name.startswith(squad_prefixes):
+                continue
+            ids.append(int(name.split('_')[1]))
         return ids
 
     def populate_squad(self, player_ids):

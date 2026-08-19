@@ -1,0 +1,16 @@
+{
+  "name": "08_drop_0.1_0.02",
+  "note": "Keep first-layer dropout 0.1; shave second to 0.02 (v4 04 first-only was a pred_std_max 23 trap).",
+  "env": {
+    "PL_WIDTH_MULT": "1.5",
+    "PL_N_HIDDEN": "3",
+    "PL_DROPOUT_1": "0.1",
+    "PL_DROPOUT_2": "0.02",
+    "PL_L2": "0.002",
+    "PL_LEARNING_RATE": "0.0005",
+    "PL_WEIGHT_DECAY": "0",
+    "PL_OPTIMIZER": "adamw"
+  },
+  "extra_args": [],
+  "reps": 5
+}

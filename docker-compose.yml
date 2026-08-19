@@ -1,0 +1,20 @@
+services:
+  pipeline:
+    build: .
+    image: premierlearning-pipeline:local
+    working_dir: /app/api
+    env_file:
+      - .env
+    environment:
+      FPL_LOGIN_HEADLESS: "1"
+      DATABASE_PATH: /data/fantasy.db
+      RUN_LEARNING: "${RUN_LEARNING:-0}"
+      SUGGEST_TRANSFERS: "${SUGGEST_TRANSFERS:-true}"
+      APPLY_TRANSFERS: "${APPLY_TRANSFERS:-false}"
+      APPLY_TEAM_SELECTION: "${APPLY_TEAM_SELECTION:-false}"
+      PREMIERLEARNING_ARGS: "${PREMIERLEARNING_ARGS:-}"
+    volumes:
+      - ./database:/data
+      - ./api/data:/app/api/data
+    # Chromium in Docker needs a bit of shared memory
+    shm_size: "256mb"

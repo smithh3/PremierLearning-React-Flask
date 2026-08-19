@@ -1,0 +1,44 @@
+Horizon-5 hyperparameter sweep comparison
+Higher kendall/jaccard and lower pred_std = stabler ranks.
+haaland_pts is 5-GW total in --horizon-only mode (not h1 pp90).
+
+trial                             tau      j20     pstd     reps   epochs     H_rk    H_pts  testMAE
+----------------------------------------------------------------------------------------------------
+04_lr_1e-4                     0.7427   0.5316   0.2209      5/5    162.0        1     29.6   2.9664
+    Slower steps into the regularized basin; more epochs.
+05_l2_weaker_1e-4              0.6571   0.4516    0.315      5/5     83.8        1     31.9   2.7672
+    Closer to old 3e-5 L2. Tests if 1e-3 is over-shrinking stars.
+06_l2_stronger_5e-3            0.8125   0.6321   0.2119      5/5     43.8        1     29.0   2.9743
+    Heavier L2. Expect stabler ranks, more compressed scores.
+07_wd_stronger_1e-3            0.8115   0.7029   0.1791      5/5     72.4        1     31.4    2.756
+    Stronger AdamW weight decay (was 1e-4). Pair with 01 (wd=1e-4) and 20 (wd=0).
+08_smaller_net_0.5x            0.7939   0.6227   0.1984      5/5     58.2        1     29.9   2.9185
+    Half-width net. Fewer equally-good solutions that reorder top-20.
+09_old_capacity_1.5x_3layer    0.9018    0.751   0.0924      5/5     65.8        1     31.5   2.8173
+    Pre-option-6 size (1.5x, 3 layers) with CURRENT L2/LR. Isolates capacity vs 15 historic recipe.
+10_patience_40                 0.8355   0.6675   0.1595      5/5    105.8        1     31.8   2.8956
+    Longer EarlyStopping + slower LR decay.
+11_huber_1.0                   0.8289   0.6438   0.1784      5/5     61.2        1     29.0   2.9253
+    Tighter Huber (was 1.8). Less influence from huge pp90 outliers.
+12_one_hidden_layer            0.7664    0.515    0.214      5/5     79.4        1     30.4   2.9203
+    Depth 1. Most constrained net - fewest ways to reorder a tight top-20.
+13_three_hidden_layers         0.8762    0.757   0.1038      5/5     65.6        1     30.6   2.7957
+    Depth 3 at current width (1x). Historic shape was 3 layers; this isolates depth only.
+14_four_hidden_layers          0.9213   0.4261   0.3766      4/5     53.6        1     31.2   3.0337
+    Depth 4 at current width. Extra capacity; likely more rank jitter.
+15_historic_pre_option6        0.5778   0.4001   0.4443      5/5     33.4        1     28.8   2.8172
+    Replay pre-option-6 recipe: 1.5x width, 3 layers, L2=3e-5, AdamW wd=1e-5, lr=1e-3, patience=10/5. Pair with 22_historic_adam.
+16_historic_dropout            0.8546    0.685   0.1464      5/5     38.6        1     29.0   2.9564
+    Same historic 3-layer net with the Dropout(0.3)/Dropout(0.1) that used to be commented in.
+17_historic_mae_loss           0.5543   0.3366   0.4726      5/5     41.2        1     28.2   2.7878
+    Historic comment: MAE "looked to be working quite well if huber does not work out".
+18_linear_ridge                  None     None     None      1/1      0.0        1     36.4   1.5854
+    RidgeCV baseline on the same features/split as the nets. No AdamW, no hidden layers.
+19_adam_not_adamw              0.8417   0.6734   0.1801      5/5     69.4        1     31.0    2.804
+    Plain Adam, otherwise 01_baseline HPs (lr=5e-4, l2=1e-3, 2-layer). Pair with 01 (AdamW wd=1e-4) and 20 (AdamW wd=0).
+20_adamw_wd_0                  0.8492   0.6774    0.129      5/5     77.0        1     31.0   2.7675
+    AdamW with decoupled weight decay off. Same as 01 except wd=0; pair with 19 (Adam) and 07 (wd=1e-3).
+21_adam_lr_1e-3                0.8479   0.6031   0.1325      5/5     75.6        1     32.9   2.8604
+    Plain Adam at original 1e-3 LR. Pair with 03_lr_1e-3 (AdamW, same LR and other HPs).
+22_historic_adam               0.5585   0.3714   0.4288      5/5     46.0        1     30.4    2.931
+    Historic 3-layer recipe with Adam instead of AdamW. Pair with 15_historic_pre_option6.

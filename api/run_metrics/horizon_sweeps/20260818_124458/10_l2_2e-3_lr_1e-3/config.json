@@ -1,0 +1,14 @@
+{
+  "name": "10_l2_2e-3_lr_1e-3",
+  "note": "L2 2e-3 + LR 1e-3. Isolated each helped; stronger L2 can compress stars (v2 control Haaland 29.3) and may need the faster step.",
+  "env": {
+    "PL_WIDTH_MULT": "1.5",
+    "PL_N_HIDDEN": "3",
+    "PL_DROPOUT_1": "0.1",
+    "PL_DROPOUT_2": "0.05",
+    "PL_L2": "0.002",
+    "PL_LEARNING_RATE": "0.001"
+  },
+  "extra_args": [],
+  "reps": 5
+}

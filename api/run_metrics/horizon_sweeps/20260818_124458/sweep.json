@@ -1,0 +1,115 @@
+{
+  "id": "20260818_124458",
+  "sweep": "v3",
+  "reps": 5,
+  "trials": [
+    {
+      "name": "07_l2_1.5e-3",
+      "note": "Interpolate L2 between control 1e-3 and v2-06 2e-3.",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0.05",
+        "PL_L2": "0.0015"
+      }
+    },
+    {
+      "name": "08_wd_0",
+      "note": "AdamW wd off on dropout body (v1 20 was fine on small net; v2 07 wd 1e-3 lost).",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0.05",
+        "PL_L2": "0.001",
+        "PL_WEIGHT_DECAY": "0"
+      }
+    },
+    {
+      "name": "09_drop_0.15_0.08",
+      "note": "Half-step more dropout than control 0.1/0.05.",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.15",
+        "PL_DROPOUT_2": "0.08",
+        "PL_L2": "0.001"
+      }
+    },
+    {
+      "name": "10_l2_2e-3_lr_1e-3",
+      "note": "L2 2e-3 + LR 1e-3. Isolated each helped; stronger L2 can compress stars (v2 control Haaland 29.3) and may need the faster step.",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0.05",
+        "PL_L2": "0.002",
+        "PL_LEARNING_RATE": "0.001"
+      }
+    },
+    {
+      "name": "11_2.0x_l2_2e-3",
+      "note": "2.0\u00d7 width + L2 2e-3. v1 lesson: extra capacity only stabilized with enough L2. v2 04 (2.0\u00d7, L2 1e-3) had Haaland 32.4 H/T/F but min Jaccard 0.60.",
+      "env": {
+        "PL_WIDTH_MULT": "2.0",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0.05",
+        "PL_L2": "0.002"
+      }
+    },
+    {
+      "name": "12_four_layer_lr_1e-3",
+      "note": "4 layers + LR 1e-3. v1 14 had best tau (0.921) but Jaccard trap 0.43 on a 1x net ending at 2 units. 1.5x dropout body + faster LR aims to keep tau and Haaland without the trap.",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "4",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0.05",
+        "PL_L2": "0.001",
+        "PL_LEARNING_RATE": "0.001"
+      }
+    },
+    {
+      "name": "13_adam_lr_1e-3",
+      "note": "Plain Adam + LR 1e-3 (v1 21: highest Haaland 32.9, Jaccard only 0.60 on the small net). Dropout 09 body is the Jaccard counterweight.",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0.05",
+        "PL_L2": "0.001",
+        "PL_OPTIMIZER": "adam",
+        "PL_LEARNING_RATE": "0.001",
+        "PL_WEIGHT_DECAY": "0"
+      }
+    },
+    {
+      "name": "14_huber_1_patience_40",
+      "note": "Huber 1.0 + patience 40. v1 11 wanted to cut pp90 outliers that reorder top-20 (v2 control pred_max 28) but may have stopped too soon; v2 08 patience alone did nothing.",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0.05",
+        "PL_L2": "0.001",
+        "PL_HUBER_DELTA": "1.0",
+        "PL_EARLY_STOPPING_PATIENCE": "40",
+        "PL_REDUCE_LR_PATIENCE": "12"
+      }
+    },
+    {
+      "name": "15_historic_drop_l2_2e-3",
+      "note": "Historic Dropout 0.3/0.1 with L2 2e-3 (not the weak-L2 16 recipe). 16 failed as a bundle; this keeps the dropout idea and the L2 that actually worked.",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.3",
+        "PL_DROPOUT_2": "0.1",
+        "PL_L2": "0.002"
+      }
+    }
+  ]
+}

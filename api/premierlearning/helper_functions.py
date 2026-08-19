@@ -41,11 +41,20 @@ def score_is_present(value):
 def effective_minutes_for_points(mins: float) -> float:
     """Map predicted minutes before pp90 × mins / 90.
 
-    Below 70: identity. From 70 → 80 up to 90 → 90, easing toward 90 so
-    70–90 predicted minutes are not linearly haircut.
+    ≥ 75: treat as 90 (full pp90). 60–75: scale linearly onto 75–85.
+    Below 60: identity (raw minutes / 90). Predicted minutes themselves are unchanged.
     """
     m = max(0.0, min(90.0, float(mins or 0)))
-    if m < 70.0:
-        return m
-    t = (m - 70.0) / 20.0
-    return 80.0 + 10.0 * (t ** 0.5)
+    if m >= 75.0:
+        return 90.0
+    if m >= 60.0:
+        return 75.0 + (m - 60.0) / 15.0 * 10.0
+    return m
+
+
+def implied_pp90(adj_points: float, minutes: float) -> float:
+    """Recover predicted points per 90 from LP-adjusted points and predicted minutes."""
+    eff = effective_minutes_for_points(minutes)
+    if eff <= 0:
+        return 0.0
+    return float(adj_points or 0.0) * 90.0 / eff

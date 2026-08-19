@@ -1,0 +1,13 @@
+{
+  "name": "07_l2_1.5e-3",
+  "note": "Interpolate L2 between control 1e-3 and v2-06 2e-3.",
+  "env": {
+    "PL_WIDTH_MULT": "1.5",
+    "PL_N_HIDDEN": "3",
+    "PL_DROPOUT_1": "0.1",
+    "PL_DROPOUT_2": "0.05",
+    "PL_L2": "0.0015"
+  },
+  "extra_args": [],
+  "reps": 5
+}

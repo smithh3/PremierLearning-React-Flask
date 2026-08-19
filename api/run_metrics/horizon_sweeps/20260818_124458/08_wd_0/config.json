@@ -1,0 +1,14 @@
+{
+  "name": "08_wd_0",
+  "note": "AdamW wd off on dropout body (v1 20 was fine on small net; v2 07 wd 1e-3 lost).",
+  "env": {
+    "PL_WIDTH_MULT": "1.5",
+    "PL_N_HIDDEN": "3",
+    "PL_DROPOUT_1": "0.1",
+    "PL_DROPOUT_2": "0.05",
+    "PL_L2": "0.001",
+    "PL_WEIGHT_DECAY": "0"
+  },
+  "extra_args": [],
+  "reps": 5
+}

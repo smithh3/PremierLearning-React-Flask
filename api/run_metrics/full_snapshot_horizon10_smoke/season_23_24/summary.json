@@ -1,0 +1,28 @@
+{
+  "autosub_recoveries": 2,
+  "availability_affected_gameweeks": 1,
+  "availability_caveat": "Weekly historical injury percentages were unavailable; predicted minutes were used as the availability proxy.",
+  "config": {
+    "gameweek_from": 1,
+    "gameweek_to": 1,
+    "horizon_gameweeks": 10,
+    "initial_budget": 1000,
+    "max_transfers_per_gameweek": 5,
+    "min_current_gw_gain": 0.0,
+    "min_horizon_gain": 0.0,
+    "output_dir": "run_metrics\\full_snapshot_horizon10_smoke\\season_23_24",
+    "prediction_set_id": 3,
+    "season_start_year": 23
+  },
+  "final_bank": 45,
+  "final_squad_value": 1000,
+  "fixture_caveat": "Predictions use the final season fixture calendar, including reschedules that may not have been announced at the deadline.",
+  "hold_gameweeks": 0,
+  "prediction_set_id": 3,
+  "season": "23/24",
+  "simulation_run_id": 5,
+  "total_points": 47.0,
+  "transfers_made": 0,
+  "unexpected_zero_minute_starters": 2,
+  "zero_minute_captains": 1
+}

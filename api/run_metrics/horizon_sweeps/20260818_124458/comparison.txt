@@ -1,0 +1,25 @@
+Horizon-5 hyperparameter sweep comparison (v3)
+Control: 09 body + Dropout 0.1/0.05 (sweep-2 trial 09_dropout_light).
+Higher kendall/jaccard and lower pred_std = stabler ranks.
+haaland_pts is 5-GW total in --horizon-only mode (not h1 pp90).
+
+trial                             tau      j20     pstd     reps   epochs     H_rk    H_pts  testMAE
+----------------------------------------------------------------------------------------------------
+07_l2_1.5e-3                   0.9299   0.8393   0.0785      5/5     51.4        1     31.6   2.8318
+    Interpolate L2 between control 1e-3 and v2-06 2e-3.
+08_wd_0                        0.9248   0.9619    0.075      5/5     71.2        1     31.3   2.8047
+    AdamW wd off on dropout body (v1 20 was fine on small net; v2 07 wd 1e-3 lost).
+09_drop_0.15_0.08              0.9364   0.8528   0.0891      5/5     66.2        1     31.1   2.8422
+    Half-step more dropout than control 0.1/0.05.
+10_l2_2e-3_lr_1e-3             0.9525   0.8908   0.0631      5/5     81.4        1     32.0   2.8189
+    L2 2e-3 + LR 1e-3. Isolated each helped; stronger L2 can compress stars (v2 control Haaland 29.3) and may need the faster step.
+11_2.0x_l2_2e-3                0.9412   0.8321    0.059      5/5     84.0        1     31.3   2.7892
+    2.0× width + L2 2e-3. v1 lesson: extra capacity only stabilized with enough L2. v2 04 (2.0×, L2 1e-3) had Haaland 32.4 H/T/F but min Jaccard 0.60.
+12_four_layer_lr_1e-3          0.9546    0.845   0.0673      5/5     69.6        1     32.1   2.8095
+    4 layers + LR 1e-3. v1 14 had best tau (0.921) but Jaccard trap 0.43 on a 1x net ending at 2 units. 1.5x dropout body + faster LR aims to keep tau and Haaland without the trap.
+13_adam_lr_1e-3                0.9438   0.8465   0.0727      5/5    100.2        1     33.2   2.8343
+    Plain Adam + LR 1e-3 (v1 21: highest Haaland 32.9, Jaccard only 0.60 on the small net). Dropout 09 body is the Jaccard counterweight.
+14_huber_1_patience_40         0.9338   0.8717   0.0776      5/5     93.6        1     32.6   2.9527
+    Huber 1.0 + patience 40. v1 11 wanted to cut pp90 outliers that reorder top-20 (v2 control pred_max 28) but may have stopped too soon; v2 08 patience alone did nothing.
+15_historic_drop_l2_2e-3       0.9517   0.8701   0.0658      5/5     57.0        1     30.7   2.8256
+    Historic Dropout 0.3/0.1 with L2 2e-3 (not the weak-L2 16 recipe). 16 failed as a bundle; this keeps the dropout idea and the L2 that actually worked.

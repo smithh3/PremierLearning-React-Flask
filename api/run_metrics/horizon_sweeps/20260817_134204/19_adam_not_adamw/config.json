@@ -1,0 +1,10 @@
+{
+  "name": "19_adam_not_adamw",
+  "note": "Plain Adam, otherwise 01_baseline HPs (lr=5e-4, l2=1e-3, 2-layer). Pair with 01 (AdamW wd=1e-4) and 20 (AdamW wd=0).",
+  "env": {
+    "PL_OPTIMIZER": "adam",
+    "PL_WEIGHT_DECAY": "0"
+  },
+  "extra_args": [],
+  "reps": 5
+}

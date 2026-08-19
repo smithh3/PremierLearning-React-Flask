@@ -1,0 +1,31 @@
+Horizon-5 hyperparameter sweep comparison (v4)
+Control: dropout body + L2 2e-3 (sweep-3 trial 02_l2_2e-3).
+Higher kendall/jaccard and lower pred_std = stabler ranks.
+haaland_pts is 5-GW total in --horizon-only mode (not h1 pp90).
+
+trial                             tau      j20     pstd     reps   epochs     H_rk    H_pts  testMAE
+----------------------------------------------------------------------------------------------------
+01_control_l2_2e-3             0.9541   0.8638   0.0646      5/5     90.8        1     33.6   2.8618
+    Replay sweep-3 winner: 1.5×, 3 layers, Dropout 0.1/0.05, L2 2e-3, LR 5e-4, AdamW wd 1e-4.
+02_wd_0                        0.9512   0.9143   0.0596      5/5     54.6        1     32.6    2.865
+    L2 2e-3 body + wd 0 (v3 08 had the best Jaccard 0.962; τ and Haaland were the cost).
+03_lr_7.5e-4                   0.9592    0.811   0.0435      5/5     74.0        1     32.9   2.7953
+    LR 7.5e-4. v3 03 (1e-3) helped Jaccard; v3 10 (1e-3 + L2 2e-3) was a min-Jaccard trap.
+04_drop_first_only             0.9011   0.6694   0.2087      5/5     40.8        1     32.3   2.8732
+    Dropout 0.1 / 0 on L2 2e-3 (v3 06 had τ 0.955 but pred_max 18.6).
+05_l2_2.5e-3                   0.9077   0.7696   0.1155      5/5     48.4        1     32.7   2.8566
+    Slightly stronger L2. v3 07 showed 1.5e-3 is not between 1e-3 and 2e-3; probe above the peak.
+06_l2_3e-3                     0.9151   0.8014   0.1716      5/5     50.8        1     32.2    2.813
+    L2 3e-3. Watch Haaland compression vs 02 control 32.5.
+07_drop_0.05_0.05              0.9452   0.9247   0.1008      5/5     63.2        1     32.3   2.8632
+    Lighter dropout now that L2 2e-3 is doing the shrink (v3 05 was on L2 1e-3).
+08_adam                        0.9528    0.871    0.053      5/5     74.2        1     32.9   2.8703
+    Plain Adam, wd 0, keep LR 5e-4 (v3 13 Adam+1e-3 had Haaland 33.2 and min J 0.739).
+09_wd_0_l2_2.5e-3              0.9652   0.8528    0.052      5/5     74.2        1     32.2   2.8697
+    wd 0 + L2 2.5e-3. Jaccard from v3 08 with a bit more L2 than the control.
+10_adam_l2_2.5e-3              0.9174   0.7758   0.1152      5/5     50.2        1     31.9   2.8176
+    Adam + L2 2.5e-3. Extra shrink as the Jaccard counterweight for the Haaland optimizer.
+11_drop_first_l2_2.5e-3        0.9279   0.8363   0.0888      5/5     46.0        1     32.1   2.8951
+    Dropout 0.1/0 + L2 2.5e-3. Regularize v3 06 rogue pred_max without adding second-layer dropout.
+12_lr_7.5e-4_wd_0               0.922   0.7808   0.1326      5/5     53.4        1     32.7   2.8276
+    LR 7.5e-4 + wd 0. Cautious LR plus v3 08 Jaccard — not the failed v3 10 1e-3 stack.

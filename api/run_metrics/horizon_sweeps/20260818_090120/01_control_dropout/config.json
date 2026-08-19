@@ -1,0 +1,12 @@
+{
+  "name": "01_control_dropout",
+  "note": "Replay sweep-2 winner: 1.5\u00d7, 3 layers, L2 1e-3, LR 5e-4, Dropout 0.1/0.05.",
+  "env": {
+    "PL_WIDTH_MULT": "1.5",
+    "PL_N_HIDDEN": "3",
+    "PL_DROPOUT_1": "0.1",
+    "PL_DROPOUT_2": "0.05"
+  },
+  "extra_args": [],
+  "reps": 5
+}

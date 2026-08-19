@@ -1,0 +1,277 @@
+0.24s - Expected: c:\Users\hal\.cursor\extensions\ms-python.debugpy-2026.6.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd_attach_to_process\attach_amd64.dll to exist.
+Linear-only mode: RidgeCV for team + player predictions (no neural nets)
+Setting up players and teams...
+Running team expectancies...
+Seeded early-season form for 20 teams from season (25, 26)
+Promoted/new team prior (bottom-3 PL rates scored=0.97 conceded=1.82): COV, HUL, IPS
+Training team goals expectancy model (linear Ridge)...
+Training rows: 5030
+Team model input columns:
+  team_scored_last_5
+  team_scored_avg
+  team_conceded_last_5
+  team_conceded_avg
+  opp_scored_last_5
+  opp_scored_avg
+  opp_conceded_last_5
+  opp_conceded_avg
+  is_home
+{'team_model_test_mae': 0.9752513117172259, 'team_model_test_rmse': 1.2077041255269207, 'pred_range': (-0.7263075942992896, 2.928199610930795)}
+Team expectancies applied to all fixtures
+
+=== Sample horizon model columns (validation) ===
+
+Erling Haaland (MCI) — PREDICT (exact model input row)
+  form appearances available: 7
+  last_5 (should = total_points_last_5_avg): GW33:6pts/90m, GW33:7pts/90m, GW35:7pts/90m, GW36:11pts/90m, GW37:9pts/90m -> pp90=8.0000
+  last_7 (should = total_points_avg): GW30:2pts/90m, GW32:2pts/90m, GW33:6pts/90m, GW33:7pts/90m, GW35:7pts/90m, GW36:11pts/90m, GW37:9pts/90m -> pp90=6.2857
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  last_season_points_per_90: 7.284118
+  last_season_xgi_per_90: 0.858551
+  new_stats_included: 1
+  team_xg_over_n: 9.151902
+  team_xc_over_n: 5.673754
+  team_xg_last_5: 8.735174
+  team_xc_last_5: 6.137234
+  defcon_avg_x_new_stats_x_non_att: 0.000000
+  team_xg_over_n_x_outfield: 9.151902
+  total_points_last_5_avg: 8.000000
+  total_points_avg: 6.285714
+  xgi_last_5_avg: 0.918000
+  xgi_avg: 0.788571
+  expected_goals_conceded_last_5_avg: 1.446000
+  expected_goals_conceded_avg: 1.272857
+  defensive_contribution_last_5_avg: 2.600000
+  defensive_contribution_avg: 3.000000
+
+Erling Haaland — TRAIN (25, 26) GW35 vs EVE (A) (exact model input row; target window 3/5 played)
+  form appearances available: 39
+  last_5 (should = total_points_last_5_avg): GW29:2pts/90m, GW30:2pts/90m, GW32:2pts/90m, GW33:6pts/90m, GW33:7pts/90m -> pp90=3.8000
+  last_7 (should = total_points_avg): GW26:5pts/45m, GW27:6pts/90m, GW29:2pts/90m, GW30:2pts/90m, GW32:2pts/90m, GW33:6pts/90m, GW33:7pts/90m -> pp90=4.6154
+  target (points/90 over window): 9.000000
+  --- model input features (exact) ---
+  matches_played: 32
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  last_season_points_per_90: 5.953947
+  last_season_xgi_per_90: 0.787500
+  new_stats_included: 1
+  team_xg_over_n: 9.030084
+  team_xc_over_n: 5.841599
+  team_xg_last_5: 8.954171
+  team_xc_last_5: 5.790216
+  defcon_avg_x_new_stats_x_non_att: 0.000000
+  team_xg_over_n_x_outfield: 9.030084
+  total_points_last_5_avg: 3.800000
+  total_points_avg: 4.615385
+  xgi_last_5_avg: 0.610000
+  xgi_avg: 0.569231
+  expected_goals_conceded_last_5_avg: 0.976000
+  expected_goals_conceded_avg: 0.941538
+  defensive_contribution_last_5_avg: 3.600000
+  defensive_contribution_avg: 3.538462
+
+Bruno Borges Fernandes (MUN) — PREDICT (exact model input row)
+  form appearances available: 7
+  last_5 (should = total_points_last_5_avg): GW34:5pts/90m, GW35:5pts/90m, GW36:3pts/90m, GW37:9pts/90m, GW38:14pts/90m -> pp90=7.2000
+  last_7 (should = total_points_avg): GW32:4pts/90m, GW33:6pts/90m, GW34:5pts/90m, GW35:5pts/90m, GW36:3pts/90m, GW37:9pts/90m, GW38:14pts/90m -> pp90=6.5714
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 6.900489
+  last_season_xgi_per_90: 0.677423
+  new_stats_included: 1
+  team_xg_over_n: 8.422577
+  team_xc_over_n: 6.282353
+  team_xg_last_5: 7.795658
+  team_xc_last_5: 6.920339
+  defcon_avg_x_new_stats_x_non_att: 6.428571
+  team_xg_over_n_x_outfield: 8.422577
+  total_points_last_5_avg: 7.200000
+  total_points_avg: 6.571429
+  xgi_last_5_avg: 0.618000
+  xgi_avg: 0.531429
+  expected_goals_conceded_last_5_avg: 1.248000
+  expected_goals_conceded_avg: 1.454286
+  defensive_contribution_last_5_avg: 7.200000
+  defensive_contribution_avg: 6.428571
+
+Bruno Borges Fernandes — TRAIN (25, 26) GW34 vs BRE (H) (exact model input row; target window 5/5 played)
+  form appearances available: 37
+  last_5 (should = total_points_last_5_avg): GW29:8pts/90m, GW30:10pts/90m, GW31:13pts/90m, GW32:4pts/90m, GW33:6pts/90m -> pp90=8.2000
+  last_7 (should = total_points_avg): GW27:2pts/90m, GW28:13pts/90m, GW29:8pts/90m, GW30:10pts/90m, GW31:13pts/90m, GW32:4pts/90m, GW33:6pts/90m -> pp90=8.0000
+  target (points/90 over window): 7.200000
+  --- model input features (exact) ---
+  matches_played: 30
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 5.190587
+  last_season_xgi_per_90: 0.531588
+  new_stats_included: 1
+  team_xg_over_n: 7.795658
+  team_xc_over_n: 6.920339
+  team_xg_last_5: 8.014779
+  team_xc_last_5: 6.568645
+  defcon_avg_x_new_stats_x_non_att: 5.857143
+  team_xg_over_n_x_outfield: 7.795658
+  total_points_last_5_avg: 8.200000
+  total_points_avg: 8.000000
+  xgi_last_5_avg: 0.754000
+  xgi_avg: 0.731429
+  expected_goals_conceded_last_5_avg: 1.844000
+  expected_goals_conceded_avg: 1.460000
+  defensive_contribution_last_5_avg: 7.400000
+  defensive_contribution_avg: 5.857143
+=== End sample columns ===
+
+Preparing data for learning...
+Skipping predict for 177 players with <3 appearances (incl. last-season carry)
+Fitting horizon-1 linear models for per-match points error...
+Linear horizon-1 OOF RMSE: 2.970; per-match |residual| model — future err mean=2.276 range=(0.000, 9.778)
+Horizon-5 train rows: 52627 (skipped 6798 windows with <3 appearances in-window)
+Getting predictions for total_points...
+{'mean baseline absolute error': 1.7741441984117987, 'mean baseline rms error': 3.1001834860243527, 'median baseline absolute error': 1.7094598688767348, 'median baseline rms error': 3.146633777400517, 'linear regression absolute error': 1.6078450506811388, 'linear regression rms error': 2.922796936321336}
+Model input columns:
+  matches_played
+  is_gkp
+  is_def
+  is_mid
+  is_att
+  last_season_points_per_90
+  last_season_xgi_per_90
+  new_stats_included
+  team_xg_over_n
+  team_xc_over_n
+  team_xg_last_5
+  team_xc_last_5
+  defcon_avg_x_new_stats_x_non_att
+  team_xg_over_n_x_outfield
+  total_points_last_5_avg
+  total_points_avg
+  expected_goal_involvements_last_5_avg
+  expected_goal_involvements_avg
+  expected_goals_conceded_last_5_avg
+  expected_goals_conceded_avg
+  defensive_contribution_last_5_avg
+  defensive_contribution_avg
+(linear-only run — RidgeCV predictions)
+{'linear test absolute error': 1.5853878264810708, 'linear test rms error': 2.9772920134068706}
+Saved horizon rep metrics to C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\run_metrics\horizon_sweeps\20260817_134204\18_linear_ridge
+
+Top 100 players by predicted points over next 5 gameweeks:
+  #  Player                        Pos   Team                 Pts
+  1  Erling Haaland                4     MCI                 36.4
+  2  Bruno Borges Fernandes        3     MUN                 29.0
+  3  Ollie Watkins                 4     AVL                 26.9
+  4  Elliot Anderson               3     MCI                 26.6
+  5  Igor Thiago Nascimento Rodrigues  4     BRE                 26.6
+  6  Bruno Guimarães Rodriguez Moura  3     ARS                 26.1
+  7  Morgan Gibbs-White            3     NFO                 26.0
+  8  Dominic Calvert-Lewin         4     LEE                 25.0
+  9  Matheus Santos Carneiro da Cunha  3     MUN                 24.9
+ 10  William Osula                 4     NEW                 24.8
+ 11  Kobbie Mainoo                 3     MUN                 24.7
+ 12  João Pedro Junqueira de Jesus  4     CHE                 24.6
+ 13  Declan Rice                   3     ARS                 23.9
+ 14  Richarlison de Andrade        4     TOT                 23.8
+ 15  Igor Jesus Maciel da Cruz     4     NFO                 23.5
+ 16  Dominik Szoboszlai            3     LIV                 23.4
+ 17  Alex Scott                    3     BOU                 23.0
+ 18  Mateus Fernandes              3     TOT                 22.4
+ 19  Enzo Le Fée                   3     SUN                 22.2
+ 20  Nico O'Reilly                 2     MCI                 22.1
+ 21  Marcus Tavernier              3     BOU                 22.1
+ 22  Pascal Groß                   3     BHA                 22.0
+ 23  Enzo Fernández                3     CHE                 22.0
+ 24  Ethan Ampadu                  3     LEE                 21.9
+ 25  Kiernan Dewsbury-Hall         3     EVE                 21.9
+ 26  Marc Guéhi                    2     MCI                 21.7
+ 27  Lewis Miley                   3     NEW                 21.7
+ 28  Mathias Jensen                3     BRE                 21.6
+ 29  Jaidon Anthony                3     BRE                 21.6
+ 30  Alexis Mac Allister           3     LIV                 21.5
+ 31  Yehor Yarmoliuk               3     BRE                 21.5
+ 32  Morgan Rogers                 3     CHE                 21.4
+ 33  Jack Grealish                 3     MCI                 21.4
+ 34  Jack Hinshelwood              3     BHA                 21.3
+ 35  David Raya Martín             1     ARS                 21.3
+ 36  Dominic Solanke-Mitchell      4     TOT                 21.3
+ 37  Abdukodir Khusanov            2     MCI                 21.3
+ 38  Keane Lewis-Potter            3     BRE                 21.2
+ 39  Francisco Evanilson de Lima Barbosa  4     BOU                 20.9
+ 40  Antoine Semenyo               3     MCI                 20.9
+ 41  Conor Gallagher               3     TOT                 20.9
+ 42  Bukayo Saka                   3     ARS                 20.8
+ 43  Dango Ouattara                3     BRE                 20.7
+ 44  Anton Stach                   3     LEE                 20.7
+ 45  Cole Palmer                   3     CHE                 20.6
+ 46  Harry Maguire                 2     MUN                 20.5
+ 47  Kai Havertz                   4     ARS                 20.4
+ 48  Gianluigi Donnarumma          1     MCI                 20.2
+ 49  Iliman Ndiaye                 3     EVE                 20.1
+ 50  Bryan Mbeumo                  3     MUN                 20.1
+ 51  Granit Xhaka                  3     SUN                 20.1
+ 52  Gabriel dos Santos Magalhães  2     ARS                 20.0
+ 53  Rodrigo Bentancur             3     TOT                 19.9
+ 54  Jérémy Doku                   3     MCI                 19.7
+ 55  Cody Gakpo                    3     LIV                 19.6
+ 56  Noah Okafor                   3     LEE                 19.5
+ 57  Kepa Arrizabalaga Revuelta    1     ARS                 19.5
+ 58  Senne Lammens                 1     MUN                 19.4
+ 59  Brian Brobbey                 4     SUN                 19.3
+ 60  Sven Botman                   2     NEW                 19.3
+ 61  Mikkel Damsgaard              3     BRE                 19.3
+ 62  Rayan Vitor Simplício Rocha   3     BOU                 19.2
+ 63  Boubacar Kamara               3     AVL                 19.1
+ 64  Ola Aina                      2     NFO                 19.0
+ 65  Moisés Caicedo Corozo         3     CHE                 18.9
+ 66  Luke Shaw                     2     MUN                 18.9
+ 67  Mathys Tel                    3     TOT                 18.9
+ 68  Adrien Truffert               2     BOU                 18.9
+ 69  Marcos Senesi Barón           2     TOT                 18.6
+ 70  Youri Tielemans               3     MUN                 18.6
+ 71  Virgil van Dijk               2     LIV                 18.6
+ 72  Amad Diallo                   3     MUN                 18.5
+ 73  Norberto Bercique Gomes Betuncal  4     EVE                 18.5
+ 74  Tanaka Ao                     3     LEE                 18.4
+ 75  Pedro Lomba Neto              3     CHE                 18.4
+ 76  Matz Sels                     1     NFO                 18.4
+ 77  Saša Lukić                    3     IPS                 18.3
+ 78  Viktor Gyökeres               4     ARS                 18.2
+ 79  Pedro Porro Sauceda           2     TOT                 18.1
+ 80  James Hill                    2     BOU                 18.0
+ 81  Sander Berge                  3     FUL                 18.0
+ 82  Caoimhín Kelleher             1     BRE                 17.9
+ 83  James Tarkowski               2     EVE                 17.8
+ 84  Sandro Tonali                 3     TOT                 17.8
+ 85  Kevin Schade                  3     BRE                 17.6
+ 86  Martin Ødegaard               3     ARS                 17.6
+ 87  Nathan Collins                2     BRE                 17.6
+ 88  Kevin Danso                   2     TOT                 17.5
+ 89  Rúben dos Santos Gato Alves Dias  2     MCI                 17.5
+ 90  Taiwo Awoniyi                 4     NFO                 17.4
+ 91  John Victor Maciel Furtado    1     NFO                 17.4
+ 92  Bernd Leno                    1     FUL                 17.4
+ 93  Olivier Boscagli              2     BHA                 17.3
+ 94  Nick Pope                     1     NEW                 17.3
+ 95  James Justin                  2     LEE                 17.2
+ 96  Đorđe Petrović                1     BOU                 17.1
+ 97  Alex Iwobi                    3     FUL                 17.1
+ 98  Bart Verbruggen               1     BHA                 17.0
+ 99  Ferdi Kadıoğlu                2     BHA                 17.0
+100  Curtis Jones                  3     LIV                 17.0
+Skipping persist (--no-persist)

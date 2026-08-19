@@ -59,19 +59,20 @@ HORIZON_REPS_FLAG = '--horizon-reps'
 RUN_METRICS_DIR = Path('run_metrics/horizon_reps')
 LAST_HORIZON_METRICS_DIR = None
 
-# Player net: sweep-3 trial 02_l2_2e-3 (dropout body + L2 2e-3)
+# Player net: 20260819_085557 trial 06_reduce_lr_0.3
+# (L2 2.25e-3 wd-0 dropout body + ReduceLR factor 0.3)
 LEARNING_RATE = 5e-4  # was 1e-3
 EARLY_STOPPING_PATIENCE = 25  # was 10
 REDUCE_LR_PATIENCE = 8  # was 5
 REDUCE_LR_MIN = 1e-5
-L2 = 2e-3
-WEIGHT_DECAY = 1e-4
+L2 = 2.25e-3  # was 2e-3 on the v4 wd-0 winner
+WEIGHT_DECAY = 0.0  # sweep-4 02_wd_0; was 1e-4 on the v3 winner
 WIDTH_MULT = 1.5  # sweep-1 trial 09 (was 1.0 option-6 baseline)
 N_HIDDEN = 3  # sweep-1 trial 09 (was 2 option-6 baseline)
 DROPOUT_1 = 0.1
 DROPOUT_2 = 0.05
 HUBER_DELTA = 1.8
-REDUCE_LR_FACTOR = 0.5
+REDUCE_LR_FACTOR = 0.3  # was 0.5; 20260819_085557 trial 06
 
 
 @dataclass
@@ -282,6 +283,8 @@ def save_horizon_rep_run_metrics(
     selection_threshold: float,
 ):
     """Persist one directory per multi-rep horizon session for later comparison."""
+    if os.environ.get('PL_SIMULATION_BUILD'):
+        return
     global LAST_HORIZON_METRICS_DIR
     run_dir = _horizon_metrics_dir()
     LAST_HORIZON_METRICS_DIR = run_dir
@@ -355,6 +358,7 @@ def get_linear_predictions(ml_data):
 
     lin_pipe = _ridge_pipeline()
     lin_pipe.fit(X_train, y_train.ravel())
+    ml_data.linear_pipe = lin_pipe
 
     y_pred_test = lin_pipe.predict(X_test)
     if ml_data.ln_inputs:
@@ -399,6 +403,108 @@ def get_linear_predictions(ml_data):
         'rep_index': 1,
     }
     return pred_list, fit_stats
+
+
+class ReusablePredictor:
+    """A fitted player model that can score new point-in-time feature rows."""
+
+    def __init__(
+        self,
+        input_keys,
+        include_standard_stats,
+        log_targets,
+        feature_columns,
+        scaler=None,
+        models=None,
+        linear_pipe=None,
+    ):
+        self.input_keys = list(input_keys)
+        self.include_standard_stats = bool(include_standard_stats)
+        self.log_targets = bool(log_targets)
+        self.feature_columns = list(feature_columns)
+        self.scaler = scaler
+        self.models = list(models or [])
+        self.linear_pipe = linear_pipe
+
+    def predict(self, clean_matches):
+        if not clean_matches:
+            return []
+        rows = get_inputs_from_data_key(
+            clean_matches,
+            self.input_keys,
+            self.include_standard_stats,
+            include_opponent_features=True,
+        )
+        columns = list(rows[0].keys()) if rows else []
+        if columns != self.feature_columns:
+            raise ValueError(
+                f'Prediction feature mismatch: expected {self.feature_columns}, got {columns}'
+            )
+        inputs = numpy.array([list(row.values()) for row in rows], dtype=float)
+        if self.linear_pipe is not None:
+            predictions = self.linear_pipe.predict(inputs).reshape(-1, 1)
+        else:
+            scaled = self.scaler.transform(inputs)
+            model_predictions = [
+                model.predict(scaled, verbose=0) for model in self.models
+            ]
+            predictions = numpy.mean(model_predictions, axis=0)
+        if self.log_targets:
+            predictions = numpy.expm1(predictions)
+        return [
+            numpy.asarray([float(value)], dtype=float)
+            for value in predictions.reshape(-1)
+        ]
+
+
+def fit_reusable_predictor(
+    clean_matches,
+    input_keys,
+    output_key,
+    include_standard_stats,
+    output_learn=None,
+    log_targets=False,
+    reps=1,
+):
+    """Fit once and return a predictor reusable across historical GW snapshots."""
+    if not clean_matches:
+        raise ValueError(f'No training rows for reusable {output_key} model')
+    ml_data = MLData(
+        clean_matches,
+        clean_matches[:1],
+        input_keys,
+        output_key,
+        include_standard_stats,
+        output_learn=output_learn,
+        log_targets=log_targets,
+    )
+    print(calc_baselines(ml_data))
+    print(f'Fitting reusable {output_key} model once for the season')
+    if use_linear_model():
+        get_linear_predictions(ml_data)
+        return ReusablePredictor(
+            input_keys=input_keys,
+            include_standard_stats=include_standard_stats,
+            log_targets=log_targets,
+            feature_columns=ml_data.player_feature_columns,
+            linear_pipe=ml_data.linear_pipe,
+        )
+
+    fitted_models = []
+    for rep in range(max(1, int(reps))):
+        if reps > 1:
+            print(f'  reusable fit {rep + 1}/{reps}')
+        ml_data.setup_model()
+        ml_data.get_predictions()
+        fitted_models.append(ml_data.model)
+    return ReusablePredictor(
+        input_keys=input_keys,
+        include_standard_stats=include_standard_stats,
+        log_targets=log_targets,
+        feature_columns=ml_data.player_feature_columns,
+        scaler=ml_data.scaler,
+        models=fitted_models,
+    )
 
 
 class OrigRMSE(tf.keras.metrics.Metric):
@@ -482,7 +588,11 @@ class MLData:
         )
         self.input_to_pred = numpy.array([list(x.values()) for x in inputs_pred_with_headings], dtype=float)
 
-        if output_key == 'total_points' and not os.environ.get('PL_SWEEP_TRIAL'):
+        if (
+            output_key == 'total_points'
+            and not os.environ.get('PL_SWEEP_TRIAL')
+            and not os.environ.get('PL_SIMULATION_BUILD')
+        ):
             self.write_clean_data_csvs(
                 inputs_with_headings, outputs_with_headings, inputs_pred_with_headings,
                 clean_matches, input_to_pred
@@ -719,10 +829,30 @@ def calc_baselines(ml_data: MLData):
     }
 
 
-def fit_and_predict_points_error_margins(
-    clean_matches, future_clean_matches, input_keys, include_standard_stats=True
+class ReusablePointsErrorPredictor:
+    def __init__(self, pipe, input_keys, include_standard_stats, global_rmse):
+        self.pipe = pipe
+        self.input_keys = list(input_keys)
+        self.include_standard_stats = bool(include_standard_stats)
+        self.global_rmse = float(global_rmse)
+
+    def predict(self, clean_matches):
+        if not clean_matches:
+            return []
+        rows = get_inputs_from_data_key(
+            clean_matches,
+            self.input_keys,
+            self.include_standard_stats,
+            include_opponent_features=True,
+        )
+        inputs = numpy.array([list(row.values()) for row in rows], dtype=float)
+        return numpy.maximum(self.pipe.predict(inputs), 0.0).astype(float).tolist()
+
+
+def fit_points_error_predictor(
+    clean_matches, input_keys, include_standard_stats=True
 ):
-    """Per-match points_error via a second Ridge that predicts |residual| from the same features."""
+    """Fit the per-fixture uncertainty model once for a simulated season."""
     print('Fitting horizon-1 linear models for per-match points error...')
     inputs_with_headings = get_inputs_from_data_key(
         clean_matches, input_keys, include_standard_stats, include_opponent_features=True
@@ -731,9 +861,8 @@ def fit_and_predict_points_error_margins(
     X = numpy.array([list(x.values()) for x in inputs_with_headings], dtype=float)
     y = numpy.array([list(x.values()) for x in outputs_with_headings], dtype=float).ravel()
 
-    if len(X) < 20 or not future_clean_matches:
-        print('Not enough rows for linear error margin; defaulting to 0')
-        return [0.0] * len(future_clean_matches), 0.0
+    if len(X) < 20:
+        raise ValueError('Not enough rows for reusable points error model')
 
     points_pipe = Pipeline([
         ("scaler", StandardScaler(with_mean=True, with_std=True)),
@@ -749,20 +878,33 @@ def fit_and_predict_points_error_margins(
         ("ridge", RidgeCV(alphas=numpy.logspace(-3, 3, 13), store_cv_values=False)),
     ])
     err_pipe.fit(X, abs_resid)
-
-    future_inputs = get_inputs_from_data_key(
-        future_clean_matches, input_keys, include_standard_stats, include_opponent_features=True
+    return ReusablePointsErrorPredictor(
+        err_pipe,
+        input_keys,
+        include_standard_stats,
+        global_rmse,
     )
-    X_future = numpy.array([list(x.values()) for x in future_inputs], dtype=float)
-    errs = err_pipe.predict(X_future)
-    errs = numpy.maximum(errs, 0.0)
+
+
+def fit_and_predict_points_error_margins(
+    clean_matches, future_clean_matches, input_keys, include_standard_stats=True
+):
+    """Per-match points_error via a second Ridge that predicts |residual| from the same features."""
+    if not future_clean_matches:
+        return [], 0.0
+    predictor = fit_points_error_predictor(
+        clean_matches,
+        input_keys,
+        include_standard_stats,
+    )
+    errs = predictor.predict(future_clean_matches)
 
     print(
-        f'Linear horizon-1 OOF RMSE: {global_rmse:.3f}; '
-        f'per-match |residual| model — future err mean={float(errs.mean()):.3f} '
-        f'range=({float(errs.min()):.3f}, {float(errs.max()):.3f})'
+        f'Linear horizon-1 OOF RMSE: {predictor.global_rmse:.3f}; '
+        f'per-match |residual| model — future err mean={float(numpy.mean(errs)):.3f} '
+        f'range=({float(numpy.min(errs)):.3f}, {float(numpy.max(errs)):.3f})'
     )
-    return errs.astype(float).tolist(), global_rmse
+    return errs, predictor.global_rmse
 
 
 def fit_linear_points_error_margin(clean_matches, input_keys, include_standard_stats=True) -> float:

@@ -1,0 +1,12 @@
+trial,ok,optimizer,mean_kendall_tau,min_kendall_tau,top_20_jaccard_mean,top_20_jaccard_min,pred_std_mean,pred_std_max,n_reps_averaged,n_reps_requested,mean_epochs_ran,mean_test_mae,mean_pred_mean,mean_pred_max,haaland_rank,haaland_pts,fernandes_rank,fernandes_pts,note,env
+05_drop_0.05_0.05,True,AdamW,0.9251,0.8974,0.8701,0.8182,0.0762,1.0939,5,5,118.8,2.853,4.317,12.258,1,32.1,2,26.8,Lighter dropout: is 0.1 already too much?,"{""PL_DROPOUT_1"": ""0.05"", ""PL_DROPOUT_2"": ""0.05"", ""PL_N_HIDDEN"": ""3"", ""PL_WIDTH_MULT"": ""1.5""}"
+06_drop_first_only,True,AdamW,0.9549,0.9334,0.9074,0.8182,0.0702,2.0002,5,5,57.0,2.9112,4.252,18.56,1,32.2,2,27.0,Dropout after first hidden only (0.1 / 0).,"{""PL_DROPOUT_1"": ""0.1"", ""PL_DROPOUT_2"": ""0"", ""PL_N_HIDDEN"": ""3"", ""PL_WIDTH_MULT"": ""1.5""}"
+07_l2_1.5e-3,False,,,,,,,,,,,,,,,,,,,
+08_wd_0,False,,,,,,,,,,,,,,,,,,,
+09_drop_0.15_0.08,False,,,,,,,,,,,,,,,,,,,
+10_l2_2e-3_lr_1e-3,False,,,,,,,,,,,,,,,,,,,
+11_2.0x_l2_2e-3,False,,,,,,,,,,,,,,,,,,,
+12_four_layer_lr_1e-3,False,,,,,,,,,,,,,,,,,,,
+13_adam_lr_1e-3,False,,,,,,,,,,,,,,,,,,,
+14_huber_1_patience_40,False,,,,,,,,,,,,,,,,,,,
+15_historic_drop_l2_2e-3,False,,,,,,,,,,,,,,,,,,,

@@ -1,0 +1,16 @@
+{
+  "name": "04_drop_0.05_0.05",
+  "note": "Dropout 0.05/0.05 on wd 0 (v4 07 had best Jaccard mean 0.925 but pred_std_max 11.8 with wd 1e-4).",
+  "env": {
+    "PL_WIDTH_MULT": "1.5",
+    "PL_N_HIDDEN": "3",
+    "PL_DROPOUT_1": "0.05",
+    "PL_DROPOUT_2": "0.05",
+    "PL_L2": "0.002",
+    "PL_LEARNING_RATE": "0.0005",
+    "PL_WEIGHT_DECAY": "0",
+    "PL_OPTIMIZER": "adamw"
+  },
+  "extra_args": [],
+  "reps": 5
+}

@@ -1,0 +1,13 @@
+{
+  "name": "09_drop_0.15_0.08",
+  "note": "Half-step more dropout than control 0.1/0.05.",
+  "env": {
+    "PL_WIDTH_MULT": "1.5",
+    "PL_N_HIDDEN": "3",
+    "PL_DROPOUT_1": "0.15",
+    "PL_DROPOUT_2": "0.08",
+    "PL_L2": "0.001"
+  },
+  "extra_args": [],
+  "reps": 5
+}

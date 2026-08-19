@@ -1,0 +1,13 @@
+{
+  "name": "15_historic_drop_l2_2e-3",
+  "note": "Historic Dropout 0.3/0.1 with L2 2e-3 (not the weak-L2 16 recipe). 16 failed as a bundle; this keeps the dropout idea and the L2 that actually worked.",
+  "env": {
+    "PL_WIDTH_MULT": "1.5",
+    "PL_N_HIDDEN": "3",
+    "PL_DROPOUT_1": "0.3",
+    "PL_DROPOUT_2": "0.1",
+    "PL_L2": "0.002"
+  },
+  "extra_args": [],
+  "reps": 5
+}

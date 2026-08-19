@@ -1,0 +1,78 @@
+{
+  "session": {
+    "timestamp": "20260817_184906",
+    "argv": [
+      "C:\\Users\\hal\\Documents\\git\\premierlearningweb\\premier-learning-app\\api\\premierlearning\\__main__.py",
+      "--horizon-only",
+      "--horizon-reps",
+      "1",
+      "--no-persist",
+      "--linear"
+    ],
+    "sweep_trial": "18_linear_ridge",
+    "output_key": "total_points",
+    "log_targets": true,
+    "n_reps_requested": 1,
+    "n_reps_averaged": 1,
+    "selection_threshold_val_mae": null,
+    "n_train_rows": 42101,
+    "n_test_rows": 10526,
+    "n_predict_rows": 410
+  },
+  "model_config": {
+    "optimizer": "RidgeCV",
+    "model": "ridge",
+    "pca_var_explained": 0.95,
+    "ridge_alpha": 100.0,
+    "pca_components": 11,
+    "n_features": 22,
+    "loss": "mse",
+    "log_targets": true
+  },
+  "baselines": {
+    "mean baseline absolute error": 1.774144,
+    "mean baseline rms error": 3.100183,
+    "median baseline absolute error": 1.70946,
+    "median baseline rms error": 3.146634,
+    "linear regression absolute error": 1.607845,
+    "linear regression rms error": 2.922797
+  },
+  "rep_agreement": {},
+  "rep_stats": [
+    {
+      "epochs_ran": 0,
+      "test_mae": 1.585388,
+      "test_rmse": 2.977292,
+      "best_val_mae": 1.585388,
+      "pred_min": 2.405669,
+      "pred_max": 49.857309,
+      "pred_mean": 4.475643,
+      "kept_for_avg": true,
+      "rep_index": 1
+    }
+  ],
+  "feature_columns": [
+    "matches_played",
+    "is_gkp",
+    "is_def",
+    "is_mid",
+    "is_att",
+    "last_season_points_per_90",
+    "last_season_xgi_per_90",
+    "new_stats_included",
+    "team_xg_over_n",
+    "team_xc_over_n",
+    "team_xg_last_5",
+    "team_xc_last_5",
+    "defcon_avg_x_new_stats_x_non_att",
+    "team_xg_over_n_x_outfield",
+    "total_points_last_5_avg",
+    "total_points_avg",
+    "expected_goal_involvements_last_5_avg",
+    "expected_goal_involvements_avg",
+    "expected_goals_conceded_last_5_avg",
+    "expected_goals_conceded_avg",
+    "defensive_contribution_last_5_avg",
+    "defensive_contribution_avg"
+  ]
+}

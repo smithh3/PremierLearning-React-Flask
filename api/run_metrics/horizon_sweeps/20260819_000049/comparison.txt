@@ -1,0 +1,31 @@
+Horizon-5 hyperparameter sweep comparison (v5)
+Control: L2 2e-3 dropout body + AdamW wd 0 (sweep-4 trial 02_wd_0).
+Higher kendall/jaccard and lower pred_std = stabler ranks.
+haaland_pts is 5-GW total in --horizon-only mode (not h1 pp90).
+
+trial                             tau      j20     pstd     reps   epochs     H_rk    H_pts  testMAE
+----------------------------------------------------------------------------------------------------
+01_control_wd_0                 0.914    0.837   0.1358      5/5     52.4        1     32.6   2.9136
+    Replay sweep-4 winner: 1.5×, 3 layers, Dropout 0.1/0.05, L2 2e-3, LR 5e-4, AdamW wd 0.
+02_l2_2.25e-3                  0.9728   0.9333   0.0369      5/5     67.4        1     32.4   2.8364
+    L2 2.25e-3. v4 09 (2.5e-3 + wd 0) had the best tau; interpolate rather than jump.
+03_l2_1.75e-3                  0.9423    0.837    0.085      5/5     62.2        1     31.8   2.8134
+    Slightly weaker L2. v4 control with wd 1e-4 had Haaland 33.6; wd 0 sat at 32.6.
+04_drop_0.05_0.05               0.906   0.8276   0.1767      5/5     40.6        1     33.1   2.8832
+    Dropout 0.05/0.05 on wd 0 (v4 07 had best Jaccard mean 0.925 but pred_std_max 11.8 with wd 1e-4).
+05_drop_0.08_0.04              0.9259   0.8559      0.1      5/5     63.2        1     33.1   2.8229
+    Half-step lighter dropout than 0.1/0.05. Keep both layers.
+06_wd_3e-5                     0.9393   0.8458    0.071      5/5     93.2        1     32.7   2.9148
+    Tiny AdamW wd. v4 02 (wd 0) beat 01 (wd 1e-4); test whether 0 vs 1e-4 is a cliff.
+07_lr_6e-4                     0.9507   0.9429   0.0594      5/5     76.8        1     33.2   3.0159
+    LR 6e-4. v4 03 (7.5e-4) had tau 0.959 but Jaccard 0.811; 12 (7.5e-4 + wd 0) trapped.
+08_drop_0.1_0.02               0.9415   0.7886   0.0857      5/5     65.0        1     33.4   2.8205
+    Keep first-layer dropout 0.1; shave second to 0.02 (v4 04 first-only was a pred_std_max 23 trap).
+09_l2_2.5e-3                   0.9135    0.811    0.098      5/5     61.0        1     32.2   2.9418
+    Replay v4 09 (best tau 0.965) on new seeds: wd 0 + L2 2.5e-3. Jaccard was the cost.
+10_drop_0.05_l2_2.25e-3        0.8759   0.6949   0.1969      5/5     48.6        1     33.0   2.8163
+    Lighter dropout + interpolated L2. Isolated near-wins that may need each other.
+11_drop_0.05_l2_2.5e-3          0.919   0.8638   0.1014      5/5     47.2        1     32.7   2.8516
+    v4 07 Jaccard mean + v4 09 tau L2, both on the wd 0 body.
+12_wd_3e-5_l2_2.25e-3          0.9086   0.7751   0.1843      5/5     58.0        1     33.1   2.9357
+    Tiny wd + interpolated L2. If 0 is slightly under-regularized, this is the small step back.

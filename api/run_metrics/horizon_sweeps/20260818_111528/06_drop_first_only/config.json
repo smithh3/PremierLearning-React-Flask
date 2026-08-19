@@ -1,0 +1,12 @@
+{
+  "name": "06_drop_first_only",
+  "note": "Dropout after first hidden only (0.1 / 0).",
+  "env": {
+    "PL_WIDTH_MULT": "1.5",
+    "PL_N_HIDDEN": "3",
+    "PL_DROPOUT_1": "0.1",
+    "PL_DROPOUT_2": "0"
+  },
+  "extra_args": [],
+  "reps": 5
+}

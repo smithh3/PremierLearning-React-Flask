@@ -1,0 +1,75 @@
+Setting up players and teams...
+Running team expectancies...
+Seeded early-season form for 20 teams from season (25, 26)
+Promoted/new team prior (bottom-3 PL rates scored=0.97 conceded=1.82): COV, HUL, IPS
+Training team goals expectancy model (neural net)...
+Training rows: 5030; max epochs: 500
+Team model input columns:
+  team_scored_last_5
+  team_scored_avg
+  team_conceded_last_5
+  team_conceded_avg
+  opp_scored_last_5
+  opp_scored_avg
+  opp_conceded_last_5
+  opp_conceded_avg
+  is_home
+Epoch 1/500
+101/101 - 1s - loss: 0.7235 - root_mean_squared_error: 1.4867 - mean_absolute_error: 1.1215 - val_loss: 0.5584 - val_root_mean_squared_error: 1.2182 - val_mean_absolute_error: 0.9468 - lr: 0.0010 - 1s/epoch - 11ms/step
+Epoch 2/500
+101/101 - 0s - loss: 0.5939 - root_mean_squared_error: 1.2819 - mean_absolute_error: 0.9849 - val_loss: 0.5348 - val_root_mean_squared_error: 1.1804 - val_mean_absolute_error: 0.9182 - lr: 0.0010 - 174ms/epoch - 2ms/step
+Epoch 3/500
+101/101 - 0s - loss: 0.5780 - root_mean_squared_error: 1.2570 - mean_absolute_error: 0.9669 - val_loss: 0.5290 - val_root_mean_squared_error: 1.1687 - val_mean_absolute_error: 0.9128 - lr: 0.0010 - 172ms/epoch - 2ms/step
+Epoch 4/500
+101/101 - 0s - loss: 0.5695 - root_mean_squared_error: 1.2417 - mean_absolute_error: 0.9593 - val_loss: 0.5212 - val_root_mean_squared_error: 1.1627 - val_mean_absolute_error: 0.9021 - lr: 0.0010 - 170ms/epoch - 2ms/step
+Epoch 5/500
+101/101 - 0s - loss: 0.5651 - root_mean_squared_error: 1.2379 - mean_absolute_error: 0.9525 - val_loss: 0.5213 - val_root_mean_squared_error: 1.1601 - val_mean_absolute_error: 0.9040 - lr: 0.0010 - 170ms/epoch - 2ms/step
+Epoch 6/500
+101/101 - 0s - loss: 0.5607 - root_mean_squared_error: 1.2308 - mean_absolute_error: 0.9484 - val_loss: 0.5183 - val_root_mean_squared_error: 1.1595 - val_mean_absolute_error: 0.9001 - lr: 0.0010 - 165ms/epoch - 2ms/step
+Epoch 7/500
+101/101 - 0s - loss: 0.5579 - root_mean_squared_error: 1.2283 - mean_absolute_error: 0.9443 - val_loss: 0.5177 - val_root_mean_squared_error: 1.1563 - val_mean_absolute_error: 0.9005 - lr: 0.0010 - 167ms/epoch - 2ms/step
+Epoch 8/500
+101/101 - 0s - loss: 0.5561 - root_mean_squared_error: 1.2224 - mean_absolute_error: 0.9445 - val_loss: 0.5149 - val_root_mean_squared_error: 1.1540 - val_mean_absolute_error: 0.8962 - lr: 0.0010 - 169ms/epoch - 2ms/step
+Epoch 9/500
+101/101 - 0s - loss: 0.5540 - root_mean_squared_error: 1.2205 - mean_absolute_error: 0.9402 - val_loss: 0.5161 - val_root_mean_squared_error: 1.1569 - val_mean_absolute_error: 0.8983 - lr: 0.0010 - 164ms/epoch - 2ms/step
+Epoch 10/500
+101/101 - 0s - loss: 0.5531 - root_mean_squared_error: 1.2206 - mean_absolute_error: 0.9395 - val_loss: 0.5169 - val_root_mean_squared_error: 1.1538 - val_mean_absolute_error: 0.8997 - lr: 0.0010 - 163ms/epoch - 2ms/step
+Epoch 11/500
+101/101 - 0s - loss: 0.5513 - root_mean_squared_error: 1.2158 - mean_absolute_error: 0.9380 - val_loss: 0.5176 - val_root_mean_squared_error: 1.1573 - val_mean_absolute_error: 0.9018 - lr: 0.0010 - 167ms/epoch - 2ms/step
+Epoch 12/500
+101/101 - 0s - loss: 0.5503 - root_mean_squared_error: 1.2142 - mean_absolute_error: 0.9378 - val_loss: 0.5172 - val_root_mean_squared_error: 1.1546 - val_mean_absolute_error: 0.9019 - lr: 0.0010 - 167ms/epoch - 2ms/step
+Epoch 13/500
+101/101 - 0s - loss: 0.5501 - root_mean_squared_error: 1.2132 - mean_absolute_error: 0.9371 - val_loss: 0.5157 - val_root_mean_squared_error: 1.1567 - val_mean_absolute_error: 0.8977 - lr: 0.0010 - 164ms/epoch - 2ms/step
+Epoch 14/500
+101/101 - 0s - loss: 0.5484 - root_mean_squared_error: 1.2142 - mean_absolute_error: 0.9350 - val_loss: 0.5168 - val_root_mean_squared_error: 1.1517 - val_mean_absolute_error: 0.9012 - lr: 0.0010 - 164ms/epoch - 2ms/step
+Epoch 15/500
+101/101 - 0s - loss: 0.5474 - root_mean_squared_error: 1.2087 - mean_absolute_error: 0.9348 - val_loss: 0.5167 - val_root_mean_squared_error: 1.1608 - val_mean_absolute_error: 0.8992 - lr: 0.0010 - 158ms/epoch - 2ms/step
+Epoch 16/500
+101/101 - 0s - loss: 0.5477 - root_mean_squared_error: 1.2132 - mean_absolute_error: 0.9341 - val_loss: 0.5171 - val_root_mean_squared_error: 1.1572 - val_mean_absolute_error: 0.9020 - lr: 0.0010 - 159ms/epoch - 2ms/step
+Epoch 17/500
+101/101 - 0s - loss: 0.5469 - root_mean_squared_error: 1.2104 - mean_absolute_error: 0.9338 - val_loss: 0.5158 - val_root_mean_squared_error: 1.1562 - val_mean_absolute_error: 0.8989 - lr: 0.0010 - 165ms/epoch - 2ms/step
+Epoch 18/500
+101/101 - 0s - loss: 0.5464 - root_mean_squared_error: 1.2088 - mean_absolute_error: 0.9333 - val_loss: 0.5169 - val_root_mean_squared_error: 1.1553 - val_mean_absolute_error: 0.9021 - lr: 0.0010 - 174ms/epoch - 2ms/step
+Traceback (most recent call last):
+  File "C:\Python38\lib\runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "C:\Python38\lib\runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\premierlearning\__main__.py", line 11, in <module>
+    runner.run()
+  File "C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\premierlearning\runner.py", line 60, in run
+    self.print_sample_horizon_feature_columns()
+  File "C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\premierlearning\runner.py", line 133, in print_sample_horizon_feature_columns
+    self._print_form_appearance_breakdown(prior_apps)
+  File "C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\premierlearning\runner.py", line 221, in _print_form_appearance_breakdown
+    print(f'  last_{LAST_5_WINDOW} (should = total_points_last_5_avg): {fmt(prior_apps[-LAST_5_WINDOW:])}')
+  File "C:\Python38\lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 120: character maps to <undefined>
+{'team_model_train_mae': 0.9333129525184631, 'team_model_test_mae': 0.9513358441338862, 'team_model_test_rmse': 1.2180896585835153, 'epochs_ran': 18, 'pred_range': (0.13379748165607452, 3.589834451675415)}
+Team expectancies applied to all fixtures
+
+=== Sample horizon model columns (validation) ===
+
+Erling Haaland (MCI) — PREDICT (exact model input row)
+  form appearances available: 7

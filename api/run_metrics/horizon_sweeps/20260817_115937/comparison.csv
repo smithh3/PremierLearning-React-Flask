@@ -1,0 +1,18 @@
+trial,ok,mean_kendall_tau,min_kendall_tau,top_20_jaccard_mean,top_20_jaccard_min,pred_std_mean,pred_std_max,n_reps_averaged,n_reps_requested,mean_epochs_ran,mean_test_mae,mean_pred_mean,mean_pred_max,haaland_rank,haaland_pts,fernandes_rank,fernandes_pts,note,env
+01_baseline,True,0.8403,0.8066,0.7503,0.6,0.1437,1.9106,5,5,83.0,2.4394,4.413,11.144,1,30.8,3,26.7,Current defaults after option 6 + slower train.,{}
+02_avg_all_reps,False,,,,,,,,,,,,,,,,,Same net; average all 5 fits (no 1.2x train-RMSE filter). Last run kept 1/5.,"{""PL_AVERAGE_ALL_REPS"": ""1""}"
+03_lr_1e-3,False,,,,,,,,,,,,,,,,,"Original AdamW LR. Faster, more init-sensitive.","{""PL_LEARNING_RATE"": ""0.001""}"
+04_lr_1e-4,False,,,,,,,,,,,,,,,,,,
+05_l2_weaker_1e-4,False,,,,,,,,,,,,,,,,,,
+06_l2_stronger_5e-3,False,,,,,,,,,,,,,,,,,,
+07_wd_stronger_1e-3,False,,,,,,,,,,,,,,,,,,
+08_smaller_net_0.5x,False,,,,,,,,,,,,,,,,,,
+09_old_capacity_1.5x_3layer,False,,,,,,,,,,,,,,,,,,
+10_patience_40,False,,,,,,,,,,,,,,,,,,
+11_huber_1.0,False,,,,,,,,,,,,,,,,,,
+12_one_hidden_layer,False,,,,,,,,,,,,,,,,,,
+13_three_hidden_layers,False,,,,,,,,,,,,,,,,,,
+14_four_hidden_layers,False,,,,,,,,,,,,,,,,,,
+15_historic_pre_option6,False,,,,,,,,,,,,,,,,,,
+16_historic_dropout,False,,,,,,,,,,,,,,,,,,
+17_historic_mae_loss,False,,,,,,,,,,,,,,,,,,

@@ -1,0 +1,16 @@
+{
+  "name": "06_l2_3e-3",
+  "note": "L2 3e-3. Watch Haaland compression vs 02 control 32.5.",
+  "env": {
+    "PL_WIDTH_MULT": "1.5",
+    "PL_N_HIDDEN": "3",
+    "PL_DROPOUT_1": "0.1",
+    "PL_DROPOUT_2": "0.05",
+    "PL_L2": "0.003",
+    "PL_LEARNING_RATE": "0.0005",
+    "PL_WEIGHT_DECAY": "0.0001",
+    "PL_OPTIMIZER": "adamw"
+  },
+  "extra_args": [],
+  "reps": 5
+}

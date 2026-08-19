@@ -1,0 +1,19 @@
+Horizon-5 hyperparameter sweep comparison
+Control: 1.5x, 3 layers, Dropout 0.1/0.05, L2 2.25e-3, LR 5e-4, AdamW wd 0 (20260819_000049 trial 02).
+Higher kendall/jaccard and lower pred_std = stabler ranks.
+haaland_pts is 5-GW total in --horizon-only mode (not h1 pp90).
+
+trial                             tau      j20     pstd     reps   epochs     H_rk    H_pts  testMAE
+----------------------------------------------------------------------------------------------------
+01_control                     0.9644   0.8717   0.0456      5/5     68.6        1     32.3   2.9871
+    Replay last-run winner: L2 2.25e-3 on the wd-0 dropout body. New-seed control.
+02_lr_6e-4                     0.9668   0.8892   0.0517      5/5     61.8        1     31.8   2.8006
+    LR 6e-4 on the new L2. Last run 07 had the best Jaccard (0.943) at L2 2e-3; do they add?
+03_batch_16                    0.9361   0.8249   0.1032      5/5     58.4        1     33.2   2.8644
+    Batch 16 (was 32). Never swept. Noisier updates, more steps per epoch.
+04_batch_64                    0.9317   0.8053   0.1332      5/5     60.6        1     32.1   2.8952
+    Batch 64 (was 32). Never swept. Smoother gradients, fewer steps per epoch.
+05_four_layers                 0.9205   0.8363   0.1683      5/5     44.2        1     32.6   2.7948
+    4 hidden layers on this body (33-16-8-4). v1 14 Jaccard-trapped at 1x width ending at 2 units; v3 12 mixed 4L with LR 1e-3.
+06_reduce_lr_0.3               0.9604   0.9333   0.0512      5/5     68.4        1     32.6   2.8252
+    ReduceLROnPlateau factor 0.3 (was 0.5). Training-dynamics knob never swept.

@@ -1,0 +1,101 @@
+Horizon rep 2/5 — 20260818_014517
+=================================
+
+session
+-------
+{
+  "argv": [
+    "C:\\Users\\hal\\Documents\\git\\premierlearningweb\\premier-learning-app\\api\\premierlearning\\__main__.py",
+    "--horizon-only",
+    "--horizon-reps",
+    "5",
+    "--no-persist"
+  ],
+  "log_targets": true,
+  "n_predict_rows": 410,
+  "n_reps_averaged": 5,
+  "n_reps_requested": 5,
+  "n_test_rows": 10526,
+  "n_train_rows": 42101,
+  "output_key": "total_points",
+  "selection_threshold_val_mae": 1.634546,
+  "sweep_trial": "08_patience_40",
+  "timestamp": "20260818_014517"
+}
+
+model_config
+------------
+{
+  "average_all_reps": false,
+  "batch_size": 32,
+  "dropout_1": 0.0,
+  "dropout_2": 0.0,
+  "early_stopping_patience": 40,
+  "hidden_layers": [
+    33,
+    16,
+    8
+  ],
+  "huber_delta": 1.8,
+  "l2": 0.001,
+  "learning_rate": 0.0005,
+  "loss": "Huber(delta=1.8)",
+  "max_epochs": 500,
+  "n_features": 22,
+  "n_hidden": 3,
+  "optimizer": "AdamW",
+  "reduce_lr_factor": 0.5,
+  "reduce_lr_min": 1e-05,
+  "reduce_lr_patience": 12,
+  "val_mae_keep_ratio": 1.08,
+  "weight_decay": 0.0001,
+  "width_mult": 1.5
+}
+
+rep_stats
+---------
+{
+  "best_val_mae": 1.518669,
+  "best_val_rmse": 3.360706,
+  "epochs_ran": 86,
+  "final_lr": 3.1e-05,
+  "final_val_mae": 1.519249,
+  "final_val_rmse": 3.372562,
+  "kept_for_avg": true,
+  "max_epochs": 500,
+  "pred_max": 11.442359,
+  "pred_mean": 4.472155,
+  "pred_min": 2.179378,
+  "rep_index": 2,
+  "selection_rmse": 2.849154,
+  "test_loss": 0.073371,
+  "test_mae": 2.783697,
+  "test_rmse": 1.523637,
+  "train_mae": 1.524135,
+  "train_rmse": 2.849154
+}
+
+feature_columns
+---------------
+matches_played
+is_gkp
+is_def
+is_mid
+is_att
+last_season_points_per_90
+last_season_xgi_per_90
+new_stats_included
+team_xg_over_n
+team_xc_over_n
+team_xg_last_5
+team_xc_last_5
+defcon_avg_x_new_stats_x_non_att
+team_xg_over_n_x_outfield
+total_points_last_5_avg
+total_points_avg
+expected_goal_involvements_last_5_avg
+expected_goal_involvements_avg
+expected_goals_conceded_last_5_avg
+expected_goals_conceded_avg
+defensive_contribution_last_5_avg
+defensive_contribution_avg

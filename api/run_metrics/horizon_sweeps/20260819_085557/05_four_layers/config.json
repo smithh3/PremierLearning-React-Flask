@@ -1,0 +1,16 @@
+{
+  "name": "05_four_layers",
+  "note": "4 hidden layers on this body (33-16-8-4). v1 14 Jaccard-trapped at 1x width ending at 2 units; v3 12 mixed 4L with LR 1e-3.",
+  "env": {
+    "PL_WIDTH_MULT": "1.5",
+    "PL_N_HIDDEN": "4",
+    "PL_DROPOUT_1": "0.1",
+    "PL_DROPOUT_2": "0.05",
+    "PL_L2": "0.00225",
+    "PL_LEARNING_RATE": "0.0005",
+    "PL_WEIGHT_DECAY": "0",
+    "PL_OPTIMIZER": "adamw"
+  },
+  "extra_args": [],
+  "reps": 5
+}

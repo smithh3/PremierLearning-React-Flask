@@ -5,6 +5,7 @@ from flask import Flask
 from premierlearning.fpl_auth import load_credentials
 from .logged_in_action_performer import get_user_jsons, get_user_jsons_login
 from .optimise_runner import OptimiseRunner
+from .predictions_report import send_predictions_email
 
 
 def main(apply_transfers=False, apply_team_selection=False, suggest_transfers=False):
@@ -33,10 +34,12 @@ def main(apply_transfers=False, apply_team_selection=False, suggest_transfers=Fa
                 if opt.transfers:
                     print('Full multi-week scheme:')
                     print(opt.get_transfers())
+                send_predictions_email(opt, applied=False)
                 return
             if opt.transfers:
                 print(opt.get_transfers())
             opt.apply_this_week_transfers(fantasy_login['EMAIL'], fantasy_login['PASSWORD'])
+            send_predictions_email(opt, applied=True)
             return
 
         manager_id = fantasy_login.get('ID')
@@ -45,6 +48,7 @@ def main(apply_transfers=False, apply_team_selection=False, suggest_transfers=Fa
         get_user_jsons(manager_id)
         opt = OptimiseRunner(manager_id)
         opt.run()
+        send_predictions_email(opt, applied=False)
 
 
 if __name__ == '__main__':

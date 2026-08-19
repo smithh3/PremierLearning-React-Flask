@@ -1,0 +1,93 @@
+{
+  "id": "20260819_085557",
+  "reps": 5,
+  "trials": [
+    {
+      "name": "01_control",
+      "note": "Replay last-run winner: L2 2.25e-3 on the wd-0 dropout body. New-seed control.",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0.05",
+        "PL_L2": "0.00225",
+        "PL_LEARNING_RATE": "0.0005",
+        "PL_WEIGHT_DECAY": "0",
+        "PL_OPTIMIZER": "adamw"
+      }
+    },
+    {
+      "name": "02_lr_6e-4",
+      "note": "LR 6e-4 on the new L2. Last run 07 had the best Jaccard (0.943) at L2 2e-3; do they add?",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0.05",
+        "PL_L2": "0.00225",
+        "PL_LEARNING_RATE": "0.0006",
+        "PL_WEIGHT_DECAY": "0",
+        "PL_OPTIMIZER": "adamw"
+      }
+    },
+    {
+      "name": "03_batch_16",
+      "note": "Batch 16 (was 32). Never swept. Noisier updates, more steps per epoch.",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0.05",
+        "PL_L2": "0.00225",
+        "PL_LEARNING_RATE": "0.0005",
+        "PL_WEIGHT_DECAY": "0",
+        "PL_OPTIMIZER": "adamw",
+        "PL_BATCH_SIZE": "16"
+      }
+    },
+    {
+      "name": "04_batch_64",
+      "note": "Batch 64 (was 32). Never swept. Smoother gradients, fewer steps per epoch.",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0.05",
+        "PL_L2": "0.00225",
+        "PL_LEARNING_RATE": "0.0005",
+        "PL_WEIGHT_DECAY": "0",
+        "PL_OPTIMIZER": "adamw",
+        "PL_BATCH_SIZE": "64"
+      }
+    },
+    {
+      "name": "05_four_layers",
+      "note": "4 hidden layers on this body (33-16-8-4). v1 14 Jaccard-trapped at 1x width ending at 2 units; v3 12 mixed 4L with LR 1e-3.",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "4",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0.05",
+        "PL_L2": "0.00225",
+        "PL_LEARNING_RATE": "0.0005",
+        "PL_WEIGHT_DECAY": "0",
+        "PL_OPTIMIZER": "adamw"
+      }
+    },
+    {
+      "name": "06_reduce_lr_0.3",
+      "note": "ReduceLROnPlateau factor 0.3 (was 0.5). Training-dynamics knob never swept.",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0.05",
+        "PL_L2": "0.00225",
+        "PL_LEARNING_RATE": "0.0005",
+        "PL_WEIGHT_DECAY": "0",
+        "PL_OPTIMIZER": "adamw",
+        "PL_REDUCE_LR_FACTOR": "0.3"
+      }
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "01_control_l2_2e-3",
+  "note": "Replay sweep-3 winner: 1.5\u00d7, 3 layers, Dropout 0.1/0.05, L2 2e-3, LR 5e-4, AdamW wd 1e-4.",
+  "env": {
+    "PL_WIDTH_MULT": "1.5",
+    "PL_N_HIDDEN": "3",
+    "PL_DROPOUT_1": "0.1",
+    "PL_DROPOUT_2": "0.05",
+    "PL_L2": "0.002",
+    "PL_LEARNING_RATE": "0.0005",
+    "PL_WEIGHT_DECAY": "0.0001",
+    "PL_OPTIMIZER": "adamw"
+  },
+  "extra_args": [],
+  "reps": 5
+}

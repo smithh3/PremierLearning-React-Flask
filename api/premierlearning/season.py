@@ -8,7 +8,7 @@ from abc import ABC, abstractmethod
 from .player import Player
 from .team import Team
 from .config_constants import SEASON_YR, PLAYER_JSON_FILE_LOCATION, VAASTAV_CSV_YEARS
-from .helper_functions import read_json
+from .helper_functions import coerce_optional_int, read_json
 
 
 FANTASY_JSON_FILE_LOCATION = 'data/season_%i_%i/fantasy.json'
@@ -100,12 +100,13 @@ class Season(ABC):
 
 class CurrentSeason(Season):
 
-    def __init__(self):
+    def __init__(self, year_from=SEASON_YR):
         super().__init__()
 
         self.fantasy_json = None
-        self.years = (SEASON_YR, SEASON_YR + 1)
+        self.years = (int(year_from), int(year_from) + 1)
         self.set_up_season()
+        self.training_complete_through_gw = self.current_gameweek
 
     def populate_fixtures_json(self):
         self.fixtures_json = read_json(FIXTURES_JSON_FILE_LOCATION % self.years)
@@ -123,6 +124,14 @@ class PastSeason(Season):
         super().__init__()
         self.years = (year_from, year_from + 1)
         self.set_up_season()
+        events = [
+            coerce_optional_int(fixture.get('event'))
+            for fixture in self.fixtures_json
+        ]
+        self.training_complete_through_gw = max(
+            (event for event in events if event is not None),
+            default=38,
+        )
 
     def populate_fixtures_json(self):
         if self.years[0] not in VAASTAV_CSV_YEARS:

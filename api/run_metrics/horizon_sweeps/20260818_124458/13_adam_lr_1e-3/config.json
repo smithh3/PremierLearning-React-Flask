@@ -1,0 +1,16 @@
+{
+  "name": "13_adam_lr_1e-3",
+  "note": "Plain Adam + LR 1e-3 (v1 21: highest Haaland 32.9, Jaccard only 0.60 on the small net). Dropout 09 body is the Jaccard counterweight.",
+  "env": {
+    "PL_WIDTH_MULT": "1.5",
+    "PL_N_HIDDEN": "3",
+    "PL_DROPOUT_1": "0.1",
+    "PL_DROPOUT_2": "0.05",
+    "PL_L2": "0.001",
+    "PL_OPTIMIZER": "adam",
+    "PL_LEARNING_RATE": "0.001",
+    "PL_WEIGHT_DECAY": "0"
+  },
+  "extra_args": [],
+  "reps": 5
+}

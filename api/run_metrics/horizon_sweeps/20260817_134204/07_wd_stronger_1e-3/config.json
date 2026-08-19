@@ -1,0 +1,9 @@
+{
+  "name": "07_wd_stronger_1e-3",
+  "note": "Stronger AdamW weight decay (was 1e-4). Pair with 01 (wd=1e-4) and 20 (wd=0).",
+  "env": {
+    "PL_WEIGHT_DECAY": "0.001"
+  },
+  "extra_args": [],
+  "reps": 5
+}

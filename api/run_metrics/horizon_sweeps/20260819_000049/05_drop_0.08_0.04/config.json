@@ -1,0 +1,16 @@
+{
+  "name": "05_drop_0.08_0.04",
+  "note": "Half-step lighter dropout than 0.1/0.05. Keep both layers.",
+  "env": {
+    "PL_WIDTH_MULT": "1.5",
+    "PL_N_HIDDEN": "3",
+    "PL_DROPOUT_1": "0.08",
+    "PL_DROPOUT_2": "0.04",
+    "PL_L2": "0.002",
+    "PL_LEARNING_RATE": "0.0005",
+    "PL_WEIGHT_DECAY": "0",
+    "PL_OPTIMIZER": "adamw"
+  },
+  "extra_args": [],
+  "reps": 5
+}

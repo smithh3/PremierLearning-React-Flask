@@ -1,0 +1,11 @@
+{
+  "name": "21_adam_lr_1e-3",
+  "note": "Plain Adam at original 1e-3 LR. Pair with 03_lr_1e-3 (AdamW, same LR and other HPs).",
+  "env": {
+    "PL_OPTIMIZER": "adam",
+    "PL_LEARNING_RATE": "0.001",
+    "PL_WEIGHT_DECAY": "0"
+  },
+  "extra_args": [],
+  "reps": 5
+}

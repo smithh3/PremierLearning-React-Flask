@@ -44,7 +44,9 @@ from .helper_functions import read_json, coerce_bool, score_is_present
 #   - Minutes model: H2 last-season mins/match vs last-two-seasons (prev2 + H1 last
 #     season), both including DNPs. Recency stretches into last-season H2 fixtures
 #     and blends toward H2 mins/match near GW0. Carry is still appearance-only
-#     for points.
+#     for points. Predict rows (not train) drop 3+ consecutive DNPs from those
+#     windows when the last two fixtures were appearances — treat as injury, not
+#     availability. Isolated 1–2 DNPs stay (rotation).
 #
 # Flip back: restore the old get_stat_window body below and drop weights / per_90
 # / AVG_WINDOW slicing; set matches_played from self.matches_played if you want
@@ -261,6 +263,7 @@ class Player(RawPlayer):
         self.current_cost = float(self.element_dict['now_cost'])
 
         self.last_szn_matches = []
+        self.prev2_szn_matches = []
         self.last_szn_avg_mins = 0
         self.last_szn_avg_points = 0
 
@@ -384,6 +387,7 @@ class Player(RawPlayer):
         player.last_season_appearances = 0
         player.last_season_fixtures = 0
         prev2_matches = Player.non_carry_matches(prev2_player) if prev2_player else []
+        player.prev2_szn_matches = list(prev2_matches)
         if prev2_player:
             player.two_season_prior_mins_per_match = Player.mins_per_match_from_matches(
                 prev2_player

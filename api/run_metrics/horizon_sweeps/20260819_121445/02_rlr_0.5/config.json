@@ -1,0 +1,17 @@
+{
+  "name": "02_rlr_0.5",
+  "note": "Previous bake (v5 02 / this-run 01): same body, ReduceLR 0.5. Tau held 0.973 then 0.964; min J did not (0.905 then 0.739).",
+  "env": {
+    "PL_WIDTH_MULT": "1.5",
+    "PL_N_HIDDEN": "3",
+    "PL_DROPOUT_1": "0.1",
+    "PL_DROPOUT_2": "0.05",
+    "PL_L2": "0.00225",
+    "PL_LEARNING_RATE": "0.0005",
+    "PL_WEIGHT_DECAY": "0",
+    "PL_OPTIMIZER": "adamw",
+    "PL_REDUCE_LR_FACTOR": "0.5"
+  },
+  "extra_args": [],
+  "reps": 10
+}

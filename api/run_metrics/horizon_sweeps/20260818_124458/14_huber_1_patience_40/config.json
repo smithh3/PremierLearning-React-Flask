@@ -1,0 +1,16 @@
+{
+  "name": "14_huber_1_patience_40",
+  "note": "Huber 1.0 + patience 40. v1 11 wanted to cut pp90 outliers that reorder top-20 (v2 control pred_max 28) but may have stopped too soon; v2 08 patience alone did nothing.",
+  "env": {
+    "PL_WIDTH_MULT": "1.5",
+    "PL_N_HIDDEN": "3",
+    "PL_DROPOUT_1": "0.1",
+    "PL_DROPOUT_2": "0.05",
+    "PL_L2": "0.001",
+    "PL_HUBER_DELTA": "1.0",
+    "PL_EARLY_STOPPING_PATIENCE": "40",
+    "PL_REDUCE_LR_PATIENCE": "12"
+  },
+  "extra_args": [],
+  "reps": 5
+}

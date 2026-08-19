@@ -1,0 +1,97 @@
+{
+  "id": "20260819_121445",
+  "reps": 10,
+  "trials": [
+    {
+      "name": "01_control",
+      "note": "Bake / this-run 06: L2 2.25e-3 + ReduceLR 0.3. Best Jaccard and min J this run; tau 0.960. 10-rep check.",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0.05",
+        "PL_L2": "0.00225",
+        "PL_LEARNING_RATE": "0.0005",
+        "PL_WEIGHT_DECAY": "0",
+        "PL_OPTIMIZER": "adamw",
+        "PL_REDUCE_LR_FACTOR": "0.3"
+      }
+    },
+    {
+      "name": "02_rlr_0.5",
+      "note": "Previous bake (v5 02 / this-run 01): same body, ReduceLR 0.5. Tau held 0.973 then 0.964; min J did not (0.905 then 0.739).",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0.05",
+        "PL_L2": "0.00225",
+        "PL_LEARNING_RATE": "0.0005",
+        "PL_WEIGHT_DECAY": "0",
+        "PL_OPTIMIZER": "adamw",
+        "PL_REDUCE_LR_FACTOR": "0.5"
+      }
+    },
+    {
+      "name": "03_lr_6e-4",
+      "note": "This-run 02 / v5 07: LR 6e-4, ReduceLR 0.5. High tau both sweeps; Jaccard 0.943 then 0.889. Exact replay, not stacked on 0.3.",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0.05",
+        "PL_L2": "0.00225",
+        "PL_LEARNING_RATE": "0.0006",
+        "PL_WEIGHT_DECAY": "0",
+        "PL_OPTIMIZER": "adamw",
+        "PL_REDUCE_LR_FACTOR": "0.5"
+      }
+    },
+    {
+      "name": "04_l2_2e-3",
+      "note": "v4 winner 02_wd_0: L2 2e-3, ReduceLR 0.5. min J 0.905 that run; v5 control replay was fragile (tau 0.914, pstd 0.136).",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0.05",
+        "PL_L2": "0.002",
+        "PL_LEARNING_RATE": "0.0005",
+        "PL_WEIGHT_DECAY": "0",
+        "PL_OPTIMIZER": "adamw",
+        "PL_REDUCE_LR_FACTOR": "0.5"
+      }
+    },
+    {
+      "name": "05_lr_6e-4_rlr_0.3",
+      "note": "Stack the two training-dynamics keeps: LR 6e-4 on the new ReduceLR 0.3 bake.",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0.05",
+        "PL_L2": "0.00225",
+        "PL_LEARNING_RATE": "0.0006",
+        "PL_WEIGHT_DECAY": "0",
+        "PL_OPTIMIZER": "adamw",
+        "PL_REDUCE_LR_FACTOR": "0.3"
+      }
+    },
+    {
+      "name": "06_huber_1.4",
+      "note": "Huber 1.4 on the bake (was 1.8). 1.0 only lost as a bundle with patience 40 on older bodies.",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0.05",
+        "PL_L2": "0.00225",
+        "PL_LEARNING_RATE": "0.0005",
+        "PL_WEIGHT_DECAY": "0",
+        "PL_OPTIMIZER": "adamw",
+        "PL_REDUCE_LR_FACTOR": "0.3",
+        "PL_HUBER_DELTA": "1.4"
+      }
+    }
+  ]
+}

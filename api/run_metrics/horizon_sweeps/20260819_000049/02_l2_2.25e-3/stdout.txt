@@ -1,0 +1,1043 @@
+0.27s - Expected: c:\Users\hal\.cursor\extensions\ms-python.debugpy-2026.6.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd_attach_to_process\attach_amd64.dll to exist.
+Setting up players and teams...
+Running team expectancies...
+Seeded early-season form for 20 teams from season (25, 26)
+Promoted/new team prior (bottom-3 PL rates scored=0.97 conceded=1.82): COV, HUL, IPS
+Training team goals expectancy model (neural net)...
+Training rows: 5030; max epochs: 500
+Team model input columns:
+  team_scored_last_5
+  team_scored_avg
+  team_conceded_last_5
+  team_conceded_avg
+  opp_scored_last_5
+  opp_scored_avg
+  opp_conceded_last_5
+  opp_conceded_avg
+  is_home
+  fixture_difficulty
+  opp_fixture_difficulty
+Epoch 1/500
+101/101 - 3s - loss: 0.6916 - root_mean_squared_error: 1.4197 - mean_absolute_error: 1.0967 - val_loss: 0.5648 - val_root_mean_squared_error: 1.2330 - val_mean_absolute_error: 0.9517 - lr: 0.0010 - 3s/epoch - 34ms/step
+Epoch 2/500
+101/101 - 0s - loss: 0.5837 - root_mean_squared_error: 1.2627 - mean_absolute_error: 0.9771 - val_loss: 0.5238 - val_root_mean_squared_error: 1.1678 - val_mean_absolute_error: 0.9086 - lr: 0.0010 - 355ms/epoch - 4ms/step
+Epoch 3/500
+101/101 - 0s - loss: 0.5563 - root_mean_squared_error: 1.2253 - mean_absolute_error: 0.9451 - val_loss: 0.5096 - val_root_mean_squared_error: 1.1485 - val_mean_absolute_error: 0.8962 - lr: 0.0010 - 362ms/epoch - 4ms/step
+Epoch 4/500
+101/101 - 0s - loss: 0.5450 - root_mean_squared_error: 1.2078 - mean_absolute_error: 0.9330 - val_loss: 0.5012 - val_root_mean_squared_error: 1.1328 - val_mean_absolute_error: 0.8866 - lr: 0.0010 - 359ms/epoch - 4ms/step
+Epoch 5/500
+101/101 - 0s - loss: 0.5373 - root_mean_squared_error: 1.1973 - mean_absolute_error: 0.9248 - val_loss: 0.4997 - val_root_mean_squared_error: 1.1242 - val_mean_absolute_error: 0.8817 - lr: 0.0010 - 357ms/epoch - 4ms/step
+Epoch 6/500
+101/101 - 0s - loss: 0.5335 - root_mean_squared_error: 1.1899 - mean_absolute_error: 0.9216 - val_loss: 0.4959 - val_root_mean_squared_error: 1.1231 - val_mean_absolute_error: 0.8784 - lr: 0.0010 - 358ms/epoch - 4ms/step
+Epoch 7/500
+101/101 - 0s - loss: 0.5294 - root_mean_squared_error: 1.1835 - mean_absolute_error: 0.9173 - val_loss: 0.4930 - val_root_mean_squared_error: 1.1246 - val_mean_absolute_error: 0.8784 - lr: 0.0010 - 353ms/epoch - 3ms/step
+Epoch 8/500
+101/101 - 0s - loss: 0.5274 - root_mean_squared_error: 1.1834 - mean_absolute_error: 0.9148 - val_loss: 0.4943 - val_root_mean_squared_error: 1.1200 - val_mean_absolute_error: 0.8776 - lr: 0.0010 - 354ms/epoch - 4ms/step
+Epoch 9/500
+101/101 - 0s - loss: 0.5256 - root_mean_squared_error: 1.1787 - mean_absolute_error: 0.9130 - val_loss: 0.4922 - val_root_mean_squared_error: 1.1183 - val_mean_absolute_error: 0.8751 - lr: 0.0010 - 351ms/epoch - 3ms/step
+Epoch 10/500
+101/101 - 0s - loss: 0.5235 - root_mean_squared_error: 1.1756 - mean_absolute_error: 0.9106 - val_loss: 0.4933 - val_root_mean_squared_error: 1.1202 - val_mean_absolute_error: 0.8746 - lr: 0.0010 - 350ms/epoch - 3ms/step
+Epoch 11/500
+101/101 - 0s - loss: 0.5231 - root_mean_squared_error: 1.1732 - mean_absolute_error: 0.9095 - val_loss: 0.4916 - val_root_mean_squared_error: 1.1191 - val_mean_absolute_error: 0.8738 - lr: 0.0010 - 357ms/epoch - 4ms/step
+Epoch 12/500
+101/101 - 0s - loss: 0.5217 - root_mean_squared_error: 1.1724 - mean_absolute_error: 0.9086 - val_loss: 0.4906 - val_root_mean_squared_error: 1.1194 - val_mean_absolute_error: 0.8731 - lr: 0.0010 - 354ms/epoch - 4ms/step
+Epoch 13/500
+101/101 - 0s - loss: 0.5212 - root_mean_squared_error: 1.1705 - mean_absolute_error: 0.9085 - val_loss: 0.4913 - val_root_mean_squared_error: 1.1222 - val_mean_absolute_error: 0.8736 - lr: 0.0010 - 353ms/epoch - 3ms/step
+Epoch 14/500
+101/101 - 0s - loss: 0.5206 - root_mean_squared_error: 1.1701 - mean_absolute_error: 0.9071 - val_loss: 0.4909 - val_root_mean_squared_error: 1.1242 - val_mean_absolute_error: 0.8738 - lr: 0.0010 - 357ms/epoch - 4ms/step
+Epoch 15/500
+101/101 - 0s - loss: 0.5187 - root_mean_squared_error: 1.1695 - mean_absolute_error: 0.9062 - val_loss: 0.4904 - val_root_mean_squared_error: 1.1207 - val_mean_absolute_error: 0.8726 - lr: 5.0000e-04 - 362ms/epoch - 4ms/step
+Epoch 16/500
+101/101 - 0s - loss: 0.5179 - root_mean_squared_error: 1.1696 - mean_absolute_error: 0.9031 - val_loss: 0.4916 - val_root_mean_squared_error: 1.1175 - val_mean_absolute_error: 0.8734 - lr: 5.0000e-04 - 421ms/epoch - 4ms/step
+Epoch 17/500
+101/101 - 1s - loss: 0.5176 - root_mean_squared_error: 1.1660 - mean_absolute_error: 0.9048 - val_loss: 0.4912 - val_root_mean_squared_error: 1.1189 - val_mean_absolute_error: 0.8731 - lr: 5.0000e-04 - 504ms/epoch - 5ms/step
+Epoch 18/500
+101/101 - 1s - loss: 0.5169 - root_mean_squared_error: 1.1653 - mean_absolute_error: 0.9033 - val_loss: 0.4908 - val_root_mean_squared_error: 1.1202 - val_mean_absolute_error: 0.8729 - lr: 5.0000e-04 - 515ms/epoch - 5ms/step
+Epoch 19/500
+101/101 - 0s - loss: 0.5167 - root_mean_squared_error: 1.1667 - mean_absolute_error: 0.9027 - val_loss: 0.4910 - val_root_mean_squared_error: 1.1189 - val_mean_absolute_error: 0.8727 - lr: 5.0000e-04 - 441ms/epoch - 4ms/step
+Epoch 20/500
+101/101 - 1s - loss: 0.5163 - root_mean_squared_error: 1.1633 - mean_absolute_error: 0.9034 - val_loss: 0.4902 - val_root_mean_squared_error: 1.1224 - val_mean_absolute_error: 0.8724 - lr: 5.0000e-04 - 532ms/epoch - 5ms/step
+Epoch 21/500
+101/101 - 1s - loss: 0.5163 - root_mean_squared_error: 1.1659 - mean_absolute_error: 0.9021 - val_loss: 0.4906 - val_root_mean_squared_error: 1.1196 - val_mean_absolute_error: 0.8728 - lr: 5.0000e-04 - 841ms/epoch - 8ms/step
+Epoch 22/500
+101/101 - 0s - loss: 0.5151 - root_mean_squared_error: 1.1647 - mean_absolute_error: 0.9016 - val_loss: 0.4906 - val_root_mean_squared_error: 1.1189 - val_mean_absolute_error: 0.8724 - lr: 2.5000e-04 - 473ms/epoch - 5ms/step
+Epoch 23/500
+101/101 - 0s - loss: 0.5149 - root_mean_squared_error: 1.1630 - mean_absolute_error: 0.9011 - val_loss: 0.4907 - val_root_mean_squared_error: 1.1182 - val_mean_absolute_error: 0.8722 - lr: 2.5000e-04 - 384ms/epoch - 4ms/step
+Epoch 24/500
+101/101 - 0s - loss: 0.5147 - root_mean_squared_error: 1.1615 - mean_absolute_error: 0.9009 - val_loss: 0.4902 - val_root_mean_squared_error: 1.1197 - val_mean_absolute_error: 0.8718 - lr: 2.5000e-04 - 368ms/epoch - 4ms/step
+Epoch 25/500
+101/101 - 0s - loss: 0.5147 - root_mean_squared_error: 1.1631 - mean_absolute_error: 0.9012 - val_loss: 0.4902 - val_root_mean_squared_error: 1.1193 - val_mean_absolute_error: 0.8719 - lr: 2.5000e-04 - 358ms/epoch - 4ms/step
+Epoch 26/500
+101/101 - 0s - loss: 0.5145 - root_mean_squared_error: 1.1628 - mean_absolute_error: 0.9002 - val_loss: 0.4903 - val_root_mean_squared_error: 1.1193 - val_mean_absolute_error: 0.8721 - lr: 2.5000e-04 - 363ms/epoch - 4ms/step
+Epoch 27/500
+101/101 - 0s - loss: 0.5139 - root_mean_squared_error: 1.1624 - mean_absolute_error: 0.9000 - val_loss: 0.4907 - val_root_mean_squared_error: 1.1186 - val_mean_absolute_error: 0.8725 - lr: 1.2500e-04 - 363ms/epoch - 4ms/step
+Epoch 28/500
+101/101 - 0s - loss: 0.5138 - root_mean_squared_error: 1.1616 - mean_absolute_error: 0.9000 - val_loss: 0.4903 - val_root_mean_squared_error: 1.1186 - val_mean_absolute_error: 0.8721 - lr: 1.2500e-04 - 371ms/epoch - 4ms/step
+Epoch 29/500
+101/101 - 0s - loss: 0.5137 - root_mean_squared_error: 1.1612 - mean_absolute_error: 0.8997 - val_loss: 0.4903 - val_root_mean_squared_error: 1.1189 - val_mean_absolute_error: 0.8721 - lr: 1.2500e-04 - 364ms/epoch - 4ms/step
+Epoch 30/500
+101/101 - 0s - loss: 0.5137 - root_mean_squared_error: 1.1618 - mean_absolute_error: 0.8997 - val_loss: 0.4903 - val_root_mean_squared_error: 1.1189 - val_mean_absolute_error: 0.8721 - lr: 1.2500e-04 - 406ms/epoch - 4ms/step
+Epoch 31/500
+101/101 - 0s - loss: 0.5136 - root_mean_squared_error: 1.1614 - mean_absolute_error: 0.8996 - val_loss: 0.4904 - val_root_mean_squared_error: 1.1184 - val_mean_absolute_error: 0.8721 - lr: 1.2500e-04 - 415ms/epoch - 4ms/step
+Epoch 32/500
+101/101 - 0s - loss: 0.5133 - root_mean_squared_error: 1.1606 - mean_absolute_error: 0.8991 - val_loss: 0.4904 - val_root_mean_squared_error: 1.1183 - val_mean_absolute_error: 0.8722 - lr: 6.2500e-05 - 374ms/epoch - 4ms/step
+Epoch 33/500
+101/101 - 0s - loss: 0.5132 - root_mean_squared_error: 1.1609 - mean_absolute_error: 0.8991 - val_loss: 0.4903 - val_root_mean_squared_error: 1.1186 - val_mean_absolute_error: 0.8721 - lr: 6.2500e-05 - 366ms/epoch - 4ms/step
+Epoch 34/500
+101/101 - 0s - loss: 0.5132 - root_mean_squared_error: 1.1609 - mean_absolute_error: 0.8992 - val_loss: 0.4903 - val_root_mean_squared_error: 1.1187 - val_mean_absolute_error: 0.8721 - lr: 6.2500e-05 - 369ms/epoch - 4ms/step
+{'team_model_train_mae': 0.899249255657196, 'team_model_test_mae': 0.9282907175851863, 'team_model_test_rmse': 1.1826475086221429, 'epochs_ran': 34, 'pred_range': (0.24922552704811096, 3.514009714126587)}
+Team expectancies applied to all fixtures
+
+=== Sample horizon model columns (validation) ===
+
+Erling Haaland (MCI) — PREDICT (exact model input row)
+  form appearances available: 7
+  last_5 (should = total_points_last_5_avg): GW33:6pts/90m, GW33:7pts/90m, GW35:7pts/90m, GW36:11pts/90m, GW37:9pts/90m -> pp90=8.0000
+  last_7 (should = total_points_avg): GW30:2pts/90m, GW32:2pts/90m, GW33:6pts/90m, GW33:7pts/90m, GW35:7pts/90m, GW36:11pts/90m, GW37:9pts/90m -> pp90=6.2857
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  last_season_points_per_90: 7.284118
+  last_season_xgi_per_90: 0.858551
+  new_stats_included: 1
+  team_xg_over_n: 9.787827
+  team_xc_over_n: 3.861931
+  team_xg_last_5: 8.512175
+  team_xc_last_5: 3.730274
+  defcon_avg_x_new_stats_x_non_att: 0.000000
+  team_xg_over_n_x_outfield: 9.787827
+  total_points_last_5_avg: 8.000000
+  total_points_avg: 6.285714
+  xgi_last_5_avg: 0.918000
+  xgi_avg: 0.788571
+  expected_goals_conceded_last_5_avg: 1.446000
+  expected_goals_conceded_avg: 1.272857
+  defensive_contribution_last_5_avg: 2.600000
+  defensive_contribution_avg: 3.000000
+
+Erling Haaland — TRAIN (25, 26) GW35 vs EVE (A) (exact model input row; target window 3/5 played)
+  form appearances available: 39
+  last_5 (should = total_points_last_5_avg): GW29:2pts/90m, GW30:2pts/90m, GW32:2pts/90m, GW33:6pts/90m, GW33:7pts/90m -> pp90=3.8000
+  last_7 (should = total_points_avg): GW26:5pts/45m, GW27:6pts/90m, GW29:2pts/90m, GW30:2pts/90m, GW32:2pts/90m, GW33:6pts/90m, GW33:7pts/90m -> pp90=4.6154
+  target (points/90 over window): 9.000000
+  --- model input features (exact) ---
+  matches_played: 32
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  last_season_points_per_90: 5.953947
+  last_season_xgi_per_90: 0.787500
+  new_stats_included: 1
+  team_xg_over_n: 9.229656
+  team_xc_over_n: 3.936895
+  team_xg_last_5: 9.195756
+  team_xc_last_5: 3.836446
+  defcon_avg_x_new_stats_x_non_att: 0.000000
+  team_xg_over_n_x_outfield: 9.229656
+  total_points_last_5_avg: 3.800000
+  total_points_avg: 4.615385
+  xgi_last_5_avg: 0.610000
+  xgi_avg: 0.569231
+  expected_goals_conceded_last_5_avg: 0.976000
+  expected_goals_conceded_avg: 0.941538
+  defensive_contribution_last_5_avg: 3.600000
+  defensive_contribution_avg: 3.538462
+
+Bruno Borges Fernandes (MUN) — PREDICT (exact model input row)
+  form appearances available: 7
+  last_5 (should = total_points_last_5_avg): GW34:5pts/90m, GW35:5pts/90m, GW36:3pts/90m, GW37:9pts/90m, GW38:14pts/90m -> pp90=7.2000
+  last_7 (should = total_points_avg): GW32:4pts/90m, GW33:6pts/90m, GW34:5pts/90m, GW35:5pts/90m, GW36:3pts/90m, GW37:9pts/90m, GW38:14pts/90m -> pp90=6.5714
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 6.900489
+  last_season_xgi_per_90: 0.677423
+  new_stats_included: 1
+  team_xg_over_n: 8.319723
+  team_xc_over_n: 4.277055
+  team_xg_last_5: 7.383564
+  team_xc_last_5: 6.311320
+  defcon_avg_x_new_stats_x_non_att: 6.428571
+  team_xg_over_n_x_outfield: 8.319723
+  total_points_last_5_avg: 7.200000
+  total_points_avg: 6.571429
+  xgi_last_5_avg: 0.618000
+  xgi_avg: 0.531429
+  expected_goals_conceded_last_5_avg: 1.248000
+  expected_goals_conceded_avg: 1.454286
+  defensive_contribution_last_5_avg: 7.200000
+  defensive_contribution_avg: 6.428571
+
+Bruno Borges Fernandes — TRAIN (25, 26) GW34 vs BRE (H) (exact model input row; target window 5/5 played)
+  form appearances available: 37
+  last_5 (should = total_points_last_5_avg): GW29:8pts/90m, GW30:10pts/90m, GW31:13pts/90m, GW32:4pts/90m, GW33:6pts/90m -> pp90=8.2000
+  last_7 (should = total_points_avg): GW27:2pts/90m, GW28:13pts/90m, GW29:8pts/90m, GW30:10pts/90m, GW31:13pts/90m, GW32:4pts/90m, GW33:6pts/90m -> pp90=8.0000
+  target (points/90 over window): 7.200000
+  --- model input features (exact) ---
+  matches_played: 30
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 5.190587
+  last_season_xgi_per_90: 0.531588
+  new_stats_included: 1
+  team_xg_over_n: 7.383564
+  team_xc_over_n: 6.311320
+  team_xg_last_5: 7.854476
+  team_xc_last_5: 6.311405
+  defcon_avg_x_new_stats_x_non_att: 5.857143
+  team_xg_over_n_x_outfield: 7.383564
+  total_points_last_5_avg: 8.200000
+  total_points_avg: 8.000000
+  xgi_last_5_avg: 0.754000
+  xgi_avg: 0.731429
+  expected_goals_conceded_last_5_avg: 1.844000
+  expected_goals_conceded_avg: 1.460000
+  defensive_contribution_last_5_avg: 7.400000
+  defensive_contribution_avg: 5.857143
+=== End sample columns ===
+
+Preparing data for learning...
+Skipping predict for 177 players with <3 appearances (incl. last-season carry)
+Fitting horizon-1 linear models for per-match points error...
+Linear horizon-1 OOF RMSE: 2.931; per-match |residual| model — future err mean=2.141 range=(0.000, 5.756)
+Horizon-5 train rows: 52627 (skipped 6798 windows with <3 appearances in-window)
+Horizon-5 model: 5 independent fits (--horizon-reps)
+Getting predictions for total_points...
+  (5 independent fits; rep agreement reported after training)
+{'mean baseline absolute error': 1.782317257152774, 'mean baseline rms error': 3.130963089748332, 'median baseline absolute error': 1.7163351846971207, 'median baseline rms error': 3.177924793558867, 'linear regression absolute error': 1.6106712774212528, 'linear regression rms error': 2.949162039764377}
+Model input columns:
+  matches_played
+  is_gkp
+  is_def
+  is_mid
+  is_att
+  last_season_points_per_90
+  last_season_xgi_per_90
+  new_stats_included
+  team_xg_over_n
+  team_xc_over_n
+  team_xg_last_5
+  team_xc_last_5
+  defcon_avg_x_new_stats_x_non_att
+  team_xg_over_n_x_outfield
+  total_points_last_5_avg
+  total_points_avg
+  expected_goal_involvements_last_5_avg
+  expected_goal_involvements_avg
+  expected_goals_conceded_last_5_avg
+  expected_goals_conceded_avg
+  defensive_contribution_last_5_avg
+  defensive_contribution_avg
+  fit 1/5...
+All inputs/outputs have matching shapes and valid numeric values
+Model capacity: hidden=[33, 16, 8], optimizer=AdamW, l2=0.00225, weight_decay=0.0, lr=0.0005 (n_features=22, loss=Huber(delta=1.8))
+Epoch 1/500
+1053/1053 - 8s - loss: 0.2678 - orig_rmse: 40.2580 - orig_mae: 2.4400 - val_loss: 0.1717 - val_orig_rmse: 3.5791 - val_orig_mae: 1.6161 - lr: 5.0000e-04 - 8s/epoch - 8ms/step
+Epoch 2/500
+1053/1053 - 4s - loss: 0.1555 - orig_rmse: 2.9520 - orig_mae: 1.6313 - val_loss: 0.1316 - val_orig_rmse: 3.5001 - val_orig_mae: 1.5807 - lr: 5.0000e-04 - 4s/epoch - 3ms/step
+Epoch 3/500
+1053/1053 - 4s - loss: 0.1194 - orig_rmse: 2.9011 - orig_mae: 1.5771 - val_loss: 0.1065 - val_orig_rmse: 3.4868 - val_orig_mae: 1.5816 - lr: 5.0000e-04 - 4s/epoch - 3ms/step
+Epoch 4/500
+1053/1053 - 4s - loss: 0.0986 - orig_rmse: 2.8623 - orig_mae: 1.5609 - val_loss: 0.0917 - val_orig_rmse: 3.4672 - val_orig_mae: 1.5734 - lr: 5.0000e-04 - 4s/epoch - 3ms/step
+Epoch 5/500
+1053/1053 - 4s - loss: 0.0879 - orig_rmse: 2.8600 - orig_mae: 1.5553 - val_loss: 0.0847 - val_orig_rmse: 3.4762 - val_orig_mae: 1.5745 - lr: 5.0000e-04 - 4s/epoch - 4ms/step
+Epoch 6/500
+1053/1053 - 4s - loss: 0.0820 - orig_rmse: 2.8542 - orig_mae: 1.5500 - val_loss: 0.0816 - val_orig_rmse: 3.4556 - val_orig_mae: 1.5798 - lr: 5.0000e-04 - 4s/epoch - 3ms/step
+Epoch 7/500
+1053/1053 - 4s - loss: 0.0795 - orig_rmse: 2.8532 - orig_mae: 1.5506 - val_loss: 0.0794 - val_orig_rmse: 3.4653 - val_orig_mae: 1.5777 - lr: 5.0000e-04 - 4s/epoch - 3ms/step
+Epoch 8/500
+1053/1053 - 5s - loss: 0.0782 - orig_rmse: 2.8518 - orig_mae: 1.5514 - val_loss: 0.0785 - val_orig_rmse: 3.4934 - val_orig_mae: 1.5741 - lr: 5.0000e-04 - 5s/epoch - 5ms/step
+Epoch 9/500
+1053/1053 - 4s - loss: 0.0775 - orig_rmse: 2.8531 - orig_mae: 1.5525 - val_loss: 0.0776 - val_orig_rmse: 3.4633 - val_orig_mae: 1.5714 - lr: 5.0000e-04 - 4s/epoch - 4ms/step
+Epoch 10/500
+1053/1053 - 5s - loss: 0.0770 - orig_rmse: 2.8505 - orig_mae: 1.5498 - val_loss: 0.0777 - val_orig_rmse: 3.4584 - val_orig_mae: 1.5783 - lr: 5.0000e-04 - 5s/epoch - 5ms/step
+Epoch 11/500
+1053/1053 - 4s - loss: 0.0768 - orig_rmse: 2.8524 - orig_mae: 1.5514 - val_loss: 0.0773 - val_orig_rmse: 3.4669 - val_orig_mae: 1.5719 - lr: 5.0000e-04 - 4s/epoch - 3ms/step
+Epoch 12/500
+1053/1053 - 5s - loss: 0.0766 - orig_rmse: 2.8517 - orig_mae: 1.5502 - val_loss: 0.0769 - val_orig_rmse: 3.4666 - val_orig_mae: 1.5688 - lr: 5.0000e-04 - 5s/epoch - 5ms/step
+Epoch 13/500
+1053/1053 - 4s - loss: 0.0764 - orig_rmse: 2.8500 - orig_mae: 1.5481 - val_loss: 0.0770 - val_orig_rmse: 3.4567 - val_orig_mae: 1.5740 - lr: 5.0000e-04 - 4s/epoch - 4ms/step
+Epoch 14/500
+1053/1053 - 4s - loss: 0.0762 - orig_rmse: 2.8470 - orig_mae: 1.5480 - val_loss: 0.0768 - val_orig_rmse: 3.4574 - val_orig_mae: 1.5715 - lr: 5.0000e-04 - 4s/epoch - 4ms/step
+Epoch 15/500
+1053/1053 - 7s - loss: 0.0760 - orig_rmse: 2.8455 - orig_mae: 1.5446 - val_loss: 0.0766 - val_orig_rmse: 3.4611 - val_orig_mae: 1.5703 - lr: 2.5000e-04 - 7s/epoch - 7ms/step
+Epoch 16/500
+1053/1053 - 7s - loss: 0.0759 - orig_rmse: 2.8433 - orig_mae: 1.5446 - val_loss: 0.0769 - val_orig_rmse: 3.4680 - val_orig_mae: 1.5705 - lr: 2.5000e-04 - 7s/epoch - 7ms/step
+Epoch 17/500
+1053/1053 - 5s - loss: 0.0759 - orig_rmse: 2.8470 - orig_mae: 1.5451 - val_loss: 0.0766 - val_orig_rmse: 3.4693 - val_orig_mae: 1.5697 - lr: 2.5000e-04 - 5s/epoch - 4ms/step
+Epoch 18/500
+1053/1053 - 5s - loss: 0.0759 - orig_rmse: 2.8489 - orig_mae: 1.5453 - val_loss: 0.0766 - val_orig_rmse: 3.4715 - val_orig_mae: 1.5689 - lr: 2.5000e-04 - 5s/epoch - 5ms/step
+Epoch 19/500
+1053/1053 - 5s - loss: 0.0758 - orig_rmse: 2.8432 - orig_mae: 1.5453 - val_loss: 0.0765 - val_orig_rmse: 3.4609 - val_orig_mae: 1.5698 - lr: 2.5000e-04 - 5s/epoch - 4ms/step
+Epoch 20/500
+1053/1053 - 5s - loss: 0.0759 - orig_rmse: 2.8466 - orig_mae: 1.5450 - val_loss: 0.0765 - val_orig_rmse: 3.4610 - val_orig_mae: 1.5693 - lr: 2.5000e-04 - 5s/epoch - 5ms/step
+Epoch 21/500
+1053/1053 - 5s - loss: 0.0758 - orig_rmse: 2.8446 - orig_mae: 1.5449 - val_loss: 0.0767 - val_orig_rmse: 3.4793 - val_orig_mae: 1.5673 - lr: 2.5000e-04 - 5s/epoch - 5ms/step
+Epoch 22/500
+1053/1053 - 4s - loss: 0.0758 - orig_rmse: 2.8456 - orig_mae: 1.5430 - val_loss: 0.0766 - val_orig_rmse: 3.4647 - val_orig_mae: 1.5669 - lr: 2.5000e-04 - 4s/epoch - 4ms/step
+Epoch 23/500
+1053/1053 - 6s - loss: 0.0756 - orig_rmse: 2.8424 - orig_mae: 1.5415 - val_loss: 0.0765 - val_orig_rmse: 3.4566 - val_orig_mae: 1.5690 - lr: 1.2500e-04 - 6s/epoch - 6ms/step
+Epoch 24/500
+1053/1053 - 5s - loss: 0.0757 - orig_rmse: 2.8423 - orig_mae: 1.5430 - val_loss: 0.0765 - val_orig_rmse: 3.4611 - val_orig_mae: 1.5684 - lr: 1.2500e-04 - 5s/epoch - 5ms/step
+Epoch 25/500
+1053/1053 - 6s - loss: 0.0757 - orig_rmse: 2.8435 - orig_mae: 1.5440 - val_loss: 0.0765 - val_orig_rmse: 3.4748 - val_orig_mae: 1.5672 - lr: 1.2500e-04 - 6s/epoch - 5ms/step
+Epoch 26/500
+1053/1053 - 7s - loss: 0.0756 - orig_rmse: 2.8420 - orig_mae: 1.5396 - val_loss: 0.0766 - val_orig_rmse: 3.4744 - val_orig_mae: 1.5679 - lr: 1.2500e-04 - 7s/epoch - 7ms/step
+Epoch 27/500
+1053/1053 - 7s - loss: 0.0756 - orig_rmse: 2.8408 - orig_mae: 1.5414 - val_loss: 0.0765 - val_orig_rmse: 3.4710 - val_orig_mae: 1.5688 - lr: 1.2500e-04 - 7s/epoch - 7ms/step
+Epoch 28/500
+1053/1053 - 5s - loss: 0.0757 - orig_rmse: 2.8441 - orig_mae: 1.5442 - val_loss: 0.0767 - val_orig_rmse: 3.4634 - val_orig_mae: 1.5703 - lr: 1.2500e-04 - 5s/epoch - 5ms/step
+Epoch 29/500
+1053/1053 - 5s - loss: 0.0757 - orig_rmse: 2.8445 - orig_mae: 1.5433 - val_loss: 0.0765 - val_orig_rmse: 3.4660 - val_orig_mae: 1.5691 - lr: 1.2500e-04 - 5s/epoch - 5ms/step
+Epoch 30/500
+1053/1053 - 5s - loss: 0.0756 - orig_rmse: 2.8432 - orig_mae: 1.5414 - val_loss: 0.0765 - val_orig_rmse: 3.4571 - val_orig_mae: 1.5706 - lr: 1.2500e-04 - 5s/epoch - 5ms/step
+Epoch 31/500
+1053/1053 - 4s - loss: 0.0756 - orig_rmse: 2.8419 - orig_mae: 1.5432 - val_loss: 0.0765 - val_orig_rmse: 3.4571 - val_orig_mae: 1.5700 - lr: 6.2500e-05 - 4s/epoch - 3ms/step
+Epoch 32/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8416 - orig_mae: 1.5405 - val_loss: 0.0765 - val_orig_rmse: 3.4615 - val_orig_mae: 1.5683 - lr: 6.2500e-05 - 3s/epoch - 3ms/step
+Epoch 33/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8427 - orig_mae: 1.5424 - val_loss: 0.0764 - val_orig_rmse: 3.4647 - val_orig_mae: 1.5684 - lr: 6.2500e-05 - 3s/epoch - 3ms/step
+Epoch 34/500
+1053/1053 - 6s - loss: 0.0755 - orig_rmse: 2.8414 - orig_mae: 1.5408 - val_loss: 0.0764 - val_orig_rmse: 3.4717 - val_orig_mae: 1.5682 - lr: 6.2500e-05 - 6s/epoch - 6ms/step
+Epoch 35/500
+1053/1053 - 5s - loss: 0.0756 - orig_rmse: 2.8451 - orig_mae: 1.5427 - val_loss: 0.0764 - val_orig_rmse: 3.4643 - val_orig_mae: 1.5674 - lr: 6.2500e-05 - 5s/epoch - 5ms/step
+Epoch 36/500
+1053/1053 - 6s - loss: 0.0756 - orig_rmse: 2.8428 - orig_mae: 1.5433 - val_loss: 0.0764 - val_orig_rmse: 3.4722 - val_orig_mae: 1.5671 - lr: 6.2500e-05 - 6s/epoch - 5ms/step
+Epoch 37/500
+1053/1053 - 4s - loss: 0.0756 - orig_rmse: 2.8427 - orig_mae: 1.5407 - val_loss: 0.0764 - val_orig_rmse: 3.4604 - val_orig_mae: 1.5676 - lr: 6.2500e-05 - 4s/epoch - 4ms/step
+Epoch 38/500
+1053/1053 - 4s - loss: 0.0755 - orig_rmse: 2.8406 - orig_mae: 1.5414 - val_loss: 0.0765 - val_orig_rmse: 3.4719 - val_orig_mae: 1.5667 - lr: 6.2500e-05 - 4s/epoch - 4ms/step
+Epoch 39/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8411 - orig_mae: 1.5418 - val_loss: 0.0764 - val_orig_rmse: 3.4676 - val_orig_mae: 1.5673 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 40/500
+1053/1053 - 5s - loss: 0.0754 - orig_rmse: 2.8399 - orig_mae: 1.5400 - val_loss: 0.0764 - val_orig_rmse: 3.4621 - val_orig_mae: 1.5676 - lr: 3.1250e-05 - 5s/epoch - 4ms/step
+Epoch 41/500
+1053/1053 - 4s - loss: 0.0755 - orig_rmse: 2.8411 - orig_mae: 1.5391 - val_loss: 0.0764 - val_orig_rmse: 3.4648 - val_orig_mae: 1.5676 - lr: 3.1250e-05 - 4s/epoch - 4ms/step
+Epoch 42/500
+1053/1053 - 4s - loss: 0.0756 - orig_rmse: 2.8432 - orig_mae: 1.5428 - val_loss: 0.0764 - val_orig_rmse: 3.4649 - val_orig_mae: 1.5673 - lr: 3.1250e-05 - 4s/epoch - 4ms/step
+Epoch 43/500
+1053/1053 - 4s - loss: 0.0755 - orig_rmse: 2.8421 - orig_mae: 1.5413 - val_loss: 0.0765 - val_orig_rmse: 3.4595 - val_orig_mae: 1.5685 - lr: 3.1250e-05 - 4s/epoch - 4ms/step
+Epoch 44/500
+1053/1053 - 4s - loss: 0.0755 - orig_rmse: 2.8396 - orig_mae: 1.5408 - val_loss: 0.0764 - val_orig_rmse: 3.4618 - val_orig_mae: 1.5676 - lr: 3.1250e-05 - 4s/epoch - 4ms/step
+Epoch 45/500
+1053/1053 - 4s - loss: 0.0754 - orig_rmse: 2.8407 - orig_mae: 1.5393 - val_loss: 0.0764 - val_orig_rmse: 3.4641 - val_orig_mae: 1.5670 - lr: 3.1250e-05 - 4s/epoch - 4ms/step
+Epoch 46/500
+1053/1053 - 4s - loss: 0.0753 - orig_rmse: 2.8384 - orig_mae: 1.5389 - val_loss: 0.0764 - val_orig_rmse: 3.4680 - val_orig_mae: 1.5670 - lr: 3.1250e-05 - 4s/epoch - 4ms/step
+Epoch 47/500
+1053/1053 - 4s - loss: 0.0753 - orig_rmse: 2.8408 - orig_mae: 1.5381 - val_loss: 0.0764 - val_orig_rmse: 3.4632 - val_orig_mae: 1.5673 - lr: 1.5625e-05 - 4s/epoch - 4ms/step
+Epoch 48/500
+1053/1053 - 4s - loss: 0.0755 - orig_rmse: 2.8426 - orig_mae: 1.5417 - val_loss: 0.0764 - val_orig_rmse: 3.4599 - val_orig_mae: 1.5678 - lr: 1.5625e-05 - 4s/epoch - 3ms/step
+Epoch 49/500
+1053/1053 - 3s - loss: 0.0754 - orig_rmse: 2.8388 - orig_mae: 1.5404 - val_loss: 0.0764 - val_orig_rmse: 3.4639 - val_orig_mae: 1.5671 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 50/500
+1053/1053 - 3s - loss: 0.0754 - orig_rmse: 2.8398 - orig_mae: 1.5409 - val_loss: 0.0764 - val_orig_rmse: 3.4671 - val_orig_mae: 1.5668 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 51/500
+1053/1053 - 3s - loss: 0.0754 - orig_rmse: 2.8395 - orig_mae: 1.5399 - val_loss: 0.0764 - val_orig_rmse: 3.4663 - val_orig_mae: 1.5666 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 52/500
+1053/1053 - 6s - loss: 0.0754 - orig_rmse: 2.8416 - orig_mae: 1.5389 - val_loss: 0.0764 - val_orig_rmse: 3.4654 - val_orig_mae: 1.5669 - lr: 1.5625e-05 - 6s/epoch - 5ms/step
+Epoch 53/500
+1053/1053 - 4s - loss: 0.0755 - orig_rmse: 2.8399 - orig_mae: 1.5419 - val_loss: 0.0764 - val_orig_rmse: 3.4689 - val_orig_mae: 1.5668 - lr: 1.5625e-05 - 4s/epoch - 4ms/step
+Epoch 54/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8424 - orig_mae: 1.5407 - val_loss: 0.0764 - val_orig_rmse: 3.4619 - val_orig_mae: 1.5676 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 55/500
+1053/1053 - 3s - loss: 0.0754 - orig_rmse: 2.8407 - orig_mae: 1.5409 - val_loss: 0.0764 - val_orig_rmse: 3.4646 - val_orig_mae: 1.5672 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 56/500
+1053/1053 - 3s - loss: 0.0754 - orig_rmse: 2.8391 - orig_mae: 1.5412 - val_loss: 0.0764 - val_orig_rmse: 3.4661 - val_orig_mae: 1.5671 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 57/500
+1053/1053 - 3s - loss: 0.0754 - orig_rmse: 2.8434 - orig_mae: 1.5399 - val_loss: 0.0764 - val_orig_rmse: 3.4617 - val_orig_mae: 1.5675 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 58/500
+1053/1053 - 3s - loss: 0.0754 - orig_rmse: 2.8414 - orig_mae: 1.5408 - val_loss: 0.0764 - val_orig_rmse: 3.4636 - val_orig_mae: 1.5671 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 59/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8434 - orig_mae: 1.5409 - val_loss: 0.0764 - val_orig_rmse: 3.4647 - val_orig_mae: 1.5671 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 60/500
+1053/1053 - 3s - loss: 0.0753 - orig_rmse: 2.8397 - orig_mae: 1.5394 - val_loss: 0.0764 - val_orig_rmse: 3.4637 - val_orig_mae: 1.5671 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 61/500
+1053/1053 - 3s - loss: 0.0754 - orig_rmse: 2.8390 - orig_mae: 1.5400 - val_loss: 0.0764 - val_orig_rmse: 3.4647 - val_orig_mae: 1.5670 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 62/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8429 - orig_mae: 1.5413 - val_loss: 0.0764 - val_orig_rmse: 3.4634 - val_orig_mae: 1.5672 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 63/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8412 - orig_mae: 1.5416 - val_loss: 0.0764 - val_orig_rmse: 3.4651 - val_orig_mae: 1.5669 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 64/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8400 - orig_mae: 1.5400 - val_loss: 0.0764 - val_orig_rmse: 3.4638 - val_orig_mae: 1.5671 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 65/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8410 - orig_mae: 1.5416 - val_loss: 0.0764 - val_orig_rmse: 3.4654 - val_orig_mae: 1.5670 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 66/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8415 - orig_mae: 1.5404 - val_loss: 0.0764 - val_orig_rmse: 3.4649 - val_orig_mae: 1.5670 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 67/500
+1053/1053 - 3s - loss: 0.0753 - orig_rmse: 2.8403 - orig_mae: 1.5393 - val_loss: 0.0764 - val_orig_rmse: 3.4642 - val_orig_mae: 1.5670 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 68/500
+1053/1053 - 3s - loss: 0.0754 - orig_rmse: 2.8418 - orig_mae: 1.5398 - val_loss: 0.0764 - val_orig_rmse: 3.4635 - val_orig_mae: 1.5671 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 69/500
+1053/1053 - 3s - loss: 0.0754 - orig_rmse: 2.8407 - orig_mae: 1.5413 - val_loss: 0.0764 - val_orig_rmse: 3.4641 - val_orig_mae: 1.5670 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 70/500
+1053/1053 - 3s - loss: 0.0754 - orig_rmse: 2.8413 - orig_mae: 1.5394 - val_loss: 0.0764 - val_orig_rmse: 3.4652 - val_orig_mae: 1.5668 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 71/500
+1053/1053 - 3s - loss: 0.0754 - orig_rmse: 2.8421 - orig_mae: 1.5403 - val_loss: 0.0764 - val_orig_rmse: 3.4647 - val_orig_mae: 1.5668 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 72/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8413 - orig_mae: 1.5409 - val_loss: 0.0764 - val_orig_rmse: 3.4659 - val_orig_mae: 1.5669 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 73/500
+1053/1053 - 4s - loss: 0.0755 - orig_rmse: 2.8425 - orig_mae: 1.5408 - val_loss: 0.0764 - val_orig_rmse: 3.4645 - val_orig_mae: 1.5670 - lr: 1.0000e-05 - 4s/epoch - 3ms/step
+Epoch 74/500
+1053/1053 - 4s - loss: 0.0753 - orig_rmse: 2.8393 - orig_mae: 1.5390 - val_loss: 0.0764 - val_orig_rmse: 3.4639 - val_orig_mae: 1.5670 - lr: 1.0000e-05 - 4s/epoch - 4ms/step
+Epoch 75/500
+1053/1053 - 4s - loss: 0.0756 - orig_rmse: 2.8398 - orig_mae: 1.5406 - val_loss: 0.0764 - val_orig_rmse: 3.4652 - val_orig_mae: 1.5669 - lr: 1.0000e-05 - 4s/epoch - 3ms/step
+Epoch 76/500
+1053/1053 - 4s - loss: 0.0755 - orig_rmse: 2.8430 - orig_mae: 1.5397 - val_loss: 0.0764 - val_orig_rmse: 3.4630 - val_orig_mae: 1.5671 - lr: 1.0000e-05 - 4s/epoch - 4ms/step
+{'epochs_ran': 76, 'model absolute error': 1.539731502532959, 'model rms error': 2.8430089950561523, 'best val mae': 1.5666053295135498}
+{'test loss': 0.07361985743045807, 'test_orig_rmse': 2.8328261375427246, 'test_orig_mae': 1.5296651124954224}
+  fit 2/5...
+Model capacity: hidden=[33, 16, 8], optimizer=AdamW, l2=0.00225, weight_decay=0.0, lr=0.0005 (n_features=22, loss=Huber(delta=1.8))
+Epoch 1/500
+1053/1053 - 6s - loss: 0.2739 - orig_rmse: 6.6836 - orig_mae: 2.1455 - val_loss: 0.1692 - val_orig_rmse: 3.7577 - val_orig_mae: 1.6457 - lr: 5.0000e-04 - 6s/epoch - 6ms/step
+Epoch 2/500
+1053/1053 - 4s - loss: 0.1519 - orig_rmse: 2.9710 - orig_mae: 1.6530 - val_loss: 0.1248 - val_orig_rmse: 3.4933 - val_orig_mae: 1.5820 - lr: 5.0000e-04 - 4s/epoch - 3ms/step
+Epoch 3/500
+1053/1053 - 4s - loss: 0.1141 - orig_rmse: 2.8793 - orig_mae: 1.5786 - val_loss: 0.1015 - val_orig_rmse: 3.4717 - val_orig_mae: 1.5776 - lr: 5.0000e-04 - 4s/epoch - 3ms/step
+Epoch 4/500
+1053/1053 - 3s - loss: 0.0951 - orig_rmse: 2.8665 - orig_mae: 1.5620 - val_loss: 0.0887 - val_orig_rmse: 3.4830 - val_orig_mae: 1.5681 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 5/500
+1053/1053 - 4s - loss: 0.0852 - orig_rmse: 2.8530 - orig_mae: 1.5531 - val_loss: 0.0823 - val_orig_rmse: 3.4571 - val_orig_mae: 1.5707 - lr: 5.0000e-04 - 4s/epoch - 4ms/step
+Epoch 6/500
+1053/1053 - 4s - loss: 0.0805 - orig_rmse: 2.8485 - orig_mae: 1.5504 - val_loss: 0.0800 - val_orig_rmse: 3.4958 - val_orig_mae: 1.5739 - lr: 5.0000e-04 - 4s/epoch - 4ms/step
+Epoch 7/500
+1053/1053 - 4s - loss: 0.0785 - orig_rmse: 2.8522 - orig_mae: 1.5501 - val_loss: 0.0791 - val_orig_rmse: 3.4446 - val_orig_mae: 1.5815 - lr: 5.0000e-04 - 4s/epoch - 4ms/step
+Epoch 8/500
+1053/1053 - 3s - loss: 0.0775 - orig_rmse: 2.8513 - orig_mae: 1.5493 - val_loss: 0.0779 - val_orig_rmse: 3.4711 - val_orig_mae: 1.5747 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 9/500
+1053/1053 - 4s - loss: 0.0770 - orig_rmse: 2.8504 - orig_mae: 1.5483 - val_loss: 0.0775 - val_orig_rmse: 3.4638 - val_orig_mae: 1.5705 - lr: 5.0000e-04 - 4s/epoch - 4ms/step
+Epoch 10/500
+1053/1053 - 5s - loss: 0.0767 - orig_rmse: 2.8496 - orig_mae: 1.5484 - val_loss: 0.0777 - val_orig_rmse: 3.4623 - val_orig_mae: 1.5734 - lr: 5.0000e-04 - 5s/epoch - 5ms/step
+Epoch 11/500
+1053/1053 - 5s - loss: 0.0767 - orig_rmse: 2.8484 - orig_mae: 1.5510 - val_loss: 0.0774 - val_orig_rmse: 3.4739 - val_orig_mae: 1.5740 - lr: 5.0000e-04 - 5s/epoch - 4ms/step
+Epoch 12/500
+1053/1053 - 4s - loss: 0.0765 - orig_rmse: 2.8494 - orig_mae: 1.5496 - val_loss: 0.0772 - val_orig_rmse: 3.4739 - val_orig_mae: 1.5733 - lr: 5.0000e-04 - 4s/epoch - 4ms/step
+Epoch 13/500
+1053/1053 - 5s - loss: 0.0765 - orig_rmse: 2.8528 - orig_mae: 1.5484 - val_loss: 0.0772 - val_orig_rmse: 3.4608 - val_orig_mae: 1.5788 - lr: 5.0000e-04 - 5s/epoch - 4ms/step
+Epoch 14/500
+1053/1053 - 4s - loss: 0.0764 - orig_rmse: 2.8485 - orig_mae: 1.5498 - val_loss: 0.0770 - val_orig_rmse: 3.4713 - val_orig_mae: 1.5684 - lr: 5.0000e-04 - 4s/epoch - 3ms/step
+Epoch 15/500
+1053/1053 - 4s - loss: 0.0766 - orig_rmse: 2.8518 - orig_mae: 1.5494 - val_loss: 0.0774 - val_orig_rmse: 3.4608 - val_orig_mae: 1.5781 - lr: 5.0000e-04 - 4s/epoch - 4ms/step
+Epoch 16/500
+1053/1053 - 4s - loss: 0.0762 - orig_rmse: 2.8479 - orig_mae: 1.5464 - val_loss: 0.0772 - val_orig_rmse: 3.4902 - val_orig_mae: 1.5722 - lr: 2.5000e-04 - 4s/epoch - 3ms/step
+Epoch 17/500
+1053/1053 - 4s - loss: 0.0759 - orig_rmse: 2.8460 - orig_mae: 1.5437 - val_loss: 0.0768 - val_orig_rmse: 3.4642 - val_orig_mae: 1.5715 - lr: 2.5000e-04 - 4s/epoch - 3ms/step
+Epoch 18/500
+1053/1053 - 4s - loss: 0.0759 - orig_rmse: 2.8433 - orig_mae: 1.5457 - val_loss: 0.0771 - val_orig_rmse: 3.4845 - val_orig_mae: 1.5717 - lr: 2.5000e-04 - 4s/epoch - 4ms/step
+Epoch 19/500
+1053/1053 - 5s - loss: 0.0760 - orig_rmse: 2.8466 - orig_mae: 1.5466 - val_loss: 0.0768 - val_orig_rmse: 3.4644 - val_orig_mae: 1.5697 - lr: 2.5000e-04 - 5s/epoch - 5ms/step
+Epoch 20/500
+1053/1053 - 4s - loss: 0.0759 - orig_rmse: 2.8453 - orig_mae: 1.5445 - val_loss: 0.0768 - val_orig_rmse: 3.4653 - val_orig_mae: 1.5706 - lr: 2.5000e-04 - 4s/epoch - 4ms/step
+Epoch 21/500
+1053/1053 - 3s - loss: 0.0760 - orig_rmse: 2.8453 - orig_mae: 1.5457 - val_loss: 0.0772 - val_orig_rmse: 3.4598 - val_orig_mae: 1.5757 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 22/500
+1053/1053 - 4s - loss: 0.0759 - orig_rmse: 2.8438 - orig_mae: 1.5453 - val_loss: 0.0773 - val_orig_rmse: 3.4948 - val_orig_mae: 1.5764 - lr: 2.5000e-04 - 4s/epoch - 3ms/step
+Epoch 23/500
+1053/1053 - 4s - loss: 0.0759 - orig_rmse: 2.8449 - orig_mae: 1.5455 - val_loss: 0.0768 - val_orig_rmse: 3.4796 - val_orig_mae: 1.5683 - lr: 2.5000e-04 - 4s/epoch - 4ms/step
+Epoch 24/500
+1053/1053 - 4s - loss: 0.0758 - orig_rmse: 2.8453 - orig_mae: 1.5445 - val_loss: 0.0767 - val_orig_rmse: 3.4624 - val_orig_mae: 1.5701 - lr: 1.2500e-04 - 4s/epoch - 3ms/step
+Epoch 25/500
+1053/1053 - 4s - loss: 0.0758 - orig_rmse: 2.8445 - orig_mae: 1.5438 - val_loss: 0.0767 - val_orig_rmse: 3.4684 - val_orig_mae: 1.5680 - lr: 1.2500e-04 - 4s/epoch - 4ms/step
+Epoch 26/500
+1053/1053 - 4s - loss: 0.0758 - orig_rmse: 2.8445 - orig_mae: 1.5437 - val_loss: 0.0768 - val_orig_rmse: 3.4660 - val_orig_mae: 1.5686 - lr: 1.2500e-04 - 4s/epoch - 4ms/step
+Epoch 27/500
+1053/1053 - 4s - loss: 0.0758 - orig_rmse: 2.8449 - orig_mae: 1.5439 - val_loss: 0.0767 - val_orig_rmse: 3.4712 - val_orig_mae: 1.5692 - lr: 1.2500e-04 - 4s/epoch - 3ms/step
+Epoch 28/500
+1053/1053 - 3s - loss: 0.0758 - orig_rmse: 2.8433 - orig_mae: 1.5427 - val_loss: 0.0767 - val_orig_rmse: 3.4578 - val_orig_mae: 1.5706 - lr: 1.2500e-04 - 3s/epoch - 3ms/step
+Epoch 29/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8403 - orig_mae: 1.5417 - val_loss: 0.0768 - val_orig_rmse: 3.4585 - val_orig_mae: 1.5720 - lr: 1.2500e-04 - 3s/epoch - 3ms/step
+Epoch 30/500
+1053/1053 - 4s - loss: 0.0758 - orig_rmse: 2.8427 - orig_mae: 1.5438 - val_loss: 0.0766 - val_orig_rmse: 3.4684 - val_orig_mae: 1.5676 - lr: 1.2500e-04 - 4s/epoch - 3ms/step
+Epoch 31/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8393 - orig_mae: 1.5423 - val_loss: 0.0767 - val_orig_rmse: 3.4722 - val_orig_mae: 1.5696 - lr: 1.2500e-04 - 3s/epoch - 3ms/step
+Epoch 32/500
+1053/1053 - 4s - loss: 0.0758 - orig_rmse: 2.8440 - orig_mae: 1.5420 - val_loss: 0.0766 - val_orig_rmse: 3.4640 - val_orig_mae: 1.5689 - lr: 6.2500e-05 - 4s/epoch - 3ms/step
+Epoch 33/500
+1053/1053 - 4s - loss: 0.0757 - orig_rmse: 2.8429 - orig_mae: 1.5419 - val_loss: 0.0766 - val_orig_rmse: 3.4633 - val_orig_mae: 1.5688 - lr: 6.2500e-05 - 4s/epoch - 4ms/step
+Epoch 34/500
+1053/1053 - 4s - loss: 0.0756 - orig_rmse: 2.8417 - orig_mae: 1.5401 - val_loss: 0.0766 - val_orig_rmse: 3.4695 - val_orig_mae: 1.5695 - lr: 6.2500e-05 - 4s/epoch - 3ms/step
+Epoch 35/500
+1053/1053 - 4s - loss: 0.0757 - orig_rmse: 2.8452 - orig_mae: 1.5422 - val_loss: 0.0766 - val_orig_rmse: 3.4701 - val_orig_mae: 1.5681 - lr: 6.2500e-05 - 4s/epoch - 4ms/step
+Epoch 36/500
+1053/1053 - 4s - loss: 0.0756 - orig_rmse: 2.8415 - orig_mae: 1.5414 - val_loss: 0.0766 - val_orig_rmse: 3.4712 - val_orig_mae: 1.5675 - lr: 6.2500e-05 - 4s/epoch - 3ms/step
+Epoch 37/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8461 - orig_mae: 1.5418 - val_loss: 0.0766 - val_orig_rmse: 3.4675 - val_orig_mae: 1.5676 - lr: 6.2500e-05 - 3s/epoch - 3ms/step
+Epoch 38/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8436 - orig_mae: 1.5425 - val_loss: 0.0766 - val_orig_rmse: 3.4727 - val_orig_mae: 1.5677 - lr: 6.2500e-05 - 3s/epoch - 3ms/step
+Epoch 39/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8417 - orig_mae: 1.5429 - val_loss: 0.0767 - val_orig_rmse: 3.4737 - val_orig_mae: 1.5684 - lr: 6.2500e-05 - 3s/epoch - 3ms/step
+Epoch 40/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8433 - orig_mae: 1.5411 - val_loss: 0.0766 - val_orig_rmse: 3.4677 - val_orig_mae: 1.5682 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 41/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8400 - orig_mae: 1.5415 - val_loss: 0.0766 - val_orig_rmse: 3.4692 - val_orig_mae: 1.5683 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 42/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8449 - orig_mae: 1.5412 - val_loss: 0.0766 - val_orig_rmse: 3.4617 - val_orig_mae: 1.5698 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 43/500
+1053/1053 - 3s - loss: 0.0758 - orig_rmse: 2.8436 - orig_mae: 1.5436 - val_loss: 0.0766 - val_orig_rmse: 3.4683 - val_orig_mae: 1.5684 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 44/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8423 - orig_mae: 1.5416 - val_loss: 0.0766 - val_orig_rmse: 3.4690 - val_orig_mae: 1.5680 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 45/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8424 - orig_mae: 1.5420 - val_loss: 0.0766 - val_orig_rmse: 3.4620 - val_orig_mae: 1.5688 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 46/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8420 - orig_mae: 1.5426 - val_loss: 0.0766 - val_orig_rmse: 3.4685 - val_orig_mae: 1.5677 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 47/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8415 - orig_mae: 1.5409 - val_loss: 0.0766 - val_orig_rmse: 3.4656 - val_orig_mae: 1.5684 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 48/500
+1053/1053 - 3s - loss: 0.0758 - orig_rmse: 2.8454 - orig_mae: 1.5416 - val_loss: 0.0766 - val_orig_rmse: 3.4629 - val_orig_mae: 1.5688 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 49/500
+1053/1053 - 4s - loss: 0.0756 - orig_rmse: 2.8399 - orig_mae: 1.5416 - val_loss: 0.0766 - val_orig_rmse: 3.4684 - val_orig_mae: 1.5680 - lr: 1.5625e-05 - 4s/epoch - 3ms/step
+Epoch 50/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8411 - orig_mae: 1.5421 - val_loss: 0.0766 - val_orig_rmse: 3.4645 - val_orig_mae: 1.5683 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 51/500
+1053/1053 - 4s - loss: 0.0756 - orig_rmse: 2.8432 - orig_mae: 1.5406 - val_loss: 0.0766 - val_orig_rmse: 3.4651 - val_orig_mae: 1.5683 - lr: 1.5625e-05 - 4s/epoch - 3ms/step
+Epoch 52/500
+1053/1053 - 4s - loss: 0.0757 - orig_rmse: 2.8442 - orig_mae: 1.5416 - val_loss: 0.0766 - val_orig_rmse: 3.4646 - val_orig_mae: 1.5683 - lr: 1.5625e-05 - 4s/epoch - 3ms/step
+Epoch 53/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8423 - orig_mae: 1.5416 - val_loss: 0.0766 - val_orig_rmse: 3.4667 - val_orig_mae: 1.5681 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 54/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8443 - orig_mae: 1.5411 - val_loss: 0.0765 - val_orig_rmse: 3.4636 - val_orig_mae: 1.5685 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 55/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8393 - orig_mae: 1.5409 - val_loss: 0.0765 - val_orig_rmse: 3.4640 - val_orig_mae: 1.5685 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 56/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8441 - orig_mae: 1.5436 - val_loss: 0.0766 - val_orig_rmse: 3.4649 - val_orig_mae: 1.5684 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 57/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8428 - orig_mae: 1.5418 - val_loss: 0.0766 - val_orig_rmse: 3.4664 - val_orig_mae: 1.5682 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 58/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8418 - orig_mae: 1.5422 - val_loss: 0.0766 - val_orig_rmse: 3.4639 - val_orig_mae: 1.5684 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 59/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8408 - orig_mae: 1.5411 - val_loss: 0.0766 - val_orig_rmse: 3.4671 - val_orig_mae: 1.5680 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 60/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8420 - orig_mae: 1.5403 - val_loss: 0.0765 - val_orig_rmse: 3.4642 - val_orig_mae: 1.5682 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 61/500
+1053/1053 - 4s - loss: 0.0756 - orig_rmse: 2.8409 - orig_mae: 1.5416 - val_loss: 0.0765 - val_orig_rmse: 3.4649 - val_orig_mae: 1.5683 - lr: 1.0000e-05 - 4s/epoch - 3ms/step
+{'epochs_ran': 61, 'model absolute error': 1.5416491031646729, 'model rms error': 2.840890884399414, 'best val mae': 1.5675244331359863}
+{'test loss': 0.0738842561841011, 'test_orig_rmse': 2.8383944034576416, 'test_orig_mae': 1.5308010578155518}
+  fit 3/5...
+Model capacity: hidden=[33, 16, 8], optimizer=AdamW, l2=0.00225, weight_decay=0.0, lr=0.0005 (n_features=22, loss=Huber(delta=1.8))
+Epoch 1/500
+1053/1053 - 6s - loss: 0.2731 - orig_rmse: 5.4588 - orig_mae: 2.1471 - val_loss: 0.1715 - val_orig_rmse: 3.8857 - val_orig_mae: 1.6586 - lr: 5.0000e-04 - 6s/epoch - 6ms/step
+Epoch 2/500
+1053/1053 - 3s - loss: 0.1555 - orig_rmse: 3.0238 - orig_mae: 1.6746 - val_loss: 0.1276 - val_orig_rmse: 3.5357 - val_orig_mae: 1.6002 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 3/500
+1053/1053 - 3s - loss: 0.1153 - orig_rmse: 2.8904 - orig_mae: 1.5923 - val_loss: 0.1016 - val_orig_rmse: 3.4873 - val_orig_mae: 1.5795 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 4/500
+1053/1053 - 3s - loss: 0.0950 - orig_rmse: 2.8706 - orig_mae: 1.5670 - val_loss: 0.0887 - val_orig_rmse: 3.4635 - val_orig_mae: 1.5739 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 5/500
+1053/1053 - 3s - loss: 0.0853 - orig_rmse: 2.8591 - orig_mae: 1.5590 - val_loss: 0.0828 - val_orig_rmse: 3.4673 - val_orig_mae: 1.5757 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 6/500
+1053/1053 - 3s - loss: 0.0809 - orig_rmse: 2.8571 - orig_mae: 1.5554 - val_loss: 0.0799 - val_orig_rmse: 3.4585 - val_orig_mae: 1.5766 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 7/500
+1053/1053 - 3s - loss: 0.0787 - orig_rmse: 2.8547 - orig_mae: 1.5527 - val_loss: 0.0783 - val_orig_rmse: 3.4640 - val_orig_mae: 1.5721 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 8/500
+1053/1053 - 3s - loss: 0.0778 - orig_rmse: 2.8572 - orig_mae: 1.5523 - val_loss: 0.0776 - val_orig_rmse: 3.4682 - val_orig_mae: 1.5715 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 9/500
+1053/1053 - 3s - loss: 0.0773 - orig_rmse: 2.8540 - orig_mae: 1.5525 - val_loss: 0.0781 - val_orig_rmse: 3.4931 - val_orig_mae: 1.5771 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 10/500
+1053/1053 - 3s - loss: 0.0770 - orig_rmse: 2.8552 - orig_mae: 1.5531 - val_loss: 0.0778 - val_orig_rmse: 3.4890 - val_orig_mae: 1.5774 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 11/500
+1053/1053 - 4s - loss: 0.0768 - orig_rmse: 2.8519 - orig_mae: 1.5516 - val_loss: 0.0772 - val_orig_rmse: 3.4651 - val_orig_mae: 1.5746 - lr: 5.0000e-04 - 4s/epoch - 3ms/step
+Epoch 12/500
+1053/1053 - 3s - loss: 0.0766 - orig_rmse: 2.8517 - orig_mae: 1.5516 - val_loss: 0.0777 - val_orig_rmse: 3.4818 - val_orig_mae: 1.5818 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 13/500
+1053/1053 - 3s - loss: 0.0765 - orig_rmse: 2.8525 - orig_mae: 1.5501 - val_loss: 0.0774 - val_orig_rmse: 3.4877 - val_orig_mae: 1.5741 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 14/500
+1053/1053 - 4s - loss: 0.0765 - orig_rmse: 2.8522 - orig_mae: 1.5506 - val_loss: 0.0771 - val_orig_rmse: 3.4829 - val_orig_mae: 1.5713 - lr: 5.0000e-04 - 4s/epoch - 3ms/step
+Epoch 15/500
+1053/1053 - 3s - loss: 0.0762 - orig_rmse: 2.8483 - orig_mae: 1.5490 - val_loss: 0.0769 - val_orig_rmse: 3.4656 - val_orig_mae: 1.5740 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 16/500
+1053/1053 - 3s - loss: 0.0760 - orig_rmse: 2.8436 - orig_mae: 1.5462 - val_loss: 0.0767 - val_orig_rmse: 3.4540 - val_orig_mae: 1.5743 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 17/500
+1053/1053 - 3s - loss: 0.0761 - orig_rmse: 2.8498 - orig_mae: 1.5462 - val_loss: 0.0770 - val_orig_rmse: 3.4554 - val_orig_mae: 1.5744 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 18/500
+1053/1053 - 3s - loss: 0.0761 - orig_rmse: 2.8468 - orig_mae: 1.5472 - val_loss: 0.0772 - val_orig_rmse: 3.4530 - val_orig_mae: 1.5764 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 19/500
+1053/1053 - 3s - loss: 0.0760 - orig_rmse: 2.8467 - orig_mae: 1.5458 - val_loss: 0.0767 - val_orig_rmse: 3.4617 - val_orig_mae: 1.5704 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 20/500
+1053/1053 - 3s - loss: 0.0760 - orig_rmse: 2.8461 - orig_mae: 1.5450 - val_loss: 0.0774 - val_orig_rmse: 3.4466 - val_orig_mae: 1.5808 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 21/500
+1053/1053 - 3s - loss: 0.0759 - orig_rmse: 2.8437 - orig_mae: 1.5442 - val_loss: 0.0769 - val_orig_rmse: 3.4849 - val_orig_mae: 1.5726 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 22/500
+1053/1053 - 3s - loss: 0.0761 - orig_rmse: 2.8483 - orig_mae: 1.5482 - val_loss: 0.0767 - val_orig_rmse: 3.4576 - val_orig_mae: 1.5725 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 23/500
+1053/1053 - 3s - loss: 0.0759 - orig_rmse: 2.8455 - orig_mae: 1.5469 - val_loss: 0.0769 - val_orig_rmse: 3.4630 - val_orig_mae: 1.5716 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 24/500
+1053/1053 - 3s - loss: 0.0759 - orig_rmse: 2.8459 - orig_mae: 1.5449 - val_loss: 0.0771 - val_orig_rmse: 3.4894 - val_orig_mae: 1.5717 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 25/500
+1053/1053 - 3s - loss: 0.0760 - orig_rmse: 2.8483 - orig_mae: 1.5463 - val_loss: 0.0766 - val_orig_rmse: 3.4737 - val_orig_mae: 1.5687 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 26/500
+1053/1053 - 6s - loss: 0.0759 - orig_rmse: 2.8481 - orig_mae: 1.5447 - val_loss: 0.0769 - val_orig_rmse: 3.4526 - val_orig_mae: 1.5738 - lr: 2.5000e-04 - 6s/epoch - 6ms/step
+Epoch 27/500
+1053/1053 - 7s - loss: 0.0757 - orig_rmse: 2.8406 - orig_mae: 1.5425 - val_loss: 0.0768 - val_orig_rmse: 3.4709 - val_orig_mae: 1.5702 - lr: 2.5000e-04 - 7s/epoch - 7ms/step
+Epoch 28/500
+1053/1053 - 6s - loss: 0.0759 - orig_rmse: 2.8477 - orig_mae: 1.5468 - val_loss: 0.0767 - val_orig_rmse: 3.4710 - val_orig_mae: 1.5695 - lr: 2.5000e-04 - 6s/epoch - 5ms/step
+Epoch 29/500
+1053/1053 - 6s - loss: 0.0757 - orig_rmse: 2.8422 - orig_mae: 1.5428 - val_loss: 0.0767 - val_orig_rmse: 3.4603 - val_orig_mae: 1.5714 - lr: 1.2500e-04 - 6s/epoch - 5ms/step
+Epoch 30/500
+1053/1053 - 3s - loss: 0.0758 - orig_rmse: 2.8451 - orig_mae: 1.5431 - val_loss: 0.0765 - val_orig_rmse: 3.4608 - val_orig_mae: 1.5704 - lr: 1.2500e-04 - 3s/epoch - 3ms/step
+Epoch 31/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8440 - orig_mae: 1.5444 - val_loss: 0.0770 - val_orig_rmse: 3.4581 - val_orig_mae: 1.5742 - lr: 1.2500e-04 - 3s/epoch - 3ms/step
+Epoch 32/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8429 - orig_mae: 1.5420 - val_loss: 0.0765 - val_orig_rmse: 3.4647 - val_orig_mae: 1.5694 - lr: 1.2500e-04 - 3s/epoch - 3ms/step
+Epoch 33/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8420 - orig_mae: 1.5437 - val_loss: 0.0766 - val_orig_rmse: 3.4762 - val_orig_mae: 1.5694 - lr: 1.2500e-04 - 3s/epoch - 3ms/step
+Epoch 34/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8453 - orig_mae: 1.5443 - val_loss: 0.0766 - val_orig_rmse: 3.4572 - val_orig_mae: 1.5707 - lr: 1.2500e-04 - 3s/epoch - 3ms/step
+Epoch 35/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8444 - orig_mae: 1.5434 - val_loss: 0.0766 - val_orig_rmse: 3.4576 - val_orig_mae: 1.5720 - lr: 1.2500e-04 - 3s/epoch - 3ms/step
+Epoch 36/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8420 - orig_mae: 1.5440 - val_loss: 0.0765 - val_orig_rmse: 3.4598 - val_orig_mae: 1.5697 - lr: 1.2500e-04 - 3s/epoch - 3ms/step
+Epoch 37/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8415 - orig_mae: 1.5439 - val_loss: 0.0765 - val_orig_rmse: 3.4678 - val_orig_mae: 1.5687 - lr: 6.2500e-05 - 3s/epoch - 3ms/step
+Epoch 38/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8434 - orig_mae: 1.5416 - val_loss: 0.0765 - val_orig_rmse: 3.4631 - val_orig_mae: 1.5693 - lr: 6.2500e-05 - 3s/epoch - 3ms/step
+Epoch 39/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8431 - orig_mae: 1.5430 - val_loss: 0.0765 - val_orig_rmse: 3.4724 - val_orig_mae: 1.5683 - lr: 6.2500e-05 - 3s/epoch - 3ms/step
+Epoch 40/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8425 - orig_mae: 1.5422 - val_loss: 0.0765 - val_orig_rmse: 3.4670 - val_orig_mae: 1.5682 - lr: 6.2500e-05 - 3s/epoch - 3ms/step
+Epoch 41/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8447 - orig_mae: 1.5432 - val_loss: 0.0764 - val_orig_rmse: 3.4655 - val_orig_mae: 1.5684 - lr: 6.2500e-05 - 3s/epoch - 3ms/step
+Epoch 42/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8430 - orig_mae: 1.5421 - val_loss: 0.0764 - val_orig_rmse: 3.4640 - val_orig_mae: 1.5684 - lr: 6.2500e-05 - 3s/epoch - 3ms/step
+Epoch 43/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8450 - orig_mae: 1.5433 - val_loss: 0.0765 - val_orig_rmse: 3.4686 - val_orig_mae: 1.5696 - lr: 6.2500e-05 - 3s/epoch - 3ms/step
+Epoch 44/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8446 - orig_mae: 1.5433 - val_loss: 0.0765 - val_orig_rmse: 3.4711 - val_orig_mae: 1.5690 - lr: 6.2500e-05 - 3s/epoch - 3ms/step
+Epoch 45/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8444 - orig_mae: 1.5438 - val_loss: 0.0765 - val_orig_rmse: 3.4673 - val_orig_mae: 1.5686 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 46/500
+1053/1053 - 3s - loss: 0.0754 - orig_rmse: 2.8409 - orig_mae: 1.5402 - val_loss: 0.0765 - val_orig_rmse: 3.4645 - val_orig_mae: 1.5687 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 47/500
+1053/1053 - 3s - loss: 0.0754 - orig_rmse: 2.8400 - orig_mae: 1.5403 - val_loss: 0.0765 - val_orig_rmse: 3.4648 - val_orig_mae: 1.5687 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 48/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8429 - orig_mae: 1.5435 - val_loss: 0.0765 - val_orig_rmse: 3.4679 - val_orig_mae: 1.5683 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 49/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8446 - orig_mae: 1.5434 - val_loss: 0.0765 - val_orig_rmse: 3.4634 - val_orig_mae: 1.5687 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 50/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8418 - orig_mae: 1.5407 - val_loss: 0.0765 - val_orig_rmse: 3.4668 - val_orig_mae: 1.5677 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 51/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8436 - orig_mae: 1.5418 - val_loss: 0.0765 - val_orig_rmse: 3.4671 - val_orig_mae: 1.5684 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 52/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8431 - orig_mae: 1.5438 - val_loss: 0.0764 - val_orig_rmse: 3.4625 - val_orig_mae: 1.5684 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 53/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8433 - orig_mae: 1.5425 - val_loss: 0.0764 - val_orig_rmse: 3.4656 - val_orig_mae: 1.5681 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 54/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8437 - orig_mae: 1.5422 - val_loss: 0.0765 - val_orig_rmse: 3.4646 - val_orig_mae: 1.5683 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 55/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8397 - orig_mae: 1.5416 - val_loss: 0.0764 - val_orig_rmse: 3.4665 - val_orig_mae: 1.5680 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 56/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8428 - orig_mae: 1.5412 - val_loss: 0.0764 - val_orig_rmse: 3.4638 - val_orig_mae: 1.5684 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 57/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8411 - orig_mae: 1.5426 - val_loss: 0.0764 - val_orig_rmse: 3.4646 - val_orig_mae: 1.5683 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 58/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8428 - orig_mae: 1.5426 - val_loss: 0.0764 - val_orig_rmse: 3.4635 - val_orig_mae: 1.5686 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 59/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8425 - orig_mae: 1.5415 - val_loss: 0.0765 - val_orig_rmse: 3.4619 - val_orig_mae: 1.5689 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 60/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8426 - orig_mae: 1.5424 - val_loss: 0.0765 - val_orig_rmse: 3.4614 - val_orig_mae: 1.5689 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 61/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8411 - orig_mae: 1.5419 - val_loss: 0.0764 - val_orig_rmse: 3.4640 - val_orig_mae: 1.5685 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 62/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8416 - orig_mae: 1.5412 - val_loss: 0.0764 - val_orig_rmse: 3.4638 - val_orig_mae: 1.5686 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 63/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8426 - orig_mae: 1.5422 - val_loss: 0.0765 - val_orig_rmse: 3.4617 - val_orig_mae: 1.5689 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 64/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8423 - orig_mae: 1.5409 - val_loss: 0.0764 - val_orig_rmse: 3.4642 - val_orig_mae: 1.5685 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 65/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8420 - orig_mae: 1.5415 - val_loss: 0.0764 - val_orig_rmse: 3.4656 - val_orig_mae: 1.5682 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 66/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8449 - orig_mae: 1.5416 - val_loss: 0.0764 - val_orig_rmse: 3.4641 - val_orig_mae: 1.5683 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 67/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8419 - orig_mae: 1.5417 - val_loss: 0.0764 - val_orig_rmse: 3.4639 - val_orig_mae: 1.5685 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 68/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8439 - orig_mae: 1.5418 - val_loss: 0.0764 - val_orig_rmse: 3.4628 - val_orig_mae: 1.5686 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 69/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8382 - orig_mae: 1.5413 - val_loss: 0.0764 - val_orig_rmse: 3.4658 - val_orig_mae: 1.5682 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 70/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8419 - orig_mae: 1.5423 - val_loss: 0.0764 - val_orig_rmse: 3.4670 - val_orig_mae: 1.5682 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 71/500
+1053/1053 - 3s - loss: 0.0754 - orig_rmse: 2.8434 - orig_mae: 1.5395 - val_loss: 0.0764 - val_orig_rmse: 3.4635 - val_orig_mae: 1.5685 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 72/500
+1053/1053 - 3s - loss: 0.0754 - orig_rmse: 2.8392 - orig_mae: 1.5398 - val_loss: 0.0764 - val_orig_rmse: 3.4650 - val_orig_mae: 1.5683 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 73/500
+1053/1053 - 3s - loss: 0.0754 - orig_rmse: 2.8412 - orig_mae: 1.5407 - val_loss: 0.0764 - val_orig_rmse: 3.4638 - val_orig_mae: 1.5684 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 74/500
+1053/1053 - 3s - loss: 0.0754 - orig_rmse: 2.8405 - orig_mae: 1.5392 - val_loss: 0.0764 - val_orig_rmse: 3.4643 - val_orig_mae: 1.5682 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 75/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8424 - orig_mae: 1.5433 - val_loss: 0.0764 - val_orig_rmse: 3.4656 - val_orig_mae: 1.5680 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+{'epochs_ran': 75, 'model absolute error': 1.543286681175232, 'model rms error': 2.8423874378204346, 'best val mae': 1.567736029624939}
+{'test loss': 0.07374214380979538, 'test_orig_rmse': 2.834169387817383, 'test_orig_mae': 1.5309447050094604}
+  fit 4/5...
+Model capacity: hidden=[33, 16, 8], optimizer=AdamW, l2=0.00225, weight_decay=0.0, lr=0.0005 (n_features=22, loss=Huber(delta=1.8))
+Epoch 1/500
+1053/1053 - 6s - loss: 0.2646 - orig_rmse: 4.8566 - orig_mae: 2.0889 - val_loss: 0.1607 - val_orig_rmse: 4.0124 - val_orig_mae: 1.6434 - lr: 5.0000e-04 - 6s/epoch - 5ms/step
+Epoch 2/500
+1053/1053 - 3s - loss: 0.1436 - orig_rmse: 2.9762 - orig_mae: 1.6416 - val_loss: 0.1186 - val_orig_rmse: 3.4741 - val_orig_mae: 1.5889 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 3/500
+1053/1053 - 3s - loss: 0.1080 - orig_rmse: 2.8906 - orig_mae: 1.5777 - val_loss: 0.0970 - val_orig_rmse: 3.4573 - val_orig_mae: 1.5832 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 4/500
+1053/1053 - 3s - loss: 0.0912 - orig_rmse: 2.8624 - orig_mae: 1.5620 - val_loss: 0.0862 - val_orig_rmse: 3.4626 - val_orig_mae: 1.5759 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 5/500
+1053/1053 - 3s - loss: 0.0833 - orig_rmse: 2.8556 - orig_mae: 1.5536 - val_loss: 0.0814 - val_orig_rmse: 3.4623 - val_orig_mae: 1.5778 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 6/500
+1053/1053 - 3s - loss: 0.0799 - orig_rmse: 2.8521 - orig_mae: 1.5530 - val_loss: 0.0790 - val_orig_rmse: 3.4735 - val_orig_mae: 1.5707 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 7/500
+1053/1053 - 3s - loss: 0.0781 - orig_rmse: 2.8502 - orig_mae: 1.5501 - val_loss: 0.0778 - val_orig_rmse: 3.4665 - val_orig_mae: 1.5700 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 8/500
+1053/1053 - 3s - loss: 0.0773 - orig_rmse: 2.8508 - orig_mae: 1.5494 - val_loss: 0.0774 - val_orig_rmse: 3.4710 - val_orig_mae: 1.5721 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 9/500
+1053/1053 - 3s - loss: 0.0771 - orig_rmse: 2.8549 - orig_mae: 1.5506 - val_loss: 0.0773 - val_orig_rmse: 3.4866 - val_orig_mae: 1.5718 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 10/500
+1053/1053 - 3s - loss: 0.0768 - orig_rmse: 2.8520 - orig_mae: 1.5526 - val_loss: 0.0770 - val_orig_rmse: 3.4609 - val_orig_mae: 1.5716 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 11/500
+1053/1053 - 3s - loss: 0.0764 - orig_rmse: 2.8489 - orig_mae: 1.5471 - val_loss: 0.0770 - val_orig_rmse: 3.4706 - val_orig_mae: 1.5753 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 12/500
+1053/1053 - 3s - loss: 0.0764 - orig_rmse: 2.8507 - orig_mae: 1.5496 - val_loss: 0.0768 - val_orig_rmse: 3.4551 - val_orig_mae: 1.5747 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 13/500
+1053/1053 - 3s - loss: 0.0762 - orig_rmse: 2.8471 - orig_mae: 1.5479 - val_loss: 0.0770 - val_orig_rmse: 3.4775 - val_orig_mae: 1.5726 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 14/500
+1053/1053 - 3s - loss: 0.0762 - orig_rmse: 2.8502 - orig_mae: 1.5483 - val_loss: 0.0768 - val_orig_rmse: 3.4655 - val_orig_mae: 1.5724 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 15/500
+1053/1053 - 3s - loss: 0.0760 - orig_rmse: 2.8452 - orig_mae: 1.5476 - val_loss: 0.0770 - val_orig_rmse: 3.4536 - val_orig_mae: 1.5762 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 16/500
+1053/1053 - 3s - loss: 0.0762 - orig_rmse: 2.8477 - orig_mae: 1.5479 - val_loss: 0.0768 - val_orig_rmse: 3.4546 - val_orig_mae: 1.5737 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 17/500
+1053/1053 - 3s - loss: 0.0762 - orig_rmse: 2.8496 - orig_mae: 1.5482 - val_loss: 0.0769 - val_orig_rmse: 3.4674 - val_orig_mae: 1.5729 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 18/500
+1053/1053 - 3s - loss: 0.0761 - orig_rmse: 2.8467 - orig_mae: 1.5472 - val_loss: 0.0768 - val_orig_rmse: 3.4694 - val_orig_mae: 1.5714 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 19/500
+1053/1053 - 3s - loss: 0.0761 - orig_rmse: 2.8492 - orig_mae: 1.5466 - val_loss: 0.0769 - val_orig_rmse: 3.4668 - val_orig_mae: 1.5742 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 20/500
+1053/1053 - 3s - loss: 0.0762 - orig_rmse: 2.8494 - orig_mae: 1.5487 - val_loss: 0.0768 - val_orig_rmse: 3.4573 - val_orig_mae: 1.5743 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 21/500
+1053/1053 - 3s - loss: 0.0762 - orig_rmse: 2.8529 - orig_mae: 1.5497 - val_loss: 0.0767 - val_orig_rmse: 3.4662 - val_orig_mae: 1.5699 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 22/500
+1053/1053 - 3s - loss: 0.0760 - orig_rmse: 2.8438 - orig_mae: 1.5470 - val_loss: 0.0767 - val_orig_rmse: 3.4570 - val_orig_mae: 1.5724 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 23/500
+1053/1053 - 4s - loss: 0.0760 - orig_rmse: 2.8493 - orig_mae: 1.5451 - val_loss: 0.0767 - val_orig_rmse: 3.4669 - val_orig_mae: 1.5715 - lr: 2.5000e-04 - 4s/epoch - 3ms/step
+Epoch 24/500
+1053/1053 - 4s - loss: 0.0759 - orig_rmse: 2.8463 - orig_mae: 1.5459 - val_loss: 0.0766 - val_orig_rmse: 3.4630 - val_orig_mae: 1.5720 - lr: 1.2500e-04 - 4s/epoch - 4ms/step
+Epoch 25/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8418 - orig_mae: 1.5435 - val_loss: 0.0766 - val_orig_rmse: 3.4628 - val_orig_mae: 1.5711 - lr: 1.2500e-04 - 3s/epoch - 3ms/step
+Epoch 26/500
+1053/1053 - 3s - loss: 0.0759 - orig_rmse: 2.8475 - orig_mae: 1.5442 - val_loss: 0.0767 - val_orig_rmse: 3.4576 - val_orig_mae: 1.5740 - lr: 1.2500e-04 - 3s/epoch - 3ms/step
+Epoch 27/500
+1053/1053 - 3s - loss: 0.0758 - orig_rmse: 2.8432 - orig_mae: 1.5456 - val_loss: 0.0767 - val_orig_rmse: 3.4701 - val_orig_mae: 1.5701 - lr: 1.2500e-04 - 3s/epoch - 3ms/step
+Epoch 28/500
+1053/1053 - 3s - loss: 0.0758 - orig_rmse: 2.8461 - orig_mae: 1.5446 - val_loss: 0.0765 - val_orig_rmse: 3.4631 - val_orig_mae: 1.5701 - lr: 1.2500e-04 - 3s/epoch - 3ms/step
+Epoch 29/500
+1053/1053 - 3s - loss: 0.0758 - orig_rmse: 2.8451 - orig_mae: 1.5451 - val_loss: 0.0766 - val_orig_rmse: 3.4657 - val_orig_mae: 1.5701 - lr: 1.2500e-04 - 3s/epoch - 3ms/step
+Epoch 30/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8416 - orig_mae: 1.5446 - val_loss: 0.0765 - val_orig_rmse: 3.4614 - val_orig_mae: 1.5705 - lr: 1.2500e-04 - 3s/epoch - 3ms/step
+Epoch 31/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8436 - orig_mae: 1.5445 - val_loss: 0.0765 - val_orig_rmse: 3.4625 - val_orig_mae: 1.5703 - lr: 1.2500e-04 - 3s/epoch - 3ms/step
+Epoch 32/500
+1053/1053 - 3s - loss: 0.0758 - orig_rmse: 2.8440 - orig_mae: 1.5435 - val_loss: 0.0766 - val_orig_rmse: 3.4601 - val_orig_mae: 1.5707 - lr: 6.2500e-05 - 3s/epoch - 3ms/step
+Epoch 33/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8437 - orig_mae: 1.5434 - val_loss: 0.0766 - val_orig_rmse: 3.4648 - val_orig_mae: 1.5702 - lr: 6.2500e-05 - 3s/epoch - 3ms/step
+Epoch 34/500
+1053/1053 - 3s - loss: 0.0758 - orig_rmse: 2.8459 - orig_mae: 1.5453 - val_loss: 0.0765 - val_orig_rmse: 3.4640 - val_orig_mae: 1.5703 - lr: 6.2500e-05 - 3s/epoch - 3ms/step
+Epoch 35/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8443 - orig_mae: 1.5429 - val_loss: 0.0765 - val_orig_rmse: 3.4674 - val_orig_mae: 1.5693 - lr: 6.2500e-05 - 3s/epoch - 3ms/step
+Epoch 36/500
+1053/1053 - 3s - loss: 0.0758 - orig_rmse: 2.8467 - orig_mae: 1.5447 - val_loss: 0.0766 - val_orig_rmse: 3.4718 - val_orig_mae: 1.5695 - lr: 6.2500e-05 - 3s/epoch - 3ms/step
+Epoch 37/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8431 - orig_mae: 1.5439 - val_loss: 0.0766 - val_orig_rmse: 3.4581 - val_orig_mae: 1.5714 - lr: 6.2500e-05 - 3s/epoch - 3ms/step
+Epoch 38/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8426 - orig_mae: 1.5431 - val_loss: 0.0765 - val_orig_rmse: 3.4656 - val_orig_mae: 1.5699 - lr: 6.2500e-05 - 3s/epoch - 3ms/step
+Epoch 39/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8407 - orig_mae: 1.5433 - val_loss: 0.0765 - val_orig_rmse: 3.4607 - val_orig_mae: 1.5698 - lr: 6.2500e-05 - 3s/epoch - 3ms/step
+Epoch 40/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8416 - orig_mae: 1.5427 - val_loss: 0.0765 - val_orig_rmse: 3.4657 - val_orig_mae: 1.5688 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 41/500
+1053/1053 - 3s - loss: 0.0758 - orig_rmse: 2.8442 - orig_mae: 1.5432 - val_loss: 0.0765 - val_orig_rmse: 3.4656 - val_orig_mae: 1.5692 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 42/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8452 - orig_mae: 1.5441 - val_loss: 0.0765 - val_orig_rmse: 3.4660 - val_orig_mae: 1.5691 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 43/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8443 - orig_mae: 1.5435 - val_loss: 0.0765 - val_orig_rmse: 3.4632 - val_orig_mae: 1.5695 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 44/500
+1053/1053 - 3s - loss: 0.0758 - orig_rmse: 2.8464 - orig_mae: 1.5444 - val_loss: 0.0765 - val_orig_rmse: 3.4620 - val_orig_mae: 1.5699 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 45/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8415 - orig_mae: 1.5415 - val_loss: 0.0765 - val_orig_rmse: 3.4667 - val_orig_mae: 1.5692 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 46/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8445 - orig_mae: 1.5439 - val_loss: 0.0765 - val_orig_rmse: 3.4679 - val_orig_mae: 1.5688 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 47/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8418 - orig_mae: 1.5433 - val_loss: 0.0765 - val_orig_rmse: 3.4700 - val_orig_mae: 1.5686 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 48/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8464 - orig_mae: 1.5446 - val_loss: 0.0765 - val_orig_rmse: 3.4646 - val_orig_mae: 1.5692 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 49/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8403 - orig_mae: 1.5429 - val_loss: 0.0765 - val_orig_rmse: 3.4664 - val_orig_mae: 1.5690 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 50/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8435 - orig_mae: 1.5427 - val_loss: 0.0765 - val_orig_rmse: 3.4647 - val_orig_mae: 1.5695 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 51/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8429 - orig_mae: 1.5431 - val_loss: 0.0765 - val_orig_rmse: 3.4664 - val_orig_mae: 1.5692 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 52/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8436 - orig_mae: 1.5417 - val_loss: 0.0765 - val_orig_rmse: 3.4616 - val_orig_mae: 1.5700 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 53/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8388 - orig_mae: 1.5424 - val_loss: 0.0765 - val_orig_rmse: 3.4668 - val_orig_mae: 1.5691 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 54/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8428 - orig_mae: 1.5427 - val_loss: 0.0765 - val_orig_rmse: 3.4676 - val_orig_mae: 1.5690 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 55/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8424 - orig_mae: 1.5419 - val_loss: 0.0765 - val_orig_rmse: 3.4741 - val_orig_mae: 1.5690 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 56/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8439 - orig_mae: 1.5419 - val_loss: 0.0765 - val_orig_rmse: 3.4676 - val_orig_mae: 1.5690 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 57/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8450 - orig_mae: 1.5408 - val_loss: 0.0765 - val_orig_rmse: 3.4644 - val_orig_mae: 1.5693 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 58/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8434 - orig_mae: 1.5428 - val_loss: 0.0765 - val_orig_rmse: 3.4630 - val_orig_mae: 1.5696 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 59/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8404 - orig_mae: 1.5436 - val_loss: 0.0765 - val_orig_rmse: 3.4645 - val_orig_mae: 1.5694 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 60/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8439 - orig_mae: 1.5439 - val_loss: 0.0765 - val_orig_rmse: 3.4645 - val_orig_mae: 1.5694 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 61/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8447 - orig_mae: 1.5432 - val_loss: 0.0765 - val_orig_rmse: 3.4654 - val_orig_mae: 1.5693 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 62/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8440 - orig_mae: 1.5429 - val_loss: 0.0765 - val_orig_rmse: 3.4633 - val_orig_mae: 1.5696 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 63/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8449 - orig_mae: 1.5443 - val_loss: 0.0765 - val_orig_rmse: 3.4636 - val_orig_mae: 1.5696 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 64/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8389 - orig_mae: 1.5417 - val_loss: 0.0765 - val_orig_rmse: 3.4677 - val_orig_mae: 1.5690 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 65/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8423 - orig_mae: 1.5418 - val_loss: 0.0765 - val_orig_rmse: 3.4644 - val_orig_mae: 1.5694 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 66/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8448 - orig_mae: 1.5427 - val_loss: 0.0765 - val_orig_rmse: 3.4658 - val_orig_mae: 1.5692 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 67/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8430 - orig_mae: 1.5424 - val_loss: 0.0765 - val_orig_rmse: 3.4642 - val_orig_mae: 1.5693 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 68/500
+1053/1053 - 3s - loss: 0.0758 - orig_rmse: 2.8445 - orig_mae: 1.5447 - val_loss: 0.0765 - val_orig_rmse: 3.4641 - val_orig_mae: 1.5693 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 69/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8433 - orig_mae: 1.5420 - val_loss: 0.0765 - val_orig_rmse: 3.4652 - val_orig_mae: 1.5692 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 70/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8443 - orig_mae: 1.5423 - val_loss: 0.0765 - val_orig_rmse: 3.4644 - val_orig_mae: 1.5693 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 71/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8430 - orig_mae: 1.5411 - val_loss: 0.0765 - val_orig_rmse: 3.4655 - val_orig_mae: 1.5691 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 72/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8427 - orig_mae: 1.5425 - val_loss: 0.0765 - val_orig_rmse: 3.4648 - val_orig_mae: 1.5692 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+{'epochs_ran': 72, 'model absolute error': 1.5425134897232056, 'model rms error': 2.8426594734191895, 'best val mae': 1.5686336755752563}
+{'test loss': 0.07374227046966553, 'test_orig_rmse': 2.8373775482177734, 'test_orig_mae': 1.5313656330108643}
+  fit 5/5...
+Model capacity: hidden=[33, 16, 8], optimizer=AdamW, l2=0.00225, weight_decay=0.0, lr=0.0005 (n_features=22, loss=Huber(delta=1.8))
+Epoch 1/500
+1053/1053 - 17s - loss: 0.2786 - orig_rmse: 7.1276 - orig_mae: 2.1043 - val_loss: 0.1709 - val_orig_rmse: 3.7864 - val_orig_mae: 1.6417 - lr: 5.0000e-04 - 17s/epoch - 16ms/step
+Epoch 2/500
+1053/1053 - 3s - loss: 0.1550 - orig_rmse: 3.1220 - orig_mae: 1.6461 - val_loss: 0.1311 - val_orig_rmse: 3.5292 - val_orig_mae: 1.5958 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 3/500
+1053/1053 - 3s - loss: 0.1180 - orig_rmse: 2.8839 - orig_mae: 1.5806 - val_loss: 0.1052 - val_orig_rmse: 3.4598 - val_orig_mae: 1.5846 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 4/500
+1053/1053 - 3s - loss: 0.0976 - orig_rmse: 2.8723 - orig_mae: 1.5688 - val_loss: 0.0904 - val_orig_rmse: 3.4800 - val_orig_mae: 1.5742 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 5/500
+1053/1053 - 3s - loss: 0.0863 - orig_rmse: 2.8560 - orig_mae: 1.5567 - val_loss: 0.0829 - val_orig_rmse: 3.4744 - val_orig_mae: 1.5693 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 6/500
+1053/1053 - 3s - loss: 0.0810 - orig_rmse: 2.8529 - orig_mae: 1.5496 - val_loss: 0.0800 - val_orig_rmse: 3.4466 - val_orig_mae: 1.5767 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 7/500
+1053/1053 - 3s - loss: 0.0789 - orig_rmse: 2.8528 - orig_mae: 1.5525 - val_loss: 0.0789 - val_orig_rmse: 3.4586 - val_orig_mae: 1.5740 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 8/500
+1053/1053 - 3s - loss: 0.0775 - orig_rmse: 2.8482 - orig_mae: 1.5491 - val_loss: 0.0780 - val_orig_rmse: 3.4689 - val_orig_mae: 1.5730 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 9/500
+1053/1053 - 3s - loss: 0.0771 - orig_rmse: 2.8506 - orig_mae: 1.5511 - val_loss: 0.0774 - val_orig_rmse: 3.4667 - val_orig_mae: 1.5703 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 10/500
+1053/1053 - 3s - loss: 0.0768 - orig_rmse: 2.8494 - orig_mae: 1.5500 - val_loss: 0.0774 - val_orig_rmse: 3.4634 - val_orig_mae: 1.5766 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 11/500
+1053/1053 - 3s - loss: 0.0767 - orig_rmse: 2.8535 - orig_mae: 1.5514 - val_loss: 0.0772 - val_orig_rmse: 3.4625 - val_orig_mae: 1.5725 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 12/500
+1053/1053 - 3s - loss: 0.0766 - orig_rmse: 2.8532 - orig_mae: 1.5513 - val_loss: 0.0769 - val_orig_rmse: 3.4783 - val_orig_mae: 1.5746 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 13/500
+1053/1053 - 3s - loss: 0.0764 - orig_rmse: 2.8521 - orig_mae: 1.5508 - val_loss: 0.0770 - val_orig_rmse: 3.4819 - val_orig_mae: 1.5721 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 14/500
+1053/1053 - 3s - loss: 0.0763 - orig_rmse: 2.8525 - orig_mae: 1.5493 - val_loss: 0.0767 - val_orig_rmse: 3.4697 - val_orig_mae: 1.5681 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 15/500
+1053/1053 - 3s - loss: 0.0762 - orig_rmse: 2.8469 - orig_mae: 1.5491 - val_loss: 0.0768 - val_orig_rmse: 3.4711 - val_orig_mae: 1.5699 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 16/500
+1053/1053 - 3s - loss: 0.0760 - orig_rmse: 2.8477 - orig_mae: 1.5476 - val_loss: 0.0767 - val_orig_rmse: 3.4794 - val_orig_mae: 1.5703 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 17/500
+1053/1053 - 3s - loss: 0.0760 - orig_rmse: 2.8471 - orig_mae: 1.5462 - val_loss: 0.0765 - val_orig_rmse: 3.4710 - val_orig_mae: 1.5696 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 18/500
+1053/1053 - 3s - loss: 0.0760 - orig_rmse: 2.8483 - orig_mae: 1.5465 - val_loss: 0.0770 - val_orig_rmse: 3.4484 - val_orig_mae: 1.5768 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 19/500
+1053/1053 - 3s - loss: 0.0758 - orig_rmse: 2.8449 - orig_mae: 1.5447 - val_loss: 0.0768 - val_orig_rmse: 3.4668 - val_orig_mae: 1.5706 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 20/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8436 - orig_mae: 1.5436 - val_loss: 0.0764 - val_orig_rmse: 3.4703 - val_orig_mae: 1.5684 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 21/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8419 - orig_mae: 1.5433 - val_loss: 0.0769 - val_orig_rmse: 3.4843 - val_orig_mae: 1.5699 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 22/500
+1053/1053 - 3s - loss: 0.0760 - orig_rmse: 2.8483 - orig_mae: 1.5465 - val_loss: 0.0765 - val_orig_rmse: 3.4746 - val_orig_mae: 1.5689 - lr: 2.5000e-04 - 3s/epoch - 3ms/step
+Epoch 23/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8435 - orig_mae: 1.5435 - val_loss: 0.0766 - val_orig_rmse: 3.4719 - val_orig_mae: 1.5705 - lr: 1.2500e-04 - 3s/epoch - 3ms/step
+Epoch 24/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8427 - orig_mae: 1.5436 - val_loss: 0.0765 - val_orig_rmse: 3.4607 - val_orig_mae: 1.5715 - lr: 1.2500e-04 - 3s/epoch - 3ms/step
+Epoch 25/500
+1053/1053 - 3s - loss: 0.0758 - orig_rmse: 2.8452 - orig_mae: 1.5456 - val_loss: 0.0765 - val_orig_rmse: 3.4714 - val_orig_mae: 1.5695 - lr: 1.2500e-04 - 3s/epoch - 3ms/step
+Epoch 26/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8446 - orig_mae: 1.5448 - val_loss: 0.0766 - val_orig_rmse: 3.4540 - val_orig_mae: 1.5716 - lr: 1.2500e-04 - 3s/epoch - 3ms/step
+Epoch 27/500
+1053/1053 - 3s - loss: 0.0758 - orig_rmse: 2.8452 - orig_mae: 1.5466 - val_loss: 0.0765 - val_orig_rmse: 3.4670 - val_orig_mae: 1.5684 - lr: 1.2500e-04 - 3s/epoch - 3ms/step
+Epoch 28/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8448 - orig_mae: 1.5455 - val_loss: 0.0764 - val_orig_rmse: 3.4708 - val_orig_mae: 1.5672 - lr: 1.2500e-04 - 3s/epoch - 3ms/step
+Epoch 29/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8446 - orig_mae: 1.5440 - val_loss: 0.0765 - val_orig_rmse: 3.4719 - val_orig_mae: 1.5676 - lr: 1.2500e-04 - 3s/epoch - 3ms/step
+Epoch 30/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8449 - orig_mae: 1.5430 - val_loss: 0.0765 - val_orig_rmse: 3.4687 - val_orig_mae: 1.5680 - lr: 1.2500e-04 - 3s/epoch - 3ms/step
+Epoch 31/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8459 - orig_mae: 1.5434 - val_loss: 0.0764 - val_orig_rmse: 3.4645 - val_orig_mae: 1.5683 - lr: 6.2500e-05 - 3s/epoch - 3ms/step
+Epoch 32/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8439 - orig_mae: 1.5433 - val_loss: 0.0764 - val_orig_rmse: 3.4699 - val_orig_mae: 1.5688 - lr: 6.2500e-05 - 3s/epoch - 3ms/step
+Epoch 33/500
+1053/1053 - 3s - loss: 0.0757 - orig_rmse: 2.8447 - orig_mae: 1.5449 - val_loss: 0.0764 - val_orig_rmse: 3.4672 - val_orig_mae: 1.5686 - lr: 6.2500e-05 - 3s/epoch - 3ms/step
+Epoch 34/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8423 - orig_mae: 1.5413 - val_loss: 0.0764 - val_orig_rmse: 3.4698 - val_orig_mae: 1.5681 - lr: 6.2500e-05 - 3s/epoch - 3ms/step
+Epoch 35/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8445 - orig_mae: 1.5432 - val_loss: 0.0765 - val_orig_rmse: 3.4612 - val_orig_mae: 1.5696 - lr: 6.2500e-05 - 3s/epoch - 3ms/step
+Epoch 36/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8437 - orig_mae: 1.5430 - val_loss: 0.0764 - val_orig_rmse: 3.4661 - val_orig_mae: 1.5678 - lr: 6.2500e-05 - 3s/epoch - 3ms/step
+Epoch 37/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8414 - orig_mae: 1.5426 - val_loss: 0.0764 - val_orig_rmse: 3.4727 - val_orig_mae: 1.5680 - lr: 6.2500e-05 - 3s/epoch - 3ms/step
+Epoch 38/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8442 - orig_mae: 1.5423 - val_loss: 0.0764 - val_orig_rmse: 3.4605 - val_orig_mae: 1.5693 - lr: 6.2500e-05 - 3s/epoch - 3ms/step
+Epoch 39/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8456 - orig_mae: 1.5428 - val_loss: 0.0764 - val_orig_rmse: 3.4682 - val_orig_mae: 1.5681 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 40/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8432 - orig_mae: 1.5449 - val_loss: 0.0764 - val_orig_rmse: 3.4672 - val_orig_mae: 1.5679 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 41/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8402 - orig_mae: 1.5411 - val_loss: 0.0764 - val_orig_rmse: 3.4643 - val_orig_mae: 1.5683 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 42/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8439 - orig_mae: 1.5439 - val_loss: 0.0764 - val_orig_rmse: 3.4678 - val_orig_mae: 1.5676 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 43/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8422 - orig_mae: 1.5426 - val_loss: 0.0764 - val_orig_rmse: 3.4611 - val_orig_mae: 1.5684 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 44/500
+1053/1053 - 3s - loss: 0.0754 - orig_rmse: 2.8383 - orig_mae: 1.5419 - val_loss: 0.0764 - val_orig_rmse: 3.4613 - val_orig_mae: 1.5688 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 45/500
+1053/1053 - 3s - loss: 0.0754 - orig_rmse: 2.8394 - orig_mae: 1.5410 - val_loss: 0.0763 - val_orig_rmse: 3.4644 - val_orig_mae: 1.5682 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 46/500
+1053/1053 - 3s - loss: 0.0756 - orig_rmse: 2.8420 - orig_mae: 1.5427 - val_loss: 0.0764 - val_orig_rmse: 3.4667 - val_orig_mae: 1.5677 - lr: 3.1250e-05 - 3s/epoch - 3ms/step
+Epoch 47/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8412 - orig_mae: 1.5427 - val_loss: 0.0764 - val_orig_rmse: 3.4663 - val_orig_mae: 1.5675 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 48/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8406 - orig_mae: 1.5417 - val_loss: 0.0764 - val_orig_rmse: 3.4654 - val_orig_mae: 1.5677 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 49/500
+1053/1053 - 3s - loss: 0.0754 - orig_rmse: 2.8383 - orig_mae: 1.5409 - val_loss: 0.0764 - val_orig_rmse: 3.4681 - val_orig_mae: 1.5675 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 50/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8407 - orig_mae: 1.5412 - val_loss: 0.0764 - val_orig_rmse: 3.4675 - val_orig_mae: 1.5674 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 51/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8419 - orig_mae: 1.5416 - val_loss: 0.0764 - val_orig_rmse: 3.4645 - val_orig_mae: 1.5677 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 52/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8403 - orig_mae: 1.5408 - val_loss: 0.0764 - val_orig_rmse: 3.4631 - val_orig_mae: 1.5680 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+Epoch 53/500
+1053/1053 - 3s - loss: 0.0755 - orig_rmse: 2.8399 - orig_mae: 1.5418 - val_loss: 0.0764 - val_orig_rmse: 3.4685 - val_orig_mae: 1.5674 - lr: 1.5625e-05 - 3s/epoch - 3ms/step
+{'epochs_ran': 53, 'model absolute error': 1.5418497323989868, 'model rms error': 2.839897871017456, 'best val mae': 1.5671616792678833}
+{'test loss': 0.07375854253768921, 'test_orig_rmse': 2.8390936851501465, 'test_orig_mae': 1.53095281124115}
+{'rep agreement (5 fits)': {'n_reps': 5, 'mean_kendall_tau': 0.9728, 'min_kendall_tau': 0.9642, 'top_20_jaccard_mean': 0.9333, 'top_20_jaccard_min': 0.9048, 'pred_std_mean': 0.0369, 'pred_std_p90': 0.0545, 'pred_std_max': 1.3414}}
+  averaging 5/5 fits (best_val_mae ≤ 1.6919 (best 1.5666 × 1.08))
+Saved horizon rep metrics to C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\run_metrics\horizon_sweeps\20260819_000049\02_l2_2.25e-3
+
+Top 100 players by predicted points over next 5 gameweeks:
+  #  Player                        Pos   Team                 Pts
+  1  Erling Haaland                4     MCI                 32.4
+  2  Ollie Watkins                 4     AVL                 28.6
+  3  Elliot Anderson               3     MCI                 27.7
+  4  João Pedro Junqueira de Jesus  4     CHE                 27.6
+  5  Bruno Borges Fernandes        3     MUN                 27.2
+  6  Morgan Gibbs-White            3     NFO                 26.9
+  7  William Osula                 4     NEW                 26.6
+  8  Igor Jesus Maciel da Cruz     4     NFO                 26.4
+  9  Dominic Calvert-Lewin         4     LEE                 26.1
+ 10  Bruno Guimarães Rodriguez Moura  3     ARS                 25.8
+ 11  Igor Thiago Nascimento Rodrigues  4     BRE                 25.6
+ 12  Richarlison de Andrade        4     TOT                 25.6
+ 13  Matheus Santos Carneiro da Cunha  3     MUN                 25.3
+ 14  Antoine Semenyo               3     MCI                 25.1
+ 15  Jack Grealish                 3     MCI                 24.7
+ 16  Nico O'Reilly                 2     MCI                 24.6
+ 17  Bryan Mbeumo                  3     MUN                 24.5
+ 18  Bukayo Saka                   3     ARS                 24.4
+ 19  Amad Diallo                   3     MUN                 24.1
+ 20  Dominik Szoboszlai            3     LIV                 24.1
+ 21  Declan Rice                   3     ARS                 23.9
+ 22  Marc Guéhi                    2     MCI                 23.9
+ 23  Enzo Fernández                3     CHE                 23.8
+ 24  Gabriel dos Santos Magalhães  2     ARS                 23.7
+ 25  Abdukodir Khusanov            2     MCI                 23.5
+ 26  Dominic Solanke-Mitchell      4     TOT                 23.5
+ 27  Dango Ouattara                3     BRE                 23.5
+ 28  Cody Gakpo                    3     LIV                 23.2
+ 29  Morgan Rogers                 3     CHE                 23.1
+ 30  Kobbie Mainoo                 3     MUN                 23.1
+ 31  Cole Palmer                   3     CHE                 23.0
+ 32  Nicolas Jackson               4     CHE                 22.8
+ 33  Alexis Mac Allister           3     LIV                 22.7
+ 34  Mikkel Damsgaard              3     BRE                 22.5
+ 35  Rúben dos Santos Gato Alves Dias  2     MCI                 22.4
+ 36  Francisco Evanilson de Lima Barbosa  4     BOU                 22.3
+ 37  Martin Ødegaard               3     ARS                 22.3
+ 38  Pedro Lomba Neto              3     CHE                 22.3
+ 39  Harry Maguire                 2     MUN                 22.2
+ 40  Youri Tielemans               3     MUN                 22.2
+ 41  Kevin Schade                  3     BRE                 22.1
+ 42  Noussair Mazraoui             2     MUN                 22.0
+ 43  Luke Shaw                     2     MUN                 21.9
+ 44  Mathias Jensen                3     BRE                 21.7
+ 45  Virgil van Dijk               2     LIV                 21.6
+ 46  Rayan Vitor Simplício Rocha   3     BOU                 21.5
+ 47  Florian Wirtz                 3     LIV                 21.5
+ 48  Brian Brobbey                 4     SUN                 21.4
+ 49  Diogo Dalot Teixeira          2     MUN                 21.3
+ 50  Kiernan Dewsbury-Hall         3     EVE                 21.2
+ 51  Lisandro Martínez             2     MUN                 21.2
+ 52  Mathys Tel                    3     TOT                 21.2
+ 53  Jack Hinshelwood              3     BHA                 21.1
+ 54  Keane Lewis-Potter            3     BRE                 21.0
+ 55  Jaidon Anthony                3     BRE                 20.9
+ 56  Mateus Fernandes              3     TOT                 20.9
+ 57  Ethan Ampadu                  3     LEE                 20.9
+ 58  Anton Stach                   3     LEE                 20.9
+ 59  Ismaïla Sarr                  3     CRY                 20.8
+ 60  Maxence Lacroix               2     CHE                 20.7
+ 61  Tanaka Ao                     3     LEE                 20.6
+ 62  Moisés Caicedo Corozo         3     CHE                 20.6
+ 63  Piero Hincapié                2     ARS                 20.5
+ 64  Marcus Tavernier              3     BOU                 20.5
+ 65  Enzo Le Fée                   3     SUN                 20.5
+ 66  Riccardo Calafiori            2     ARS                 20.3
+ 67  David Raya Martín             1     ARS                 20.2
+ 68  Yehor Yarmoliuk               3     BRE                 20.0
+ 69  Justin Devenny                3     CRY                 20.0
+ 70  Callum Hudson-Odoi            3     NFO                 19.9
+ 71  Iliman Ndiaye                 3     EVE                 19.9
+ 72  John McGinn                   3     AVL                 19.9
+ 73  Conor Gallagher               3     TOT                 19.8
+ 74  Pascal Groß                   3     BHA                 19.8
+ 75  Boubacar Kamara               3     AVL                 19.8
+ 76  Gianluigi Donnarumma          1     MCI                 19.7
+ 77  Rodrigo Bentancur             3     TOT                 19.7
+ 78  Sandro Tonali                 3     TOT                 19.6
+ 79  Lewis Miley                   3     NEW                 19.5
+ 80  Ryan Gravenberch              3     LIV                 19.5
+ 81  Brennan Johnson               3     EVE                 19.5
+ 82  Felipe Rodrigues da Silva     2     NFO                 19.4
+ 83  Cristhian Mosquera            2     ARS                 19.4
+ 84  Levi Samuels Colwill          2     CHE                 19.4
+ 85  Alex Scott                    3     BOU                 19.3
+ 86  Benjamin Sesko                4     MUN                 19.3
+ 87  Marcos Senesi Barón           2     TOT                 19.2
+ 88  Senne Lammens                 1     MUN                 19.2
+ 89  Axel Disasi                   2     CHE                 19.1
+ 90  Jaka Bijol                    2     LEE                 19.1
+ 91  Ross Barkley                  3     AVL                 19.1
+ 92  Kepa Arrizabalaga Revuelta    1     ARS                 19.0
+ 93  Pedro Porro Sauceda           2     TOT                 18.9
+ 94  James Justin                  2     LEE                 18.9
+ 95  Nathan Collins                2     BRE                 18.8
+ 96  Jan Paul van Hecke            2     TOT                 18.8
+ 97  Neco Williams                 2     NFO                 18.6
+ 98  Loum Tchaouna                 3     COV                 18.6
+ 99  Kevin Danso                   2     TOT                 18.6
+100  Sven Botman                   2     NEW                 18.5
+Skipping persist (--no-persist)

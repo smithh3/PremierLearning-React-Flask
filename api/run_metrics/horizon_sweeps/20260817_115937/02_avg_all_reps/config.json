@@ -1,0 +1,8 @@
+{
+  "name": "02_avg_all_reps",
+  "note": "Same net; average all 5 fits (no 1.2x train-RMSE filter). Last run kept 1/5.",
+  "env": {
+    "PL_AVERAGE_ALL_REPS": "1"
+  },
+  "reps": 5
+}

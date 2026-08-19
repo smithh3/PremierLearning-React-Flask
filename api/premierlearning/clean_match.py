@@ -200,6 +200,10 @@ LAST_SEASON_MINUTES_CAP = 38.0 * 90.0  # scale last-season minutes to ~[0, 1]
 # Minutes-only root features (not in points / horizon nets).
 # H2 = second half of last season; 2s = prev2 season + H1 of last season.
 # Recency stretches into H2 and blends toward H2 mins/match near GW0.
+# Predict (not train): if the last two fixtures were appearances, 3+ consecutive
+# DNPs are dropped from H2 / 2s / recency (injury, not availability).
+# last_season_h2_fixture_frac stays raw coverage so dropped holes do not look
+# like a short FPL history.
 MINUTES_ONLY_ROOT_KEYS = [
     'early_x_last_season_mins',
     'last_season_h2_mins_per_match',

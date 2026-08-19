@@ -1,0 +1,16 @@
+{
+  "name": "05_l2_2.5e-3",
+  "note": "Slightly stronger L2. v3 07 showed 1.5e-3 is not between 1e-3 and 2e-3; probe above the peak.",
+  "env": {
+    "PL_WIDTH_MULT": "1.5",
+    "PL_N_HIDDEN": "3",
+    "PL_DROPOUT_1": "0.1",
+    "PL_DROPOUT_2": "0.05",
+    "PL_L2": "0.0025",
+    "PL_LEARNING_RATE": "0.0005",
+    "PL_WEIGHT_DECAY": "0.0001",
+    "PL_OPTIMIZER": "adamw"
+  },
+  "extra_args": [],
+  "reps": 5
+}

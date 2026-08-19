@@ -1,0 +1,13 @@
+{
+  "name": "11_2.0x_l2_2e-3",
+  "note": "2.0\u00d7 width + L2 2e-3. v1 lesson: extra capacity only stabilized with enough L2. v2 04 (2.0\u00d7, L2 1e-3) had Haaland 32.4 H/T/F but min Jaccard 0.60.",
+  "env": {
+    "PL_WIDTH_MULT": "2.0",
+    "PL_N_HIDDEN": "3",
+    "PL_DROPOUT_1": "0.1",
+    "PL_DROPOUT_2": "0.05",
+    "PL_L2": "0.002"
+  },
+  "extra_args": [],
+  "reps": 5
+}

@@ -1,0 +1,17 @@
+trial,ok,mean_kendall_tau,min_kendall_tau,top_20_jaccard_mean,top_20_jaccard_min,pred_std_mean,pred_std_max,n_reps_averaged,n_reps_requested,mean_epochs_ran,mean_test_mae,mean_pred_mean,mean_pred_max,haaland_rank,haaland_pts,fernandes_rank,fernandes_pts,note,env
+02_avg_all_reps,True,0.8219,0.7611,0.6088,0.5385,0.1847,1.9944,5,5,76.0,2.8235,4.441,11.828,1,32.3,2,27.5,Force-average all 5 even if a rep has bad best_val_mae (contrast to default 8% trim).,"{""PL_AVERAGE_ALL_REPS"": ""1""}"
+03_lr_1e-3,True,0.8552,0.8101,0.7339,0.6667,0.1332,1.2046,5,5,73.2,2.8575,4.316,10.594,1,31.7,3,26.9,"Original AdamW LR. Faster, more init-sensitive.","{""PL_LEARNING_RATE"": ""0.001""}"
+04_lr_1e-4,False,,,,,,,,,,,,,,,,,Slower steps into the regularized basin; more epochs.,"{""PL_EARLY_STOPPING_PATIENCE"": ""40"", ""PL_LEARNING_RATE"": ""0.0001""}"
+05_l2_weaker_1e-4,False,,,,,,,,,,,,,,,,,,
+06_l2_stronger_5e-3,False,,,,,,,,,,,,,,,,,,
+07_wd_stronger_1e-3,False,,,,,,,,,,,,,,,,,,
+08_smaller_net_0.5x,False,,,,,,,,,,,,,,,,,,
+09_old_capacity_1.5x_3layer,False,,,,,,,,,,,,,,,,,,
+10_patience_40,False,,,,,,,,,,,,,,,,,,
+11_huber_1.0,False,,,,,,,,,,,,,,,,,,
+12_one_hidden_layer,False,,,,,,,,,,,,,,,,,,
+13_three_hidden_layers,False,,,,,,,,,,,,,,,,,,
+14_four_hidden_layers,False,,,,,,,,,,,,,,,,,,
+15_historic_pre_option6,False,,,,,,,,,,,,,,,,,,
+16_historic_dropout,False,,,,,,,,,,,,,,,,,,
+17_historic_mae_loss,False,,,,,,,,,,,,,,,,,,

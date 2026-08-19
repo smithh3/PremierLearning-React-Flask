@@ -1,0 +1,26 @@
+Horizon-5 hyperparameter sweep comparison (v3)
+Control: 09 body + Dropout 0.1/0.05 (sweep-2 trial 09_dropout_light).
+Higher kendall/jaccard and lower pred_std = stabler ranks.
+haaland_pts is 5-GW total in --horizon-only mode (not h1 pp90).
+
+trial                             tau      j20     pstd     reps   epochs     H_rk    H_pts  testMAE
+----------------------------------------------------------------------------------------------------
+01_control_dropout             0.9341   0.8623   0.0669      5/5     81.4        1     32.4   2.7859
+    Replay sweep-2 winner: 1.5×, 3 layers, L2 1e-3, LR 5e-4, Dropout 0.1/0.05.
+02_l2_2e-3                     0.9637   0.9238   0.0497      5/5     82.4        1     32.5   2.7997
+    Dropout body + L2 2e-3 (stack the two v2 winners).
+03_lr_1e-3                     0.9263   0.9429   0.0891      5/5     83.4        1     31.8   2.7513
+    Dropout body + LR 1e-3 (v2 02 lifted Jaccard and Haaland on 09 body).
+04_drop_0.2_0.1                0.9271   0.8552    0.095      5/5     95.6        1     31.5   2.8157
+    More dropout, still below historic 0.3/0.1 (that recipe had weak L2).
+05_drop_0.05_0.05                                              /                                    
+06_drop_first_only                                             /                                    
+07_l2_1.5e-3                                                   /                                    
+08_wd_0                                                        /                                    
+09_drop_0.15_0.08                                              /                                    
+10_l2_2e-3_lr_1e-3                                             /                                    
+11_2.0x_l2_2e-3                                                /                                    
+12_four_layer_lr_1e-3                                          /                                    
+13_adam_lr_1e-3                                                /                                    
+14_huber_1_patience_40                                         /                                    
+15_historic_drop_l2_2e-3                                       /                                    
