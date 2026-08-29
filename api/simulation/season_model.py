@@ -3,12 +3,23 @@
 import numpy
 
 from premierlearning.clean_match import get_input_keys
-from premierlearning.helper_functions import effective_minutes_for_points
+from premierlearning.helper_functions import (
+    effective_minutes_for_points,
+    implied_pp90,
+)
 from premierlearning.learning import (
+    HORIZON_REPS_FLAG,
+    MINUTES_REPS_FLAG,
     fit_points_error_predictor,
     fit_reusable_predictor,
+    parse_horizon_reps,
+    parse_minutes_reps,
 )
 from premierlearning.player import MIN_APPEARANCES_TO_PREDICT
+from simulation.historical_data import (
+    HIST_PREDICT_SKIP_MAX_APPS,
+    HIST_PREDICT_SKIP_MAX_POINTS,
+)
 from premierlearning.team_expectancy import (
     apply_team_expectancy_model,
     fit_team_expectancy_once,
@@ -73,12 +84,18 @@ class FixedSeasonModels:
             log_targets=True,
             reps=1,
         )
+        minutes_reps = parse_minutes_reps()
+        if minutes_reps > 1:
+            print(
+                'Minutes model: %s independent fits (%s); drop val MAE > 8%% over best'
+                % (minutes_reps, MINUTES_REPS_FLAG)
+            )
         minutes_model = fit_reusable_predictor(
             minutes_clean_matches,
             get_input_keys('minutes'),
             'minutes',
             True,
-            reps=1,
+            reps=minutes_reps,
         )
         points_error_model = fit_points_error_predictor(
             valid_clean_matches,
@@ -88,6 +105,13 @@ class FixedSeasonModels:
         horizon_training = runner.build_horizon_training_data(
             runner.horizon_gameweeks
         )
+        horizon_reps = parse_horizon_reps()
+        if horizon_reps > 1:
+            print(
+                'Horizon-%s model: %s independent fits (%s); '
+                'h1 points stay 1 fit'
+                % (runner.horizon_gameweeks, horizon_reps, HORIZON_REPS_FLAG)
+            )
         horizon_model = fit_reusable_predictor(
             horizon_training['player_clean'],
             get_input_keys('total_points'),
@@ -95,7 +119,7 @@ class FixedSeasonModels:
             True,
             output_learn=horizon_training['labels'],
             log_targets=True,
-            reps=1,
+            reps=horizon_reps,
         )
         return cls(
             team_model,
@@ -120,7 +144,11 @@ class FixedSeasonModels:
             self.prepare_runner(runner)
         future_matches = []
         future_clean_matches = []
+        skipped_low_usage = 0
         for player in runner.current_season.players:
+            if getattr(player, 'skip_historical_predict', False):
+                skipped_low_usage += 1
+                continue
             if player.matches_played < MIN_APPEARANCES_TO_PREDICT:
                 for future_match in player.future_matches:
                     future_match.points = 0.0
@@ -131,25 +159,38 @@ class FixedSeasonModels:
                 future_matches.append(future_match)
                 future_clean_matches.append(future_match.to_clean_match())
 
-        points_predictions = self.points_model.predict(future_clean_matches)
-        minutes_predictions = self.minutes_model.predict(future_clean_matches)
-        error_predictions = self.points_error_model.predict(
-            future_clean_matches
-        )
-        for match, points_pred, minutes_pred, error in zip(
-            future_matches,
-            points_predictions,
-            minutes_predictions,
-            error_predictions,
-        ):
-            pp90 = max(0.0, float(points_pred[0]))
-            minutes = min(90.0, max(0.0, float(minutes_pred[0])))
-            points = pp90 * effective_minutes_for_points(minutes) / 90.0
-            match.game_stats['minutes'] = minutes
-            match.game_stats['total_points'] = points
-            match.points = points
-            match.points_error = float(error)
-            match.set_minutes_from_stats()
+        if skipped_low_usage:
+            print(
+                'Skipping predict for %d players with <=%s season appearances '
+                'or <=%s season points'
+                % (
+                    skipped_low_usage,
+                    HIST_PREDICT_SKIP_MAX_APPS,
+                    int(HIST_PREDICT_SKIP_MAX_POINTS),
+                )
+            )
+
+        if future_clean_matches:
+            points_predictions = self.points_model.predict(future_clean_matches)
+            minutes_predictions = self.minutes_model.predict(future_clean_matches)
+            error_predictions = self.points_error_model.predict(
+                future_clean_matches
+            )
+            for match, points_pred, minutes_pred, error in zip(
+                future_matches,
+                points_predictions,
+                minutes_predictions,
+                error_predictions,
+            ):
+                pp90 = max(0.0, float(points_pred[0]))
+                minutes = min(90.0, max(0.0, float(minutes_pred[0])))
+                points = pp90 * effective_minutes_for_points(minutes) / 90.0
+                match.predicted_pp90 = pp90
+                match.game_stats['minutes'] = minutes
+                match.game_stats['total_points'] = points
+                match.points = points
+                match.points_error = float(error)
+                match.set_minutes_from_stats()
 
         horizon_data = runner.build_horizon_predict_data(
             self.horizon_gameweeks
@@ -164,5 +205,6 @@ class FixedSeasonModels:
                 horizon_predictions,
                 self.horizon_gameweeks,
             )
+        runner.sync_predicted_pp90()
         runner.current_season.calculate_player_points_over_next_5_gameweeks()
         return runner.current_season

@@ -25,5 +25,7 @@ create table future_matches (
     points double precision not null,
     gameweek integer,
     opponent varchar(255),
-    points_error double precision not null default 0
+    points_error double precision not null default 0,
+    predicted_pp90 double precision,
+    chance_of_playing integer
 );

@@ -131,12 +131,13 @@ resource "aws_ecs_task_definition" "apply" {
           { name = "RUN_LEARNING", value = "0" },
           { name = "APPLY_TRANSFERS", value = var.apply_transfers ? "true" : "false" },
           { name = "SUGGEST_TRANSFERS", value = var.apply_transfers ? "false" : "true" },
+          { name = "APPLY_ON_DEADLINE_DAY", value = "true" },
           { name = "APPLY_WITHIN_HOURS", value = var.apply_within_hours },
           { name = "FPL_LOGIN_HEADLESS", value = "1" },
           { name = "FPL_REFRESH_SECRET_ARN", value = aws_secretsmanager_secret.fpl.arn },
           { name = "AWS_DEFAULT_REGION", value = var.aws_region },
           { name = "NOTIFY_EMAIL", value = var.notify_email },
-          { name = "SES_FROM_EMAIL", value = var.notify_email },
+          { name = "SES_FROM_EMAIL", value = var.ses_from_email != "" ? var.ses_from_email : var.notify_email },
         ]
       )
       secrets = concat(

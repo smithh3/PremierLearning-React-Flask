@@ -3,8 +3,9 @@
 The vaastav data is stored as an end-of-season export.  This module deliberately
 uses only identity fields from ``players_raw.csv`` and only pre-cutoff match rows
 for model features.  Price, team and position are rebuilt from the cumulative
-``gws/gwN.csv`` snapshots.  Historical injury percentages are not available, so
-the prediction pipeline leaves them unknown and relies on its minutes model.
+``gws/gwN.csv`` snapshots.  Weekly injury percentages come from local
+``chance_of_playing`` caches (filled from Randdalf/fplcache when missing) and
+are applied in squadtools at optimiser time, not baked into stored predicted points.
 """
 
 import csv
@@ -16,9 +17,10 @@ from pathlib import Path
 from typing import Dict, Iterable, List, Optional
 
 from premierlearning.helper_functions import coerce_bool, coerce_optional_int
-from premierlearning.player import Player
+from premierlearning.player import Player, mark_most_expensive_in_position
 from premierlearning.season import Season
 from premierlearning.team import Team
+from squadtools.chance_to_play import ensure_gameweek_chances
 
 
 POSITION_IDS = {
@@ -58,6 +60,33 @@ def _float(value: object, default: float = 0.0) -> float:
         return float(value)
     except (TypeError, ValueError):
         return default
+
+
+# Historical predict only: still train on everyone. Skip rest-of-season
+# inference for players who barely featured that season.
+HIST_PREDICT_SKIP_MAX_APPS = 3
+HIST_PREDICT_SKIP_MAX_POINTS = 20.0
+
+
+def season_usage_from_rows(player_rows):
+    """Full-season appearances (minutes > 0) and points per player id."""
+    totals = {}
+    for player_id, rows in (player_rows or {}).items():
+        apps = 0
+        points = 0.0
+        for row in rows or ():
+            if _float(row.get('minutes')) > 0:
+                apps += 1
+            points += _float(row.get('total_points'))
+        totals[int(player_id)] = (apps, points)
+    return totals
+
+
+def skip_historical_predict_for_season_usage(appearances, points) -> bool:
+    return (
+        int(appearances or 0) <= HIST_PREDICT_SKIP_MAX_APPS
+        or float(points or 0) <= HIST_PREDICT_SKIP_MAX_POINTS
+    )
 
 
 @dataclass(frozen=True)
@@ -112,6 +141,7 @@ class VaastavSeasonData:
 
         self.player_rows = self._load_player_rows()
         self.gw_updates = self._load_gw_updates()
+        self._season_usage_totals = None
 
     def _load_player_rows(self) -> Dict[int, List[dict]]:
         result: Dict[int, List[dict]] = {}
@@ -133,6 +163,12 @@ class VaastavSeasonData:
             )
             result[player_id] = rows
         return result
+
+    def season_usage_totals(self):
+        """Cached full-season appearances and points from gw.csv rows."""
+        if self._season_usage_totals is None:
+            self._season_usage_totals = season_usage_from_rows(self.player_rows)
+        return self._season_usage_totals
 
     def _load_gw_updates(self) -> Dict[int, Dict[int, dict]]:
         updates: Dict[int, Dict[int, dict]] = {}
@@ -316,9 +352,28 @@ class HistoricalCurrentSeason(Season):
         self.fixtures_json = source.snapshot_fixtures(self.as_of_gameweek)
         self.last_season_team_standings = self._load_last_season_standings()
         self.element_type_dict = self._load_element_types()
+        self.chance_by_player = self._load_chance_by_player()
+        self.availability_mode = 'deferred_chance'
         self._populate_teams()
         self._populate_players()
         self.populate_player_code_dict()
+
+    def _load_chance_by_player(self):
+        deadline = self.source.deadline_for_gameweek(self.as_of_gameweek)
+        try:
+            return ensure_gameweek_chances(
+                self.source.season_start_year,
+                self.as_of_gameweek,
+                deadline=deadline,
+                data_root=self.source.data_root,
+                allow_download=True,
+            )
+        except Exception as exc:  # noqa: BLE001 - fall back to minutes proxy
+            print(
+                f'GW{self.as_of_gameweek} chance-of-playing unavailable '
+                f'({exc}); using minutes_proxy'
+            )
+            return {}
 
     def _load_last_season_standings(self):
         path = self.source.season_dir / 'last_season_team_standings.json'
@@ -359,6 +414,10 @@ class HistoricalCurrentSeason(Season):
             history = self.source.history_before(player_id, self.as_of_gameweek)
             appearances = sum(1 for row in history if _float(row.get('minutes')) > 0)
             points = sum(_float(row.get('total_points')) for row in history)
+            chance = self.chance_by_player.get(player_id)
+            unavailable = self.source.known_unavailable(raw, self.as_of_gameweek)
+            if chance is not None and chance <= 0:
+                unavailable = True
             element = {
                 'id': player_id,
                 'code': int(float(raw['code'])),
@@ -368,10 +427,10 @@ class HistoricalCurrentSeason(Season):
                 'points_per_game': points / appearances if appearances else 0.0,
                 'now_cost': int(snapshot.get('value') or round(_float(raw.get('now_cost')))),
                 'team': int(team_id),
-                # Deliberately unknown: weekly historical injury percentages are absent.
-                'chance_of_playing_next_round': None,
+                # Same field live FutureMatch reads; filled from fplcache when available.
+                'chance_of_playing_next_round': chance,
                 'status': raw.get('status'),
-                'can_select': not self.source.known_unavailable(raw, self.as_of_gameweek),
+                'can_select': not unavailable,
             }
             future_fixtures = self.source.fixtures_for_team(
                 int(team_id), self.as_of_gameweek, prediction_end
@@ -386,10 +445,16 @@ class HistoricalCurrentSeason(Season):
                 player_json,
                 self.teams,
                 self.current_gameweek,
+                next_gameweek=self.as_of_gameweek,
             )
             player.historical_selectable = bool(element['can_select'])
-            player.availability_mode = 'minutes_proxy'
+            player.availability_mode = self.availability_mode
+            apps, points = self.source.season_usage_totals().get(player_id, (0, 0))
+            player.skip_historical_predict = skip_historical_predict_for_season_usage(
+                apps, points
+            )
             self.players.append(player)
+        mark_most_expensive_in_position(self.players)
 
     # Abstract ``Season`` hooks are intentionally unused because this object is
     # assembled from the indexed source in one pass.

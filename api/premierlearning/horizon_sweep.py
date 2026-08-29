@@ -7,8 +7,8 @@ when a sweep finishes (or after each trial, replacing that sweep's section).
 Run from api/:
   python -m premierlearning.horizon_sweep
   python -m premierlearning.horizon_sweep --reps 10
-  python -m premierlearning.horizon_sweep --from 3
-  python -m premierlearning.horizon_sweep --only 2
+  python -m premierlearning.horizon_sweep --from 1
+  python -m premierlearning.horizon_sweep --only 1
   python -m premierlearning.horizon_sweep --dry-run
 
 Each trial writes api/run_metrics/horizon_sweeps/<sweep_id>/<trial>/
@@ -23,6 +23,7 @@ import csv
 import json
 import os
 import re
+import statistics
 import subprocess
 import sys
 from datetime import datetime
@@ -33,8 +34,8 @@ API_DIR = Path(__file__).resolve().parent.parent
 SWEEPS_ROOT = API_DIR / 'run_metrics' / 'horizon_sweeps'
 HISTORY_PATH = SWEEPS_ROOT / 'HISTORY.md'
 
-# Current bake: 20260819_085557 trial 06 (L2 2.25e-3 + ReduceLR 0.3).
-# Pin the full recipe so learning.py defaults cannot drift remaining trials.
+# Current bake: learning.py + historical prediction_builder defaults
+# (20260819_085557 trial 06 body).
 _BASE = {
     'PL_WIDTH_MULT': '1.5',
     'PL_N_HIDDEN': '3',
@@ -45,58 +46,59 @@ _BASE = {
     'PL_WEIGHT_DECAY': '0',
     'PL_OPTIMIZER': 'adamw',
     'PL_REDUCE_LR_FACTOR': '0.3',
+    'PL_REDUCE_LR_PATIENCE': '8',
+    'PL_REDUCE_LR_MIN': '1e-5',
+    'PL_HUBER_DELTA': '1.8',
+    'PL_BATCH_SIZE': '32',
+    'PL_EARLY_STOPPING_PATIENCE': '25',
+    'PL_VAL_MAE_KEEP_RATIO': '1.08',
 }
 
 CONTROL_NOTE = (
-    'Control: 1.5x, 3 layers, Dropout 0.1/0.05, L2 2.25e-3, LR 5e-4, AdamW wd 0, '
-    'ReduceLR 0.3 (20260819_085557 trial 06). 10 reps.'
+    'Same form-window A/B (last-3 vs last-5 short form, both with a '
+    '7-appearance avg). Full FPL pp90 (appearance / 60+ points included). '
+    '10 horizon reps averaged. Same 1.5x / 3-layer body. horizon-only so '
+    'tau/jaccard/Haaland compare to HISTORY.md.'
 )
 
 
-def _trial(name, note, **env_delta):
+def _trial(name, note, extra_args=None, horizon_only=True, reps=None, **env_delta):
     env = dict(_BASE)
     env.update(env_delta)
-    return {'name': name, 'note': note, 'env': env}
+    trial = {
+        'name': name,
+        'note': note,
+        'env': env,
+        'horizon_only': bool(horizon_only),
+    }
+    if extra_args:
+        trial['extra_args'] = list(extra_args)
+    if reps is not None:
+        trial['reps'] = reps
+    return trial
 
 
 TRIALS = [
     _trial(
-        '01_control',
-        'Bake / this-run 06: L2 2.25e-3 + ReduceLR 0.3. Best Jaccard and min J this run; tau 0.960. 10-rep check.',
+        '01_form_3_7',
+        'Current default: last-3 form + last-7 avg. Full FPL pp90. 10 reps averaged.',
+        reps=10,
+        PL_SHORT_FORM_WINDOW='3',
+        PL_FORM_AVG_WINDOW='7',
     ),
     _trial(
-        '02_rlr_0.5',
-        'Previous bake (v5 02 / this-run 01): same body, ReduceLR 0.5. Tau held 0.973 then 0.964; min J did not (0.905 then 0.739).',
-        PL_REDUCE_LR_FACTOR='0.5',
-    ),
-    _trial(
-        '03_lr_6e-4',
-        'This-run 02 / v5 07: LR 6e-4, ReduceLR 0.5. High tau both sweeps; Jaccard 0.943 then 0.889. Exact replay, not stacked on 0.3.',
-        PL_LEARNING_RATE='0.0006',
-        PL_REDUCE_LR_FACTOR='0.5',
-    ),
-    _trial(
-        '04_l2_2e-3',
-        'v4 winner 02_wd_0: L2 2e-3, ReduceLR 0.5. min J 0.905 that run; v5 control replay was fragile (tau 0.914, pstd 0.136).',
-        PL_L2='0.002',
-        PL_REDUCE_LR_FACTOR='0.5',
-    ),
-    _trial(
-        '05_lr_6e-4_rlr_0.3',
-        'Stack the two training-dynamics keeps: LR 6e-4 on the new ReduceLR 0.3 bake.',
-        PL_LEARNING_RATE='0.0006',
-    ),
-    _trial(
-        '06_huber_1.4',
-        'Huber 1.4 on the bake (was 1.8). 1.0 only lost as a bundle with patience 40 on older bodies.',
-        PL_HUBER_DELTA='1.4',
+        '02_form_5_7',
+        'Previous windows: last-5 form + last-7 avg. Full FPL pp90. 10 reps averaged.',
+        reps=10,
+        PL_SHORT_FORM_WINDOW='5',
+        PL_FORM_AVG_WINDOW='7',
     ),
 ]
 
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Horizon-5 hyperparameter sweep')
-    parser.add_argument('--reps', type=int, default=10, help='Independent fits per trial (default 10)')
+    parser.add_argument('--reps', type=int, default=10, help='Independent fits per trial (default 10; a trial can override)')
     parser.add_argument(
         '--only',
         help='Run a single trial by number or name (e.g. 2 or 02_lr_6e-4)',
@@ -136,8 +138,8 @@ def _trial_index(token, trials):
     raise SystemExit('Unknown trial %s. Choose from: %s' % (token, ', '.join(names)))
 
 
-def select_trials(args):
-    trials = list(TRIALS)
+def select_trials(args, trials=None):
+    trials = list(TRIALS if trials is None else trials)
     if args.only:
         i = _trial_index(args.only, trials)
         return [trials[i]]
@@ -145,6 +147,17 @@ def select_trials(args):
         start = _trial_index(args.from_name, trials)
         return trials[start:]
     return trials
+
+
+def _mean_pstdev(values, ndigits=4):
+    """Population mean ± std (same ddof=0 as pred_std)."""
+    vals = [float(v or 0) for v in values]
+    if not vals:
+        return None, None
+    mean = round(sum(vals) / len(vals), ndigits)
+    if len(vals) < 2:
+        return mean, 0.0
+    return mean, round(statistics.pstdev(vals), ndigits)
 
 
 def parse_top100_player(top100_text, needle):
@@ -197,7 +210,9 @@ def trial_row(trial_dir):
     })
     if stats:
         row['mean_epochs_ran'] = round(sum(s.get('epochs_ran', 0) for s in stats) / float(len(stats)), 1)
-        row['mean_test_mae'] = round(sum(s.get('test_mae', 0) for s in stats) / float(len(stats)), 4)
+        mae_mean, mae_std = _mean_pstdev([s.get('test_mae', 0) for s in stats], 4)
+        row['mean_test_mae'] = mae_mean
+        row['std_test_mae'] = mae_std
         row['mean_pred_mean'] = round(sum(s.get('pred_mean', 0) for s in stats) / float(len(stats)), 3)
         row['mean_pred_max'] = round(sum(s.get('pred_max', 0) for s in stats) / float(len(stats)), 3)
     top100 = ''
@@ -227,7 +242,8 @@ def write_comparison(sweep_dir, trials):
     fieldnames = [
         'trial', 'ok', 'optimizer', 'mean_kendall_tau', 'min_kendall_tau',
         'top_20_jaccard_mean', 'top_20_jaccard_min', 'pred_std_mean', 'pred_std_max',
-        'n_reps_averaged', 'n_reps_requested', 'mean_epochs_ran', 'mean_test_mae',
+        'n_reps_averaged', 'n_reps_requested', 'mean_epochs_ran',
+        'mean_test_mae', 'std_test_mae',
         'mean_pred_mean', 'mean_pred_max', 'haaland_rank', 'haaland_pts',
         'fernandes_rank', 'fernandes_pts', 'note', 'env',
     ]
@@ -242,17 +258,18 @@ def write_comparison(sweep_dir, trials):
         CONTROL_NOTE,
         'Higher kendall/jaccard and lower pred_std = stabler ranks.',
         'haaland_pts is 5-GW total in --horizon-only mode (not h1 pp90).',
+        'maePstd is the population std of per-rep test MAE.',
         '',
     ]
     header = (
-        '%-28s %8s %8s %8s %8s %8s %8s %8s %8s'
-        % ('trial', 'tau', 'j20', 'pstd', 'reps', 'epochs', 'H_rk', 'H_pts', 'testMAE')
+        '%-28s %8s %8s %8s %8s %8s %8s %8s %8s %8s'
+        % ('trial', 'tau', 'j20', 'pstd', 'reps', 'epochs', 'H_rk', 'H_pts', 'testMAE', 'maePstd')
     )
     lines.append(header)
     lines.append('-' * len(header))
     for row in rows:
         lines.append(
-            '%-28s %8s %8s %8s %8s %8s %8s %8s %8s'
+            '%-28s %8s %8s %8s %8s %8s %8s %8s %8s %8s'
             % (
                 row.get('trial', ''),
                 row.get('mean_kendall_tau', ''),
@@ -263,6 +280,7 @@ def write_comparison(sweep_dir, trials):
                 row.get('haaland_rank', ''),
                 row.get('haaland_pts', ''),
                 row.get('mean_test_mae', ''),
+                row.get('std_test_mae', ''),
             )
         )
         if row.get('note'):
@@ -324,10 +342,10 @@ def run_trial(sweep_dir, trial, reps, quick):
     env['PYTHONIOENCODING'] = 'utf-8'
     env['PYTHONUTF8'] = '1'
 
-    cmd = [
-        sys.executable, '-m', 'premierlearning',
-        '--horizon-only', '--horizon-reps', str(trial_reps), '--no-persist',
-    ]
+    cmd = [sys.executable, '-m', 'premierlearning', '--no-persist']
+    if trial.get('horizon_only', True):
+        cmd.append('--horizon-only')
+    cmd.extend(['--horizon-reps', str(trial_reps)])
     cmd.extend(extra_args)
     if quick:
         cmd.append('--quick')

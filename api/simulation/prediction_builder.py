@@ -16,6 +16,13 @@ os.environ.setdefault('PL_SIMULATION_BUILD', '1')
 os.environ.setdefault('TF_CPP_MIN_LOG_LEVEL', '3')
 
 from persistence import DB_Handler
+from premierlearning.learning import (
+    HORIZON_REPS_DEFAULT,
+    MINUTES_REPS_DEFAULT,
+    parse_horizon_reps,
+    parse_minutes_reps,
+    with_learning_rep_flags,
+)
 from premierlearning.runner import Runner
 from simulation.historical_data import VaastavSeasonData
 from simulation.season_model import FixedSeasonModels
@@ -26,8 +33,13 @@ CODE_HASH_FILES = (
     'premierlearning/runner.py',
     'premierlearning/learning.py',
     'premierlearning/clean_match.py',
+    'premierlearning/match.py',
     'premierlearning/player.py',
+    'premierlearning/config_constants.py',
+    'premierlearning/helper_functions.py',
     'premierlearning/team_expectancy.py',
+    'squadtools/availability.py',
+    'squadtools/chance_to_play.py',
     'simulation/historical_data.py',
     'simulation/season_model.py',
 )
@@ -117,11 +129,21 @@ def _prediction_rows(season, season_start_year, as_of_gameweek):
                         getattr(player, 'historical_selectable', True)
                     ),
                     'predicted_minutes': float(match.minutes or 0.0),
+                    'predicted_pp90': (
+                        None
+                        if getattr(match, 'predicted_pp90', None) is None
+                        else float(match.predicted_pp90)
+                    ),
                     'predicted_points': float(match.points or 0.0),
+                    'chance_of_playing': (
+                        None
+                        if getattr(match, 'chance_of_playing', None) is None
+                        else int(match.chance_of_playing)
+                    ),
                     'points_error': float(
                         getattr(match, 'points_error', 0.0) or 0.0
                     ),
-                    'availability_mode': 'minutes_proxy',
+                    'availability_mode': 'deferred_chance',
                     'fixture_mode': 'final_calendar',
                 })
     rows.sort(
@@ -149,6 +171,7 @@ class HistoricalPredictionBuilder:
         prediction_set_id=None,
         adopt_code_hash=False,
         train_once_per_season=False,
+        replace_cache=False,
     ):
         self.db = db_handler
         self.seasons = tuple(int(season) for season in seasons)
@@ -159,6 +182,7 @@ class HistoricalPredictionBuilder:
         self.force = bool(force)
         self.name = name
         self.train_once_per_season = bool(train_once_per_season)
+        self.replace_on_build = bool(replace_cache)
         self.sources = {}
         self.config = {
             'horizon_gameweeks': self.horizon_gameweeks,
@@ -167,43 +191,45 @@ class HistoricalPredictionBuilder:
             'quick': '--quick' in sys.argv,
             'team_expectancies': '--no-team-expectancies' not in sys.argv,
             'training_policy': 'strict_point_in_time',
-            'availability_mode': 'minutes_proxy',
+            'availability_mode': 'deferred_chance',
             'fixture_mode': 'final_calendar',
             'prediction_scope': 'rest_of_season',
+            'horizon_reps': parse_horizon_reps(),
+            'minutes_reps': parse_minutes_reps(),
             'training_schedule': (
                 'once_per_season'
                 if self.train_once_per_season
                 else 'once_per_snapshot'
             ),
         }
-        metadata = {
+        self.metadata = {
             'name': self.name,
             'model_config_hash': _model_hash(self.config),
             'horizon_gameweeks': self.horizon_gameweeks,
             'training_policy': 'strict_point_in_time',
-            'availability_mode': 'minutes_proxy',
+            'availability_mode': 'deferred_chance',
             'fixture_mode': 'final_calendar',
             'random_seed': self.seed,
             'config': self.config,
         }
         if prediction_set_id is None:
-            self.prediction_set_id = self.db.get_or_create_prediction_set(metadata)
+            self.prediction_set_id = None
         else:
             existing = self.db.get_prediction_set(prediction_set_id)
             if existing is None:
                 raise ValueError(f'Unknown prediction set {prediction_set_id}')
             if (
                 existing['horizon_gameweeks'] != self.horizon_gameweeks
-                or existing['training_policy'] != metadata['training_policy']
-                or existing['availability_mode'] != metadata['availability_mode']
-                or existing['fixture_mode'] != metadata['fixture_mode']
+                or existing['training_policy'] != self.metadata['training_policy']
+                or existing['availability_mode'] != self.metadata['availability_mode']
+                or existing['fixture_mode'] != self.metadata['fixture_mode']
             ):
                 raise ValueError(
                     f'Prediction set {prediction_set_id} is incompatible with '
                     'the requested historical build'
                 )
             if (
-                existing['model_config_hash'] != metadata['model_config_hash']
+                existing['model_config_hash'] != self.metadata['model_config_hash']
                 and not adopt_code_hash
             ):
                 raise ValueError(
@@ -211,7 +237,7 @@ class HistoricalPredictionBuilder:
                     'different model/config hash; use --adopt-code-hash only '
                     'after verifying the change is non-semantic'
                 )
-            self.db.update_prediction_set_metadata(prediction_set_id, metadata)
+            self.db.update_prediction_set_metadata(prediction_set_id, self.metadata)
             self.prediction_set_id = int(prediction_set_id)
 
     def source(self, season_start_year):
@@ -300,8 +326,9 @@ class HistoricalPredictionBuilder:
                 )
             self.db.persist_historical_predictions(snapshot_id, rows)
             warnings = [
-                'Historical weekly injury percentages are unavailable; '
-                'predicted minutes are used as the availability proxy.',
+                'Predicted pp90 and minutes are stored raw. Chance-to-play from '
+                'Randdalf/fplcache (or live FPL) is applied in squadtools at '
+                'optimiser time, so availability policy can change without a rebuild.',
                 'Fixture events use the final season calendar and may know later reschedules.',
                 'Every remaining fixture through GW38 is predicted from this cutoff; '
                 'later actual results are never used.',
@@ -313,7 +340,26 @@ class HistoricalPredictionBuilder:
             self.db.fail_prediction_snapshot(snapshot_id, exc)
             raise
 
+    def _ensure_prediction_set(self):
+        """Reuse the matching cache. Only --replace-cache drops other seasons."""
+        if self.replace_on_build:
+            self.prediction_set_id = self.db.replace_prediction_cache(self.metadata)
+            print(
+                'Replaced previous historical predictions; '
+                f'prediction set ID: {self.prediction_set_id}'
+            )
+            return
+        if self.prediction_set_id is None:
+            self.prediction_set_id = self.db.get_or_create_prediction_set(
+                self.metadata
+            )
+            print(
+                'Using prediction set %s; existing season snapshots are kept'
+                % self.prediction_set_id
+            )
+
     def build(self):
+        self._ensure_prediction_set()
         built = 0
         for season_start_year in self.seasons:
             available = set(self.source(season_start_year).gameweeks)
@@ -404,6 +450,11 @@ def build_parser():
         help='Allow an explicit cache to adopt a verified non-semantic code hash',
     )
     parser.add_argument('--force', action='store_true')
+    parser.add_argument(
+        '--replace-cache',
+        action='store_true',
+        help='Drop every prediction set and simulation run before building',
+    )
     parser.add_argument('--coverage-only', action='store_true')
     parser.add_argument(
         '--linear',
@@ -416,6 +467,20 @@ def build_parser():
         help='Use the existing short neural training mode',
     )
     parser.add_argument('--no-team-expectancies', action='store_true')
+    parser.add_argument(
+        '--horizon-reps',
+        type=int,
+        default=HORIZON_REPS_DEFAULT,
+        help='Independent fits for the horizon-N net (h1 points stay 1). Default %s.'
+        % HORIZON_REPS_DEFAULT,
+    )
+    parser.add_argument(
+        '--minutes-reps',
+        type=int,
+        default=MINUTES_REPS_DEFAULT,
+        help='Independent fits for the minutes net, same keep/drop averaging as horizon. Default %s.'
+        % MINUTES_REPS_DEFAULT,
+    )
     parser.add_argument(
         '--train-once-per-season',
         action='store_true',
@@ -431,6 +496,16 @@ def main(argv=None):
         parser.error('gameweek range must satisfy 1 <= from <= to <= 38')
     if args.horizon < 1:
         parser.error('--horizon must be positive')
+    if args.horizon_reps < 1:
+        parser.error('--horizon-reps must be a positive integer')
+    if args.minutes_reps < 1:
+        parser.error('--minutes-reps must be a positive integer')
+
+    sys.argv = with_learning_rep_flags(
+        sys.argv,
+        horizon_reps=args.horizon_reps,
+        minutes_reps=args.minutes_reps,
+    )
 
     app = Flask(__name__)
     with app.app_context():
@@ -448,10 +523,13 @@ def main(argv=None):
                 prediction_set_id=args.prediction_set_id,
                 adopt_code_hash=args.adopt_code_hash,
                 train_once_per_season=args.train_once_per_season,
+                replace_cache=args.replace_cache,
             )
-            print(f'Prediction set ID: {builder.prediction_set_id}')
             if not args.coverage_only:
                 builder.build()
+            elif builder.prediction_set_id is None:
+                builder.prediction_set_id = db_handler.latest_prediction_set_id()
+            print(f'Prediction set ID: {builder.prediction_set_id}')
             report = builder.coverage()
             if report['missing'] or report['failed_or_empty']:
                 return 1

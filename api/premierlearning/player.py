@@ -8,8 +8,15 @@ from premierlearning.clean_match import (
     get_default_stat_window,
 )
 from .match import PastMatch, FutureMatch
-from .config_constants import SEASON_YR, PLAYER_JSON_FILE_LOCATION, HALF_SEASON_FIXTURES
-from .helper_functions import read_json, coerce_bool, score_is_present
+from .config_constants import (
+    SEASON_YR, PLAYER_JSON_FILE_LOCATION, HALF_SEASON_FIXTURES,
+    LAST_SEASON_FIXTURES, FORM_AVG_WINDOW, FORM_MIN_MINUTES, SHORT_FORM_WINDOW,
+)
+from .helper_functions import (
+    coerce_bool,
+    read_json,
+    score_is_present,
+)
 
 # -----------------------------------------------------------------------------
 # Form / appearance features — EXPERIMENT (Aug 2026)
@@ -29,8 +36,10 @@ from .helper_functions import read_json, coerce_bool, score_is_present
 #
 # CURRENT experiment (what this file does now):
 #   - Prepend last AVG_WINDOW prior-season appearances for early-GW form (carry)
-#   - last_5_avg = last 5 appearances only; for rate stats, pooled per-90
+#   - last_5_avg = last SHORT_FORM_WINDOW (3) appearances; for rate stats, pooled per-90
 #     (sum(raw) * 90 / sum(mins)) so partial minutes don't dilute like a mean
+#   - Appearances under FORM_MIN_MINUTES (20) are dropped from those windows
+#     (1-minute 1-point cameos must not explode last-5 / last-7 pp90)
 #   - avg = last AVG_WINDOW appearances (not full season), with this-season
 #     rows weighted CURRENT_SEASON_STAT_WEIGHT× vs carry LAST_SEASON_STAT_WEIGHT×
 #   - matches_played feature = this-season appearances only (capped), so early
@@ -41,12 +50,12 @@ from .helper_functions import read_json, coerce_bool, score_is_present
 #     only for the first CHANGED_CLUB_APPS this-season appearances, then 0 once we have
 #     enough new-club data. Binary flag is off in _BASE_STANDARD (was boosting movers).
 #     Minutes net uses ls_mpm_x_new_club (last-season mins/match × new-club factor).
-#   - Minutes model: H2 last-season mins/match vs last-two-seasons (prev2 + H1 last
-#     season), both including DNPs. Recency stretches into last-season H2 fixtures
-#     and blends toward H2 mins/match near GW0. Carry is still appearance-only
-#     for points. Predict rows (not train) drop 3+ consecutive DNPs from those
-#     windows when the last two fixtures were appearances — treat as injury, not
-#     availability. Isolated 1–2 DNPs stay (rotation).
+#   - Minutes model: full last-season mins/match vs full two-seasons-ago,
+#     both including DNPs. Recency last-1/2/5 still fills from the end of last
+#     season near GW0. Carry is still appearance-only for points. Predict rows
+#     (not train) drop 3+ consecutive DNPs from those windows when the last two
+#     fixtures were appearances — treat as injury, not availability. Isolated
+#     1–2 DNPs stay (rotation).
 #
 # Flip back: restore the old get_stat_window body below and drop weights / per_90
 # / AVG_WINDOW slicing; set matches_played from self.matches_played if you want
@@ -56,11 +65,19 @@ CURRENT_SEASON_STAT_WEIGHT = 4.0
 LAST_SEASON_STAT_WEIGHT = 1.0
 MAX_MATCHES_PLAYED_FEATURE = 38
 MIN_APPEARANCES_TO_PREDICT = 3
-# Form windows (appearances with minutes > 0 only)
-LAST_5_WINDOW = 5
-AVG_WINDOW = 7  # same length as last-season carry; OLD used full-season for avg
+# Form windows (appearances with minutes >= FORM_MIN_MINUTES)
+LAST_5_WINDOW = SHORT_FORM_WINDOW
+AVG_WINDOW = FORM_AVG_WINDOW
 # changed_club model feature stays 1 for this many this-season appearances after a move
 CHANGED_CLUB_APPS = 5
+
+
+def is_form_appearance(minutes) -> bool:
+    """True when an appearance counts in last-3 / last-7 per-90 form windows."""
+    try:
+        return float(minutes or 0) >= FORM_MIN_MINUTES
+    except (TypeError, ValueError):
+        return False
 
 
 def _team_by_code(teams, code):
@@ -133,14 +150,18 @@ class RawPlayer(ABC):
         self.team_name = None
         self.current_cost = None
         self.position = None
+        self.is_most_expensive_in_pos = 0
         self.matches = None
         self.future_matches = None,
         self.code = None
     
     def __repr__(self):
+        from squadtools.availability import match_optimiser_points
+
         points = 0
-        if len(self.future_matches) > 0:
-            points = self.future_matches[0].points
+        matches = [match for match in (self.future_matches or []) if match is not None]
+        if matches:
+            points = match_optimiser_points(matches[0])
         return '%s %s: %.1f (£%.1fm)' % (self.first_name, self.last_name, points, self.current_cost)
     
     def format_as_db_insert(self):
@@ -170,8 +191,10 @@ class RawPlayer(ABC):
             bench_multiplier = 0
         n = int(n)
         # Upcoming captain/XI picks: only future fixtures for that GW (not past/carry rows).
+        from squadtools.availability import match_optimiser_points
+
         return sum(
-            float(fixture.points or 0)
+            match_optimiser_points(fixture)
             for fixture in self.future_matches
             if fixture.gameweek is not None and int(fixture.gameweek) == n
         ) * bench_multiplier
@@ -188,8 +211,13 @@ class RawPlayer(ABC):
         return f'{self.first_name} {self.last_name}'
 
     def get_points_within_n_gameweeks(self, current_gameweek, n):
-        return sum(fixture.points for fixture in self.future_matches
-                   if fixture.within_n_gameweeks(current_gameweek, n))
+        from squadtools.availability import match_optimiser_points
+
+        return sum(
+            match_optimiser_points(fixture)
+            for fixture in self.future_matches
+            if fixture.within_n_gameweeks(current_gameweek, n)
+        )
 
     def format_as_request_pick(self, placement, is_captain, is_vice_captain):
         return {
@@ -205,30 +233,34 @@ class RawPlayer(ABC):
 
 class Player(RawPlayer):
 
-    def __init__(self, fantasy_json, element_dict, player_json, teams, current_gameweek):
+    def __init__(
+        self, fantasy_json, element_dict, player_json, teams, current_gameweek,
+        next_gameweek=None,
+    ):
         super().__init__()
         
         self.played_last_season = False
         self.points_per_min_last_season = 0
         self.points_per_min_two_seasons_ago = 0
         self.xgi_per_min_last_season = 0
+        self.xgi_per_min_two_seasons_ago = 0
         self.minutes_last_season = 0
         # Last-season availability including DNPs (not just appearances).
         self.last_season_mins_per_match = 0.0
         self.last_7_mins_per_match = 0.0
         self.two_season_prior_mins_per_match = 0.0
         self.last_season_h2_mins_per_match = 0.0
-        self.last_two_seasons_mins_per_match = 0.0
         self.last_season_h2_fixtures = 0
         self.last_season_h2_appearances = 0
-        self.last_season_h2_fixture_frac = 0.0
         self.last_season_appearances = 0
         self.last_season_fixtures = 0
+        self.last_season_fixture_frac = 0.0
         # Season-level: transferred vs prior season (stable team.code). New-to-PL → False.
         # Model feature changed_club is 1 only for first CHANGED_CLUB_APPS this-season apps.
         self.club_changed_vs_prior = False
         self.prior_team = None
         self.current_gameweek = current_gameweek
+        self.next_gameweek = int(next_gameweek or 0)
 
         # self.average_points_so_far = 0
         # self.average_ict_so_far = 0
@@ -261,6 +293,7 @@ class Player(RawPlayer):
         self.points_per_game = float(self.element_dict['points_per_game'])
 
         self.current_cost = float(self.element_dict['now_cost'])
+        self.is_most_expensive_in_pos = 0
 
         self.last_szn_matches = []
         self.prev2_szn_matches = []
@@ -288,9 +321,11 @@ class Player(RawPlayer):
         # self.populate_future_matches(teams)
 
     def __str__(self):
+        from squadtools.availability import match_optimiser_points
+
         points = 0
-        if len(self.future_matches) > 0:
-            points = self.future_matches[0].points
+        if self.future_matches:
+            points = match_optimiser_points(self.future_matches[0])
         return '%s %s (%s): %.1f (%s)' % (self.first_name, self.last_name, self.team.name, points, self.current_cost)
 
     def get_last_points(self):
@@ -315,21 +350,45 @@ class Player(RawPlayer):
                     self.history_past_xgi[start_year] = 0
 
     @staticmethod
-    def xgi_per_min_from_matches(player) -> float:
-        """Season xGI / minutes from non-carry appearances (0 if <200 minutes)."""
-        total_xgi = 0.0
+    def _stat_value(match, stat_key) -> float:
+        if stat_key == 'total_points':
+            return float(
+                getattr(match, 'points', 0)
+                or (getattr(match, 'game_stats', None) or {}).get('total_points')
+                or 0
+            )
+        return float((getattr(match, 'game_stats', None) or {}).get(stat_key) or 0)
+
+    @staticmethod
+    def per_min_from_match_list(matches, stat_key='total_points') -> float:
+        """Appearance-only per-minute rate (skip DNP / 0 minutes). 0 if <200 minutes."""
+        total = 0.0
         total_mins = 0.0
-        for match in player.matches:
+        for match in matches or ():
             if getattr(match, 'is_last_season_carry', False):
                 continue
-            mins = float(match.game_stats.get('minutes') or 0)
+            mins = Player._match_minutes(match)
             if mins <= 0:
                 continue
             total_mins += mins
-            total_xgi += float(match.game_stats.get('expected_goal_involvements') or 0)
+            total += Player._stat_value(match, stat_key)
         if total_mins > 200:
-            return total_xgi / total_mins
+            return total / total_mins
         return 0.0
+
+    @staticmethod
+    def per_min_from_matches(player, stat_key='total_points') -> float:
+        """Season rate / minutes from non-carry appearances (0 if <200 minutes)."""
+        if player is None:
+            return 0.0
+        return Player.per_min_from_match_list(
+            Player.non_carry_matches(player), stat_key
+        )
+
+    @staticmethod
+    def xgi_per_min_from_matches(player) -> float:
+        """Season xGI / minutes from non-carry appearances (0 if <200 minutes)."""
+        return Player.per_min_from_matches(player, 'expected_goal_involvements')
 
     @staticmethod
     def minutes_from_matches(player) -> float:
@@ -375,29 +434,37 @@ class Player(RawPlayer):
 
     @staticmethod
     def apply_prior_season_stats(player, prev_player, prev2_player=None):
-        """Copy last-season rates / availability (incl. DNP fixtures) onto player."""
+        """Copy last-season and two-seasons-ago full-season rates onto player."""
         player.last_season_mins_per_match = 0.0
         player.last_7_mins_per_match = 0.0
         player.two_season_prior_mins_per_match = 0.0
         player.last_season_h2_mins_per_match = 0.0
-        player.last_two_seasons_mins_per_match = 0.0
         player.last_season_h2_fixtures = 0
         player.last_season_h2_appearances = 0
-        player.last_season_h2_fixture_frac = 0.0
         player.last_season_appearances = 0
         player.last_season_fixtures = 0
+        player.last_season_fixture_frac = 0.0
         prev2_matches = Player.non_carry_matches(prev2_player) if prev2_player else []
         player.prev2_szn_matches = list(prev2_matches)
         if prev2_player:
             player.two_season_prior_mins_per_match = Player.mins_per_match_from_matches(
                 prev2_player
             )
-        h1, h2 = [], []
+            ppm2 = Player.per_min_from_matches(prev2_player, 'total_points')
+            if Player.minutes_from_matches(prev2_player) > 200:
+                player.points_per_min_two_seasons_ago = ppm2
+            xgi2 = Player.xgi_per_min_from_matches(prev2_player)
+            if xgi2 > 0:
+                player.xgi_per_min_two_seasons_ago = xgi2
         if prev_player:
+            ppm = Player.per_min_from_matches(prev_player, 'total_points')
+            last_mins = Player.minutes_from_matches(prev_player)
+            if last_mins > 200:
+                player.points_per_min_last_season = ppm
+                player.played_last_season = True
             xgi_pm = Player.xgi_per_min_from_matches(prev_player)
             if xgi_pm > 0:
                 player.xgi_per_min_last_season = xgi_pm
-            last_mins = Player.minutes_from_matches(prev_player)
             if last_mins > 0:
                 player.minutes_last_season = last_mins
             matches = Player.non_carry_matches(prev_player)
@@ -406,21 +473,18 @@ class Player(RawPlayer):
                 1 for m in matches if Player._match_minutes(m) > 0
             )
             player.last_season_mins_per_match = Player.mins_per_match_from_matches(prev_player)
+            player.last_season_fixture_frac = min(
+                1.0, len(matches) / float(LAST_SEASON_FIXTURES)
+            )
             player.last_7_mins_per_match = Player.mins_per_match_from_matches(
                 prev_player, last_n=AVG_WINDOW
             )
-            h1, h2 = Player.split_season_halves(prev_player)
+            _, h2 = Player.split_season_halves(prev_player)
             player.last_season_h2_mins_per_match = Player.mins_per_match_list(h2)
             player.last_season_h2_fixtures = len(h2)
             player.last_season_h2_appearances = sum(
                 1 for m in h2 if Player._match_minutes(m) > 0
             )
-            player.last_season_h2_fixture_frac = min(
-                1.0, len(h2) / float(HALF_SEASON_FIXTURES)
-            )
-        player.last_two_seasons_mins_per_match = Player.mins_per_match_list(
-            prev2_matches + h1
-        )
 
     def get_last_opponent_strength(self, teams):
         history = self.player_json['history']
@@ -487,7 +551,7 @@ class Player(RawPlayer):
         return 1.0 + (old_xg - new_xg)
 
     def attach_last_szn_matches(self, past_szn_player):
-        """Prepend last 7 prior-season *appearances* (minutes > 0) for early-GW form.
+        """Prepend last 7 prior-season *form* appearances (minutes >= FORM_MIN_MINUTES).
 
         New-to-league players (no past_szn_player / no appearances) get nothing — form
         stays 0 until they play this season.
@@ -501,7 +565,9 @@ class Player(RawPlayer):
 
         played = [
             m for m in past_szn_player.matches
-            if float(m.game_stats.get('minutes', getattr(m, 'minutes', 0)) or 0) > 0
+            if is_form_appearance(
+                m.game_stats.get('minutes', getattr(m, 'minutes', 0))
+            )
         ]
         if not played:
             return
@@ -512,12 +578,15 @@ class Player(RawPlayer):
             # Shallow copy alone shares past_stats with the prior-season match; re-processing
             # carry would then overwrite that season's training snapshots. Give each carry
             # row its own past_stats / game_stats before this season rebuilds form.
+            # Rebind player_id so Fargate persist/reload keeps carry on this season's id
+            # (FPL element ids change every season; the copy still has last season's id).
             cm = copy.copy(m)
             cm.past_stats = get_default_past_stats()
             cm.game_stats = copy.deepcopy(m.game_stats)
             cm.is_last_season_carry = True
             cm.valid_for_learning = False
             cm.valid_for_minutes = False
+            cm.player_id = self.id
             matches_to_insert.append(cm)
         self.matches = matches_to_insert + list(self.matches)
 
@@ -528,6 +597,8 @@ class Player(RawPlayer):
 
 
     def populate_future_matches(self):
+        if getattr(self, 'skip_historical_predict', False):
+            return
         for future_match_json in self.player_json['fixtures']:
             self.future_matches.append(FutureMatch(self, future_match_json, self.teams))
 
@@ -597,10 +668,8 @@ class Player(RawPlayer):
                     )
                 if self.matches_played >= 1:
                     for key, stats_list in stats_so_far.items():
-                        match.past_stats[key] = self.get_stat_window(
-                            stats_list,
-                            appearance_weights,
-                            per_90=(key in PER_MINUTE_STAT_KEYS),
+                        match.past_stats[key] = self._past_stat_window(
+                            key, stats_list, appearance_weights
                         )
                 # CURRENT: this-season only (see module comment). OLD/alt: self.matches_played
                 match.matches_played = min(MAX_MATCHES_PLAYED_FEATURE, self.this_season_matches_played)
@@ -623,10 +692,8 @@ class Player(RawPlayer):
 
             if self.matches_played >= 1:
                 for key, stats_list in stats_so_far.items():
-                    match.past_stats[key] = self.get_stat_window(
-                        stats_list,
-                        appearance_weights,
-                        per_90=(key in PER_MINUTE_STAT_KEYS),
+                    match.past_stats[key] = self._past_stat_window(
+                        key, stats_list, appearance_weights
                     )
 
             # CURRENT: this-season only (see module comment). OLD/alt: self.matches_played
@@ -656,16 +723,26 @@ class Player(RawPlayer):
 
         if self.matches_played >= 1:
             for key, stats_list in stats_so_far.items():
-                self.past_stats[key] = self.get_stat_window(
-                    stats_list,
-                    appearance_weights,
-                    per_90=(key in PER_MINUTE_STAT_KEYS),
+                self.past_stats[key] = self._past_stat_window(
+                    key, stats_list, appearance_weights
                 )
             self.past_stats['chance_to_play'] = self.get_stat_window(
                 chance_to_play_list, chance_weights, per_90=False
             )
 
-    def get_stat_window(self, stats_list, weights=None, per_90: bool = False) -> StatWindow:
+    def _past_stat_window(self, key, stats_list, appearance_weights):
+        return self.get_stat_window(
+            stats_list,
+            appearance_weights,
+            per_90=(key in PER_MINUTE_STAT_KEYS),
+        )
+
+    def get_stat_window(
+        self,
+        stats_list,
+        weights=None,
+        per_90: bool = False,
+    ) -> StatWindow:
         # --- OLD setup (raw per-game means; avg = full history to date) ---------
         # if not stats_list:
         #     return get_default_stat_window()
@@ -681,14 +758,24 @@ class Player(RawPlayer):
             return get_default_stat_window()
 
         if per_90:
-            # last_5 / avg: pooled per-90 over last 5 / last AVG_WINDOW appearances
+            # last_5_avg / avg: pooled per-90 over last SHORT_FORM_WINDOW / AVG_WINDOW
+            # appearances with minutes >= FORM_MIN_MINUTES.
             def pooled_pp90(window):
-                raw_sum = sum(raw for raw, _mins in window)
-                mins_sum = sum(mins for _raw, mins in window)
+                raw_sum = 0.0
+                mins_sum = 0.0
+                for raw, mins in window:
+                    raw_sum += float(raw)
+                    mins_sum += float(mins)
                 return (raw_sum * 90.0 / mins_sum) if mins_sum > 0 else 0.0
 
-            last_5_avg = pooled_pp90(stats_list[-LAST_5_WINDOW:])
-            avg = pooled_pp90(stats_list[-AVG_WINDOW:])
+            qualifying = [
+                row for row in stats_list
+                if is_form_appearance(row[1])
+            ]
+            if not qualifying:
+                return get_default_stat_window()
+            last_5_avg = pooled_pp90(qualifying[-LAST_5_WINDOW:])
+            avg = pooled_pp90(qualifying[-AVG_WINDOW:])
             return {'last_5_avg': last_5_avg, 'avg': avg}
 
         last_5 = stats_list[-LAST_5_WINDOW:]
@@ -752,3 +839,27 @@ class Player(RawPlayer):
                 return past_gw['value']
 
         return self.player_json['history'][0]['value']
+
+
+def mark_most_expensive_in_position(players):
+    """Flag the highest now_cost in each club × position (ties all count)."""
+    maxima = {}
+    for player in players or ():
+        team_id = int(getattr(player, 'team_id', 0) or 0)
+        position = int(getattr(player, 'position', 0) or 0)
+        cost = float(getattr(player, 'current_cost', 0) or 0)
+        if team_id <= 0 or position not in (1, 2, 3, 4) or cost <= 0:
+            player.is_most_expensive_in_pos = 0
+            continue
+        key = (team_id, position)
+        prev = maxima.get(key)
+        if prev is None or cost > prev:
+            maxima[key] = cost
+    for player in players or ():
+        team_id = int(getattr(player, 'team_id', 0) or 0)
+        position = int(getattr(player, 'position', 0) or 0)
+        cost = float(getattr(player, 'current_cost', 0) or 0)
+        peak = maxima.get((team_id, position))
+        player.is_most_expensive_in_pos = int(
+            peak is not None and cost >= peak and cost > 0
+        )

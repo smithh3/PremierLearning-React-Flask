@@ -16,6 +16,12 @@ from tensorflow.keras.losses import Huber
 from tensorflow.keras.metrics import MeanAbsoluteError as MAE, RootMeanSquaredError
 from tensorflow.keras.models import Sequential
 from premierlearning.learning import build_adamw, use_linear_model
+from premierlearning.squad_cost import (
+    nudge_rate,
+    squad_cost_early_weight,
+    squad_cost_z_by_code,
+    use_squad_cost,
+)
 
 TEAM_FEATURE_KEYS = [
     'team_scored_last_5',
@@ -102,12 +108,80 @@ def _bottom_team_form_priors(last_season, n: int = 3):
     return float(scored), float(conceded), float(last5_s), float(last5_c)
 
 
-def seed_form_from_last_season(current_season, past_seasons):
-    """When a team has no finished matches yet, copy last season's scoring rates.
+def _remember_observed_form(match):
+    if getattr(match, '_observed_form_saved', False):
+        return
+    match._observed_scored_season_avg = float(match.scored_season_avg or 0.0)
+    match._observed_conceded_season_avg = float(match.conceded_season_avg or 0.0)
+    match._observed_scored_last_5 = float(match.scored_last_5_avg or 0.0)
+    match._observed_conceded_last_5 = float(match.conceded_last_5_avg or 0.0)
+    match._observed_form_saved = True
 
-    Newly promoted sides (no PL history last year) get weak priors from last
-    season's bottom-3 teams — not zeros (zeros look like 'unknown midtable').
+
+def _prior_team_for(team, prev_season):
+    prev_by_code = {
+        t.code: t for t in prev_season.teams.values() if getattr(t, 'code', None) is not None
+    }
+    prev_by_name = {t.name: t for t in prev_season.teams.values()}
+    code = getattr(team, 'code', None)
+    if code is not None and code in prev_by_code:
+        return prev_by_code[code]
+    return prev_by_name.get(team.name)
+
+
+def _apply_squad_cost_form(team, prior_rates, z, finished_events):
+    """Idempotent: blend/nudge match form from saved observed windows.
+
+    No prior results as of this fixture → last-season rates, with the cost
+    nudge faded by GW. After results exist, shrink those rates toward observed
+    form; both the last-season mix and the cost nudge are gone by GW5.
     """
+    prior_s, prior_c, prior_l5s, prior_l5c = prior_rates
+    matches = list(team.team_match_dict.values()) + list(team.future_team_match_dict.values())
+    for match in matches:
+        _remember_observed_form(match)
+        gw = match.event
+        weight = squad_cost_early_weight(gw)
+        nudged_s = nudge_rate(prior_s, z, weight, sign=1.0)
+        nudged_c = nudge_rate(prior_c, z, weight, sign=-1.0)
+        nudged_l5s = nudge_rate(prior_l5s, z, weight, sign=1.0)
+        nudged_l5c = nudge_rate(prior_l5c, z, weight, sign=-1.0)
+        has_obs = any(event < int(gw or 0) for event in finished_events)
+        if has_obs:
+            match.scored_season_avg = (
+                (1.0 - weight) * match._observed_scored_season_avg + weight * nudged_s
+            )
+            match.conceded_season_avg = (
+                (1.0 - weight) * match._observed_conceded_season_avg + weight * nudged_c
+            )
+            match.scored_last_5_avg = (
+                (1.0 - weight) * match._observed_scored_last_5 + weight * nudged_l5s
+            )
+            match.conceded_last_5_avg = (
+                (1.0 - weight) * match._observed_conceded_last_5 + weight * nudged_l5c
+            )
+        else:
+            match.scored_season_avg = nudged_s
+            match.conceded_season_avg = nudged_c
+            match.scored_last_5_avg = nudged_l5s
+            match.conceded_last_5_avg = nudged_l5c
+        match.average_scored_in_previous_matches = match.scored_season_avg
+        match.average_conceded_in_previous_matches = match.conceded_season_avg
+
+    if not team.team_match_dict:
+        next_gw = min(
+            (m.event for m in team.future_team_match_dict.values() if m.event is not None),
+            default=1,
+        )
+        weight = squad_cost_early_weight(next_gw)
+        team.average_scored_so_far = nudge_rate(prior_s, z, weight, sign=1.0)
+        team.average_conceded_so_far = nudge_rate(prior_c, z, weight, sign=-1.0)
+        team._final_scored_last_5 = nudge_rate(prior_l5s, z, weight, sign=1.0)
+        team._final_conceded_last_5 = nudge_rate(prior_l5c, z, weight, sign=-1.0)
+
+
+def _seed_form_without_squad_cost(current_season, past_seasons):
+    """Pre-squad-cost seed: last-season rates on current-season future matches only."""
     if not past_seasons:
         return
     last_season = None
@@ -126,7 +200,7 @@ def seed_form_from_last_season(current_season, past_seasons):
     for team in current_season.teams.values():
         if team.team_match_dict:
             continue
-        prev = last_by_name.get(team.name)
+        prev = _prior_team_for(team, last_season) or last_by_name.get(team.name)
         if prev is not None:
             scored = float(prev.average_scored_so_far or 0.0)
             conceded = float(prev.average_conceded_so_far or 0.0)
@@ -140,13 +214,100 @@ def seed_form_from_last_season(current_season, past_seasons):
             )
             promoted.append(team.name)
             seeded += 1
+    print('Squad cost YoY prior off (--no-squad-cost / PL_SQUAD_COST=0)')
     if seeded:
-        print(f'Seeded early-season form for {seeded} teams from season {last_season.years}')
+        print(
+            'Seeded early-season form for %d teams from season %s'
+            % (seeded, last_season.years)
+        )
     if promoted:
         print(
-            f'Promoted/new team prior (bottom-3 PL rates '
-            f'scored={promo_scored:.2f} conceded={promo_conceded:.2f}): {", ".join(promoted)}'
+            'Promoted/new team prior (bottom-3 PL rates '
+            'scored=%.2f conceded=%.2f): %s'
+            % (promo_scored, promo_conceded, ', '.join(promoted))
         )
+
+
+def seed_form_from_last_season(current_season, past_seasons):
+    """Last-season scoring rates as an early-GW prior, nudged by squad-cost YoY.
+
+    Newly promoted sides (no PL history last year) get weak priors from last
+    season's bottom-3 teams — not zeros (zeros look like 'unknown midtable').
+    Top-15 FPL cost change vs last season's end is a centered z; it scales the
+    prior up/down and fades to zero by GW5. Applied to every season that has a
+    predecessor so train rows match serve. PL_SQUAD_COST=0 restores the old
+    current-season-only seed with no cost nudge.
+    """
+    if not use_squad_cost():
+        _seed_form_without_squad_cost(current_season, past_seasons)
+        return
+    seasons = [s for s in list(past_seasons or []) + [current_season] if s is not None]
+    if len(seasons) < 2:
+        return
+    by_year = {int(season.years[0]): season for season in seasons}
+    for season in sorted(seasons, key=lambda s: s.years[0]):
+        prev = by_year.get(int(season.years[0]) - 1)
+        if prev is None:
+            continue
+        z_by_code = squad_cost_z_by_code(
+            int(prev.years[0]),
+            int(season.years[0]),
+            prev_season=prev,
+            curr_season=season,
+        )
+        promo = _bottom_team_form_priors(prev)
+        promoted = []
+        seeded = 0
+        for team in season.teams.values():
+            prev_team = _prior_team_for(team, prev)
+            if prev_team is not None:
+                scored = float(prev_team.average_scored_so_far or 0.0)
+                conceded = float(prev_team.average_conceded_so_far or 0.0)
+                last5_s = float(getattr(prev_team, '_final_scored_last_5', scored) or scored)
+                last5_c = float(getattr(prev_team, '_final_conceded_last_5', conceded) or conceded)
+            else:
+                scored, conceded, last5_s, last5_c = promo
+                promoted.append(team.name)
+            code = getattr(team, 'code', None)
+            z = float(z_by_code.get(code, 0.0) or 0.0) if code is not None else 0.0
+            team.squad_cost_yoy_z = z
+            finished_events = [
+                int(match.event)
+                for match in team.team_match_dict.values()
+                if match.event is not None
+            ]
+            _apply_squad_cost_form(
+                team,
+                (scored, conceded, last5_s, last5_c),
+                z,
+                finished_events,
+            )
+            seeded += 1
+        if season is current_season:
+            if seeded:
+                print(
+                    'Seeded early-season form for %d teams from season %s'
+                    % (seeded, prev.years)
+                )
+            if promoted:
+                print(
+                    'Promoted/new team prior (bottom-3 PL rates '
+                    'scored=%.2f conceded=%.2f): %s'
+                    % (promo[0], promo[1], ', '.join(promoted))
+                )
+            if z_by_code:
+                labeled = []
+                for team in season.teams.values():
+                    z = float(getattr(team, 'squad_cost_yoy_z', 0.0) or 0.0)
+                    if abs(z) < 0.05:
+                        continue
+                    labeled.append((z, team.name))
+                labeled.sort(reverse=True)
+                if labeled:
+                    print(
+                        'Squad cost YoY (top 15, centered z, fade-out GW5): '
+                        + ', '.join('%s %+0.2f' % (name, z) for z, name in labeled)
+                    )
 
 
 def build_training_rows(seasons):

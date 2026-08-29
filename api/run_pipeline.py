@@ -5,12 +5,19 @@ Environment:
   APPLY_TRANSFERS=true    Submit transfers + starting XI to FPL.
   APPLY_TEAM_SELECTION=true  Submit captain/starters only.
   SUGGEST_TRANSFERS=true  Print suggestions without submitting (default if no apply flag).
-  PREMIERLEARNING_ARGS    Extra argv for learning, e.g. "--horizon-only --horizon-reps 5".
+  PREMIERLEARNING_ARGS    Extra argv for learning, e.g. "--horizon-reps 5"
+                          (horizon-N and minutes average 5 fits; h1 points stay 1).
+                          Add --horizon-only to skip minutes. Pipeline/Fargate
+                          always prepends --update so injury news is pulled live;
+                          pass --no-update to keep the files copied into the image.
   APPLY_WITHIN_HOURS      If set, refuse apply unless the next GW deadline is within this many hours.
   LOGIN_ONLY=1            Skip learning and squadtools; only verify FPL login.
   FPL_STATUS_CHECK=1      Print HTTP/Playwright status for FPL URLs, then exit.
   SKIP_FPL_EGRESS_CHECK=1 Skip the runtime egress-IP / FPL 200 probe.
   LEARNING_DONE_QUEUE_URL If set, publish an SQS message after a successful persist (phase 2).
+  APPLY_ON_DEADLINE_DAY=true  If set (default on Fargate), apply transfers when today is the next GW deadline (UK).
+  SKIP_BENCH_FILL=true        Skip the second-pass bench refill (rotating XI only).
+                              Default is first two outfield bench slots 0.25, other slots 0.
   NOTIFY_EMAIL            If set, email HTML player predictions (and suggested transfers) via SES.
   SES_FROM_EMAIL          SES From address (defaults to NOTIFY_EMAIL; must be a verified identity).
 """
@@ -78,23 +85,27 @@ def _fpl_egress_preflight():
         )
 
 
+def _next_deadline_event():
+    from premierlearning.fpl_apis import GENERAL
+    import requests
+    from squadtools.fpl_deadline import next_deadline_event, parse_fpl_deadline
+    events = requests.get(GENERAL, timeout=30).json().get('events') or []
+    next_event = next_deadline_event(events)
+    if next_event is None:
+        return None, None
+    return next_event, parse_fpl_deadline(next_event.get('deadline_time'))
+
+
 def _deadline_guard():
     hours = os.environ.get('APPLY_WITHIN_HOURS', '').strip()
     if not hours:
         return
     limit = float(hours)
-    from premierlearning.fpl_apis import GENERAL
-    import requests
-    events = requests.get(GENERAL, timeout=30).json().get('events') or []
-    next_event = next((event for event in events if event.get('is_next')), None)
-    if next_event is None:
-        next_event = next((event for event in events if event.get('is_current')), None)
+    next_event, deadline_dt = _next_deadline_event()
     if next_event is None:
         raise SystemExit('APPLY_WITHIN_HOURS is set but bootstrap-static has no current/next event')
-    deadline = next_event.get('deadline_time')
-    if not deadline:
+    if not deadline_dt:
         raise SystemExit('Next event has no deadline_time')
-    deadline_dt = datetime.strptime(deadline.replace('Z', '+00:00'), '%Y-%m-%dT%H:%M:%S%z')
     now = datetime.now(timezone.utc)
     remaining = (deadline_dt - now).total_seconds() / 3600.0
     print('Next GW %s deadline in %.1f hours (limit %.1f)' % (next_event.get('id'), remaining, limit))
@@ -103,6 +114,33 @@ def _deadline_guard():
             'Refusing to apply: next deadline is %.1f hours away (APPLY_WITHIN_HOURS=%s)'
             % (remaining, hours)
         )
+
+
+def _should_apply_on_deadline_day():
+    if not _flag('APPLY_ON_DEADLINE_DAY'):
+        return False
+    try:
+        next_event, deadline_dt = _next_deadline_event()
+    except Exception as exc:
+        print('Could not read FPL deadline for APPLY_ON_DEADLINE_DAY: %s' % exc)
+        return False
+    from squadtools.fpl_deadline import is_transfer_deadline_day, to_london
+    now = datetime.now(timezone.utc)
+    if is_transfer_deadline_day(deadline_dt, now):
+        print(
+            'Transfer deadline day: GW %s deadline %s UK'
+            % (
+                next_event.get('id') if next_event else '?',
+                to_london(deadline_dt).strftime('%Y-%m-%d %H:%M'),
+            )
+        )
+        return True
+    if next_event and deadline_dt:
+        print(
+            'Not transfer deadline day (next GW %s deadline %s UK)'
+            % (next_event.get('id'), to_london(deadline_dt).strftime('%Y-%m-%d %H:%M'))
+        )
+    return False
 
 
 def _publish_learning_done():
@@ -123,9 +161,27 @@ def _publish_learning_done():
         raise SystemExit('Learning finished but SQS publish failed: %s' % exc)
 
 
+def _learning_argv(extra=None):
+    """Fargate always refreshes FPL bootstrap unless --no-update is set.
+
+    Injury / chance-of-playing news changes without a finished gameweek, so the
+    image's copied season JSON is not a safe cache on a live pipeline run.
+    """
+    extra = list(
+        extra if extra is not None
+        else shlex.split(os.environ.get('PREMIERLEARNING_ARGS', ''))
+    )
+    skip = {'--no-update', '-no-update'}
+    if skip.intersection(extra):
+        return [arg for arg in extra if arg not in skip]
+    if '--update' not in extra:
+        extra = ['--update'] + extra
+    return extra
+
+
 def run_learning():
     from premierlearning.runner import Runner
-    extra = shlex.split(os.environ.get('PREMIERLEARNING_ARGS', ''))
+    extra = _learning_argv()
     sys.argv = ['premierlearning'] + extra
     print('Running premierlearning %s' % extra)
     runner = Runner()
@@ -137,6 +193,10 @@ def run_squadtools():
     apply_transfers = _flag('APPLY_TRANSFERS')
     apply_team_selection = _flag('APPLY_TEAM_SELECTION')
     suggest_transfers = _flag('SUGGEST_TRANSFERS')
+    if not apply_transfers and _should_apply_on_deadline_day():
+        apply_transfers = True
+        suggest_transfers = False
+        print('APPLY_ON_DEADLINE_DAY: applying transfers')
     if not apply_transfers and not apply_team_selection and not suggest_transfers:
         suggest_transfers = True
         print('No apply flag set; defaulting to SUGGEST_TRANSFERS=true')

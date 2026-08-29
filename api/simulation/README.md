@@ -2,15 +2,24 @@
 
 Run commands from `api/` with the project virtual environment active.
 
-Build (or resume) the shared strict point-in-time cache:
+Build the shared strict point-in-time cache:
 
 ```bash
-python -m simulation.prediction_builder --seasons 23,24,25 --linear
+python -m simulation.prediction_builder --seasons 25 \
+  --train-once-per-season \
+  --name strict-historical-25-26-adamw-once
 ```
 
-The builder commits one season/GW snapshot at a time. Re-running the same
-command skips complete snapshots and rebuilds failed or partial snapshots.
-Use `--coverage-only` to print the coverage report.
+Each launch replaces the previous historical cache (predictions and replay
+runs) and rebuilds from scratch. Only the latest set is kept. Replay with no
+`--prediction-set-id` uses that set. Use `--coverage-only` to print coverage
+for the current cache without rebuilding.
+
+This mode fits the normal Premier Learning AdamW team, fixture-points, minutes
+and horizon-5 models once from data available before 2025/26. Every GW then
+rebuilds causal form features from results through the prior GW and reuses those
+same fitted weights. The horizon model is fitted once; “5” is its GW window,
+not a repetition count.
 
 Each snapshot predicts and stores every remaining player fixture from its
 deadline through GW38. `--horizon` on the replay only selects how much of that
@@ -40,10 +49,11 @@ not removed by the live pipeline reset. Replay summaries are also written under
 
 Historical caveats:
 
-- Weekly injury/status snapshots are unavailable. Predicted minutes are the
-  availability proxy, while only dated, definitely unavailable players are
-  excluded. Reports count zero-minute starters/captains, affected GWs and
-  successful autosubs so this limitation stays visible.
+- Each player-fixture row stores predicted pp90, expected minutes, and
+  chance-to-play (Randdalf/fplcache at that deadline). Squadtools applies
+  chance when scoring the linear optimiser, so availability policy can change
+  without rebuilding the cache. Reports still count zero-minute
+  starters/captains, affected GWs and successful autosubs.
 - Fixtures use the final season calendar. A replay can therefore know a later
   reschedule earlier than it was announced.
 - Hits and chips are intentionally not included in this baseline.

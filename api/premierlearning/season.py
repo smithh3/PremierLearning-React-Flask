@@ -5,7 +5,7 @@ import os
 
 from abc import ABC, abstractmethod
 
-from .player import Player
+from .player import Player, mark_most_expensive_in_position
 from .team import Team
 from .config_constants import SEASON_YR, PLAYER_JSON_FILE_LOCATION, VAASTAV_CSV_YEARS
 from .helper_functions import coerce_optional_int, read_json
@@ -46,6 +46,7 @@ class Season(ABC):
         self.populate_fixtures_json()
         self.populate_teams()
         self.populate_players()
+        mark_most_expensive_in_position(self.players)
         self.populate_player_code_dict()
 
     def set_up_element_type_dict(self):
@@ -71,7 +72,10 @@ class Season(ABC):
         for element in self.fantasy_json['elements']:
             player_file_path = PLAYER_JSON_FILE_LOCATION % self.years + str(element['id']) + '.json'
             player_json = read_json(player_file_path)
-            self.players.append(Player(self.fantasy_json, element, player_json, self.teams, self.current_gameweek))
+            self.players.append(Player(
+                self.fantasy_json, element, player_json, self.teams,
+                self.current_gameweek, next_gameweek=self.next_gameweek,
+            ))
         random.shuffle(self.players)
 
     @abstractmethod
@@ -153,7 +157,10 @@ class PastSeason(Season):
                 player_gameweeks = self.read_csv(PAST_SEASON_PLAYERS_DIR % self.years + '/' + player_dir + '/gw.csv')
                 player_id = int(player_dir.split('_')[-1])
                 player_json = {'history': player_gameweeks, 'fixtures': []}
-                self.players.append(Player(None, elements_dict[player_id], player_json, self.teams, self.current_gameweek))
+                self.players.append(Player(
+                    None, elements_dict[player_id], player_json, self.teams,
+                    self.current_gameweek, next_gameweek=self.next_gameweek,
+                ))
 
     def populate_teams(self):
         if self.years[0] not in VAASTAV_CSV_YEARS:

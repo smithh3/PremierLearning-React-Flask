@@ -51,7 +51,7 @@ data "aws_iam_policy_document" "task" {
   }
 
   dynamic "statement" {
-    for_each = var.notify_email != "" ? [1] : []
+    for_each = var.notify_email != "" || var.ses_from_email != "" ? [1] : []
     content {
       actions   = ["ses:SendEmail", "ses:SendRawEmail"]
       resources = ["*"]
@@ -78,7 +78,7 @@ data "aws_iam_policy_document" "events_assume" {
     actions = ["sts:AssumeRole"]
     principals {
       type        = "Service"
-      identifiers = ["events.amazonaws.com"]
+      identifiers = ["events.amazonaws.com", "scheduler.amazonaws.com"]
     }
   }
 }
@@ -106,6 +106,10 @@ data "aws_iam_policy_document" "events" {
   statement {
     actions   = ["iam:PassRole"]
     resources = [aws_iam_role.execution.arn, aws_iam_role.task.arn]
+  }
+  statement {
+    actions   = ["ecs:TagResource"]
+    resources = ["*"]
   }
 }
 

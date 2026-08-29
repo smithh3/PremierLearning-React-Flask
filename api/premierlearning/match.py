@@ -4,12 +4,19 @@ import math
 
 from premierlearning.clean_match import (
     STAT_KEYS, NEW_STATS, CleanMatch, GameStats, PastStats,
+    TEAM_XG_NEXT_KEY, TEAM_XC_NEXT_KEY,
+    LAST_SEASON_POINTS_PER_90_KEY, LAST_SEASON_XGI_PER_90_KEY,
+    TWO_SEASON_POINTS_PER_90_KEY, TWO_SEASON_XGI_PER_90_KEY,
+    SEASON_POINTS_PER_90_KEY, SEASON_XGI_PER_90_KEY,
+    SEASON_XGC_PER_90_KEY, SEASON_DEFCON_PER_90_KEY,
+    SEASON_MINS_PER_MATCH_KEY,
     get_default_game_stats, get_default_past_stats, get_default_stat_window,
     apply_feature_interactions,
 )
 from premierlearning.config_constants import (
     PRIOR_EARLY_TAU,
     HALF_SEASON_FIXTURES,
+    FORM_MIN_MINUTES,
     INJURY_DNP_STREAK,
     RETURN_CONSECUTIVE_APPS,
 )
@@ -25,6 +32,10 @@ class RawMatch(ABC):
         self.gameweek = None
         self.opponent = None
         self.points_error = 0.0
+        # Set by Runner.redistribute_horizon_points: this fixture's points from the
+        # h1 model alone, and the factor the horizon total then rescaled it by.
+        self.h1_points = None
+        self.horizon_scale = None
 
     def format_as_db_insert(self):
         return (
@@ -36,6 +47,10 @@ class RawMatch(ABC):
         )
 
     def format_as_future_db_insert(self):
+        pp90 = getattr(self, 'predicted_pp90', None)
+        chance = getattr(self, 'chance_of_playing', None)
+        h1_points = getattr(self, 'h1_points', None)
+        horizon_scale = getattr(self, 'horizon_scale', None)
         return (
             self.player_id,
             float(self.minutes),
@@ -43,6 +58,10 @@ class RawMatch(ABC):
             self.gameweek,
             self.opponent,
             float(getattr(self, 'points_error', 0.0) or 0.0),
+            None if pp90 is None or pp90 == '' else float(pp90),
+            None if chance is None or chance == '' else int(chance),
+            None if h1_points is None or h1_points == '' else float(h1_points),
+            None if horizon_scale is None or horizon_scale == '' else float(horizon_scale),
         )
     
     def within_n_gameweeks(self, current_gameweek, n):
@@ -138,13 +157,13 @@ class AbstractMatch(RawMatch):
             'opponent_average_points': self.opponent_team_match.average_points_in_previous_matches,
             'opponent_average_scored': self.opponent_team_match.average_scored_in_previous_matches,
             'opponent_average_conceded': self.opponent_team_match.average_conceded_in_previous_matches,
-            'team_xg_over_n': float(getattr(self.team_match, 'predicted_xg', 0.0) or 0.0),
-            'team_xc_over_n': float(getattr(self.team_match, 'predicted_xc', 0.0) or 0.0),
+            TEAM_XG_NEXT_KEY: float(getattr(self.team_match, 'predicted_xg', 0.0) or 0.0),
+            TEAM_XC_NEXT_KEY: float(getattr(self.team_match, 'predicted_xc', 0.0) or 0.0),
             'team_xg_last_5': 0.0,
             'team_xc_last_5': 0.0,
             'played_last_season': int(self.player.played_last_season),
-            'last_season_points_per_90': self.player.points_per_min_last_season * 90.0,
-            'last_season_xgi_per_90': (
+            LAST_SEASON_POINTS_PER_90_KEY: self.player.points_per_min_last_season * 90.0,
+            LAST_SEASON_XGI_PER_90_KEY: (
                 getattr(self.player, 'xgi_per_min_last_season', 0) or 0
             ) * 90.0,
             'last_season_minutes': float(getattr(self.player, 'minutes_last_season', 0) or 0),
@@ -154,47 +173,69 @@ class AbstractMatch(RawMatch):
             'last_season_fixtures': int(
                 getattr(self.player, 'last_season_fixtures', 0) or 0
             ),
+            'last_season_fixture_frac': float(
+                getattr(self.player, 'last_season_fixture_frac', 0) or 0
+            ),
             'last_7_mins_per_match': float(
                 getattr(self.player, 'last_7_mins_per_match', 0) or 0
             ),
-            'two_season_prior_points_per_90': (
+            TWO_SEASON_POINTS_PER_90_KEY: (
                 getattr(self.player, 'points_per_min_two_seasons_ago', 0) or 0
+            ) * 90.0,
+            TWO_SEASON_XGI_PER_90_KEY: (
+                getattr(self.player, 'xgi_per_min_two_seasons_ago', 0) or 0
             ) * 90.0,
             'two_season_prior_mins_per_match': float(
                 getattr(self.player, 'two_season_prior_mins_per_match', 0) or 0
             ),
-            'last_season_h2_mins_per_match': float(
-                getattr(self.player, 'last_season_h2_mins_per_match', 0) or 0
-            ),
-            'last_two_seasons_mins_per_match': float(
-                getattr(self.player, 'last_two_seasons_mins_per_match', 0) or 0
-            ),
-            'last_season_h2_fixture_frac': float(
-                getattr(self.player, 'last_season_h2_fixture_frac', 0) or 0
-            ),
             'changed_club': self.player.changed_club_feature(self.matches_played),
             'club_move_team_diff': self.player.club_move_team_diff_feature(),
+            'is_most_expensive_in_pos': int(
+                getattr(self.player, 'is_most_expensive_in_pos', 0) or 0
+            ),
             'game_stats': self.game_stats,
             'new_stats_included': 1 if self.new_stats_included else 0
         }
         injury_adj = self._predict_injury_adjusted_minutes()
         if injury_adj is not None:
-            # Frac stays raw coverage (n/19). Shrinking it would look like a
-            # mid-season arrival rather than a thinner available-minutes sample.
-            clean_match['last_season_h2_mins_per_match'] = injury_adj['h2_mpm']
-            clean_match['last_two_seasons_mins_per_match'] = injury_adj['two_s_mpm']
+            clean_match['last_season_mins_per_match'] = injury_adj['ls_mpm']
+            clean_match['two_season_prior_mins_per_match'] = injury_adj['two_s_mpm']
+            this_mins = list(injury_adj.get('this_mins') or [])
+        else:
+            this_mins = self._this_season_fixture_mins()
+        clean_match[SEASON_MINS_PER_MATCH_KEY] = AbstractMatch._mean_or_zero(this_mins)
         mins_last_1, mins_last_2, mins_last_5 = self._mins_recency_windows(
             injury_adj
         )
         clean_match['mins_last_1'] = mins_last_1
-        clean_match['mins_last_2_avg'] = mins_last_2
-        clean_match['mins_last_5_avg'] = mins_last_5
+        clean_match['mins_last_2'] = mins_last_2
+        clean_match['mins_last_5'] = mins_last_5
         clean_match['last_7_pts_per_appearance'] = self._last_n_pts_per_appearance(7)
         xg5, xc5 = self._past_team_xg_xc(5)
         clean_match['team_xg_last_5'] = xg5
         clean_match['team_xc_last_5'] = xc5
+        clean_match.update(self._this_season_rates_excl_null())
         apply_feature_interactions(clean_match)
         return clean_match
+
+    def _this_season_rates_excl_null(self):
+        """This-season appearance-only rates (skip DNP / carry), same as last-season pp90."""
+        from premierlearning.player import Player
+        prior = self._prior_matches()
+        return {
+            SEASON_POINTS_PER_90_KEY: (
+                Player.per_min_from_match_list(prior, 'total_points') * 90.0
+            ),
+            SEASON_XGI_PER_90_KEY: (
+                Player.per_min_from_match_list(prior, 'expected_goal_involvements') * 90.0
+            ),
+            SEASON_XGC_PER_90_KEY: (
+                Player.per_min_from_match_list(prior, 'expected_goals_conceded') * 90.0
+            ),
+            SEASON_DEFCON_PER_90_KEY: (
+                Player.per_min_from_match_list(prior, 'defensive_contribution') * 90.0
+            ),
+        }
 
     def _prior_matches(self):
         """Fixtures strictly before this row (all player.matches for a FutureMatch)."""
@@ -303,18 +344,22 @@ class AbstractMatch(RawMatch):
 
         this_mins = bucket_mins('this', filtered)
         h2_mins = bucket_mins('h2', filtered)
-        two_s_mins = bucket_mins('prev2', filtered) + bucket_mins('h1', filtered)
+        ls_mins = bucket_mins('h1', filtered) + h2_mins
+        two_s_mins = bucket_mins('prev2', filtered)
         h2_raw = bucket_mins('h2', tagged)
+        ls_raw = bucket_mins('h1', tagged) + h2_raw
         h2_mpm = AbstractMatch._mean_or_zero(h2_mins or h2_raw)
+        ls_mpm = AbstractMatch._mean_or_zero(ls_mins or ls_raw)
         two_s_mpm = AbstractMatch._mean_or_zero(two_s_mins)
         if not two_s_mins:
             two_s_mpm = float(
-                getattr(self.player, 'last_two_seasons_mins_per_match', 0) or 0
+                getattr(self.player, 'two_season_prior_mins_per_match', 0) or 0
             )
         return {
             'this_mins': this_mins,
             'h2_mins': h2_mins,
             'h2_mpm': h2_mpm,
+            'ls_mpm': ls_mpm,
             'two_s_mpm': two_s_mpm,
         }
 
@@ -348,17 +393,17 @@ class AbstractMatch(RawMatch):
         return window_n(1), window_n(2), window_n(5)
 
     def _last_n_pts_per_appearance(self, n: int = 7) -> float:
-        """Mean FPL points over the last n appearances (minutes > 0). Form, not availability."""
+        """Mean FPL points over the last n form appearances (minutes >= FORM_MIN_MINUTES)."""
         pts = []
         for match in self._prior_matches():
             minutes = float(match.game_stats.get('minutes') or 0)
-            if minutes <= 0:
+            if minutes < FORM_MIN_MINUTES:
                 continue
             pts.append(float(match.game_stats.get('total_points') or 0))
         return AbstractMatch._mean_or_zero(pts[-n:])
 
     def _past_team_xg_xc(self, n: int = 5):
-        """Sum of team predicted xg/xc over the previous n appearances."""
+        """Sum of team predicted xg/xc over the previous n player fixtures."""
         prior = self._prior_matches()
         window = prior[-n:]
         xg = sum(float(getattr(m.team_match, 'predicted_xg', 0.0) or 0.0) for m in window)
@@ -449,7 +494,14 @@ class FutureMatch(AbstractMatch):
     def __init__(self, player, future_match_json, teams):
         super().__init__(player, future_match_json, teams)
 
-        self.chance_of_playing = player.element_dict['chance_of_playing_next_round']
+        from squadtools.chance_to_play import chance_for_fixture
+
+        self.chance_of_playing = chance_for_fixture(
+            getattr(player, 'element_dict', None) or {},
+            self.gameweek,
+            getattr(player, 'current_gameweek', 0),
+            getattr(player, 'next_gameweek', 0),
+        )
 
         # self.average_points_in_previous_matches = player.average_points_so_far
 
@@ -458,6 +510,7 @@ class FutureMatch(AbstractMatch):
         # self.player_point_deviation_per_game = player.point_deviation_per_game
 
         self.fixture_date = self.get_fixture_date(future_match_json['kickoff_time'])
+        self.predicted_pp90 = None
 
     def _use_injury_dnp_skip(self):
         return True
@@ -485,18 +538,8 @@ class FutureMatch(AbstractMatch):
         return self.team.team_match_dict[self.fixture_id]
 
     def update_points_based_on_expected_minutes(self):
-        # Scale predicted points by FPL chance_of_playing_next_round.
-        #
-        # OLD setup (threshold — only dampen when chance < 65%):
-        # if self.chance_of_playing is not None and self.chance_of_playing < 0.65:
-        #     self.points = self.chance_of_playing * self.points / 100
-        # (minutes-based zeroing / other gates lived here too; left off for now)
-        #
-        # CURRENT: always multiply when chance is known (so 0% injured → 0 points).
-        if self.chance_of_playing is None:
-            return
-        self.points = self.chance_of_playing * self.points / 100.0
-        self.game_stats['total_points'] = self.points
+        """Deprecated: chance is applied in squadtools at optimiser time."""
+        return
 
     def get_opponent_id(self, match_json):
         if self.home:

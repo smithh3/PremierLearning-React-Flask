@@ -19,6 +19,7 @@ class ActualScore:
     autosubs: Tuple[dict, ...]
     captain_scored_id: Optional[int]
     unexpected_zero_minute_starters: int
+    players_scored: int = 0
 
 
 def _minutes(actuals, player_id):
@@ -83,8 +84,35 @@ def score_lineup(
     lineup: Lineup,
     pool: PredictionPool,
     actuals: Dict[int, object],
+    bench_boost: bool = False,
+    triple_captain: bool = False,
 ) -> ActualScore:
     starter_ids = tuple(lineup.starters)
+    if bench_boost:
+        scoring_ids = list(starter_ids) + list(lineup.bench)
+        missing_starters = [
+            player_id for player_id in starter_ids if _minutes(actuals, player_id) <= 0
+        ]
+        points = sum(_points(actuals, player_id) for player_id in scoring_ids)
+        captain_scored_id = None
+        if _minutes(actuals, lineup.captain_id) > 0:
+            captain_scored_id = lineup.captain_id
+        elif _minutes(actuals, lineup.vice_captain_id) > 0:
+            captain_scored_id = lineup.vice_captain_id
+        if captain_scored_id is not None:
+            extra = 2 if triple_captain else 1
+            points += extra * _points(actuals, captain_scored_id)
+        return ActualScore(
+            points=float(points),
+            scoring_player_ids=tuple(sorted(scoring_ids)),
+            autosubs=(),
+            captain_scored_id=captain_scored_id,
+            unexpected_zero_minute_starters=len(missing_starters),
+            players_scored=sum(
+                1 for player_id in scoring_ids if _points(actuals, player_id) > 0
+            ),
+        )
+
     played_starters = [
         player_id for player_id in starter_ids if _minutes(actuals, player_id) > 0
     ]
@@ -157,7 +185,8 @@ def score_lineup(
     elif _minutes(actuals, lineup.vice_captain_id) > 0:
         captain_scored_id = lineup.vice_captain_id
     if captain_scored_id is not None:
-        points += _points(actuals, captain_scored_id)
+        extra = 2 if triple_captain else 1
+        points += extra * _points(actuals, captain_scored_id)
 
     return ActualScore(
         points=float(points),
@@ -165,4 +194,7 @@ def score_lineup(
         autosubs=tuple(autosubs),
         captain_scored_id=captain_scored_id,
         unexpected_zero_minute_starters=len(missing_starters),
+        players_scored=sum(
+            1 for player_id in scoring_ids if _points(actuals, player_id) > 0
+        ),
     )

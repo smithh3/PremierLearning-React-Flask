@@ -56,6 +56,9 @@ EPOCH_MAP = {
 EPOCHS = 8
 BATCH_SIZE = 32
 HORIZON_REPS_FLAG = '--horizon-reps'
+HORIZON_REPS_DEFAULT = 5
+MINUTES_REPS_FLAG = '--minutes-reps'
+MINUTES_REPS_DEFAULT = 5
 RUN_METRICS_DIR = Path('run_metrics/horizon_reps')
 LAST_HORIZON_METRICS_DIR = None
 
@@ -63,6 +66,9 @@ LAST_HORIZON_METRICS_DIR = None
 # (L2 2.25e-3 wd-0 dropout body + ReduceLR factor 0.3)
 LEARNING_RATE = 5e-4  # was 1e-3
 EARLY_STOPPING_PATIENCE = 25  # was 10
+# Minutes target is 0–90; ignore sub-quarter-minute val MAE noise at the LR floor.
+MINUTES_EARLY_STOPPING_PATIENCE = 10
+MINUTES_EARLY_STOPPING_MIN_DELTA = 0.25
 REDUCE_LR_PATIENCE = 8  # was 5
 REDUCE_LR_MIN = 1e-5
 L2 = 2.25e-3  # was 2e-3 on the v4 wd-0 winner
@@ -160,26 +166,80 @@ if '--quick' in sys.argv:
     EPOCHS = 2
 
 
-def parse_horizon_reps() -> int:
-    """Independent fits for the horizon model only; default 1 unless --horizon-reps N."""
+def _parse_positive_int_flag(flag: str, default: int) -> int:
     for i, arg in enumerate(sys.argv):
-        if arg == HORIZON_REPS_FLAG and i + 1 < len(sys.argv):
+        if arg == flag and i + 1 < len(sys.argv):
             try:
                 n = int(sys.argv[i + 1])
                 if n < 1:
                     raise ValueError
                 return n
             except ValueError:
-                raise SystemExit(f'{HORIZON_REPS_FLAG} requires a positive integer')
-        if arg.startswith(HORIZON_REPS_FLAG + '='):
+                raise SystemExit(f'{flag} requires a positive integer')
+        if arg.startswith(flag + '='):
             try:
                 n = int(arg.split('=', 1)[1])
                 if n < 1:
                     raise ValueError
                 return n
             except ValueError:
-                raise SystemExit(f'{HORIZON_REPS_FLAG} requires a positive integer')
-    return 1
+                raise SystemExit(f'{flag} requires a positive integer')
+    return default
+
+
+def parse_horizon_reps() -> int:
+    """Independent fits for the horizon-N model (not h1 points)."""
+    return _parse_positive_int_flag(HORIZON_REPS_FLAG, HORIZON_REPS_DEFAULT)
+
+
+def parse_minutes_reps() -> int:
+    """Independent fits for the minutes model. Same keep/drop averaging as horizon."""
+    return _parse_positive_int_flag(MINUTES_REPS_FLAG, MINUTES_REPS_DEFAULT)
+
+
+def with_learning_rep_flags(argv, horizon_reps=None, minutes_reps=None):
+    """Put horizon/minutes rep counts on argv so Runner sees argparse values."""
+    argv = list(argv)
+    if horizon_reps is not None:
+        argv = _replace_or_append_flag(argv, HORIZON_REPS_FLAG, int(horizon_reps))
+    if minutes_reps is not None:
+        argv = _replace_or_append_flag(argv, MINUTES_REPS_FLAG, int(minutes_reps))
+    return argv
+
+
+def _replace_or_append_flag(argv, flag, value):
+    argv = list(argv)
+    token = str(value)
+    for index, arg in enumerate(argv):
+        if arg == flag:
+            if index + 1 < len(argv) and not str(argv[index + 1]).startswith('-'):
+                argv[index + 1] = token
+            else:
+                argv.insert(index + 1, token)
+            return argv
+        if arg.startswith(flag + '='):
+            argv[index] = '%s=%s' % (flag, token)
+            return argv
+    argv.extend([flag, token])
+    return argv
+
+
+def select_reps_for_average(rep_stats, hp):
+    """Keep reps whose val MAE is within 8% of the best, unless averaging all."""
+    n = len(rep_stats)
+    if getattr(hp, 'average_all_reps', False) or n <= 1:
+        return list(range(n)), None, 'all reps'
+    maes = [float(stats['best_val_mae']) for stats in rep_stats]
+    best_mae = min(maes)
+    selection_threshold = best_mae * float(hp.val_mae_keep_ratio)
+    kept_idx = [i for i, mae in enumerate(maes) if mae <= selection_threshold]
+    if not kept_idx:
+        kept_idx = [int(numpy.argmin(maes))]
+    rule = (
+        f'best_val_mae ≤ {selection_threshold:.4f} '
+        f'(best {best_mae:.4f} × {hp.val_mae_keep_ratio:g})'
+    )
+    return kept_idx, selection_threshold, rule
 
 
 def _flatten_predictions(preds) -> numpy.ndarray:
@@ -490,13 +550,23 @@ def fit_reusable_predictor(
             linear_pipe=ml_data.linear_pipe,
         )
 
-    fitted_models = []
-    for rep in range(max(1, int(reps))):
-        if reps > 1:
-            print(f'  reusable fit {rep + 1}/{reps}')
+    fitted = []
+    n_reps = max(1, int(reps))
+    for rep in range(n_reps):
+        if n_reps > 1:
+            print(f'  reusable fit {rep + 1}/{n_reps}')
         ml_data.setup_model()
-        ml_data.get_predictions()
-        fitted_models.append(ml_data.model)
+        _preds, stats = ml_data.get_predictions()
+        fitted.append((ml_data.model, stats))
+    kept_idx, _threshold, rule = select_reps_for_average(
+        [stats for _model, stats in fitted], ml_data.hparams
+    )
+    fitted_models = [fitted[i][0] for i in kept_idx]
+    if n_reps > 1:
+        dropped = [i + 1 for i in range(len(fitted)) if i not in kept_idx]
+        print(f'  averaging {len(fitted_models)}/{n_reps} reusable fits ({rule})')
+        if dropped:
+            print(f'  dropped reps {dropped} (best_val_mae too high)')
     return ReusablePredictor(
         input_keys=input_keys,
         include_standard_stats=include_standard_stats,
@@ -729,6 +799,20 @@ class MLData:
 
         print("All inputs/outputs have matching shapes and valid numeric values")
 
+    def early_stopping_kwargs(self, hp=None) -> dict:
+        """Points/horizon keep the sweep patience; minutes stops on real MAE gains."""
+        hp = hp or self.hparams
+        kwargs = {
+            'monitor': 'val_%s' % self.mae_name,
+            'patience': hp.early_stopping_patience,
+            'min_delta': 0.0,
+            'restore_best_weights': True,
+        }
+        if self.output_key == 'minutes':
+            kwargs['patience'] = MINUTES_EARLY_STOPPING_PATIENCE
+            kwargs['min_delta'] = MINUTES_EARLY_STOPPING_MIN_DELTA
+        return kwargs
+
     def get_predictions(self):
         if self.output_key in EPOCH_MAP and '--quick' not in sys.argv:
             epochs = EPOCH_MAP[self.output_key]
@@ -736,16 +820,14 @@ class MLData:
             epochs = EPOCHS
 
         hp = self.hparams
-        # callbacks = [
-        #     EarlyStopping(monitor=f"val_{self.mae_name}", patience=10, restore_best_weights=True),
-        #     ReduceLROnPlateau(monitor=f"val_{self.rmse_name}", factor=0.5, patience=5),
-        # ]
+        stopping = self.early_stopping_kwargs(hp)
+        if self.output_key == 'minutes':
+            print(
+                'Minutes early stopping: patience=%s min_delta=%s (val MAE minutes)'
+                % (stopping['patience'], stopping['min_delta'])
+            )
         callbacks = [
-            EarlyStopping(
-                monitor=f"val_{self.mae_name}",
-                patience=hp.early_stopping_patience,
-                restore_best_weights=True,
-            ),
+            EarlyStopping(**stopping),
             ReduceLROnPlateau(
                 monitor=f"val_{self.rmse_name}",
                 factor=hp.reduce_lr_factor,
@@ -970,21 +1052,9 @@ def get_avg_predictions(clean_matches, input_pred, input_keys, output_key, inclu
         agreement = None
 
     hp = ml_data.hparams
-    if hp.average_all_reps or len(preds_and_stats) == 1:
-        kept_idx = list(range(len(preds_and_stats)))
-        selection_threshold = None
-        rule = 'all reps'
-    else:
-        maes = [float(m[1]['best_val_mae']) for m in preds_and_stats]
-        best_mae = min(maes)
-        selection_threshold = best_mae * hp.val_mae_keep_ratio
-        kept_idx = [i for i, mae in enumerate(maes) if mae <= selection_threshold]
-        if not kept_idx:
-            kept_idx = [int(numpy.argmin(maes))]
-        rule = (
-            f'best_val_mae ≤ {selection_threshold:.4f} '
-            f'(best {best_mae:.4f} × {hp.val_mae_keep_ratio:g})'
-        )
+    kept_idx, selection_threshold, rule = select_reps_for_average(
+        [stats for _pred, stats in preds_and_stats], hp
+    )
 
     for i, (_pred, stats) in enumerate(preds_and_stats):
         stats['kept_for_avg'] = i in kept_idx

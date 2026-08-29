@@ -99,12 +99,51 @@ class HistoricalDataTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'leaked training matches'):
             runner.validate_temporal_cutoff()
 
+    def test_train_as_of_gw1_drops_current_season_labels(self):
+        keep = SimpleNamespace(
+            gameweek=8, is_last_season_carry=False,
+            valid_for_learning=True, valid_for_minutes=True,
+        )
+        drop = SimpleNamespace(
+            gameweek=8, is_last_season_carry=False,
+            valid_for_learning=True, valid_for_minutes=True,
+        )
+        carry = SimpleNamespace(
+            gameweek=30, is_last_season_carry=True,
+            valid_for_learning=False, valid_for_minutes=False,
+        )
+        current = SimpleNamespace(
+            years=(25, 26),
+            as_of_gameweek=15,
+            training_complete_through_gw=14,
+            players=[SimpleNamespace(id=1, matches=[keep, drop, carry])],
+        )
+        runner = Runner(
+            current_season=current,
+            target_season_year=25,
+            as_of_gameweek=15,
+            train_as_of_gameweek=1,
+            update_data=False,
+        )
+        # Two current-season rows: freeze labels at GW1 so both this-season
+        # appearances drop; last-season carry is unchanged.
+        drop.gameweek = 14
+        runner.apply_training_label_cutoff()
+        self.assertEqual(0, current.training_complete_through_gw)
+        self.assertFalse(keep.valid_for_learning)
+        self.assertFalse(drop.valid_for_learning)
+        self.assertFalse(keep.valid_for_minutes)
+        self.assertTrue(carry.is_last_season_carry)
+
     def test_snapshot_predicts_every_remaining_fixture(self):
         season = self.source.build_current_season(10, 5)
         player = next(
             player
             for player in season.players
-            if self.source.fixtures_for_team(player.team_id, 10, 39)
+            if (
+                not getattr(player, 'skip_historical_predict', False)
+                and self.source.fixtures_for_team(player.team_id, 10, 39)
+            )
         )
         player.process_matches()
         self.assertTrue(player.future_matches)

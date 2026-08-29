@@ -50,7 +50,9 @@ create table if not exists historical_player_predictions (
     availability_mode varchar(64) not null default 'minutes_proxy',
     fixture_mode varchar(64) not null default 'final_calendar',
     predicted_minutes real not null,
+    predicted_pp90 real,
     predicted_points real not null,
+    chance_of_playing integer,
     points_error real not null default 0,
     foreign key (prediction_snapshot_id) references prediction_snapshots(id),
     unique (prediction_snapshot_id, player_id, fixture_id)

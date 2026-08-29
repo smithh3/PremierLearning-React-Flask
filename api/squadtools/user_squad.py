@@ -16,6 +16,12 @@ class UserSquad(AbstractSquad):
         if not manager_picks_json or not manager_picks_json.get('picks'):
             print('Logged-in my-team has no picks; building initial squad from scratch')
             self.built_from_scratch = True
+            if self.is_pre_gw1():
+                print(
+                    'Pre-GW1: FPL squad is empty; recommend a 15 but cannot '
+                    'submit transfers until a squad exists on FPL'
+                )
+                return
             self.build_from_scratch()
             return
 

@@ -1,8 +1,49 @@
 from typing import List, TypedDict
 import math
+import os
 import sys
 
-from premierlearning.config_constants import PRIOR_EARLY_TAU
+from premierlearning.config_constants import (
+    FORM_AVG_WINDOW,
+    POINTS_HORIZON,
+    PRIOR_EARLY_TAU,
+    SHORT_FORM_WINDOW,
+)
+
+TEAM_XG_NEXT_KEY = 'team_xg_next_%s' % POINTS_HORIZON
+TEAM_XC_NEXT_KEY = 'team_xc_next_%s' % POINTS_HORIZON
+TEAM_XG_NEXT_X_OUTFIELD_KEY = '%s_x_outfield' % TEAM_XG_NEXT_KEY
+LAST_SEASON_POINTS_PER_90_KEY = 'last_season_points_per_90_excl_null'
+LAST_SEASON_XGI_PER_90_KEY = 'last_season_xgi_per_90_excl_null'
+TWO_SEASON_POINTS_PER_90_KEY = 'two_season_prior_points_per_90_excl_null'
+TWO_SEASON_XGI_PER_90_KEY = 'two_season_prior_xgi_per_90_excl_null'
+LAST_SEASON_PP90_X_EARLY_KEY = 'last_season_points_per_90_excl_null_x_early'
+TWO_SEASON_PP90_X_EARLY_KEY = 'two_season_prior_points_per_90_excl_null_x_early'
+MOST_EXPENSIVE_POS_X_GKP_X_EARLY_KEY = 'most_expensive_in_pos_x_gkp_x_early'
+DEFCON_X_NON_ATT_KEY = 'defcon_last_%s_per_90_excl_null_x_non_att' % FORM_AVG_WINDOW
+SEASON_POINTS_PER_90_KEY = 'season_points_per_90_excl_null'
+SEASON_XGI_PER_90_KEY = 'season_xgi_per_90_excl_null'
+SEASON_XGC_PER_90_KEY = 'season_xgc_per_90_excl_null'
+SEASON_DEFCON_PER_90_KEY = 'season_defcon_per_90_excl_null'
+SEASON_MINS_PER_MATCH_KEY = 'season_mins_per_match'
+
+_PAST_STAT_NAMES = {
+    'total_points': 'points',
+    'expected_goal_involvements': 'xgi',
+    'expected_goals_conceded': 'xgc',
+    'defensive_contribution': 'defcon',
+}
+_PAST_WINDOW_NAMES = {
+    'last_5_avg': 'last_%s_per_90_excl_null' % SHORT_FORM_WINDOW,
+    'avg': 'last_%s_per_90_excl_null' % FORM_AVG_WINDOW,
+}
+
+
+def past_stat_feature_name(stat_key, window_key) -> str:
+    """Model column for a rolling appearance window (minutes >= FORM_MIN_MINUTES)."""
+    stat = _PAST_STAT_NAMES.get(stat_key, stat_key)
+    window = _PAST_WINDOW_NAMES.get(window_key, window_key)
+    return '%s_%s' % (stat, window)
 
 
 class StatWindow(TypedDict):
@@ -83,6 +124,16 @@ CHANCE_TO_PLAY = 'chance_to_play'
 PER_MINUTE_STAT_KEYS = set(STAT_KEYS + BUILT_KEYS) - {'minutes'}
 
 
+def use_ls_pp90_x_mins() -> bool:
+    """Last-season pp90 × mins/match. Off by default; on via --ls-pp90-x-mins or PL_LS_PP90_X_MINS=1."""
+    if '--no-ls-pp90-x-mins' in sys.argv:
+        return False
+    if '--ls-pp90-x-mins' in sys.argv:
+        return True
+    raw = os.environ.get('PL_LS_PP90_X_MINS', '0')
+    return str(raw).strip().lower() in ('1', 'true', 'yes', 'on')
+
+
 def use_team_expectancies() -> bool:
     return '--no-team-expectancies' not in sys.argv
 
@@ -126,35 +177,42 @@ class CleanMatch(TypedDict):
     opponent_average_points: float
     opponent_average_scored: float
     opponent_average_conceded: float
-    team_xg_over_n: float
-    team_xc_over_n: float
+    team_xg_next_5: float
+    team_xc_next_5: float
     team_xg_last_5: float
     team_xc_last_5: float
     played_last_season: int
-    last_season_points_per_90: float
-    last_season_xgi_per_90: float
+    last_season_points_per_90_excl_null: float
+    last_season_xgi_per_90_excl_null: float
+    two_season_prior_points_per_90_excl_null: float
+    two_season_prior_xgi_per_90_excl_null: float
     last_season_minutes: float
     last_season_mins_per_match: float
+    season_mins_per_match: float
     last_season_fixtures: int
+    last_season_fixture_frac: float
     last_7_mins_per_match: float
-    two_season_prior_points_per_90: float
     two_season_prior_mins_per_match: float
-    last_season_h2_mins_per_match: float
-    last_two_seasons_mins_per_match: float
-    last_season_h2_fixture_frac: float
+    last_season_pp90_x_mins: float
+    season_points_per_90_excl_null: float
+    season_xgi_per_90_excl_null: float
+    season_xgc_per_90_excl_null: float
+    season_defcon_per_90_excl_null: float
     changed_club: int
     club_move_team_diff: float
+    is_most_expensive_in_pos: int
     new_stats_included: int
-    # Position-gated interactions
-    defcon_avg_x_new_stats_x_non_att: float
-    team_xg_over_n_x_outfield: float
+    defcon_last_7_per_90_excl_null_x_non_att: float
+    team_xg_next_5_x_outfield: float
+    last_season_points_per_90_excl_null_x_early: float
+    two_season_prior_points_per_90_excl_null_x_early: float
     early_x_last_season_mins: float
+    most_expensive_in_pos_x_gkp_x_early: float
     ls_mpm_x_new_club: float
     mins_last_1: float
-    mins_last_2_avg: float
-    mins_last_5_avg: float
+    mins_last_2: float
+    mins_last_5: float
     last_7_pts_per_appearance: float
-    # last_season_prior_x_early: float
     game_stats: GameStats
 
 
@@ -163,81 +221,92 @@ class CleanMatch(TypedDict):
 # Season-start experiment notes (pair with player.py form comment):
 #   - matches_played was briefly commented out when it mismatched train/serve;
 #     blanking it made zero-form players worse — keep it on for now.
-#   - played_last_season / two_season_prior / last_season_prior_x_early were
-#     tried as early-season priors; left off while we rely on carry form +
-#     last_season_*_per_90 instead. Re-enable and retrain to A/B.
+# last_season_* / two_season_prior_* are full-season pp90 rates (DNP skipped —
+# same excl_null as form last-3/7 and season_*).
+# Early-season fade is last_season_points_per_90_excl_null_x_early.
 _BASE_STANDARD = [
     'matches_played',
     'is_gkp',
     'is_def',
     'is_mid',
     'is_att',
-    # 'played_last_season',  # temporarily disabled — early-season prior experiment
-    # last_season_*_per_90 are points-rate priors; excluded from the minutes net
-    # (see MINUTES_EXCLUDE_STANDARD_KEYS) so super-subs don't look like starters.
-    'last_season_points_per_90',
-    'last_season_xgi_per_90',
-    # 'two_season_prior_points_per_90',  # temporarily disabled — see PRIOR_* in config
-    # changed_club temporarily disabled — binary 0/1 was boosting movers (e.g. Anderson)
-    # instead of punishing early minutes/points. Detection still runs on the player;
-    # re-enable here once encoded differently (see chat notes).
+    LAST_SEASON_POINTS_PER_90_KEY,
+    LAST_SEASON_XGI_PER_90_KEY,
+    TWO_SEASON_POINTS_PER_90_KEY,
+    # TWO_SEASON_XGI_PER_90_KEY,
     # 'changed_club',
     'new_stats_included',
+    SEASON_POINTS_PER_90_KEY,
+    SEASON_XGI_PER_90_KEY,
+    SEASON_XGC_PER_90_KEY,
+    SEASON_DEFCON_PER_90_KEY,
 ]
 
 _INTERACTION_KEYS = [
-    # defcon only meaningful for non-attackers, and only when new stats exist
-    'defcon_avg_x_new_stats_x_non_att',
-    # team attack xG for outfield only (not GK)
-    'team_xg_over_n_x_outfield',
-    # OLD early-season prior interaction (needs PRIOR_EARLY_TAU import):
-    # # prior fades as this-season appearances grow: (last + 0.5*two_ago) * exp(-apps/tau)
-    # 'last_season_prior_x_early',
+    DEFCON_X_NON_ATT_KEY,
+    TEAM_XG_NEXT_X_OUTFIELD_KEY,
+    LAST_SEASON_PP90_X_EARLY_KEY,
+    # TWO_SEASON_PP90_X_EARLY_KEY,
 ]
+
+# Shrinks last-season pp90 when the player did not play full matches.
+# pp90 * (mins_per_match / 90): a 90-minute starter keeps full rate; a 30-minute
+# super-sub is scaled to a third. Gated by use_ls_pp90_x_mins().
+LS_PP90_X_MINS_KEY = 'last_season_pp90_x_mins'
 
 LAST_SEASON_MINUTES_CAP = 38.0 * 90.0  # scale last-season minutes to ~[0, 1]
 
 # Minutes-only root features (not in points / horizon nets).
-# H2 = second half of last season; 2s = prev2 season + H1 of last season.
-# Recency stretches into H2 and blends toward H2 mins/match near GW0.
-# Predict (not train): if the last two fixtures were appearances, 3+ consecutive
-# DNPs are dropped from H2 / 2s / recency (injury, not availability).
-# last_season_h2_fixture_frac stays raw coverage so dropped holes do not look
-# like a short FPL history.
+# season_mins_per_match is the default rate: this-season fixtures including DNPs.
+# last_season / two_season_prior are full seasons, DNP-inclusive (early-GW prior).
+# Recency last-1/2/5 still fills from the end of last season.
 MINUTES_ONLY_ROOT_KEYS = [
+    SEASON_MINS_PER_MATCH_KEY,
     'early_x_last_season_mins',
-    'last_season_h2_mins_per_match',
-    'last_two_seasons_mins_per_match',
-    'last_season_h2_fixture_frac',
+    'last_season_mins_per_match',
+    'two_season_prior_mins_per_match',
+    'last_season_fixture_frac',
     'ls_mpm_x_new_club',
     'mins_last_1',
-    'mins_last_2_avg',
-    'mins_last_5_avg',
+    'mins_last_2',
+    'mins_last_5',
     'last_7_pts_per_appearance',
+    MOST_EXPENSIVE_POS_X_GKP_X_EARLY_KEY,
 ]
 MINUTES_ONLY_ROOT_DEFAULTS = {
+    SEASON_MINS_PER_MATCH_KEY: 0.0,
     'early_x_last_season_mins': 0.0,
-    'last_season_h2_mins_per_match': 0.0,
-    'last_two_seasons_mins_per_match': 0.0,
-    'last_season_h2_fixture_frac': 0.0,
+    'last_season_mins_per_match': 0.0,
+    'two_season_prior_mins_per_match': 0.0,
+    'last_season_fixture_frac': 0.0,
     'ls_mpm_x_new_club': 0.0,
     'mins_last_1': 0.0,
-    'mins_last_2_avg': 0.0,
-    'mins_last_5_avg': 0.0,
+    'mins_last_2': 0.0,
+    'mins_last_5': 0.0,
     'last_7_pts_per_appearance': 0.0,
+    MOST_EXPENSIVE_POS_X_GKP_X_EARLY_KEY: 0.0,
 }
 
 # Dropped from the minutes net: points-rate priors, fixture xG/xC, and the
 # new-stats flag. Appearance-only past_stats (minutes_last_5_avg / chance_to_play)
 # are also skipped in get_inputs_from_data_key — they exclude DNPs via carry.
 MINUTES_EXCLUDE_STANDARD_KEYS = {
-    'last_season_points_per_90',
-    'last_season_xgi_per_90',
-    'defcon_avg_x_new_stats_x_non_att',
-    'team_xg_over_n_x_outfield',
+    LAST_SEASON_POINTS_PER_90_KEY,
+    LAST_SEASON_XGI_PER_90_KEY,
+    TWO_SEASON_POINTS_PER_90_KEY,
+    TWO_SEASON_XGI_PER_90_KEY,
+    'last_season_pp90_x_mins',
+    LAST_SEASON_PP90_X_EARLY_KEY,
+    TWO_SEASON_PP90_X_EARLY_KEY,
+    SEASON_POINTS_PER_90_KEY,
+    SEASON_XGI_PER_90_KEY,
+    SEASON_XGC_PER_90_KEY,
+    SEASON_DEFCON_PER_90_KEY,
+    DEFCON_X_NON_ATT_KEY,
+    TEAM_XG_NEXT_X_OUTFIELD_KEY,
     'new_stats_included',
-    'team_xg_over_n',
-    'team_xc_over_n',
+    TEAM_XG_NEXT_KEY,
+    TEAM_XC_NEXT_KEY,
     'team_xg_last_5',
     'team_xc_last_5',
 }
@@ -253,8 +322,8 @@ _LEGACY_FIXTURE_KEYS = [
 ]
 
 _EXPECTANCY_FIXTURE_KEYS = [
-    'team_xg_over_n',
-    'team_xc_over_n',
+    TEAM_XG_NEXT_KEY,
+    TEAM_XC_NEXT_KEY,
     'team_xg_last_5',
     'team_xc_last_5',
 ]
@@ -271,41 +340,55 @@ EXPECTANCY_OPPONENT_FEATURE_KEYS = []
 
 
 def apply_feature_interactions(clean: dict) -> None:
-    """Position-gated products; call after team_xg_over_n is finalized."""
+    """Position-gated products; call after team_xg_next_N is finalized."""
     non_att = int(bool(clean.get('is_gkp') or clean.get('is_def') or clean.get('is_mid')))
     outfield = int(bool(clean.get('is_att') or clean.get('is_mid') or clean.get('is_def')))
     new_stats = float(clean.get('new_stats_included') or 0)
     past = clean.get('past_stats') or {}
     defcon_avg = float((past.get('defensive_contribution') or {}).get('avg') or 0)
-    team_xg_n = float(clean.get('team_xg_over_n') or 0)
-
-    # OLD early-season prior (pair with 'last_season_prior_x_early' in _INTERACTION_KEYS):
-    # last_pp90 = float(clean.get('last_season_points_per_90') or 0)
-    # two_pp90 = float(clean.get('two_season_prior_points_per_90') or 0)
-    # apps = float(clean.get('matches_played') or 0)
-    # prior_blend = last_pp90 + TWO_SEASON_PRIOR_SCALE * two_pp90
-    # early_weight = math.exp(-apps / PRIOR_EARLY_TAU)  # 1.0 at 0 apps
-
-    clean['defcon_avg_x_new_stats_x_non_att'] = new_stats * defcon_avg * non_att
-    clean['team_xg_over_n_x_outfield'] = team_xg_n * outfield
-    # Minutes only (included via MINUTES_ONLY_ROOT_KEYS): early-season weight
-    # times last-season minutes volume. No raw GW 0-3 flag.
+    team_xg_n = float(clean.get(TEAM_XG_NEXT_KEY) or 0)
     apps = float(clean.get('matches_played') or 0)
-    last_mins = float(clean.get('last_season_minutes') or 0)
     early_weight = math.exp(-apps / PRIOR_EARLY_TAU)
+    last_pp90 = float(clean.get(LAST_SEASON_POINTS_PER_90_KEY) or 0)
+    two_pp90 = float(clean.get(TWO_SEASON_POINTS_PER_90_KEY) or 0)
+
+    clean[DEFCON_X_NON_ATT_KEY] = new_stats * defcon_avg * non_att
+    clean[TEAM_XG_NEXT_X_OUTFIELD_KEY] = team_xg_n * outfield
+    clean[LAST_SEASON_PP90_X_EARLY_KEY] = last_pp90 * early_weight
+    clean[TWO_SEASON_PP90_X_EARLY_KEY] = two_pp90 * early_weight
+    last_mins = float(clean.get('last_season_minutes') or 0)
     volume = min(1.0, last_mins / LAST_SEASON_MINUTES_CAP) if LAST_SEASON_MINUTES_CAP else 0.0
     clean['early_x_last_season_mins'] = early_weight * volume
-    h2_mpm = float(clean.get('last_season_h2_mins_per_match') or 0)
-    # H2 mins/match × new-club factor (1.0 if same club / new-to-PL).
+    ls_mpm = float(clean.get('last_season_mins_per_match') or 0)
     club_factor = float(clean.get('club_move_team_diff') or 1.0)
-    clean['ls_mpm_x_new_club'] = h2_mpm * club_factor
-    # clean['last_season_prior_x_early'] = prior_blend * early_weight
+    clean['ls_mpm_x_new_club'] = ls_mpm * club_factor
+    ls_pp90 = float(clean.get(LAST_SEASON_POINTS_PER_90_KEY) or 0)
+    clean[LS_PP90_X_MINS_KEY] = ls_pp90 * (ls_mpm / 90.0)
+    most_exp = float(clean.get('is_most_expensive_in_pos') or 0)
+    is_gkp = float(clean.get('is_gkp') or 0)
+    clean[MOST_EXPENSIVE_POS_X_GKP_X_EARLY_KEY] = most_exp * is_gkp * early_weight
+
+
+def get_interaction_keys() -> List[str]:
+    keys = list(_INTERACTION_KEYS)
+    if use_ls_pp90_x_mins():
+        keys.append(LS_PP90_X_MINS_KEY)
+    return keys
 
 
 def get_standard_stat_keys() -> List[str]:
     if use_team_expectancies():
-        return list(_BASE_STANDARD) + list(_EXPECTANCY_FIXTURE_KEYS) + list(_INTERACTION_KEYS)
-    return list(_BASE_STANDARD) + list(_LEGACY_FIXTURE_KEYS) + list(_INTERACTION_KEYS)
+        keys = list(_BASE_STANDARD) + list(_EXPECTANCY_FIXTURE_KEYS) + get_interaction_keys()
+    else:
+        keys = list(_BASE_STANDARD) + list(_LEGACY_FIXTURE_KEYS) + get_interaction_keys()
+    seen = set()
+    unique = []
+    for key in keys:
+        if key in seen:
+            continue
+        seen.add(key)
+        unique.append(key)
+    return unique
 
 
 def get_opponent_feature_keys() -> List[str]:
@@ -409,7 +492,7 @@ def get_inputs_from_data_key(clean_matches: List[CleanMatch], special_keys: List
             last_n_stats = clean_match['past_stats'][data_key]
             last_n_stats_with_name = {}
             for last_n_key, val in last_n_stats.items():
-                last_n_stats_with_name[f'{data_key}_{last_n_key}'] = val
+                last_n_stats_with_name[past_stat_feature_name(data_key, last_n_key)] = val
             clean_match_array.update(last_n_stats_with_name)
         inputs.append(clean_match_array)
     return inputs

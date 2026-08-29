@@ -30,13 +30,19 @@ variable "pipeline_memory" {
 variable "enable_schedule" {
   type        = bool
   default     = false
-  description = "Phase 1: weekly EventBridge rule that starts the pipeline task."
+  description = "Daily EventBridge Scheduler that starts the pipeline task at 06:00 UK time."
 }
 
 variable "schedule_expression" {
   type        = string
-  default     = "cron(0 8 ? * FRI *)"
-  description = "EventBridge cron in UTC. Friday 08:00 UTC is 09:00 UK in BST."
+  default     = "cron(0 6 * * ? *)"
+  description = "EventBridge Scheduler cron. Combined with schedule_timezone."
+}
+
+variable "schedule_timezone" {
+  type        = string
+  default     = "Europe/London"
+  description = "IANA timezone for the daily schedule (6am UK including BST)."
 }
 
 variable "enable_split" {
@@ -60,7 +66,7 @@ variable "run_learning" {
 variable "premierlearning_args" {
   type        = string
   default     = ""
-  description = "Extra argv for premierlearning. Empty is a full train. Use --horizon-only --horizon-reps 5 for a shorter run."
+  description = "Extra argv for premierlearning. Empty is a full train. Horizon-N and minutes default to 5 averaged fits (drop val MAE > 8% over best). h1 points stay 1 fit. Add --horizon-only for a shorter minutes-free run. The pipeline always prepends --update so Fargate pulls live FPL injury/chance news; pass --no-update to skip."
 }
 
 variable "apply_within_hours" {
@@ -83,6 +89,12 @@ variable "billing_email" {
 
 variable "notify_email" {
   type        = string
-  default     = "haljsmith97@gmail.com"
+  default     = "haljsmith97+fpl@gmail.com"
   description = "SES destination for the Fargate predictions email (HTML table in the body). Leave empty to disable."
+}
+
+variable "ses_from_email" {
+  type        = string
+  default     = "haljsmith97@gmail.com"
+  description = "Verified SES From address. Keep this as the base Gmail identity; plus-aliases go in notify_email."
 }

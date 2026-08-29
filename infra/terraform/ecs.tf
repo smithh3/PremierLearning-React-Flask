@@ -27,11 +27,12 @@ locals {
     { name = "RUN_LEARNING", value = var.run_learning ? "1" : "0" },
     { name = "APPLY_TRANSFERS", value = var.apply_transfers ? "true" : "false" },
     { name = "SUGGEST_TRANSFERS", value = var.apply_transfers ? "false" : "true" },
+    { name = "APPLY_ON_DEADLINE_DAY", value = "true" },
     { name = "PREMIERLEARNING_ARGS", value = var.premierlearning_args },
     { name = "APPLY_WITHIN_HOURS", value = var.apply_within_hours },
     { name = "AWS_DEFAULT_REGION", value = var.aws_region },
     { name = "NOTIFY_EMAIL", value = var.notify_email },
-    { name = "SES_FROM_EMAIL", value = var.notify_email },
+    { name = "SES_FROM_EMAIL", value = var.ses_from_email != "" ? var.ses_from_email : var.notify_email },
   ]
 }
 

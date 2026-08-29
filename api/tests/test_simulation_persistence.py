@@ -37,7 +37,7 @@ class SimulationPersistenceTests(unittest.TestCase):
             'model_config_hash': 'a' * 64,
             'horizon_gameweeks': 5,
             'training_policy': 'strict_point_in_time',
-            'availability_mode': 'minutes_proxy',
+            'availability_mode': 'deferred_chance',
             'fixture_mode': 'final_calendar',
             'random_seed': 42,
             'config': {'test': True},
@@ -62,8 +62,11 @@ class SimulationPersistenceTests(unittest.TestCase):
             'price': 50,
             'selectable': True,
             'predicted_minutes': 80.0,
+            'predicted_pp90': 5.625,
             'predicted_points': 5.0,
+            'chance_of_playing': 75,
             'points_error': 1.0,
+            'availability_mode': 'deferred_chance',
         }
 
     def test_prediction_cache_survives_live_database_reset(self):
@@ -83,7 +86,9 @@ class SimulationPersistenceTests(unittest.TestCase):
         rows = self.db.get_historical_predictions(set_id, 23, 1)
         self.assertEqual(1, len(rows))
         self.assertEqual(5.0, rows[0]['predicted_points'])
-        self.assertEqual('minutes_proxy', rows[0]['availability_mode'])
+        self.assertEqual(5.625, rows[0]['predicted_pp90'])
+        self.assertEqual(75, rows[0]['chance_of_playing'])
+        self.assertEqual('deferred_chance', rows[0]['availability_mode'])
         self.assertEqual('final_calendar', rows[0]['fixture_mode'])
         coverage = self.db.prediction_coverage(set_id)[0]
         self.assertEqual(1, coverage['min_target_gameweek'])
@@ -91,6 +96,20 @@ class SimulationPersistenceTests(unittest.TestCase):
         self.assertEqual(1, coverage['stored_row_count'])
         _, should_build = self.db.begin_prediction_snapshot(set_id, 23, 1)
         self.assertFalse(should_build)
+
+    def test_loaded_predictions_apply_chance_in_the_optimiser_pool(self):
+        from squadtools.simulation_strategy import PredictionPool
+
+        set_id = self.db.get_or_create_prediction_set(self.metadata())
+        snapshot_id, _ = self.db.begin_prediction_snapshot(set_id, 23, 1)
+        self.db.persist_historical_predictions(
+            snapshot_id, [self.prediction_row()]
+        )
+        self.db.complete_prediction_snapshot(snapshot_id, 1)
+        rows = self.db.get_historical_predictions(set_id, 23, 1)
+        pool = PredictionPool.from_rows(rows)
+        # 5.625 pp90 × 80 mins / 90 × 75% chance
+        self.assertAlmostEqual(5.625 * 80.0 / 90.0 * 0.75, pool[10].points(1))
 
     def test_force_rebuild_is_idempotent(self):
         set_id = self.db.get_or_create_prediction_set(self.metadata())
@@ -186,6 +205,139 @@ class SimulationPersistenceTests(unittest.TestCase):
         gameweeks = self.db.get_simulation_gameweeks(run_id)
         self.assertEqual(1, len(gameweeks))
         self.assertEqual(10, gameweeks[0]['captain_scored_id'])
+
+    def test_replace_prediction_cache_drops_previous_sets(self):
+        old_id = self.db.get_or_create_prediction_set(self.metadata())
+        snapshot_id, _ = self.db.begin_prediction_snapshot(old_id, 23, 1)
+        self.db.persist_historical_predictions(snapshot_id, [self.prediction_row()])
+        self.db.complete_prediction_snapshot(snapshot_id, 1)
+        meta = self.metadata()
+        meta['model_config_hash'] = 'b' * 64
+        new_id = self.db.replace_prediction_cache(meta)
+        self.assertIsNone(self.db.get_prediction_set(old_id))
+        self.assertEqual(new_id, self.db.latest_prediction_set_id())
+        self.assertEqual(
+            [],
+            self.db.get_historical_predictions(old_id, 23, 1),
+        )
+
+    def test_default_build_reuses_cache_and_keeps_other_seasons(self):
+        first = HistoricalPredictionBuilder(self.db, seasons=(24,))
+        first._ensure_prediction_set()
+        set_id = first.prediction_set_id
+        snapshot_id, _ = self.db.begin_prediction_snapshot(set_id, 25, 1)
+        row = dict(self.prediction_row())
+        row['season_start_year'] = 25
+        self.db.persist_historical_predictions(snapshot_id, [row])
+        self.db.complete_prediction_snapshot(snapshot_id, 1)
+
+        second = HistoricalPredictionBuilder(self.db, seasons=(24,))
+        second._ensure_prediction_set()
+        self.assertEqual(set_id, second.prediction_set_id)
+        self.assertEqual(
+            1,
+            len(self.db.get_historical_predictions(set_id, 25, 1)),
+        )
+
+    def test_replace_cache_flag_drops_other_seasons(self):
+        first = HistoricalPredictionBuilder(self.db, seasons=(25,))
+        first._ensure_prediction_set()
+        set_id = first.prediction_set_id
+        snapshot_id, _ = self.db.begin_prediction_snapshot(set_id, 25, 1)
+        row = dict(self.prediction_row())
+        row['season_start_year'] = 25
+        self.db.persist_historical_predictions(snapshot_id, [row])
+        self.db.complete_prediction_snapshot(snapshot_id, 1)
+
+        wiped = HistoricalPredictionBuilder(
+            self.db, seasons=(24,), replace_cache=True
+        )
+        wiped._ensure_prediction_set()
+        self.assertIsNone(self.db.get_prediction_set(set_id))
+        self.assertEqual(
+            [],
+            self.db.get_historical_predictions(set_id, 25, 1),
+        )
+
+    def test_last_season_carry_persists_under_current_player_id(self):
+        from premierlearning.match import RawMatch
+        from premierlearning.player import RawPlayer
+
+        player = RawPlayer()
+        player.id = 101
+        player.first_name = 'Elliot'
+        player.last_name = 'Anderson'
+        player.team_id = 4
+        player.team_name = 'NFO'
+        player.current_cost = 55
+        player.position = 3
+        player.code = 999001
+        player.future_matches = []
+
+        carry = RawMatch()
+        carry.player_id = 55
+        carry.minutes = 90
+        carry.points = 6
+        carry.gameweek = 38
+        carry.opponent = 'ARS'
+
+        cameo = RawMatch()
+        cameo.player_id = 101
+        cameo.minutes = 8
+        cameo.points = 2
+        cameo.gameweek = 1
+        cameo.opponent = 'MCI'
+
+        player.matches = [carry, cameo]
+        self.db.persist_player(player)
+        self.db.connection.commit()
+
+        loaded = self.db.get_player_objects()[101]
+        self.assertEqual(2, len(loaded.matches))
+        self.assertEqual([90.0, 8.0], [float(m.minutes) for m in loaded.matches])
+        self.assertEqual([6.0, 2.0], [float(m.points) for m in loaded.matches])
+        self.assertEqual([], self.db.get_match_jsons().get(55, []))
+
+    def test_future_match_chance_and_pp90_survive_reload(self):
+        from premierlearning.match import RawMatch
+        from premierlearning.player import RawPlayer
+        from squadtools.availability import match_optimiser_points
+
+        player = RawPlayer()
+        player.id = 325
+        player.first_name = 'Karl'
+        player.last_name = 'Darlow'
+        player.team_id = 13
+        player.team_name = 'LEE'
+        player.current_cost = 45
+        player.position = 1
+        player.code = 111
+        player.matches = []
+
+        future = RawMatch()
+        future.player_id = 325
+        future.minutes = 90
+        future.points = 4.1
+        future.gameweek = 1
+        future.opponent = 'LIV'
+        future.predicted_pp90 = 4.1
+        future.chance_of_playing = 75
+        future.h1_points = 3.28
+        future.horizon_scale = 1.25
+        player.future_matches = [future]
+        self.db.persist_player(player)
+        self.db.connection.commit()
+
+        loaded = self.db.get_player_objects()[325]
+        match = loaded.future_matches[0]
+        self.assertEqual(75, match.chance_of_playing)
+        self.assertAlmostEqual(4.1, match.predicted_pp90)
+        self.assertAlmostEqual(4.1 * 0.75, match_optimiser_points(match))
+        self.assertAlmostEqual(4.1 * 0.75, loaded.get_points_in_gameweek_n(1, 1, 0, 0))
+        # squadtools reloads from the database, so the report only sees the
+        # pre-redistribution prediction if it survives the round trip.
+        self.assertAlmostEqual(3.28, match.h1_points)
+        self.assertAlmostEqual(1.25, match.horizon_scale)
 
 
 if __name__ == '__main__':

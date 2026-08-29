@@ -24,6 +24,52 @@ class ReplayIntegrationTests(unittest.TestCase):
         )
         self.assertEqual(first.hash(), second.hash())
 
+    def test_chip_strategy_hash_ignores_fixed_chip_weeks(self):
+        first = SimulationConfig(
+            prediction_set_id=1,
+            season_start_year=25,
+            chip_strategy=True,
+            wildcard_gameweeks=(6, 24),
+        )
+        second = SimulationConfig(
+            prediction_set_id=1,
+            season_start_year=25,
+            chip_strategy=True,
+            wildcard_gameweeks=(8, 30),
+            free_hit_gameweeks=(10,),
+        )
+        self.assertEqual(first.hash(), second.hash())
+        self.assertNotIn('wildcard_gameweeks', first.to_dict())
+        self.assertIn('fh_threshold', first.to_dict())
+
+    def test_scoring_knobs_change_strategy_hash(self):
+        base = SimulationConfig(prediction_set_id=1, season_start_year=25)
+        tuned = SimulationConfig(
+            prediction_set_id=1,
+            season_start_year=25,
+            minutes_scale='raw',
+            bench_weights=(0.6, 0.21, 0.075),
+            reserve_keeper_weight=0.075,
+        )
+        self.assertNotEqual(base.hash(), tuned.hash())
+
+    def test_chip_delay_knobs_change_strategy_hash(self):
+        base = SimulationConfig(
+            prediction_set_id=1,
+            season_start_year=25,
+            chip_strategy=True,
+        )
+        tuned = SimulationConfig(
+            prediction_set_id=1,
+            season_start_year=25,
+            chip_strategy=True,
+            fh_dgw_weight=2.0,
+            wc_dgw_weight=4.0,
+            wc_rotation_weight=1.5,
+            wc_early_weight=15.0,
+        )
+        self.assertNotEqual(base.hash(), tuned.hash())
+
     def test_one_gameweek_replay_uses_cached_predictions(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             previous_path = os.environ.get('DATABASE_PATH')

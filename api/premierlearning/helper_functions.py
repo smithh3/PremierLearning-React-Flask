@@ -39,16 +39,10 @@ def score_is_present(value):
 
 
 def effective_minutes_for_points(mins: float) -> float:
-    """Map predicted minutes before pp90 × mins / 90.
-
-    ≥ 75: treat as 90 (full pp90). 60–75: scale linearly onto 75–85.
-    Below 60: identity (raw minutes / 90). Predicted minutes themselves are unchanged.
+    """Minutes baked into persisted predicted_points. Identity so the optimiser
+    can apply live step_75 (or a sim scale) from stored pp90 × minutes.
     """
     m = max(0.0, min(90.0, float(mins or 0)))
-    if m >= 75.0:
-        return 90.0
-    if m >= 60.0:
-        return 75.0 + (m - 60.0) / 15.0 * 10.0
     return m
 
 

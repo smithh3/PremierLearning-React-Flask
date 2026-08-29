@@ -6,18 +6,24 @@ ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 TASK="pipeline"
 FOLLOW=0
 SUGGEST=0
+APPLY=0
+NO_BENCH_FILL=0
 for arg in "$@"; do
   case "$arg" in
     --follow) FOLLOW=1 ;;
     --suggest) SUGGEST=1 ;;
+    --apply) APPLY=1 ;;
+    --no-bench-fill) NO_BENCH_FILL=1 ;;
     pipeline|learn|apply) TASK="$arg" ;;
     -h|--help)
-      echo "Usage: $0 [pipeline|learn|apply] [--follow] [--suggest]"
-      echo "  --suggest  Override this run: train, then print/email transfers without submitting."
+      echo "Usage: $0 [pipeline|learn|apply] [--follow] [--suggest|--apply] [--no-bench-fill]"
+      echo "  --suggest       Override this run: train, then print/email transfers without submitting."
+      echo "  --apply         Override this run: submit this week's transfers (still emails)."
+      echo "  --no-bench-fill Skip the second-pass bench refill (rotating XI only)."
       exit 0
       ;;
     *)
-      echo "Usage: $0 [pipeline|learn|apply] [--follow] [--suggest]"
+      echo "Usage: $0 [pipeline|learn|apply] [--follow] [--suggest|--apply] [--no-bench-fill]"
       exit 1
       ;;
   esac
@@ -46,6 +52,28 @@ export AWS_PAGER=""
 export MSYS_NO_PATHCONV=1
 
 CONTAINER="$TASK"
+ENV_VARS=()
+if [ "$SUGGEST" -eq 1 ]; then
+  echo "Suggest-only override: APPLY_TRANSFERS=false SUGGEST_TRANSFERS=true RUN_LEARNING=1"
+  ENV_VARS+=(
+    '{"name":"APPLY_TRANSFERS","value":"false"}'
+    '{"name":"SUGGEST_TRANSFERS","value":"true"}'
+    '{"name":"APPLY_ON_DEADLINE_DAY","value":"false"}'
+    '{"name":"RUN_LEARNING","value":"1"}'
+  )
+elif [ "$APPLY" -eq 1 ]; then
+  echo "Apply override: APPLY_TRANSFERS=true SUGGEST_TRANSFERS=false RUN_LEARNING=1"
+  ENV_VARS+=(
+    '{"name":"APPLY_TRANSFERS","value":"true"}'
+    '{"name":"SUGGEST_TRANSFERS","value":"false"}'
+    '{"name":"APPLY_ON_DEADLINE_DAY","value":"false"}'
+    '{"name":"RUN_LEARNING","value":"1"}'
+  )
+fi
+if [ "$NO_BENCH_FILL" -eq 1 ]; then
+  echo "Skipping bench fill pass: SKIP_BENCH_FILL=true"
+  ENV_VARS+=('{"name":"SKIP_BENCH_FILL","value":"true"}')
+fi
 RUN_ARGS=(
   --cluster "$CLUSTER"
   --task-definition "$DEF"
@@ -55,9 +83,10 @@ RUN_ARGS=(
   --query "tasks[0].taskArn"
   --output text
 )
-if [ "$SUGGEST" -eq 1 ]; then
-  echo "Suggest-only override: APPLY_TRANSFERS=false SUGGEST_TRANSFERS=true RUN_LEARNING=1"
-  RUN_ARGS+=(--overrides "{\"containerOverrides\":[{\"name\":\"${CONTAINER}\",\"environment\":[{\"name\":\"APPLY_TRANSFERS\",\"value\":\"false\"},{\"name\":\"SUGGEST_TRANSFERS\",\"value\":\"true\"},{\"name\":\"RUN_LEARNING\",\"value\":\"1\"}]}]}")
+if [ "${#ENV_VARS[@]}" -gt 0 ]; then
+  IFS=,
+  RUN_ARGS+=(--overrides "{\"containerOverrides\":[{\"name\":\"${CONTAINER}\",\"environment\":[${ENV_VARS[*]}]}]}")
+  unset IFS
 fi
 
 TASK_ARN="$(aws ecs run-task "${RUN_ARGS[@]}")"

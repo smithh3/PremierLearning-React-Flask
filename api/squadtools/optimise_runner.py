@@ -16,6 +16,10 @@ class OptimiseRunner:
         self.manager_id = id
         self.player_dict = None
         self.user_json = user_json
+        self.chip_calendar = None
+        self.chip_reason = {}
+        self.horizon_plan = []
+        self.recommended_squad = []
     
     def get_ids(self):
         return self.squad.get_player_ids()
@@ -45,6 +49,12 @@ class OptimiseRunner:
     def run(self):
         self.populate_squad()
         self.write_top_30_info()
+        from squadtools.live_strategy import apply_live_plan
+        try:
+            apply_live_plan(self)
+            return
+        except Exception as exc:
+            print('Chip/transfer planner failed; falling back to existing optimiser: %s' % exc)
         if self.squad.built_from_scratch:
             print('Initial squad built from scratch (15 players). Skipping transfer suggestions.')
             print('Squad:', ', '.join(p.get_name() for p in self.squad.squad))
@@ -53,6 +63,15 @@ class OptimiseRunner:
         self.transfers = self.squad.make_sensible_transfers()
     
     def get_transfers(self):
+        if getattr(self, 'horizon_plan', None):
+            transfers_list = []
+            for entry in self.horizon_plan:
+                transfers_list.append({
+                    'gameweek': entry.get('gameweek'),
+                    'chip': entry.get('chip'),
+                    'transfers': [str(transfer) for transfer in (entry.get('transfers') or [])],
+                })
+            return transfers_list
         temp_gameweek = self.squad.next_gameweek
         transfer_index = 0
         transfers_list = []
@@ -88,6 +107,17 @@ class OptimiseRunner:
         return list(self.transfers['transfer_tuple'][:this_week_count])
 
     def apply_this_week_transfers(self, email, password):
+        chip = None
+        if getattr(self, 'chip_calendar', None) is not None:
+            chip = self.chip_calendar.chip_at(self.squad.next_gameweek)
+        if chip in ('wildcard', 'free_hit'):
+            print(
+                'GW %s is planned as %s; not submitting ordinary transfers. '
+                'Play the chip in FPL if you want this rebuild.'
+                % (self.squad.next_gameweek, chip)
+            )
+            self.apply_this_week_team_selection(email, password)
+            return
         this_week = self.get_this_week_transfers()
         selectable_ids = load_selectable_player_ids()
         if this_week and selectable_ids:
@@ -100,6 +130,8 @@ class OptimiseRunner:
             this_week = available
         if this_week:
             print('Submitting %d transfer(s) for GW %s:' % (len(this_week), self.squad.next_gameweek))
+            if getattr(self.squad, 'is_pre_gw1', lambda: False)():
+                print('Pre-GW1: FPL treats these as free squad changes (no wildcard)')
             for transfer in this_week:
                 print('  %s' % transfer)
                 self.squad.stage_transfer(transfer)

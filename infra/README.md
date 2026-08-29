@@ -63,7 +63,7 @@ Learn then apply in the same container:
 
 ```bash
 RUN_LEARNING=1
-PREMIERLEARNING_ARGS=--horizon-only --horizon-reps 5
+PREMIERLEARNING_ARGS=--horizon-reps 5
 APPLY_TRANSFERS=true
 ```
 
@@ -116,24 +116,31 @@ Need a sqlite file in the image for apply-only: have `database/fantasy.db` on di
 
 Idle Fargate costs nothing. Delete later with `terraform destroy` if you want the account empty.
 
-## 4. Phase 1 — weekly schedule
+## 4. Daily 06:00 UK schedule
 
-Same one task, now on a timer. In `terraform.tfvars`:
+Same one task, now every morning. In `terraform.tfvars`:
 
 ```hcl
 enable_schedule = true
 run_learning    = true
-apply_transfers = true
+apply_transfers = false
 pipeline_cpu    = "4096"
 pipeline_memory = "16384"
-schedule_expression = "cron(0 8 ? * FRI *)"  # 08:00 UTC Fridays
+schedule_expression = "cron(0 6 * * ? *)"
+schedule_timezone   = "Europe/London"
+notify_email        = "haljsmith97+fpl@gmail.com"
+ses_from_email      = "haljsmith97@gmail.com"
 ```
 
 ```bash
 terraform apply
 ```
 
-The combined task still runs **learn then apply** in one container (sqlite on the task disk). After GW1, set `apply_within_hours` (e.g. `"36"`) so a stray run cannot submit far from the deadline.
+The task **suggests** transfers and emails chip + transfer strategy. On FPL **transfer deadline day** (the UK calendar day of the next deadline, while that deadline is still ahead) it **applies** those transfers instead. `APPLY_ON_DEADLINE_DAY` is set on the task; leave `apply_transfers = false` so ordinary mornings stay suggest-only.
+
+Emails go to the plus-alias so you can add a Gmail filter: **To** `haljsmith97+fpl@gmail.com` → **Never send it to Spam**. Click the SES verify link sent to that alias once.
+
+The combined task still runs **learn then squadtools** in one container (sqlite on the task disk). After GW1 you can set `apply_within_hours` (e.g. `"36"`) so a stray apply cannot submit far from the deadline; leave it empty if you want 6am deadline-day applies when the deadline is later that afternoon.
 
 ## 5. Phase 2 — split learn and apply
 

@@ -9,6 +9,10 @@ from pulp import LpMaximize, LpProblem, lpSum, LpVariable, PULP_CBC_CMD
 from premierlearning import Transfer
 from premierlearning import RawPlayer
 from premierlearning.fpl_apis import *
+from squadtools.availability import (
+    LIVE_OUTFIELD_BENCH_WEIGHTS,
+    LIVE_RESERVE_KEEPER_WEIGHT,
+)
 # from .logged_in_action_performer import pick_team, get_player_ids, make_transfers, get_manager_id
 
 # MANAGER_API = 'https://fantasy.premierleague.com/api/entry/%i/'
@@ -223,17 +227,19 @@ class AbstractSquad(ABC):
                 starters_model += c[gw][i] <= x[i]
 
         # Objective: starter/bench points + a second copy of the captain's points each GW.
+        bench_1, bench_2, bench_3 = LIVE_OUTFIELD_BENCH_WEIGHTS
+        bench_gk = LIVE_RESERVE_KEEPER_WEIGHT
         starters_model += lpSum(
             x[i] * self.wrapped_player_dict[i].player
             .get_points_between_gameweeks(gameweek_from, gameweek_to, 1, self.bench_boost_gw, self.free_hit_gw)
             + y1[i] * self.wrapped_player_dict[i].player
-            .get_points_between_gameweeks(gameweek_from, gameweek_to, 0.4, self.bench_boost_gw, self.free_hit_gw)
+            .get_points_between_gameweeks(gameweek_from, gameweek_to, bench_1, self.bench_boost_gw, self.free_hit_gw)
             + y2[i] * self.wrapped_player_dict[i].player
-            .get_points_between_gameweeks(gameweek_from, gameweek_to, 0.14, self.bench_boost_gw, self.free_hit_gw)
+            .get_points_between_gameweeks(gameweek_from, gameweek_to, bench_2, self.bench_boost_gw, self.free_hit_gw)
             + y3[i] * self.wrapped_player_dict[i].player
-            .get_points_between_gameweeks(gameweek_from, gameweek_to, 0.05, self.bench_boost_gw, self.free_hit_gw)
+            .get_points_between_gameweeks(gameweek_from, gameweek_to, bench_3, self.bench_boost_gw, self.free_hit_gw)
             + z[i] * self.wrapped_player_dict[i].player
-            .get_points_between_gameweeks(gameweek_from, gameweek_to, 0.05, self.bench_boost_gw, self.free_hit_gw)
+            .get_points_between_gameweeks(gameweek_from, gameweek_to, bench_gk, self.bench_boost_gw, self.free_hit_gw)
             for i in valid_player_ids
         ) + lpSum(
             c[gw][i] * self.wrapped_player_dict[i].player.get_points_in_gameweek_n(
