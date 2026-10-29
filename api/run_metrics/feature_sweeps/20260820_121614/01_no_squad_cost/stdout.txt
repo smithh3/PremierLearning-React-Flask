@@ -1,0 +1,490 @@
+0.24s - Expected: c:\Users\hal\.cursor\extensions\ms-python.debugpy-2026.6.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd_attach_to_process\attach_amd64.dll to exist.
+Setting up players and teams...
+Running team expectancies...
+Squad cost YoY prior off (--no-squad-cost / PL_SQUAD_COST=0)
+Seeded early-season form for 20 teams from season (25, 26)
+Promoted/new team prior (bottom-3 PL rates scored=0.97 conceded=1.82): COV, HUL, IPS
+Training team goals expectancy model (neural net)...
+Training rows: 5030; max epochs: 500
+Team model input columns:
+  team_scored_last_5
+  team_scored_avg
+  team_conceded_last_5
+  team_conceded_avg
+  opp_scored_last_5
+  opp_scored_avg
+  opp_conceded_last_5
+  opp_conceded_avg
+  is_home
+  fixture_difficulty
+  opp_fixture_difficulty
+Epoch 1/500
+101/101 - 2s - loss: 1.0062 - root_mean_squared_error: 1.8538 - mean_absolute_error: 1.4189 - val_loss: 0.7247 - val_root_mean_squared_error: 1.5052 - val_mean_absolute_error: 1.1314 - lr: 0.0010 - 2s/epoch - 21ms/step
+Epoch 2/500
+101/101 - 0s - loss: 0.6389 - root_mean_squared_error: 1.3587 - mean_absolute_error: 1.0327 - val_loss: 0.5290 - val_root_mean_squared_error: 1.1750 - val_mean_absolute_error: 0.9116 - lr: 0.0010 - 266ms/epoch - 3ms/step
+Epoch 3/500
+101/101 - 0s - loss: 0.5628 - root_mean_squared_error: 1.2344 - mean_absolute_error: 0.9513 - val_loss: 0.5072 - val_root_mean_squared_error: 1.1351 - val_mean_absolute_error: 0.8910 - lr: 0.0010 - 271ms/epoch - 3ms/step
+Epoch 4/500
+101/101 - 0s - loss: 0.5485 - root_mean_squared_error: 1.2105 - mean_absolute_error: 0.9366 - val_loss: 0.5007 - val_root_mean_squared_error: 1.1292 - val_mean_absolute_error: 0.8834 - lr: 0.0010 - 270ms/epoch - 3ms/step
+Epoch 5/500
+101/101 - 0s - loss: 0.5416 - root_mean_squared_error: 1.2017 - mean_absolute_error: 0.9276 - val_loss: 0.4979 - val_root_mean_squared_error: 1.1223 - val_mean_absolute_error: 0.8804 - lr: 0.0010 - 270ms/epoch - 3ms/step
+Epoch 6/500
+101/101 - 0s - loss: 0.5379 - root_mean_squared_error: 1.1948 - mean_absolute_error: 0.9240 - val_loss: 0.4936 - val_root_mean_squared_error: 1.1210 - val_mean_absolute_error: 0.8750 - lr: 0.0010 - 267ms/epoch - 3ms/step
+Epoch 7/500
+101/101 - 0s - loss: 0.5341 - root_mean_squared_error: 1.1897 - mean_absolute_error: 0.9200 - val_loss: 0.4922 - val_root_mean_squared_error: 1.1195 - val_mean_absolute_error: 0.8727 - lr: 0.0010 - 269ms/epoch - 3ms/step
+Epoch 8/500
+101/101 - 0s - loss: 0.5313 - root_mean_squared_error: 1.1862 - mean_absolute_error: 0.9167 - val_loss: 0.4935 - val_root_mean_squared_error: 1.1150 - val_mean_absolute_error: 0.8763 - lr: 0.0010 - 267ms/epoch - 3ms/step
+Epoch 9/500
+101/101 - 0s - loss: 0.5303 - root_mean_squared_error: 1.1845 - mean_absolute_error: 0.9155 - val_loss: 0.4903 - val_root_mean_squared_error: 1.1165 - val_mean_absolute_error: 0.8717 - lr: 0.0010 - 265ms/epoch - 3ms/step
+Epoch 10/500
+101/101 - 0s - loss: 0.5287 - root_mean_squared_error: 1.1823 - mean_absolute_error: 0.9139 - val_loss: 0.4898 - val_root_mean_squared_error: 1.1155 - val_mean_absolute_error: 0.8715 - lr: 0.0010 - 271ms/epoch - 3ms/step
+Epoch 11/500
+101/101 - 0s - loss: 0.5277 - root_mean_squared_error: 1.1823 - mean_absolute_error: 0.9136 - val_loss: 0.4904 - val_root_mean_squared_error: 1.1173 - val_mean_absolute_error: 0.8717 - lr: 0.0010 - 264ms/epoch - 3ms/step
+Epoch 12/500
+101/101 - 0s - loss: 0.5267 - root_mean_squared_error: 1.1802 - mean_absolute_error: 0.9115 - val_loss: 0.4904 - val_root_mean_squared_error: 1.1166 - val_mean_absolute_error: 0.8724 - lr: 0.0010 - 271ms/epoch - 3ms/step
+Epoch 13/500
+101/101 - 0s - loss: 0.5249 - root_mean_squared_error: 1.1759 - mean_absolute_error: 0.9103 - val_loss: 0.4901 - val_root_mean_squared_error: 1.1237 - val_mean_absolute_error: 0.8702 - lr: 0.0010 - 266ms/epoch - 3ms/step
+Epoch 14/500
+101/101 - 0s - loss: 0.5227 - root_mean_squared_error: 1.1778 - mean_absolute_error: 0.9069 - val_loss: 0.4903 - val_root_mean_squared_error: 1.1127 - val_mean_absolute_error: 0.8734 - lr: 5.0000e-04 - 265ms/epoch - 3ms/step
+Epoch 15/500
+101/101 - 0s - loss: 0.5230 - root_mean_squared_error: 1.1751 - mean_absolute_error: 0.9084 - val_loss: 0.4906 - val_root_mean_squared_error: 1.1133 - val_mean_absolute_error: 0.8736 - lr: 5.0000e-04 - 267ms/epoch - 3ms/step
+Epoch 16/500
+101/101 - 0s - loss: 0.5226 - root_mean_squared_error: 1.1730 - mean_absolute_error: 0.9074 - val_loss: 0.4899 - val_root_mean_squared_error: 1.1136 - val_mean_absolute_error: 0.8726 - lr: 5.0000e-04 - 268ms/epoch - 3ms/step
+Epoch 17/500
+101/101 - 0s - loss: 0.5215 - root_mean_squared_error: 1.1718 - mean_absolute_error: 0.9062 - val_loss: 0.4896 - val_root_mean_squared_error: 1.1164 - val_mean_absolute_error: 0.8710 - lr: 5.0000e-04 - 270ms/epoch - 3ms/step
+Epoch 18/500
+101/101 - 0s - loss: 0.5208 - root_mean_squared_error: 1.1733 - mean_absolute_error: 0.9052 - val_loss: 0.4904 - val_root_mean_squared_error: 1.1166 - val_mean_absolute_error: 0.8722 - lr: 5.0000e-04 - 266ms/epoch - 3ms/step
+Epoch 19/500
+101/101 - 0s - loss: 0.5207 - root_mean_squared_error: 1.1725 - mean_absolute_error: 0.9054 - val_loss: 0.4904 - val_root_mean_squared_error: 1.1175 - val_mean_absolute_error: 0.8715 - lr: 5.0000e-04 - 266ms/epoch - 3ms/step
+Epoch 20/500
+101/101 - 0s - loss: 0.5196 - root_mean_squared_error: 1.1701 - mean_absolute_error: 0.9042 - val_loss: 0.4911 - val_root_mean_squared_error: 1.1173 - val_mean_absolute_error: 0.8730 - lr: 2.5000e-04 - 269ms/epoch - 3ms/step
+Epoch 21/500
+101/101 - 0s - loss: 0.5192 - root_mean_squared_error: 1.1712 - mean_absolute_error: 0.9035 - val_loss: 0.4911 - val_root_mean_squared_error: 1.1173 - val_mean_absolute_error: 0.8731 - lr: 2.5000e-04 - 266ms/epoch - 3ms/step
+Epoch 22/500
+101/101 - 0s - loss: 0.5188 - root_mean_squared_error: 1.1695 - mean_absolute_error: 0.9033 - val_loss: 0.4911 - val_root_mean_squared_error: 1.1181 - val_mean_absolute_error: 0.8727 - lr: 2.5000e-04 - 271ms/epoch - 3ms/step
+Epoch 23/500
+101/101 - 0s - loss: 0.5188 - root_mean_squared_error: 1.1698 - mean_absolute_error: 0.9034 - val_loss: 0.4914 - val_root_mean_squared_error: 1.1190 - val_mean_absolute_error: 0.8734 - lr: 2.5000e-04 - 278ms/epoch - 3ms/step
+{'team_model_train_mae': 0.9033751487731934, 'team_model_test_mae': 0.9168959871141859, 'team_model_test_rmse': 1.1767825215357126, 'epochs_ran': 23, 'pred_range': (0.37951794266700745, 2.72271466255188)}
+Squad cost YoY prior off (--no-squad-cost / PL_SQUAD_COST=0)
+Seeded early-season form for 20 teams from season (25, 26)
+Promoted/new team prior (bottom-3 PL rates scored=0.97 conceded=1.82): COV, HUL, IPS
+Team expectancies applied to all fixtures
+Wrote 380 predicted scorelines to predicted_scorelines.json
+
+=== Sample horizon model columns (Haaland / Fernandes) ===
+
+Erling Haaland (MCI) - PREDICT (exact model input row; predicted 5/5 pp90=0.00)
+  form appearances available: 7
+  last_5 (should = total_points_last_5_avg): GW33:6pts/90m, GW33:7pts/90m, GW35:7pts/90m, GW36:11pts/90m, GW37:9pts/90m -> pp90=8.0000
+  last_7 (should = total_points_avg): GW30:2pts/90m, GW32:2pts/90m, GW33:6pts/90m, GW33:7pts/90m, GW35:7pts/90m, GW36:11pts/90m, GW37:9pts/90m -> pp90=6.2857
+  target: (future - not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  last_season_points_per_90: 7.284118
+  last_season_xgi_per_90: 0.858551
+  new_stats_included: 1
+  team_xg_over_n: 9.486634
+  team_xc_over_n: 3.872831
+  team_xg_last_5: 8.175031
+  team_xc_last_5: 4.478000
+  defcon_avg_x_new_stats_x_non_att: 0.000000
+  team_xg_over_n_x_outfield: 9.486634
+  total_points_last_5_avg: 8.000000
+  total_points_avg: 6.285714
+  xgi_last_5_avg: 0.918000
+  xgi_avg: 0.788571
+  expected_goals_conceded_last_5_avg: 1.446000
+  expected_goals_conceded_avg: 1.272857
+  defensive_contribution_last_5_avg: 2.600000
+  defensive_contribution_avg: 3.000000
+
+Erling Haaland - TRAIN (25, 26) GW35 vs EVE (A) (exact model input row; target window 3/5 played)
+  form appearances available: 39
+  last_5 (should = total_points_last_5_avg): GW29:2pts/90m, GW30:2pts/90m, GW32:2pts/90m, GW33:6pts/90m, GW33:7pts/90m -> pp90=3.8000
+  last_7 (should = total_points_avg): GW26:5pts/45m, GW27:6pts/90m, GW29:2pts/90m, GW30:2pts/90m, GW32:2pts/90m, GW33:6pts/90m, GW33:7pts/90m -> pp90=4.6154
+  target (points/90 over window): 9.000000
+  --- model input features (exact) ---
+  matches_played: 32
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  last_season_points_per_90: 5.953947
+  last_season_xgi_per_90: 0.787500
+  new_stats_included: 1
+  team_xg_over_n: 9.030550
+  team_xc_over_n: 4.194938
+  team_xg_last_5: 8.500302
+  team_xc_last_5: 4.356301
+  defcon_avg_x_new_stats_x_non_att: 0.000000
+  team_xg_over_n_x_outfield: 9.030550
+  total_points_last_5_avg: 3.800000
+  total_points_avg: 4.615385
+  xgi_last_5_avg: 0.610000
+  xgi_avg: 0.569231
+  expected_goals_conceded_last_5_avg: 0.976000
+  expected_goals_conceded_avg: 0.941538
+  defensive_contribution_last_5_avg: 3.600000
+  defensive_contribution_avg: 3.538462
+
+Bruno Borges Fernandes (MUN) - PREDICT (exact model input row; predicted 5/5 pp90=0.00)
+  form appearances available: 7
+  last_5 (should = total_points_last_5_avg): GW34:5pts/90m, GW35:5pts/90m, GW36:3pts/90m, GW37:9pts/90m, GW38:14pts/90m -> pp90=7.2000
+  last_7 (should = total_points_avg): GW32:4pts/90m, GW33:6pts/90m, GW34:5pts/90m, GW35:5pts/90m, GW36:3pts/90m, GW37:9pts/90m, GW38:14pts/90m -> pp90=6.5714
+  target: (future - not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 6.900489
+  last_season_xgi_per_90: 0.677423
+  new_stats_included: 1
+  team_xg_over_n: 7.445656
+  team_xc_over_n: 4.420799
+  team_xg_last_5: 7.006358
+  team_xc_last_5: 5.942477
+  defcon_avg_x_new_stats_x_non_att: 6.428571
+  team_xg_over_n_x_outfield: 7.445656
+  total_points_last_5_avg: 7.200000
+  total_points_avg: 6.571429
+  xgi_last_5_avg: 0.618000
+  xgi_avg: 0.531429
+  expected_goals_conceded_last_5_avg: 1.248000
+  expected_goals_conceded_avg: 1.454286
+  defensive_contribution_last_5_avg: 7.200000
+  defensive_contribution_avg: 6.428571
+
+Bruno Borges Fernandes - TRAIN (25, 26) GW34 vs BRE (H) (exact model input row; target window 5/5 played)
+  form appearances available: 37
+  last_5 (should = total_points_last_5_avg): GW29:8pts/90m, GW30:10pts/90m, GW31:13pts/90m, GW32:4pts/90m, GW33:6pts/90m -> pp90=8.2000
+  last_7 (should = total_points_avg): GW27:2pts/90m, GW28:13pts/90m, GW29:8pts/90m, GW30:10pts/90m, GW31:13pts/90m, GW32:4pts/90m, GW33:6pts/90m -> pp90=8.0000
+  target (points/90 over window): 7.200000
+  --- model input features (exact) ---
+  matches_played: 30
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 5.190587
+  last_season_xgi_per_90: 0.531588
+  new_stats_included: 1
+  team_xg_over_n: 7.006358
+  team_xc_over_n: 5.942477
+  team_xg_last_5: 7.081913
+  team_xc_last_5: 5.829781
+  defcon_avg_x_new_stats_x_non_att: 5.857143
+  team_xg_over_n_x_outfield: 7.006358
+  total_points_last_5_avg: 8.200000
+  total_points_avg: 8.000000
+  xgi_last_5_avg: 0.754000
+  xgi_avg: 0.731429
+  expected_goals_conceded_last_5_avg: 1.844000
+  expected_goals_conceded_avg: 1.460000
+  defensive_contribution_last_5_avg: 7.400000
+  defensive_contribution_avg: 5.857143
+=== End sample columns ===
+
+Preparing data for learning...
+Skipping predict for 177 players with <3 appearances (incl. last-season carry)
+Horizon-only: skipping minutes model; assuming 90 minutes per fixture
+Fitting horizon-1 linear models for per-match points error...
+Linear horizon-1 OOF RMSE: 2.933; per-match |residual| model — future err mean=2.171 range=(0.000, 5.870)
+Horizon-5 train rows: 50962 (skipped 8126 windows with <3 appearances in-window)
+Getting predictions for total_points...
+{'mean baseline absolute error': 1.804500136607177, 'mean baseline rms error': 3.1578973275174778, 'median baseline absolute error': 1.7342375404237735, 'median baseline rms error': 3.2086039352786697, 'linear regression absolute error': 1.63373473365572, 'linear regression rms error': 2.9689081964708834}
+Model input columns:
+  matches_played
+  is_gkp
+  is_def
+  is_mid
+  is_att
+  last_season_points_per_90
+  last_season_xgi_per_90
+  new_stats_included
+  team_xg_over_n
+  team_xc_over_n
+  team_xg_last_5
+  team_xc_last_5
+  defcon_avg_x_new_stats_x_non_att
+  team_xg_over_n_x_outfield
+  total_points_last_5_avg
+  total_points_avg
+  expected_goal_involvements_last_5_avg
+  expected_goal_involvements_avg
+  expected_goals_conceded_last_5_avg
+  expected_goals_conceded_avg
+  defensive_contribution_last_5_avg
+  defensive_contribution_avg
+All inputs/outputs have matching shapes and valid numeric values
+Model capacity: hidden=[33, 16, 8], optimizer=AdamW, l2=0.00225, weight_decay=0.0, lr=0.0005 (n_features=22, loss=Huber(delta=1.8))
+Epoch 1/500
+1020/1020 - 5s - loss: 0.4294 - orig_rmse: 11.4226 - orig_mae: 2.5098 - val_loss: 0.1681 - val_orig_rmse: 3.0485 - val_orig_mae: 1.6237 - lr: 5.0000e-04 - 5s/epoch - 5ms/step
+Epoch 2/500
+1020/1020 - 3s - loss: 0.1590 - orig_rmse: 3.4636 - orig_mae: 1.7196 - val_loss: 0.1258 - val_orig_rmse: 2.7552 - val_orig_mae: 1.5569 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 3/500
+1020/1020 - 3s - loss: 0.1216 - orig_rmse: 3.1357 - orig_mae: 1.6365 - val_loss: 0.1021 - val_orig_rmse: 2.7010 - val_orig_mae: 1.5417 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 4/500
+1020/1020 - 3s - loss: 0.1008 - orig_rmse: 3.1070 - orig_mae: 1.6007 - val_loss: 0.0892 - val_orig_rmse: 2.6777 - val_orig_mae: 1.5435 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 5/500
+1020/1020 - 3s - loss: 0.0902 - orig_rmse: 3.0919 - orig_mae: 1.5927 - val_loss: 0.0826 - val_orig_rmse: 2.7154 - val_orig_mae: 1.5414 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 6/500
+1020/1020 - 3s - loss: 0.0844 - orig_rmse: 3.0863 - orig_mae: 1.5854 - val_loss: 0.0788 - val_orig_rmse: 2.6833 - val_orig_mae: 1.5453 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 7/500
+1020/1020 - 3s - loss: 0.0816 - orig_rmse: 3.0873 - orig_mae: 1.5827 - val_loss: 0.0771 - val_orig_rmse: 2.6924 - val_orig_mae: 1.5418 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 8/500
+1020/1020 - 3s - loss: 0.0804 - orig_rmse: 3.0880 - orig_mae: 1.5840 - val_loss: 0.0761 - val_orig_rmse: 2.6883 - val_orig_mae: 1.5406 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 9/500
+1020/1020 - 3s - loss: 0.0796 - orig_rmse: 3.0827 - orig_mae: 1.5811 - val_loss: 0.0758 - val_orig_rmse: 2.6796 - val_orig_mae: 1.5457 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 10/500
+1020/1020 - 3s - loss: 0.0793 - orig_rmse: 3.0832 - orig_mae: 1.5820 - val_loss: 0.0758 - val_orig_rmse: 2.7002 - val_orig_mae: 1.5415 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 11/500
+1020/1020 - 3s - loss: 0.0793 - orig_rmse: 3.0827 - orig_mae: 1.5829 - val_loss: 0.0755 - val_orig_rmse: 2.6800 - val_orig_mae: 1.5462 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 12/500
+1020/1020 - 3s - loss: 0.0789 - orig_rmse: 3.0795 - orig_mae: 1.5816 - val_loss: 0.0756 - val_orig_rmse: 2.7166 - val_orig_mae: 1.5426 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 13/500
+1020/1020 - 3s - loss: 0.0787 - orig_rmse: 3.0819 - orig_mae: 1.5803 - val_loss: 0.0754 - val_orig_rmse: 2.7043 - val_orig_mae: 1.5407 - lr: 1.5000e-04 - 3s/epoch - 3ms/step
+Epoch 14/500
+1020/1020 - 3s - loss: 0.0785 - orig_rmse: 3.0805 - orig_mae: 1.5777 - val_loss: 0.0752 - val_orig_rmse: 2.6773 - val_orig_mae: 1.5443 - lr: 1.5000e-04 - 3s/epoch - 3ms/step
+Epoch 15/500
+1020/1020 - 3s - loss: 0.0786 - orig_rmse: 3.0802 - orig_mae: 1.5798 - val_loss: 0.0752 - val_orig_rmse: 2.6872 - val_orig_mae: 1.5424 - lr: 1.5000e-04 - 3s/epoch - 3ms/step
+Epoch 16/500
+1020/1020 - 3s - loss: 0.0786 - orig_rmse: 3.0797 - orig_mae: 1.5790 - val_loss: 0.0752 - val_orig_rmse: 2.6971 - val_orig_mae: 1.5407 - lr: 1.5000e-04 - 3s/epoch - 3ms/step
+Epoch 17/500
+1020/1020 - 3s - loss: 0.0785 - orig_rmse: 3.0804 - orig_mae: 1.5797 - val_loss: 0.0752 - val_orig_rmse: 2.6979 - val_orig_mae: 1.5401 - lr: 1.5000e-04 - 3s/epoch - 3ms/step
+Epoch 18/500
+1020/1020 - 3s - loss: 0.0784 - orig_rmse: 3.0787 - orig_mae: 1.5781 - val_loss: 0.0753 - val_orig_rmse: 2.7019 - val_orig_mae: 1.5398 - lr: 1.5000e-04 - 3s/epoch - 3ms/step
+Epoch 19/500
+1020/1020 - 3s - loss: 0.0785 - orig_rmse: 3.0789 - orig_mae: 1.5799 - val_loss: 0.0751 - val_orig_rmse: 2.6934 - val_orig_mae: 1.5402 - lr: 1.5000e-04 - 3s/epoch - 3ms/step
+Epoch 20/500
+1020/1020 - 3s - loss: 0.0783 - orig_rmse: 3.0782 - orig_mae: 1.5773 - val_loss: 0.0751 - val_orig_rmse: 2.6975 - val_orig_mae: 1.5413 - lr: 1.5000e-04 - 3s/epoch - 3ms/step
+Epoch 21/500
+1020/1020 - 3s - loss: 0.0784 - orig_rmse: 3.0807 - orig_mae: 1.5781 - val_loss: 0.0752 - val_orig_rmse: 2.6993 - val_orig_mae: 1.5409 - lr: 1.5000e-04 - 3s/epoch - 3ms/step
+Epoch 22/500
+1020/1020 - 3s - loss: 0.0784 - orig_rmse: 3.0798 - orig_mae: 1.5778 - val_loss: 0.0751 - val_orig_rmse: 2.6956 - val_orig_mae: 1.5404 - lr: 1.5000e-04 - 3s/epoch - 3ms/step
+Epoch 23/500
+1020/1020 - 3s - loss: 0.0783 - orig_rmse: 3.0779 - orig_mae: 1.5769 - val_loss: 0.0751 - val_orig_rmse: 2.6972 - val_orig_mae: 1.5408 - lr: 4.5000e-05 - 3s/epoch - 3ms/step
+Epoch 24/500
+1020/1020 - 3s - loss: 0.0783 - orig_rmse: 3.0754 - orig_mae: 1.5773 - val_loss: 0.0750 - val_orig_rmse: 2.6921 - val_orig_mae: 1.5404 - lr: 4.5000e-05 - 3s/epoch - 3ms/step
+Epoch 25/500
+1020/1020 - 3s - loss: 0.0783 - orig_rmse: 3.0771 - orig_mae: 1.5773 - val_loss: 0.0751 - val_orig_rmse: 2.7002 - val_orig_mae: 1.5409 - lr: 4.5000e-05 - 3s/epoch - 3ms/step
+Epoch 26/500
+1020/1020 - 3s - loss: 0.0785 - orig_rmse: 3.0798 - orig_mae: 1.5777 - val_loss: 0.0751 - val_orig_rmse: 2.7009 - val_orig_mae: 1.5400 - lr: 4.5000e-05 - 3s/epoch - 3ms/step
+Epoch 27/500
+1020/1020 - 3s - loss: 0.0784 - orig_rmse: 3.0803 - orig_mae: 1.5788 - val_loss: 0.0750 - val_orig_rmse: 2.6896 - val_orig_mae: 1.5404 - lr: 4.5000e-05 - 3s/epoch - 3ms/step
+Epoch 28/500
+1020/1020 - 3s - loss: 0.0783 - orig_rmse: 3.0815 - orig_mae: 1.5768 - val_loss: 0.0750 - val_orig_rmse: 2.6876 - val_orig_mae: 1.5411 - lr: 4.5000e-05 - 3s/epoch - 3ms/step
+Epoch 29/500
+1020/1020 - 3s - loss: 0.0784 - orig_rmse: 3.0776 - orig_mae: 1.5786 - val_loss: 0.0750 - val_orig_rmse: 2.6875 - val_orig_mae: 1.5411 - lr: 4.5000e-05 - 3s/epoch - 3ms/step
+Epoch 30/500
+1020/1020 - 3s - loss: 0.0782 - orig_rmse: 3.0760 - orig_mae: 1.5761 - val_loss: 0.0751 - val_orig_rmse: 2.6981 - val_orig_mae: 1.5399 - lr: 4.5000e-05 - 3s/epoch - 3ms/step
+Epoch 31/500
+1020/1020 - 3s - loss: 0.0784 - orig_rmse: 3.0820 - orig_mae: 1.5784 - val_loss: 0.0750 - val_orig_rmse: 2.6913 - val_orig_mae: 1.5405 - lr: 1.3500e-05 - 3s/epoch - 3ms/step
+Epoch 32/500
+1020/1020 - 3s - loss: 0.0782 - orig_rmse: 3.0745 - orig_mae: 1.5780 - val_loss: 0.0750 - val_orig_rmse: 2.6945 - val_orig_mae: 1.5403 - lr: 1.3500e-05 - 3s/epoch - 3ms/step
+Epoch 33/500
+1020/1020 - 3s - loss: 0.0780 - orig_rmse: 3.0751 - orig_mae: 1.5735 - val_loss: 0.0750 - val_orig_rmse: 2.6922 - val_orig_mae: 1.5403 - lr: 1.3500e-05 - 3s/epoch - 3ms/step
+Epoch 34/500
+1020/1020 - 3s - loss: 0.0781 - orig_rmse: 3.0775 - orig_mae: 1.5757 - val_loss: 0.0750 - val_orig_rmse: 2.6913 - val_orig_mae: 1.5404 - lr: 1.3500e-05 - 3s/epoch - 3ms/step
+Epoch 35/500
+1020/1020 - 3s - loss: 0.0783 - orig_rmse: 3.0789 - orig_mae: 1.5768 - val_loss: 0.0750 - val_orig_rmse: 2.6928 - val_orig_mae: 1.5402 - lr: 1.3500e-05 - 3s/epoch - 3ms/step
+Epoch 36/500
+1020/1020 - 3s - loss: 0.0781 - orig_rmse: 3.0763 - orig_mae: 1.5754 - val_loss: 0.0750 - val_orig_rmse: 2.6946 - val_orig_mae: 1.5401 - lr: 1.3500e-05 - 3s/epoch - 3ms/step
+Epoch 37/500
+1020/1020 - 3s - loss: 0.0782 - orig_rmse: 3.0758 - orig_mae: 1.5758 - val_loss: 0.0750 - val_orig_rmse: 2.6947 - val_orig_mae: 1.5401 - lr: 1.3500e-05 - 3s/epoch - 3ms/step
+Epoch 38/500
+1020/1020 - 3s - loss: 0.0783 - orig_rmse: 3.0782 - orig_mae: 1.5780 - val_loss: 0.0750 - val_orig_rmse: 2.6927 - val_orig_mae: 1.5403 - lr: 1.3500e-05 - 3s/epoch - 3ms/step
+Epoch 39/500
+1020/1020 - 3s - loss: 0.0781 - orig_rmse: 3.0749 - orig_mae: 1.5747 - val_loss: 0.0750 - val_orig_rmse: 2.6910 - val_orig_mae: 1.5404 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 40/500
+1020/1020 - 3s - loss: 0.0782 - orig_rmse: 3.0782 - orig_mae: 1.5762 - val_loss: 0.0750 - val_orig_rmse: 2.6899 - val_orig_mae: 1.5405 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 41/500
+1020/1020 - 3s - loss: 0.0782 - orig_rmse: 3.0770 - orig_mae: 1.5753 - val_loss: 0.0750 - val_orig_rmse: 2.6909 - val_orig_mae: 1.5404 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 42/500
+1020/1020 - 3s - loss: 0.0781 - orig_rmse: 3.0759 - orig_mae: 1.5750 - val_loss: 0.0750 - val_orig_rmse: 2.6919 - val_orig_mae: 1.5404 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 43/500
+1020/1020 - 3s - loss: 0.0782 - orig_rmse: 3.0757 - orig_mae: 1.5774 - val_loss: 0.0750 - val_orig_rmse: 2.6917 - val_orig_mae: 1.5403 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+{'epochs_ran': 43, 'model absolute error': 1.5774370431900024, 'model rms error': 3.0757343769073486, 'best val mae': 1.5397617816925049}
+{'test loss': 0.07407078891992569, 'test_orig_rmse': 2.9071521759033203, 'test_orig_mae': 1.5034637451171875}
+Horizon redistribute sanity check failed for 2 players (T > 60 or T > 2.5× h1 sum); scores still applied:
+  Fábio Freitas Gouveia Carvalho: T=78.7 pp90=15.7 h1_sum=0.0
+  James McConnell: T=135.2 pp90=27.0 h1_sum=0.0
+
+Top 50 by predicted points/5 GWs (pp90, assuming 90 minutes)
+  #  Player                            Team              Price   pp90
+  1  James McConnell                   LIV                 4.5   27.0
+  2  Fábio Freitas Gouveia Carvalho    BRE                 5.0   15.7
+  3  Trey Nyoni                        LIV                 5.0    9.7
+  4  Sean Longstaff                    LEE                 5.0    6.7
+  5  Erling Haaland                    MCI                15.5    6.6
+  6  Joël Piroe                        LEE                 5.0    6.5
+  7  Josh Dasilva                      BRE                 5.0    6.4
+  8  Dane Scarlett                     TOT                 4.5    6.4
+  9  Viktor Gyökeres                   ARS                 7.5    6.3
+ 10  Omar Marmoush                     MCI                 7.0    6.3
+ 11  Taiwo Awoniyi                     NFO                 5.5    6.2
+ 12  Kai Havertz                       ARS                 7.5    6.2
+ 13  Arnaud Kalimuendo                 NFO                 5.5    6.1
+ 14  Reiss Nelson                      ARS                 5.5    6.0
+ 15  Alexander Isak                    LIV                 9.0    5.9
+ 16  Ollie Watkins                     AVL                 8.0    5.9
+ 17  Patrick Dorgu                     MUN                 6.0    5.8
+ 18  Wilson Isidor                     SUN                 5.5    5.7
+ 19  Jérémy Doku                       MCI                 7.5    5.6
+ 20  Yoane Wissa                       NEW                 6.0    5.6
+ 21  Max Dowman                        ARS                 5.5    5.6
+ 22  Harrison Reed                     FUL                 4.5    5.5
+ 23  Rayan Cherki                      MCI                 7.5    5.5
+ 24  Gabriel Fernando de Jesus         ARS                 6.0    5.5
+ 25  Marc Guiu Paz                     CHE                 5.0    5.5
+ 26  Jean-Philippe Mateta              CRY                 6.5    5.5
+ 27  Elliot Anderson                   MCI                 6.5    5.5
+ 28  Joshua Zirkzee                    MUN                 5.5    5.4
+ 29  Phil Foden                        MCI                 7.0    5.4
+ 30  Callum Wilson                     BRE                 5.5    5.4
+ 31  Morgan Gibbs-White                NFO                 8.0    5.4
+ 32  Norberto Bercique Gomes Betuncal  EVE                 5.5    5.4
+ 33  Jonah Kusi-Asare                  FUL                 4.5    5.4
+ 34  Federico Chiesa                   LIV                 5.5    5.4
+ 35  João Pedro Junqueira de Jesus     CHE                 7.5    5.4
+ 36  Bukayo Saka                       ARS                 9.5    5.4
+ 37  Marcus Rashford                   MUN                 7.0    5.3
+ 38  Thierno Barry                     EVE                 5.5    5.3
+ 39  Bryan Mbeumo                      MUN                 8.0    5.3
+ 40  Charalampos Kostoulas             BHA                 5.5    5.3
+ 41  Mateo Kovačić                     MCI                 5.5    5.2
+ 42  William Osula                     NEW                 6.0    5.2
+ 43  Bruno Borges Fernandes            MUN                12.0    5.2
+ 44  Sávio Moreira de Oliveira         MCI                 6.5    5.2
+ 45  Noah Okafor                       LEE                 6.0    5.2
+ 46  Danny Welbeck                     CHE                 6.0    5.2
+ 47  Carlos Alcaraz Durán              EVE                 5.0    5.2
+ 48  Chido Obi                         MUN                 4.5    5.1
+ 49  Igor Jesus Maciel da Cruz         NFO                 6.0    5.1
+ 50  Mikel Merino Zazón                ARS                 6.0    5.1
+
+=== Sample horizon model columns (Haaland / Fernandes) ===
+
+Erling Haaland (MCI) - PREDICT (exact model input row; predicted 5/5 pp90=6.60)
+  form appearances available: 7
+  last_5 (should = total_points_last_5_avg): GW33:6pts/90m, GW33:7pts/90m, GW35:7pts/90m, GW36:11pts/90m, GW37:9pts/90m -> pp90=8.0000
+  last_7 (should = total_points_avg): GW30:2pts/90m, GW32:2pts/90m, GW33:6pts/90m, GW33:7pts/90m, GW35:7pts/90m, GW36:11pts/90m, GW37:9pts/90m -> pp90=6.2857
+  target: (future - not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  last_season_points_per_90: 7.284118
+  last_season_xgi_per_90: 0.858551
+  new_stats_included: 1
+  team_xg_over_n: 9.486634
+  team_xc_over_n: 3.872831
+  team_xg_last_5: 8.175031
+  team_xc_last_5: 4.478000
+  defcon_avg_x_new_stats_x_non_att: 0.000000
+  team_xg_over_n_x_outfield: 9.486634
+  total_points_last_5_avg: 8.000000
+  total_points_avg: 6.285714
+  xgi_last_5_avg: 0.918000
+  xgi_avg: 0.788571
+  expected_goals_conceded_last_5_avg: 1.446000
+  expected_goals_conceded_avg: 1.272857
+  defensive_contribution_last_5_avg: 2.600000
+  defensive_contribution_avg: 3.000000
+
+Erling Haaland - TRAIN (25, 26) GW35 vs EVE (A) (exact model input row; target window 3/5 played)
+  form appearances available: 39
+  last_5 (should = total_points_last_5_avg): GW29:2pts/90m, GW30:2pts/90m, GW32:2pts/90m, GW33:6pts/90m, GW33:7pts/90m -> pp90=3.8000
+  last_7 (should = total_points_avg): GW26:5pts/45m, GW27:6pts/90m, GW29:2pts/90m, GW30:2pts/90m, GW32:2pts/90m, GW33:6pts/90m, GW33:7pts/90m -> pp90=4.6154
+  target (points/90 over window): 9.000000
+  --- model input features (exact) ---
+  matches_played: 32
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  last_season_points_per_90: 5.953947
+  last_season_xgi_per_90: 0.787500
+  new_stats_included: 1
+  team_xg_over_n: 9.030550
+  team_xc_over_n: 4.194938
+  team_xg_last_5: 8.500302
+  team_xc_last_5: 4.356301
+  defcon_avg_x_new_stats_x_non_att: 0.000000
+  team_xg_over_n_x_outfield: 9.030550
+  total_points_last_5_avg: 3.800000
+  total_points_avg: 4.615385
+  xgi_last_5_avg: 0.610000
+  xgi_avg: 0.569231
+  expected_goals_conceded_last_5_avg: 0.976000
+  expected_goals_conceded_avg: 0.941538
+  defensive_contribution_last_5_avg: 3.600000
+  defensive_contribution_avg: 3.538462
+
+Bruno Borges Fernandes (MUN) - PREDICT (exact model input row; predicted 5/5 pp90=5.23)
+  form appearances available: 7
+  last_5 (should = total_points_last_5_avg): GW34:5pts/90m, GW35:5pts/90m, GW36:3pts/90m, GW37:9pts/90m, GW38:14pts/90m -> pp90=7.2000
+  last_7 (should = total_points_avg): GW32:4pts/90m, GW33:6pts/90m, GW34:5pts/90m, GW35:5pts/90m, GW36:3pts/90m, GW37:9pts/90m, GW38:14pts/90m -> pp90=6.5714
+  target: (future - not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 6.900489
+  last_season_xgi_per_90: 0.677423
+  new_stats_included: 1
+  team_xg_over_n: 7.445656
+  team_xc_over_n: 4.420799
+  team_xg_last_5: 7.006358
+  team_xc_last_5: 5.942477
+  defcon_avg_x_new_stats_x_non_att: 6.428571
+  team_xg_over_n_x_outfield: 7.445656
+  total_points_last_5_avg: 7.200000
+  total_points_avg: 6.571429
+  xgi_last_5_avg: 0.618000
+  xgi_avg: 0.531429
+  expected_goals_conceded_last_5_avg: 1.248000
+  expected_goals_conceded_avg: 1.454286
+  defensive_contribution_last_5_avg: 7.200000
+  defensive_contribution_avg: 6.428571
+
+Bruno Borges Fernandes - TRAIN (25, 26) GW34 vs BRE (H) (exact model input row; target window 5/5 played)
+  form appearances available: 37
+  last_5 (should = total_points_last_5_avg): GW29:8pts/90m, GW30:10pts/90m, GW31:13pts/90m, GW32:4pts/90m, GW33:6pts/90m -> pp90=8.2000
+  last_7 (should = total_points_avg): GW27:2pts/90m, GW28:13pts/90m, GW29:8pts/90m, GW30:10pts/90m, GW31:13pts/90m, GW32:4pts/90m, GW33:6pts/90m -> pp90=8.0000
+  target (points/90 over window): 7.200000
+  --- model input features (exact) ---
+  matches_played: 30
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 5.190587
+  last_season_xgi_per_90: 0.531588
+  new_stats_included: 1
+  team_xg_over_n: 7.006358
+  team_xc_over_n: 5.942477
+  team_xg_last_5: 7.081913
+  team_xc_last_5: 5.829781
+  defcon_avg_x_new_stats_x_non_att: 5.857143
+  team_xg_over_n_x_outfield: 7.006358
+  total_points_last_5_avg: 8.200000
+  total_points_avg: 8.000000
+  xgi_last_5_avg: 0.754000
+  xgi_avg: 0.731429
+  expected_goals_conceded_last_5_avg: 1.844000
+  expected_goals_conceded_avg: 1.460000
+  defensive_contribution_last_5_avg: 7.400000
+  defensive_contribution_avg: 5.857143
+=== End sample columns ===
+
+Skipping live snapshot persistence

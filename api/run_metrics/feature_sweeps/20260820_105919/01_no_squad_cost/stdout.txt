@@ -1,0 +1,486 @@
+0.21s - Expected: c:\Users\hal\.cursor\extensions\ms-python.debugpy-2026.6.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd_attach_to_process\attach_amd64.dll to exist.
+Setting up players and teams...
+Running team expectancies...
+Squad cost YoY prior off (--no-squad-cost / PL_SQUAD_COST=0)
+Seeded early-season form for 20 teams from season (25, 26)
+Promoted/new team prior (bottom-3 PL rates scored=0.97 conceded=1.82): COV, HUL, IPS
+Training team goals expectancy model (neural net)...
+Training rows: 5030; max epochs: 500
+Team model input columns:
+  team_scored_last_5
+  team_scored_avg
+  team_conceded_last_5
+  team_conceded_avg
+  opp_scored_last_5
+  opp_scored_avg
+  opp_conceded_last_5
+  opp_conceded_avg
+  is_home
+  fixture_difficulty
+  opp_fixture_difficulty
+Epoch 1/500
+101/101 - 3s - loss: 0.6335 - root_mean_squared_error: 1.3465 - mean_absolute_error: 1.0294 - val_loss: 0.5551 - val_root_mean_squared_error: 1.2102 - val_mean_absolute_error: 0.9430 - lr: 0.0010 - 3s/epoch - 25ms/step
+Epoch 2/500
+101/101 - 0s - loss: 0.5757 - root_mean_squared_error: 1.2544 - mean_absolute_error: 0.9668 - val_loss: 0.5300 - val_root_mean_squared_error: 1.1737 - val_mean_absolute_error: 0.9115 - lr: 0.0010 - 267ms/epoch - 3ms/step
+Epoch 3/500
+101/101 - 0s - loss: 0.5568 - root_mean_squared_error: 1.2239 - mean_absolute_error: 0.9445 - val_loss: 0.5188 - val_root_mean_squared_error: 1.1578 - val_mean_absolute_error: 0.8996 - lr: 0.0010 - 263ms/epoch - 3ms/step
+Epoch 4/500
+101/101 - 0s - loss: 0.5475 - root_mean_squared_error: 1.2113 - mean_absolute_error: 0.9339 - val_loss: 0.5115 - val_root_mean_squared_error: 1.1392 - val_mean_absolute_error: 0.8924 - lr: 0.0010 - 269ms/epoch - 3ms/step
+Epoch 5/500
+101/101 - 0s - loss: 0.5420 - root_mean_squared_error: 1.2024 - mean_absolute_error: 0.9289 - val_loss: 0.5056 - val_root_mean_squared_error: 1.1330 - val_mean_absolute_error: 0.8869 - lr: 0.0010 - 268ms/epoch - 3ms/step
+Epoch 6/500
+101/101 - 0s - loss: 0.5365 - root_mean_squared_error: 1.1918 - mean_absolute_error: 0.9220 - val_loss: 0.5039 - val_root_mean_squared_error: 1.1371 - val_mean_absolute_error: 0.8860 - lr: 0.0010 - 266ms/epoch - 3ms/step
+Epoch 7/500
+101/101 - 0s - loss: 0.5342 - root_mean_squared_error: 1.1919 - mean_absolute_error: 0.9198 - val_loss: 0.4988 - val_root_mean_squared_error: 1.1234 - val_mean_absolute_error: 0.8808 - lr: 0.0010 - 269ms/epoch - 3ms/step
+Epoch 8/500
+101/101 - 0s - loss: 0.5314 - root_mean_squared_error: 1.1865 - mean_absolute_error: 0.9172 - val_loss: 0.4984 - val_root_mean_squared_error: 1.1257 - val_mean_absolute_error: 0.8799 - lr: 0.0010 - 269ms/epoch - 3ms/step
+Epoch 9/500
+101/101 - 0s - loss: 0.5289 - root_mean_squared_error: 1.1834 - mean_absolute_error: 0.9142 - val_loss: 0.4961 - val_root_mean_squared_error: 1.1214 - val_mean_absolute_error: 0.8781 - lr: 0.0010 - 266ms/epoch - 3ms/step
+Epoch 10/500
+101/101 - 0s - loss: 0.5268 - root_mean_squared_error: 1.1796 - mean_absolute_error: 0.9132 - val_loss: 0.4943 - val_root_mean_squared_error: 1.1197 - val_mean_absolute_error: 0.8770 - lr: 0.0010 - 255ms/epoch - 3ms/step
+Epoch 11/500
+101/101 - 0s - loss: 0.5250 - root_mean_squared_error: 1.1796 - mean_absolute_error: 0.9102 - val_loss: 0.4995 - val_root_mean_squared_error: 1.1174 - val_mean_absolute_error: 0.8844 - lr: 0.0010 - 261ms/epoch - 3ms/step
+Epoch 12/500
+101/101 - 0s - loss: 0.5246 - root_mean_squared_error: 1.1765 - mean_absolute_error: 0.9110 - val_loss: 0.4955 - val_root_mean_squared_error: 1.1250 - val_mean_absolute_error: 0.8785 - lr: 0.0010 - 252ms/epoch - 2ms/step
+Epoch 13/500
+101/101 - 0s - loss: 0.5222 - root_mean_squared_error: 1.1758 - mean_absolute_error: 0.9078 - val_loss: 0.4940 - val_root_mean_squared_error: 1.1155 - val_mean_absolute_error: 0.8790 - lr: 0.0010 - 258ms/epoch - 3ms/step
+Epoch 14/500
+101/101 - 0s - loss: 0.5218 - root_mean_squared_error: 1.1744 - mean_absolute_error: 0.9084 - val_loss: 0.4958 - val_root_mean_squared_error: 1.1145 - val_mean_absolute_error: 0.8815 - lr: 0.0010 - 263ms/epoch - 3ms/step
+Epoch 15/500
+101/101 - 0s - loss: 0.5212 - root_mean_squared_error: 1.1732 - mean_absolute_error: 0.9077 - val_loss: 0.4933 - val_root_mean_squared_error: 1.1194 - val_mean_absolute_error: 0.8769 - lr: 0.0010 - 268ms/epoch - 3ms/step
+Epoch 16/500
+101/101 - 0s - loss: 0.5191 - root_mean_squared_error: 1.1707 - mean_absolute_error: 0.9051 - val_loss: 0.4951 - val_root_mean_squared_error: 1.1157 - val_mean_absolute_error: 0.8804 - lr: 0.0010 - 264ms/epoch - 3ms/step
+Epoch 17/500
+101/101 - 0s - loss: 0.5183 - root_mean_squared_error: 1.1686 - mean_absolute_error: 0.9056 - val_loss: 0.4938 - val_root_mean_squared_error: 1.1201 - val_mean_absolute_error: 0.8778 - lr: 0.0010 - 266ms/epoch - 3ms/step
+Epoch 18/500
+101/101 - 0s - loss: 0.5169 - root_mean_squared_error: 1.1690 - mean_absolute_error: 0.9013 - val_loss: 0.4938 - val_root_mean_squared_error: 1.1138 - val_mean_absolute_error: 0.8794 - lr: 0.0010 - 263ms/epoch - 3ms/step
+Epoch 19/500
+101/101 - 0s - loss: 0.5171 - root_mean_squared_error: 1.1687 - mean_absolute_error: 0.9025 - val_loss: 0.4947 - val_root_mean_squared_error: 1.1160 - val_mean_absolute_error: 0.8804 - lr: 0.0010 - 266ms/epoch - 3ms/step
+Epoch 20/500
+101/101 - 0s - loss: 0.5158 - root_mean_squared_error: 1.1669 - mean_absolute_error: 0.9023 - val_loss: 0.4946 - val_root_mean_squared_error: 1.1176 - val_mean_absolute_error: 0.8790 - lr: 0.0010 - 267ms/epoch - 3ms/step
+Epoch 21/500
+101/101 - 0s - loss: 0.5154 - root_mean_squared_error: 1.1669 - mean_absolute_error: 0.9010 - val_loss: 0.4956 - val_root_mean_squared_error: 1.1139 - val_mean_absolute_error: 0.8821 - lr: 0.0010 - 268ms/epoch - 3ms/step
+Epoch 22/500
+101/101 - 0s - loss: 0.5151 - root_mean_squared_error: 1.1624 - mean_absolute_error: 0.9019 - val_loss: 0.4933 - val_root_mean_squared_error: 1.1221 - val_mean_absolute_error: 0.8763 - lr: 0.0010 - 265ms/epoch - 3ms/step
+Epoch 23/500
+101/101 - 0s - loss: 0.5156 - root_mean_squared_error: 1.1692 - mean_absolute_error: 0.8995 - val_loss: 0.4928 - val_root_mean_squared_error: 1.1185 - val_mean_absolute_error: 0.8775 - lr: 0.0010 - 265ms/epoch - 3ms/step
+Epoch 24/500
+101/101 - 0s - loss: 0.5125 - root_mean_squared_error: 1.1612 - mean_absolute_error: 0.8985 - val_loss: 0.4933 - val_root_mean_squared_error: 1.1201 - val_mean_absolute_error: 0.8777 - lr: 5.0000e-04 - 264ms/epoch - 3ms/step
+Epoch 25/500
+101/101 - 0s - loss: 0.5121 - root_mean_squared_error: 1.1615 - mean_absolute_error: 0.8976 - val_loss: 0.4934 - val_root_mean_squared_error: 1.1190 - val_mean_absolute_error: 0.8780 - lr: 5.0000e-04 - 266ms/epoch - 3ms/step
+Epoch 26/500
+101/101 - 0s - loss: 0.5115 - root_mean_squared_error: 1.1624 - mean_absolute_error: 0.8970 - val_loss: 0.4935 - val_root_mean_squared_error: 1.1153 - val_mean_absolute_error: 0.8796 - lr: 5.0000e-04 - 264ms/epoch - 3ms/step
+Epoch 27/500
+101/101 - 0s - loss: 0.5114 - root_mean_squared_error: 1.1584 - mean_absolute_error: 0.8979 - val_loss: 0.4934 - val_root_mean_squared_error: 1.1203 - val_mean_absolute_error: 0.8781 - lr: 5.0000e-04 - 262ms/epoch - 3ms/step
+Epoch 28/500
+101/101 - 0s - loss: 0.5109 - root_mean_squared_error: 1.1617 - mean_absolute_error: 0.8961 - val_loss: 0.4940 - val_root_mean_squared_error: 1.1176 - val_mean_absolute_error: 0.8797 - lr: 5.0000e-04 - 265ms/epoch - 3ms/step
+Epoch 29/500
+101/101 - 0s - loss: 0.5103 - root_mean_squared_error: 1.1596 - mean_absolute_error: 0.8954 - val_loss: 0.4936 - val_root_mean_squared_error: 1.1172 - val_mean_absolute_error: 0.8795 - lr: 2.5000e-04 - 261ms/epoch - 3ms/step
+Epoch 30/500
+101/101 - 0s - loss: 0.5100 - root_mean_squared_error: 1.1577 - mean_absolute_error: 0.8957 - val_loss: 0.4935 - val_root_mean_squared_error: 1.1180 - val_mean_absolute_error: 0.8793 - lr: 2.5000e-04 - 267ms/epoch - 3ms/step
+Epoch 31/500
+101/101 - 0s - loss: 0.5097 - root_mean_squared_error: 1.1602 - mean_absolute_error: 0.8950 - val_loss: 0.4934 - val_root_mean_squared_error: 1.1167 - val_mean_absolute_error: 0.8796 - lr: 2.5000e-04 - 264ms/epoch - 3ms/step
+Epoch 32/500
+101/101 - 0s - loss: 0.5095 - root_mean_squared_error: 1.1582 - mean_absolute_error: 0.8951 - val_loss: 0.4936 - val_root_mean_squared_error: 1.1175 - val_mean_absolute_error: 0.8797 - lr: 2.5000e-04 - 275ms/epoch - 3ms/step
+{'team_model_train_mae': 0.8950563073158264, 'team_model_test_mae': 0.9288743079064143, 'team_model_test_rmse': 1.1774207692132452, 'epochs_ran': 32, 'pred_range': (0.174099862575531, 2.6480941772460938)}
+Squad cost YoY prior off (--no-squad-cost / PL_SQUAD_COST=0)
+Seeded early-season form for 20 teams from season (25, 26)
+Promoted/new team prior (bottom-3 PL rates scored=0.97 conceded=1.82): COV, HUL, IPS
+Team expectancies applied to all fixtures
+Wrote 380 predicted scorelines to predicted_scorelines.json
+
+=== Sample horizon model columns (validation) ===
+
+Erling Haaland (MCI) — PREDICT (exact model input row)
+  form appearances available: 7
+  last_5 (should = total_points_last_5_avg): GW33:6pts/90m, GW33:7pts/90m, GW35:7pts/90m, GW36:11pts/90m, GW37:9pts/90m -> pp90=8.0000
+  last_7 (should = total_points_avg): GW30:2pts/90m, GW32:2pts/90m, GW33:6pts/90m, GW33:7pts/90m, GW35:7pts/90m, GW36:11pts/90m, GW37:9pts/90m -> pp90=6.2857
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  last_season_points_per_90: 7.284118
+  last_season_xgi_per_90: 0.858551
+  new_stats_included: 1
+  team_xg_over_n: 9.565548
+  team_xc_over_n: 4.530981
+  team_xg_last_5: 8.510033
+  team_xc_last_5: 4.277073
+  defcon_avg_x_new_stats_x_non_att: 0.000000
+  team_xg_over_n_x_outfield: 9.565548
+  total_points_last_5_avg: 8.000000
+  total_points_avg: 6.285714
+  xgi_last_5_avg: 0.918000
+  xgi_avg: 0.788571
+  expected_goals_conceded_last_5_avg: 1.446000
+  expected_goals_conceded_avg: 1.272857
+  defensive_contribution_last_5_avg: 2.600000
+  defensive_contribution_avg: 3.000000
+
+Erling Haaland — TRAIN (25, 26) GW35 vs EVE (A) (exact model input row; target window 3/5 played)
+  form appearances available: 39
+  last_5 (should = total_points_last_5_avg): GW29:2pts/90m, GW30:2pts/90m, GW32:2pts/90m, GW33:6pts/90m, GW33:7pts/90m -> pp90=3.8000
+  last_7 (should = total_points_avg): GW26:5pts/45m, GW27:6pts/90m, GW29:2pts/90m, GW30:2pts/90m, GW32:2pts/90m, GW33:6pts/90m, GW33:7pts/90m -> pp90=4.6154
+  target (points/90 over window): 9.000000
+  --- model input features (exact) ---
+  matches_played: 32
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  last_season_points_per_90: 5.953947
+  last_season_xgi_per_90: 0.787500
+  new_stats_included: 1
+  team_xg_over_n: 9.051484
+  team_xc_over_n: 4.192745
+  team_xg_last_5: 8.811418
+  team_xc_last_5: 3.807536
+  defcon_avg_x_new_stats_x_non_att: 0.000000
+  team_xg_over_n_x_outfield: 9.051484
+  total_points_last_5_avg: 3.800000
+  total_points_avg: 4.615385
+  xgi_last_5_avg: 0.610000
+  xgi_avg: 0.569231
+  expected_goals_conceded_last_5_avg: 0.976000
+  expected_goals_conceded_avg: 0.941538
+  defensive_contribution_last_5_avg: 3.600000
+  defensive_contribution_avg: 3.538462
+
+Bruno Borges Fernandes (MUN) — PREDICT (exact model input row)
+  form appearances available: 7
+  last_5 (should = total_points_last_5_avg): GW34:5pts/90m, GW35:5pts/90m, GW36:3pts/90m, GW37:9pts/90m, GW38:14pts/90m -> pp90=7.2000
+  last_7 (should = total_points_avg): GW32:4pts/90m, GW33:6pts/90m, GW34:5pts/90m, GW35:5pts/90m, GW36:3pts/90m, GW37:9pts/90m, GW38:14pts/90m -> pp90=6.5714
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 6.900489
+  last_season_xgi_per_90: 0.677423
+  new_stats_included: 1
+  team_xg_over_n: 8.118212
+  team_xc_over_n: 4.364684
+  team_xg_last_5: 7.250768
+  team_xc_last_5: 6.909989
+  defcon_avg_x_new_stats_x_non_att: 6.428571
+  team_xg_over_n_x_outfield: 8.118212
+  total_points_last_5_avg: 7.200000
+  total_points_avg: 6.571429
+  xgi_last_5_avg: 0.618000
+  xgi_avg: 0.531429
+  expected_goals_conceded_last_5_avg: 1.248000
+  expected_goals_conceded_avg: 1.454286
+  defensive_contribution_last_5_avg: 7.200000
+  defensive_contribution_avg: 6.428571
+
+Bruno Borges Fernandes — TRAIN (25, 26) GW34 vs BRE (H) (exact model input row; target window 5/5 played)
+  form appearances available: 37
+  last_5 (should = total_points_last_5_avg): GW29:8pts/90m, GW30:10pts/90m, GW31:13pts/90m, GW32:4pts/90m, GW33:6pts/90m -> pp90=8.2000
+  last_7 (should = total_points_avg): GW27:2pts/90m, GW28:13pts/90m, GW29:8pts/90m, GW30:10pts/90m, GW31:13pts/90m, GW32:4pts/90m, GW33:6pts/90m -> pp90=8.0000
+  target (points/90 over window): 7.200000
+  --- model input features (exact) ---
+  matches_played: 30
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 5.190587
+  last_season_xgi_per_90: 0.531588
+  new_stats_included: 1
+  team_xg_over_n: 7.250768
+  team_xc_over_n: 6.909989
+  team_xg_last_5: 7.263635
+  team_xc_last_5: 6.189346
+  defcon_avg_x_new_stats_x_non_att: 5.857143
+  team_xg_over_n_x_outfield: 7.250768
+  total_points_last_5_avg: 8.200000
+  total_points_avg: 8.000000
+  xgi_last_5_avg: 0.754000
+  xgi_avg: 0.731429
+  expected_goals_conceded_last_5_avg: 1.844000
+  expected_goals_conceded_avg: 1.460000
+  defensive_contribution_last_5_avg: 7.400000
+  defensive_contribution_avg: 5.857143
+=== End sample columns ===
+
+Preparing data for learning...
+Skipping predict for 177 players with <3 appearances (incl. last-season carry)
+Fitting horizon-1 linear models for per-match points error...
+Linear horizon-1 OOF RMSE: 2.930; per-match |residual| model — future err mean=2.146 range=(0.000, 5.715)
+Horizon-5 train rows: 50962 (skipped 8126 windows with <3 appearances in-window)
+Getting predictions for total_points...
+{'mean baseline absolute error': 1.8007987521262638, 'mean baseline rms error': 3.1395629066781785, 'median baseline absolute error': 1.7312116765869097, 'median baseline rms error': 3.1893812651429214, 'linear regression absolute error': 1.6257155738061095, 'linear regression rms error': 2.9473225654342903}
+Model input columns:
+  matches_played
+  is_gkp
+  is_def
+  is_mid
+  is_att
+  last_season_points_per_90
+  last_season_xgi_per_90
+  new_stats_included
+  team_xg_over_n
+  team_xc_over_n
+  team_xg_last_5
+  team_xc_last_5
+  defcon_avg_x_new_stats_x_non_att
+  team_xg_over_n_x_outfield
+  total_points_last_5_avg
+  total_points_avg
+  expected_goal_involvements_last_5_avg
+  expected_goal_involvements_avg
+  expected_goals_conceded_last_5_avg
+  expected_goals_conceded_avg
+  defensive_contribution_last_5_avg
+  defensive_contribution_avg
+All inputs/outputs have matching shapes and valid numeric values
+Model capacity: hidden=[33, 16, 8], optimizer=AdamW, l2=0.00225, weight_decay=0.0, lr=0.0005 (n_features=22, loss=Huber(delta=1.8))
+Epoch 1/500
+1020/1020 - 5s - loss: 0.3047 - orig_rmse: 3.8896 - orig_mae: 2.1349 - val_loss: 0.1638 - val_orig_rmse: 2.7280 - val_orig_mae: 1.6029 - lr: 5.0000e-04 - 5s/epoch - 5ms/step
+Epoch 2/500
+1020/1020 - 3s - loss: 0.1493 - orig_rmse: 3.2462 - orig_mae: 1.6708 - val_loss: 0.1216 - val_orig_rmse: 2.6541 - val_orig_mae: 1.5559 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 3/500
+1020/1020 - 3s - loss: 0.1127 - orig_rmse: 3.0944 - orig_mae: 1.5981 - val_loss: 0.0992 - val_orig_rmse: 2.6415 - val_orig_mae: 1.5487 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 4/500
+1020/1020 - 3s - loss: 0.0952 - orig_rmse: 3.0813 - orig_mae: 1.5835 - val_loss: 0.0876 - val_orig_rmse: 2.6305 - val_orig_mae: 1.5422 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 5/500
+1020/1020 - 3s - loss: 0.0868 - orig_rmse: 3.0754 - orig_mae: 1.5783 - val_loss: 0.0825 - val_orig_rmse: 2.6431 - val_orig_mae: 1.5433 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 6/500
+1020/1020 - 3s - loss: 0.0830 - orig_rmse: 3.0737 - orig_mae: 1.5797 - val_loss: 0.0799 - val_orig_rmse: 2.5967 - val_orig_mae: 1.5541 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 7/500
+1020/1020 - 3s - loss: 0.0808 - orig_rmse: 3.0749 - orig_mae: 1.5765 - val_loss: 0.0784 - val_orig_rmse: 2.6288 - val_orig_mae: 1.5447 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 8/500
+1020/1020 - 3s - loss: 0.0797 - orig_rmse: 3.0730 - orig_mae: 1.5748 - val_loss: 0.0786 - val_orig_rmse: 2.6574 - val_orig_mae: 1.5503 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 9/500
+1020/1020 - 3s - loss: 0.0792 - orig_rmse: 3.0768 - orig_mae: 1.5753 - val_loss: 0.0773 - val_orig_rmse: 2.6351 - val_orig_mae: 1.5441 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 10/500
+1020/1020 - 3s - loss: 0.0788 - orig_rmse: 3.0729 - orig_mae: 1.5748 - val_loss: 0.0768 - val_orig_rmse: 2.6247 - val_orig_mae: 1.5457 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 11/500
+1020/1020 - 3s - loss: 0.0786 - orig_rmse: 3.0742 - orig_mae: 1.5740 - val_loss: 0.0766 - val_orig_rmse: 2.6145 - val_orig_mae: 1.5455 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 12/500
+1020/1020 - 3s - loss: 0.0783 - orig_rmse: 3.0698 - orig_mae: 1.5743 - val_loss: 0.0769 - val_orig_rmse: 2.6426 - val_orig_mae: 1.5438 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 13/500
+1020/1020 - 3s - loss: 0.0782 - orig_rmse: 3.0746 - orig_mae: 1.5740 - val_loss: 0.0770 - val_orig_rmse: 2.6455 - val_orig_mae: 1.5492 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 14/500
+1020/1020 - 3s - loss: 0.0783 - orig_rmse: 3.0746 - orig_mae: 1.5762 - val_loss: 0.0763 - val_orig_rmse: 2.6209 - val_orig_mae: 1.5465 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 15/500
+1020/1020 - 3s - loss: 0.0777 - orig_rmse: 3.0671 - orig_mae: 1.5722 - val_loss: 0.0768 - val_orig_rmse: 2.6505 - val_orig_mae: 1.5466 - lr: 1.5000e-04 - 3s/epoch - 3ms/step
+Epoch 16/500
+1020/1020 - 3s - loss: 0.0777 - orig_rmse: 3.0683 - orig_mae: 1.5713 - val_loss: 0.0762 - val_orig_rmse: 2.6296 - val_orig_mae: 1.5414 - lr: 1.5000e-04 - 3s/epoch - 3ms/step
+Epoch 17/500
+1020/1020 - 3s - loss: 0.0776 - orig_rmse: 3.0695 - orig_mae: 1.5682 - val_loss: 0.0760 - val_orig_rmse: 2.6206 - val_orig_mae: 1.5410 - lr: 1.5000e-04 - 3s/epoch - 3ms/step
+Epoch 18/500
+1020/1020 - 3s - loss: 0.0775 - orig_rmse: 3.0667 - orig_mae: 1.5676 - val_loss: 0.0760 - val_orig_rmse: 2.6198 - val_orig_mae: 1.5440 - lr: 1.5000e-04 - 3s/epoch - 3ms/step
+Epoch 19/500
+1020/1020 - 3s - loss: 0.0775 - orig_rmse: 3.0666 - orig_mae: 1.5684 - val_loss: 0.0760 - val_orig_rmse: 2.6187 - val_orig_mae: 1.5427 - lr: 1.5000e-04 - 3s/epoch - 3ms/step
+Epoch 20/500
+1020/1020 - 3s - loss: 0.0775 - orig_rmse: 3.0657 - orig_mae: 1.5702 - val_loss: 0.0768 - val_orig_rmse: 2.6553 - val_orig_mae: 1.5461 - lr: 1.5000e-04 - 3s/epoch - 3ms/step
+Epoch 21/500
+1020/1020 - 3s - loss: 0.0775 - orig_rmse: 3.0703 - orig_mae: 1.5688 - val_loss: 0.0763 - val_orig_rmse: 2.6331 - val_orig_mae: 1.5446 - lr: 1.5000e-04 - 3s/epoch - 3ms/step
+Epoch 22/500
+1020/1020 - 3s - loss: 0.0775 - orig_rmse: 3.0671 - orig_mae: 1.5702 - val_loss: 0.0761 - val_orig_rmse: 2.6291 - val_orig_mae: 1.5418 - lr: 1.5000e-04 - 3s/epoch - 3ms/step
+Epoch 23/500
+1020/1020 - 3s - loss: 0.0775 - orig_rmse: 3.0654 - orig_mae: 1.5687 - val_loss: 0.0759 - val_orig_rmse: 2.6213 - val_orig_mae: 1.5416 - lr: 4.5000e-05 - 3s/epoch - 3ms/step
+Epoch 24/500
+1020/1020 - 3s - loss: 0.0774 - orig_rmse: 3.0660 - orig_mae: 1.5679 - val_loss: 0.0759 - val_orig_rmse: 2.6177 - val_orig_mae: 1.5415 - lr: 4.5000e-05 - 3s/epoch - 3ms/step
+Epoch 25/500
+1020/1020 - 3s - loss: 0.0774 - orig_rmse: 3.0659 - orig_mae: 1.5681 - val_loss: 0.0759 - val_orig_rmse: 2.6240 - val_orig_mae: 1.5417 - lr: 4.5000e-05 - 3s/epoch - 3ms/step
+Epoch 26/500
+1020/1020 - 3s - loss: 0.0775 - orig_rmse: 3.0684 - orig_mae: 1.5688 - val_loss: 0.0760 - val_orig_rmse: 2.6311 - val_orig_mae: 1.5418 - lr: 4.5000e-05 - 3s/epoch - 3ms/step
+Epoch 27/500
+1020/1020 - 3s - loss: 0.0773 - orig_rmse: 3.0653 - orig_mae: 1.5679 - val_loss: 0.0761 - val_orig_rmse: 2.6335 - val_orig_mae: 1.5421 - lr: 4.5000e-05 - 3s/epoch - 3ms/step
+Epoch 28/500
+1020/1020 - 3s - loss: 0.0774 - orig_rmse: 3.0660 - orig_mae: 1.5677 - val_loss: 0.0760 - val_orig_rmse: 2.6284 - val_orig_mae: 1.5414 - lr: 4.5000e-05 - 3s/epoch - 3ms/step
+Epoch 29/500
+1020/1020 - 3s - loss: 0.0776 - orig_rmse: 3.0681 - orig_mae: 1.5703 - val_loss: 0.0760 - val_orig_rmse: 2.6273 - val_orig_mae: 1.5411 - lr: 4.5000e-05 - 3s/epoch - 3ms/step
+Epoch 30/500
+1020/1020 - 3s - loss: 0.0775 - orig_rmse: 3.0680 - orig_mae: 1.5681 - val_loss: 0.0759 - val_orig_rmse: 2.6213 - val_orig_mae: 1.5414 - lr: 4.5000e-05 - 3s/epoch - 3ms/step
+Epoch 31/500
+1020/1020 - 3s - loss: 0.0773 - orig_rmse: 3.0645 - orig_mae: 1.5659 - val_loss: 0.0758 - val_orig_rmse: 2.6202 - val_orig_mae: 1.5410 - lr: 1.3500e-05 - 3s/epoch - 3ms/step
+Epoch 32/500
+1020/1020 - 3s - loss: 0.0772 - orig_rmse: 3.0625 - orig_mae: 1.5646 - val_loss: 0.0758 - val_orig_rmse: 2.6197 - val_orig_mae: 1.5411 - lr: 1.3500e-05 - 3s/epoch - 3ms/step
+Epoch 33/500
+1020/1020 - 3s - loss: 0.0774 - orig_rmse: 3.0646 - orig_mae: 1.5676 - val_loss: 0.0759 - val_orig_rmse: 2.6243 - val_orig_mae: 1.5411 - lr: 1.3500e-05 - 3s/epoch - 3ms/step
+Epoch 34/500
+1020/1020 - 3s - loss: 0.0774 - orig_rmse: 3.0666 - orig_mae: 1.5683 - val_loss: 0.0759 - val_orig_rmse: 2.6253 - val_orig_mae: 1.5413 - lr: 1.3500e-05 - 3s/epoch - 3ms/step
+Epoch 35/500
+1020/1020 - 3s - loss: 0.0772 - orig_rmse: 3.0631 - orig_mae: 1.5672 - val_loss: 0.0759 - val_orig_rmse: 2.6263 - val_orig_mae: 1.5413 - lr: 1.3500e-05 - 3s/epoch - 3ms/step
+Epoch 36/500
+1020/1020 - 3s - loss: 0.0773 - orig_rmse: 3.0611 - orig_mae: 1.5659 - val_loss: 0.0760 - val_orig_rmse: 2.6296 - val_orig_mae: 1.5415 - lr: 1.3500e-05 - 3s/epoch - 3ms/step
+Epoch 37/500
+1020/1020 - 3s - loss: 0.0773 - orig_rmse: 3.0654 - orig_mae: 1.5665 - val_loss: 0.0759 - val_orig_rmse: 2.6260 - val_orig_mae: 1.5412 - lr: 1.3500e-05 - 3s/epoch - 3ms/step
+Epoch 38/500
+1020/1020 - 3s - loss: 0.0772 - orig_rmse: 3.0631 - orig_mae: 1.5671 - val_loss: 0.0760 - val_orig_rmse: 2.6269 - val_orig_mae: 1.5413 - lr: 1.3500e-05 - 3s/epoch - 3ms/step
+Epoch 39/500
+1020/1020 - 3s - loss: 0.0773 - orig_rmse: 3.0664 - orig_mae: 1.5671 - val_loss: 0.0759 - val_orig_rmse: 2.6227 - val_orig_mae: 1.5410 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 40/500
+1020/1020 - 3s - loss: 0.0773 - orig_rmse: 3.0656 - orig_mae: 1.5674 - val_loss: 0.0759 - val_orig_rmse: 2.6238 - val_orig_mae: 1.5410 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 41/500
+1020/1020 - 3s - loss: 0.0772 - orig_rmse: 3.0639 - orig_mae: 1.5669 - val_loss: 0.0759 - val_orig_rmse: 2.6243 - val_orig_mae: 1.5411 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 42/500
+1020/1020 - 3s - loss: 0.0773 - orig_rmse: 3.0657 - orig_mae: 1.5677 - val_loss: 0.0759 - val_orig_rmse: 2.6255 - val_orig_mae: 1.5412 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+{'epochs_ran': 42, 'model absolute error': 1.5676780939102173, 'model rms error': 3.0657050609588623, 'best val mae': 1.5409775972366333}
+{'test loss': 0.0753200501203537, 'test_orig_rmse': 2.980978488922119, 'test_orig_mae': 1.523775577545166}
+
+Top 100 players by predicted points over next 5 gameweeks:
+  #  Player                        Pos   Team                 Pts
+  1  Tyler Adams                   3     BOU                  0.0
+  2  Omari Hutchinson              3     NFO                  0.0
+  3  Amine Adli                    3     BOU                  0.0
+  4  Adrien Truffert               2     BOU                  0.0
+  5  Marcus Tavernier              3     BOU                  0.0
+  6  Yoane Wissa                   4     NEW                  0.0
+  7  Daichi Kamada                 3     CRY                  0.0
+  8  João Pedro Junqueira de Jesus  4     CHE                  0.0
+  9  Cheick Doucouré               3     CRY                  0.0
+ 10  John Victor Maciel Furtado    1     NFO                  0.0
+ 11  Jorge Cuenca Barreno          2     FUL                  0.0
+ 12  Bernd Leno                    1     FUL                  0.0
+ 13  Jurriën Timber                2     ARS                  0.0
+ 14  Rio Ngumoha                   3     LIV                  0.0
+ 15  Lisandro Martínez             2     MUN                  0.0
+ 16  Marcus Rashford               3     MUN                  0.0
+ 17  Dango Ouattara                3     BRE                  0.0
+ 18  Tom Cairney                   3     FUL                  0.0
+ 19  Issa Diop                     2     IPS                  0.0
+ 20  Tom Watson                    3     BHA                  0.0
+ 21  Eberechi Eze                  3     ARS                  0.0
+ 22  Alex Scott                    3     BOU                  0.0
+ 23  Victor Lindelöf               2     AVL                  0.0
+ 24  Giorgi Mamardashvili          1     LIV                  0.0
+ 25  Robert Lynch Sánchez          1     CHE                  0.0
+ 26  Conor Gallagher               3     TOT                  0.0
+ 27  Stefanos Tzimas               4     BHA                  0.0
+ 28  Kostas Tsimikas               2     LIV                  0.0
+ 29  Harry Amass                   2     MUN                  0.0
+ 30  Kevin Danso                   2     TOT                  0.0
+ 31  Bafodé Diakité                2     BOU                  0.0
+ 32  Luke Shaw                     2     MUN                  0.0
+ 33  Wilson Odobert                3     TOT                  0.0
+ 34  Andrew Robertson              2     TOT                  0.0
+ 35  Myles Lewis-Skelly            3     ARS                  0.0
+ 36  Viktor Gyökeres               4     ARS                  0.0
+ 37  Marco Bizot                   1     AVL                  0.0
+ 38  Omar Alderete                 2     SUN                  0.0
+ 39  Lewis Miley                   3     NEW                  0.0
+ 40  Jérémy Doku                   3     MCI                  0.0
+ 41  Bruno Guimarães Rodriguez Moura  3     ARS                  0.0
+ 42  Michael Kayode                2     BRE                  0.0
+ 43  Tyrick Mitchell               2     CRY                  0.0
+ 44  Igor Julio dos Santos de Paulo  2     BHA                  0.0
+ 45  Mikey Moore                   3     TOT                  0.0
+ 46  Ismaïla Sarr                  3     CRY                  0.0
+ 47  Noni Madueke                  3     ARS                  0.0
+ 48  Murillo Costa dos Santos      2     NFO                  0.0
+ 49  Antonín Kinský                1     TOT                  0.0
+ 50  Guglielmo Vicario             1     TOT                  0.0
+ 51  Joelinton Cássio Apolinário de Lira  3     NEW                  0.0
+ 52  Micky van de Ven              2     TOT                  0.0
+ 53  Enzo Le Fée                   3     SUN                  0.0
+ 54  Harry Wilson                  3     LEE                  0.0
+ 55  Lamare Bogarde                3     AVL                  0.0
+ 56  Matt Targett                  2     HUL                  0.0
+ 57  Christian Nørgaard            3     EVE                  0.0
+ 58  Filip Jörgensen               1     CHE                  0.0
+ 59  Carlos Baleba                 3     BHA                  0.0
+ 60  Danny Welbeck                 4     CHE                  0.0
+ 61  Mathias Jensen                3     BRE                  0.0
+ 62  Reiss Nelson                  3     ARS                  0.0
+ 63  Dwight McNeil                 3     CRY                  0.0
+ 64  Wesley Fofana                 2     CHE                  0.0
+ 65  Romaine Mundle                3     SUN                  0.0
+ 66  Dário Luís Essugo             3     CHE                  0.0
+ 67  Lewis Dunk                    2     BHA                  0.0
+ 68  Kai Havertz                   4     ARS                  0.0
+ 69  Lukas Nmecha                  4     LEE                  0.0
+ 70  Moisés Caicedo Corozo         3     CHE                  0.0
+ 71  Pedro Porro Sauceda           2     TOT                  0.0
+ 72  Borna Sosa                    2     CRY                  0.0
+ 73  Ollie Watkins                 4     AVL                  0.0
+ 74  Tyler Fredricson              2     MUN                  0.0
+ 75  Loum Tchaouna                 3     COV                  0.0
+ 76  Jorrel Hato                   2     CHE                  0.0
+ 77  Georginio Rutter              4     BHA                  0.0
+ 78  Kristoffer Ajer               2     BRE                  0.0
+ 79  Curtis Jones                  3     LIV                  0.0
+ 80  Chadi Riad Dnanou             2     CRY                  0.0
+ 81  Karl Darlow                   1     MUN                  0.0
+ 82  Christantus Uche              4     CRY                  0.0
+ 83  Bukayo Saka                   3     ARS                  0.0
+ 84  Nico O'Reilly                 2     MCI                  0.0
+ 85  Mikkel Damsgaard              3     BRE                  0.0
+ 86  Noah Okafor                   3     LEE                  0.0
+ 87  Cody Gakpo                    3     LIV                  0.0
+ 88  Mamadou Sarr                  2     CHE                  0.0
+ 89  Mohammed Kudus                3     TOT                  0.0
+ 90  Yankuba Minteh                3     BHA                  0.0
+ 91  Eddie Nketiah                 4     CRY                  0.0
+ 92  Charalampos Kostoulas         4     BHA                  0.0
+ 93  Dan Ndoye                     3     NFO                  0.0
+ 94  Malo Gusto                    2     CHE                  0.0
+ 95  Trai Hume                     2     SUN                  0.0
+ 96  Callum Hudson-Odoi            3     NFO                  0.0
+ 97  Alejandro Garnacho Ferreyra   3     AVL                  0.0
+ 98  Tanaka Ao                     3     LEE                  0.0
+ 99  Amad Diallo                   3     MUN                  0.0
+100  Jesurun Rak-Sakyi             3     CRY                  0.0
+
+======== Predictions top 50 (Fargate email / top_players.csv columns) ========
+Player                           Team  Pos  Price  Pred  Pred mins  Prev pp90  Err   M1 opp  M1 pp90  M1 mins  M1 adj  M2 opp  M2 pp90  M2 mins  M2 adj  M3 opp  M3 pp90  M3 mins  M3 adj  M4 opp  M4 pp90  M4 mins  M4 adj  M5 opp  M5 pp90  M5 mins  M5 adj
+-------------------------------  ----  ---  -----  ----  ---------  ---------  ----  ------  -------  -------  ------  ------  -------  -------  ------  ------  -------  -------  ------  ------  -------  -------  ------  ------  -------  -------  ------
+Tyler Adams                      BOU   MID  50.0   0.0   0          4.3        1.39  MCI     0.0      0        0.0     EVE     0.0      0        0.0     NEW     0.0      0        0.0     BRE     0.0      0        0.0     LIV     0.0      0        0.0   
+Omari Hutchinson                 NFO   MID  55.0   0.0   0          4.4        2.01  LEE     0.0      0        0.0     LIV     0.0      0        0.0     TOT     0.0      0        0.0     AVL     0.0      0        0.0     COV     0.0      0        0.0   
+Amine Adli                       BOU   MID  50.0   0.0   0          4.4        1.56  MCI     0.0      0        0.0     EVE     0.0      0        0.0     NEW     0.0      0        0.0     BRE     0.0      0        0.0     LIV     0.0      0        0.0   
+Adrien Truffert                  BOU   DEF  55.0   0.0   0          5.8        2.17  MCI     0.0      0        0.0     EVE     0.0      0        0.0     NEW     0.0      0        0.0     BRE     0.0      0        0.0     LIV     0.0      0        0.0   
+Marcus Tavernier                 BOU   MID  60.0   0.0   0          4.0        1.93  MCI     0.0      0        0.0     EVE     0.0      0        0.0     NEW     0.0      0        0.0     BRE     0.0      0        0.0     LIV     0.0      0        0.0   
+Yoane Wissa                      NEW   FWD  60.0   0.0   0          5.7        3.19  LIV     0.0      0        0.0     TOT     0.0      0        0.0     BOU     0.0      0        0.0     LEE     0.0      0        0.0     HUL     0.0      0        0.0   
+Daichi Kamada                    CRY   MID  50.0   0.0   0          2.5        1.78  EVE     0.0      0        0.0     MCI     0.0      0        0.0     FUL     0.0      0        0.0     IPS     0.0      0        0.0     LEE     0.0      0        0.0   
+João Pedro Junqueira de Jesus    CHE   FWD  75.0   0.0   0          3.2        3.23  FUL     0.0      0        0.0     BHA     0.0      0        0.0     ARS     0.0      0        0.0     HUL     0.0      0        0.0     BRE     0.0      0        0.0   
+Cheick Doucouré                  CRY   MID  50.0   0.0   0          3.6        1.40  EVE     0.0      0        0.0     MCI     0.0      0        0.0     FUL     0.0      0        0.0     IPS     0.0      0        0.0     LEE     0.0      0        0.0   
+John Victor Maciel Furtado       NFO   GKP  45.0   0.0   0          2.3        1.87  LEE     0.0      0        0.0     LIV     0.0      0        0.0     TOT     0.0      0        0.0     AVL     0.0      0        0.0     COV     0.0      0        0.0   
+Jorge Cuenca Barreno             FUL   DEF  45.0   0.0   0          2.5        1.92  CHE     0.0      0        0.0     SUN     0.0      0        0.0     CRY     0.0      0        0.0     LIV     0.0      0        0.0     MUN     0.0      0        0.0   
+Bernd Leno                       FUL   GKP  45.0   0.0   0          4.2        1.85  CHE     0.0      0        0.0     SUN     0.0      0        0.0     CRY     0.0      0        0.0     LIV     0.0      0        0.0     MUN     0.0      0        0.0   
+Jurriën Timber                   ARS   DEF  65.0   0.0   0          6.4        2.86  COV     0.0      0        0.0     AVL     0.0      0        0.0     CHE     0.0      0        0.0     SUN     0.0      0        0.0     BHA     0.0      0        0.0   
+Rio Ngumoha                      LIV   MID  60.0   0.0   0          4.1        2.68  NEW     0.0      0        0.0     NFO     0.0      0        0.0     IPS     0.0      0        0.0     FUL     0.0      0        0.0     BOU     0.0      0        0.0   
+Lisandro Martínez                MUN   DEF  50.0   0.0   0          3.0        2.46  HUL     0.0      0        0.0     IPS     0.0      0        0.0     EVE     0.0      0        0.0     MCI     0.0      0        0.0     FUL     0.0      0        0.0   
+Marcus Rashford                  MUN   MID  70.0   0.0   0          7.9        2.50  HUL     0.0      0        0.0     IPS     0.0      0        0.0     EVE     0.0      0        0.0     MCI     0.0      0        0.0     FUL     0.0      0        0.0   
+Dango Ouattara                   BRE   MID  65.0   0.0   0          5.9        2.16  TOT     0.0      0        0.0     LEE     0.0      0        0.0     SUN     0.0      0        0.0     BOU     0.0      0        0.0     CHE     0.0      0        0.0   
+Tom Cairney                      FUL   MID  50.0   0.0   0          5.2        1.75  CHE     0.0      0        0.0     SUN     0.0      0        0.0     CRY     0.0      0        0.0     LIV     0.0      0        0.0     MUN     0.0      0        0.0   
+Issa Diop                        IPS   DEF  40.0   0.0   0          4.7        1.83  SUN     0.0      0        0.0     MUN     0.0      0        0.0     LIV     0.0      0        0.0     CRY     0.0      0        0.0     EVE     0.0      0        0.0   
+Tom Watson                       BHA   MID  50.0   0.0   0          13.8       1.06  AVL     0.0      0        0.0     CHE     0.0      0        0.0     LEE     0.0      0        0.0     COV     0.0      0        0.0     ARS     0.0      0        0.0   
+Eberechi Eze                     ARS   MID  65.0   0.0   0          5.1        2.51  COV     0.0      0        0.0     AVL     0.0      0        0.0     CHE     0.0      0        0.0     SUN     0.0      0        0.0     BHA     0.0      0        0.0   
+Alex Scott                       BOU   MID  60.0   0.0   0          3.2        1.66  MCI     0.0      0        0.0     EVE     0.0      0        0.0     NEW     0.0      0        0.0     BRE     0.0      0        0.0     LIV     0.0      0        0.0   
+Victor Lindelöf                  AVL   DEF  45.0   0.0   0          1.7        2.13  BHA     0.0      0        0.0     ARS     0.0      0        0.0     HUL     0.0      0        0.0     NFO     0.0      0        0.0     TOT     0.0      0        0.0   
+Giorgi Mamardashvili             LIV   GKP  50.0   0.0   0          3.2        2.12  NEW     0.0      0        0.0     NFO     0.0      0        0.0     IPS     0.0      0        0.0     FUL     0.0      0        0.0     BOU     0.0      0        0.0   
+Robert Lynch Sánchez             CHE   GKP  50.0   0.0   0          1.9        1.84  FUL     0.0      0        0.0     BHA     0.0      0        0.0     ARS     0.0      0        0.0     HUL     0.0      0        0.0     BRE     0.0      0        0.0   
+Conor Gallagher                  TOT   MID  55.0   0.0   0          4.1        1.83  BRE     0.0      0        0.0     NEW     0.0      0        0.0     NFO     0.0      0        0.0     EVE     0.0      0        0.0     AVL     0.0      0        0.0   
+Stefanos Tzimas                  BHA   FWD  55.0   0.0   0          12.5       2.48  AVL     0.0      0        0.0     CHE     0.0      0        0.0     LEE     0.0      0        0.0     COV     0.0      0        0.0     ARS     0.0      0        0.0   
+Kostas Tsimikas                  LIV   DEF  50.0   0.0   0          2.7        2.38  NEW     0.0      0        0.0     NFO     0.0      0        0.0     IPS     0.0      0        0.0     FUL     0.0      0        0.0     BOU     0.0      0        0.0   
+Harry Amass                      MUN   DEF  40.0   0.0   0          1.0        2.12  HUL     0.0      0        0.0     IPS     0.0      0        0.0     EVE     0.0      0        0.0     MCI     0.0      0        0.0     FUL     0.0      0        0.0   
+Kevin Danso                      TOT   DEF  50.0   0.0   0          4.4        2.33  BRE     0.0      0        0.0     NEW     0.0      0        0.0     NFO     0.0      0        0.0     EVE     0.0      0        0.0     AVL     0.0      0        0.0   
+Bafodé Diakité                   BOU   DEF  50.0   0.0   0          3.0        1.71  MCI     0.0      0        0.0     EVE     0.0      0        0.0     NEW     0.0      0        0.0     BRE     0.0      0        0.0     LIV     0.0      0        0.0   
+Luke Shaw                        MUN   DEF  45.0   0.0   0          5.3        2.57  HUL     0.0      0        0.0     IPS     0.0      0        0.0     EVE     0.0      0        0.0     MCI     0.0      0        0.0     FUL     0.0      0        0.0   
+Wilson Odobert                   TOT   MID  55.0   0.0   0          4.4        2.01  BRE     0.0      0        0.0     NEW     0.0      0        0.0     NFO     0.0      0        0.0     EVE     0.0      0        0.0     AVL     0.0      0        0.0   
+Andrew Robertson                 TOT   DEF  45.0   0.0   0          4.0        2.39  BRE     0.0      0        0.0     NEW     0.0      0        0.0     NFO     0.0      0        0.0     EVE     0.0      0        0.0     AVL     0.0      0        0.0   
+Myles Lewis-Skelly               ARS   MID  55.0   0.0   0          4.9        1.96  COV     0.0      0        0.0     AVL     0.0      0        0.0     CHE     0.0      0        0.0     SUN     0.0      0        0.0     BHA     0.0      0        0.0   
+Viktor Gyökeres                  ARS   FWD  75.0   0.0   0          8.1        3.59  COV     0.0      0        0.0     AVL     0.0      0        0.0     CHE     0.0      0        0.0     SUN     0.0      0        0.0     BHA     0.0      0        0.0   
+Marco Bizot                      AVL   GKP  45.0   0.0   0          2.0        1.82  BHA     0.0      0        0.0     ARS     0.0      0        0.0     HUL     0.0      0        0.0     NFO     0.0      0        0.0     TOT     0.0      0        0.0   
+Omar Alderete                    SUN   DEF  50.0   0.0   0          3.6        1.97  IPS     0.0      0        0.0     FUL     0.0      0        0.0     BRE     0.0      0        0.0     ARS     0.0      0        0.0     MCI     0.0      0        0.0   
+Lewis Miley                      NEW   MID  55.0   0.0   0          3.2        1.62  LIV     0.0      0        0.0     TOT     0.0      0        0.0     BOU     0.0      0        0.0     LEE     0.0      0        0.0     HUL     0.0      0        0.0   
+Jérémy Doku                      MCI   MID  75.0   0.0   0          9.0        2.67  BOU     0.0      0        0.0     CRY     0.0      0        0.0     COV     0.0      0        0.0     MUN     0.0      0        0.0     SUN     0.0      0        0.0   
+Bruno Guimarães Rodriguez Moura  ARS   MID  70.0   0.0   0          4.2        2.59  COV     0.0      0        0.0     AVL     0.0      0        0.0     CHE     0.0      0        0.0     SUN     0.0      0        0.0     BHA     0.0      0        0.0   
+Michael Kayode                   BRE   DEF  45.0   0.0   0          1.8        2.13  TOT     0.0      0        0.0     LEE     0.0      0        0.0     SUN     0.0      0        0.0     BOU     0.0      0        0.0     CHE     0.0      0        0.0   
+Tyrick Mitchell                  CRY   DEF  45.0   0.0   0          2.2        2.19  EVE     0.0      0        0.0     MCI     0.0      0        0.0     FUL     0.0      0        0.0     IPS     0.0      0        0.0     LEE     0.0      0        0.0   
+Igor Julio dos Santos de Paulo   BHA   DEF  45.0   0.0   0          3.9        1.43  AVL     0.0      0        0.0     CHE     0.0      0        0.0     LEE     0.0      0        0.0     COV     0.0      0        0.0     ARS     0.0      0        0.0   
+Mikey Moore                      TOT   MID  50.0   0.0   0          2.4        1.59  BRE     0.0      0        0.0     NEW     0.0      0        0.0     NFO     0.0      0        0.0     EVE     0.0      0        0.0     AVL     0.0      0        0.0   
+Ismaïla Sarr                     CRY   MID  65.0   0.0   0          5.1        2.34  EVE     0.0      0        0.0     MCI     0.0      0        0.0     FUL     0.0      0        0.0     IPS     0.0      0        0.0     LEE     0.0      0        0.0   
+Noni Madueke                     ARS   MID  65.0   0.0   0          5.8        2.41  COV     0.0      0        0.0     AVL     0.0      0        0.0     CHE     0.0      0        0.0     SUN     0.0      0        0.0     BHA     0.0      0        0.0   
+Murillo Costa dos Santos         NFO   DEF  55.0   0.0   0          3.6        2.19  LEE     0.0      0        0.0     LIV     0.0      0        0.0     TOT     0.0      0        0.0     AVL     0.0      0        0.0     COV     0.0      0        0.0   
+Antonín Kinský                   TOT   GKP  45.0   0.0   0          3.4        1.96  BRE     0.0      0        0.0     NEW     0.0      0        0.0     NFO     0.0      0        0.0     EVE     0.0      0        0.0     AVL     0.0      0        0.0   
+Guglielmo Vicario                TOT   GKP  45.0   0.0   0          1.4        1.81  BRE     0.0      0        0.0     NEW     0.0      0        0.0     NFO     0.0      0        0.0     EVE     0.0      0        0.0     AVL     0.0      0        0.0   
+Skipping live snapshot persistence

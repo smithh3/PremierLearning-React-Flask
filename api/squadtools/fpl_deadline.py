@@ -45,6 +45,39 @@ def next_deadline_event(events):
     return next_event
 
 
+def future_deadlines(events, now_utc):
+    """Deadline datetimes still ahead of now, earliest first."""
+    now = now_utc.astimezone(timezone.utc)
+    deadlines = []
+    for event in events or []:
+        deadline = parse_fpl_deadline(event.get('deadline_time'))
+        if deadline is not None and deadline > now:
+            deadlines.append(deadline.astimezone(timezone.utc))
+    deadlines.sort()
+    return deadlines
+
+
+def deadline_for_following_run(events, now_utc, this_run_window_hours=3):
+    """Deadline the next scheduled run should sit ahead of.
+
+    A run that starts shortly before a deadline is for that deadline, so the
+    following booking skips it. A run on any other day books the soonest one.
+    """
+    deadlines = future_deadlines(events, now_utc)
+    if not deadlines:
+        return None
+    soonest = deadlines[0]
+    window = timedelta(hours=float(this_run_window_hours))
+    if soonest - now_utc.astimezone(timezone.utc) <= window and len(deadlines) > 1:
+        return deadlines[1]
+    return soonest
+
+
+def london_at_expression(utc_dt):
+    """EventBridge one-shot expression in UK local time."""
+    return 'at(%s)' % to_london(utc_dt).strftime('%Y-%m-%dT%H:%M:%S')
+
+
 def is_transfer_deadline_day(deadline_utc, now_utc=None):
     """True when the next deadline is still ahead and falls on today's UK date."""
     if deadline_utc is None:

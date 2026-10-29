@@ -1,0 +1,168 @@
+Feature sweep comparison
+Top 50 by predicted pp90 over the next 5 GWs (player, team, price).
+
+=== 01_no_squad_cost ===
+Control: last-season team seed only (PL_SQUAD_COST=0).
+Top 50 by predicted points/5 GWs (pp90, assuming 90 minutes)
+  #  Player                            Team              Price   pp90
+  1  James McConnell                   LIV                 4.5   27.0
+  2  Fábio Freitas Gouveia Carvalho    BRE                 5.0   15.7
+  3  Trey Nyoni                        LIV                 5.0    9.7
+  4  Sean Longstaff                    LEE                 5.0    6.7
+  5  Erling Haaland                    MCI                15.5    6.6
+  6  Joël Piroe                        LEE                 5.0    6.5
+  7  Josh Dasilva                      BRE                 5.0    6.4
+  8  Dane Scarlett                     TOT                 4.5    6.4
+  9  Viktor Gyökeres                   ARS                 7.5    6.3
+ 10  Omar Marmoush                     MCI                 7.0    6.3
+ 11  Taiwo Awoniyi                     NFO                 5.5    6.2
+ 12  Kai Havertz                       ARS                 7.5    6.2
+ 13  Arnaud Kalimuendo                 NFO                 5.5    6.1
+ 14  Reiss Nelson                      ARS                 5.5    6.0
+ 15  Alexander Isak                    LIV                 9.0    5.9
+ 16  Ollie Watkins                     AVL                 8.0    5.9
+ 17  Patrick Dorgu                     MUN                 6.0    5.8
+ 18  Wilson Isidor                     SUN                 5.5    5.7
+ 19  Jérémy Doku                       MCI                 7.5    5.6
+ 20  Yoane Wissa                       NEW                 6.0    5.6
+ 21  Max Dowman                        ARS                 5.5    5.6
+ 22  Harrison Reed                     FUL                 4.5    5.5
+ 23  Rayan Cherki                      MCI                 7.5    5.5
+ 24  Gabriel Fernando de Jesus         ARS                 6.0    5.5
+ 25  Marc Guiu Paz                     CHE                 5.0    5.5
+ 26  Jean-Philippe Mateta              CRY                 6.5    5.5
+ 27  Elliot Anderson                   MCI                 6.5    5.5
+ 28  Joshua Zirkzee                    MUN                 5.5    5.4
+ 29  Phil Foden                        MCI                 7.0    5.4
+ 30  Callum Wilson                     BRE                 5.5    5.4
+ 31  Morgan Gibbs-White                NFO                 8.0    5.4
+ 32  Norberto Bercique Gomes Betuncal  EVE                 5.5    5.4
+ 33  Jonah Kusi-Asare                  FUL                 4.5    5.4
+ 34  Federico Chiesa                   LIV                 5.5    5.4
+ 35  João Pedro Junqueira de Jesus     CHE                 7.5    5.4
+ 36  Bukayo Saka                       ARS                 9.5    5.4
+ 37  Marcus Rashford                   MUN                 7.0    5.3
+ 38  Thierno Barry                     EVE                 5.5    5.3
+ 39  Bryan Mbeumo                      MUN                 8.0    5.3
+ 40  Charalampos Kostoulas             BHA                 5.5    5.3
+ 41  Mateo Kovačić                     MCI                 5.5    5.2
+ 42  William Osula                     NEW                 6.0    5.2
+ 43  Bruno Borges Fernandes            MUN                12.0    5.2
+ 44  Sávio Moreira de Oliveira         MCI                 6.5    5.2
+ 45  Noah Okafor                       LEE                 6.0    5.2
+ 46  Danny Welbeck                     CHE                 6.0    5.2
+ 47  Carlos Alcaraz Durán              EVE                 5.0    5.2
+ 48  Chido Obi                         MUN                 4.5    5.1
+ 49  Igor Jesus Maciel da Cruz         NFO                 6.0    5.1
+ 50  Mikel Merino Zazón                ARS                 6.0    5.1
+
+=== 02_squad_cost_yoy ===
+Top-15 FPL cost YoY nudge on team seed, fade-out GW5.
+Top 50 by predicted points/5 GWs (pp90, assuming 90 minutes)
+  #  Player                            Team              Price   pp90
+  1  James McConnell                   LIV                 4.5   17.9
+  2  Fábio Freitas Gouveia Carvalho    BRE                 5.0   11.5
+  3  Trey Nyoni                        LIV                 5.0    9.0
+  4  Erling Haaland                    MCI                15.5    6.5
+  5  Joël Piroe                        LEE                 5.0    6.4
+  6  Sean Longstaff                    LEE                 5.0    6.4
+  7  Omar Marmoush                     MCI                 7.0    6.2
+  8  Dane Scarlett                     TOT                 4.5    6.2
+  9  Kai Havertz                       ARS                 7.5    6.1
+ 10  Viktor Gyökeres                   ARS                 7.5    6.1
+ 11  Taiwo Awoniyi                     NFO                 5.5    6.0
+ 12  Josh Dasilva                      BRE                 5.0    6.0
+ 13  Alexander Isak                    LIV                 9.0    5.9
+ 14  Arnaud Kalimuendo                 NFO                 5.5    5.9
+ 15  Reiss Nelson                      ARS                 5.5    5.8
+ 16  Patrick Dorgu                     MUN                 6.0    5.8
+ 17  Ollie Watkins                     AVL                 8.0    5.7
+ 18  Joshua Zirkzee                    MUN                 5.5    5.6
+ 19  Marc Guiu Paz                     CHE                 5.0    5.5
+ 20  João Pedro Junqueira de Jesus     CHE                 7.5    5.5
+ 21  Federico Chiesa                   LIV                 5.5    5.5
+ 22  Yoane Wissa                       NEW                 6.0    5.5
+ 23  Gabriel Fernando de Jesus         ARS                 6.0    5.4
+ 24  Rayan Cherki                      MCI                 7.5    5.4
+ 25  Elliot Anderson                   MCI                 6.5    5.4
+ 26  Jérémy Doku                       MCI                 7.5    5.4
+ 27  Jean-Philippe Mateta              CRY                 6.5    5.4
+ 28  Wilson Isidor                     SUN                 5.5    5.4
+ 29  Chido Obi                         MUN                 4.5    5.4
+ 30  Marcus Rashford                   MUN                 7.0    5.4
+ 31  Harrison Reed                     FUL                 4.5    5.4
+ 32  Max Dowman                        ARS                 5.5    5.4
+ 33  Jonah Kusi-Asare                  FUL                 4.5    5.3
+ 34  Thierno Barry                     EVE                 5.5    5.3
+ 35  Norberto Bercique Gomes Betuncal  EVE                 5.5    5.3
+ 36  Bruno Borges Fernandes            MUN                12.0    5.3
+ 37  Phil Foden                        MCI                 7.0    5.3
+ 38  Callum Wilson                     BRE                 5.5    5.3
+ 39  Bryan Mbeumo                      MUN                 8.0    5.3
+ 40  Charalampos Kostoulas             BHA                 5.5    5.3
+ 41  Danny Welbeck                     CHE                 6.0    5.2
+ 42  Igor Jesus Maciel da Cruz         NFO                 6.0    5.2
+ 43  Mateo Kovačić                     MCI                 5.5    5.2
+ 44  Lukas Nmecha                      LEE                 5.5    5.2
+ 45  Morgan Gibbs-White                NFO                 8.0    5.1
+ 46  William Osula                     NEW                 6.0    5.1
+ 47  Bukayo Saka                       ARS                 9.5    5.1
+ 48  Richarlison de Andrade            TOT                 6.0    5.1
+ 49  Noah Okafor                       LEE                 6.0    5.1
+ 50  Sávio Moreira de Oliveira         MCI                 6.5    5.1
+
+=== Rank movement 01_no_squad_cost -> 02_squad_cost_yoy ===
+player                            rk0      rk1     d_rk    pred0    pred1
+-------------------------------------------------------------------------
+James McConnell                     1        1        0     27.0     17.9
+Fábio Freitas Gouveia Carvalho        2        2        0     15.7     11.5
+Trey Nyoni                          3        3        0      9.7      9.0
+Erling Haaland                      5        4        1      6.6      6.5
+Joël Piroe                          6        5        1      6.5      6.4
+Sean Longstaff                      4        6       -2      6.7      6.4
+Omar Marmoush                      10        7        3      6.3      6.2
+Dane Scarlett                       8        8        0      6.4      6.2
+Kai Havertz                        12        9        3      6.2      6.1
+Viktor Gyökeres                     9       10       -1      6.3      6.1
+Taiwo Awoniyi                      11       11        0      6.2      6.0
+Josh Dasilva                        7       12       -5      6.4      6.0
+Alexander Isak                     15       13        2      5.9      5.9
+Arnaud Kalimuendo                  13       14       -1      6.1      5.9
+Reiss Nelson                       14       15       -1      6.0      5.8
+Patrick Dorgu                      17       16        1      5.8      5.8
+Ollie Watkins                      16       17       -1      5.9      5.7
+Joshua Zirkzee                     28       18       10      5.4      5.6
+Marc Guiu Paz                      25       19        6      5.5      5.5
+João Pedro Junqueira de Jesus       35       20       15      5.4      5.5
+Federico Chiesa                    34       21       13      5.4      5.5
+Yoane Wissa                        20       22       -2      5.6      5.5
+Gabriel Fernando de Jesus          24       23        1      5.5      5.4
+Rayan Cherki                       23       24       -1      5.5      5.4
+Elliot Anderson                    27       25        2      5.5      5.4
+Jérémy Doku                        19       26       -7      5.6      5.4
+Jean-Philippe Mateta               26       27       -1      5.5      5.4
+Wilson Isidor                      18       28      -10      5.7      5.4
+Chido Obi                          48       29       19      5.1      5.4
+Marcus Rashford                    37       30        7      5.3      5.4
+Harrison Reed                      22       31       -9      5.5      5.4
+Max Dowman                         21       32      -11      5.6      5.4
+Jonah Kusi-Asare                   33       33        0      5.4      5.3
+Thierno Barry                      38       34        4      5.3      5.3
+Norberto Bercique Gomes Betuncal       32       35       -3      5.4      5.3
+Bruno Borges Fernandes             43       36        7      5.2      5.3
+Phil Foden                         29       37       -8      5.4      5.3
+Callum Wilson                      30       38       -8      5.4      5.3
+Bryan Mbeumo                       39       39        0      5.3      5.3
+Charalampos Kostoulas              40       40        0      5.3      5.3
+Danny Welbeck                      46       41        5      5.2      5.2
+Igor Jesus Maciel da Cruz          49       42        7      5.1      5.2
+Mateo Kovačić                      41       43       -2      5.2      5.2
+Lukas Nmecha                                44                        5.2
+Morgan Gibbs-White                 31       45      -14      5.4      5.1
+William Osula                      42       46       -4      5.2      5.1
+Bukayo Saka                        36       47      -11      5.4      5.1
+Richarlison de Andrade                      48                        5.1
+Noah Okafor                        45       49       -4      5.2      5.1
+Sávio Moreira de Oliveira          44       50       -6      5.2      5.1
+Carlos Alcaraz Durán               47                        5.2         
+Mikel Merino Zazón                 50                        5.1         

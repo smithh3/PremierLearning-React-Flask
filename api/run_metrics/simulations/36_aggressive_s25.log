@@ -1,0 +1,158 @@
+=== 25/26 trial 36 36_aggressive ===
+Chips this season: rolling strategy (replanned each gameweek); wc_threshold=30.0 fh_threshold=6.0 tc_above_average=1.6 min_horizon_gain=3.0 tc_taper_floor=0.8 tc_min_captain=8.0 fh_after_wildcard_weeks=3 fh_dgw=0.0 wc_dgw=0.0 dgw_h2=2.0 wc_rot=6.0 wc_early=0.0 earliest=3
+Scoring: minutes_scale=raw bench_fill=unused bench_slots=unused reserve_keeper=unused
+Planning GW1 (initial squad)...
+Planning GW1 (chips)...
+GW1: 64 pts (64 total), exp 58, 10 scored, 0 transfer(s), bank £0.0m, FT next 1
+pred: Mohamed Salah 7.5C, Bryan Mbeumo 5.4, Jarrod Bowen 5.0, Chris Wood 4.9, Amad Diallo 4.5, Antoine Semenyo 4.2, Francisco Evanilson de Lima Barbosa 4.1, Joško Gvardiol 4.1, Bart Verbruggen 3.6, Milos Kerkez 3.6, Kevin Danso 3.4, David Raya Martín 3.3b, Ezri Konsa Ngoyo 3.2b, William Saliba 2.7b, Andrey Nascimento dos Santos 0.0b
+  chip plan: {"bench_boosts": [], "free_hits": [], "triple_captains": [], "wildcards": []}
+Planning GW2 (chips + transfers)...
+GW2: 44 pts (108 total), exp 60, 11 scored, 1 transfer(s), bank £1.4m, FT next 1
+pred: Mohamed Salah 6.8C, Francisco Evanilson de Lima Barbosa 6.5, Antoine Semenyo 5.9, Bryan Mbeumo 5.5, Jarrod Bowen 5.1, Chris Wood 5.0, William Saliba 4.7, David Raya Martín 4.4, Adam Smith 4.1, Bart Verbruggen 3.5b, Amad Diallo 2.6, Milos Kerkez 2.3, Kevin Danso 0.0b, Andrey Nascimento dos Santos 0.0b, Ezri Konsa Ngoyo 0.0b
+  chip plan: {"bench_boosts": [4], "free_hits": [], "triple_captains": [], "wildcards": [3]}
+Planning GW3 (chips + transfers)...
+GW3: 66 pts (174 total), exp 60, 11 scored, 12 transfer(s), bank £0.0m, FT next 2, wildcard
+pred: Bryan Mbeumo 6.9C, Mohamed Salah 6.7, Ollie Watkins 6.5, Igor Thiago Nascimento Rodrigues 5.9, Kiernan Dewsbury-Hall 5.2, Jean-Philippe Mateta 4.6, Ismaïla Sarr 4.2, Declan Rice 3.9b, Pedro Porro Sauceda 3.6, Nick Pope 3.4, Micky van de Ven 3.2, David Raya Martín 3.2b, Djed Spence 3.2, Gabriel dos Santos Magalhães 2.8b, Daniel Muñoz Mejía 2.7b
+  chip plan: {"bench_boosts": [4], "free_hits": [], "triple_captains": [], "wildcards": [3]}
+Planning GW4 (chips + transfers)...
+GW4: 81 pts (255 total), exp 68, 14 scored, 0 transfer(s), bank £0.0m, FT next 3, bench_boost
+pred: Mohamed Salah 7.1C, Jean-Philippe Mateta 5.5, Declan Rice 5.4, Ollie Watkins 5.3, Igor Thiago Nascimento Rodrigues 4.5, Kiernan Dewsbury-Hall 4.5, Gabriel dos Santos Magalhães 4.4, Bryan Mbeumo 4.2, David Raya Martín 4.1, Daniel Muñoz Mejía 4.0, Nick Pope 3.8b, Micky van de Ven 2.8, Djed Spence 2.7b, Pedro Porro Sauceda 2.6b, Ismaïla Sarr 0.0b
+  chip plan: {"bench_boosts": [4], "free_hits": [], "triple_captains": [6], "wildcards": [3]}
+Planning GW5 (chips + transfers)...
+GW5: 39 pts (294 total), exp 59, 11 scored, 3 transfer(s), bank £0.2m, FT next 1
+pred: Mohamed Salah 6.8C, Jean-Philippe Mateta 6.2, Bryan Mbeumo 5.7, Ollie Watkins 4.9, Wilson Isidor 4.9, Jurriën Timber 4.4, Enzo Fernández 4.1, Daniel Muñoz Mejía 4.0, Gabriel dos Santos Magalhães 3.7, Kiernan Dewsbury-Hall 3.6, David Raya Martín 3.6, Nick Pope 2.9b, Micky van de Ven 2.4b, Djed Spence 1.9b, Ismaïla Sarr 0.0b
+  chip plan: {"bench_boosts": [4], "free_hits": [], "triple_captains": [], "wildcards": [3]}
+Planning GW6 (chips + transfers)...
+GW6: 52 pts (346 total), exp 59, 11 scored, 1 transfer(s), bank £0.2m, FT next 1
+pred: Ollie Watkins 6.3C, Mohamed Salah 6.3, Bernardo Mota Veiga de Carvalho e Silva 5.9, Jean-Philippe Mateta 5.3, Kiernan Dewsbury-Hall 5.1, Enzo Fernández 4.9, Micky van de Ven 4.5, Bryan Mbeumo 4.3, Wilson Isidor 3.9b, Jurriën Timber 3.7, Gabriel dos Santos Magalhães 3.5, David Raya Martín 3.4, Daniel Muñoz Mejía 3.1b, Nick Pope 2.7b, Djed Spence 0.2b
+  chip plan: {"bench_boosts": [4], "free_hits": [7], "triple_captains": [], "wildcards": [3]}
+Planning GW7 (chips + transfers)...
+GW7: 63 pts (409 total), exp 68, 11 scored, 10 transfer(s), bank £0.2m, FT next 2, free_hit
+pred: Viktor Gyökeres 8.0C, Erling Haaland 7.0, Jurriën Timber 5.7, Richarlison de Andrade 5.7, Bryan Mbeumo 5.6, Antoine Semenyo 5.5, Enzo Fernández 5.0, Gabriel dos Santos Magalhães 5.0, Yankuba Minteh 4.9, Jérémy Doku 4.7b, Lucas Digne 4.3, Bart Verbruggen 3.6, Daniel Muñoz Mejía 3.4b, Karl Darlow 3.1b, Lucas Pires Silva 0.0b
+  chip plan: {"bench_boosts": [4], "free_hits": [7], "triple_captains": [], "wildcards": [3]}
+Planning GW8 (chips + transfers)...
+GW8: 68 pts (477 total), exp 52, 10 scored, 0 transfer(s), bank £0.2m, FT next 3
+pred: Mohamed Salah 7.1C, Jean-Philippe Mateta 4.8, Wilson Isidor 4.2, Jurriën Timber 4.2, Ollie Watkins 4.0, Gabriel dos Santos Magalhães 3.8, Bryan Mbeumo 3.8, David Raya Martín 3.6, Daniel Muñoz Mejía 3.3, Enzo Fernández 3.3, Nick Pope 2.9b, Micky van de Ven 2.9, Bernardo Mota Veiga de Carvalho e Silva 0.9b, Kiernan Dewsbury-Hall 0.7b, Djed Spence 0.0b
+  chip plan: {"bench_boosts": [4], "free_hits": [7], "triple_captains": [], "wildcards": [3]}
+Planning GW9 (chips + transfers)...
+GW9: 86 pts (563 total), exp 49, 11 scored, 0 transfer(s), bank £0.2m, FT next 4
+pred: Mohamed Salah 5.7C, Bryan Mbeumo 5.7, Jurriën Timber 4.8, Jean-Philippe Mateta 4.4, Gabriel dos Santos Magalhães 4.3, David Raya Martín 4.0, Wilson Isidor 3.7, Nick Pope 3.4b, Kiernan Dewsbury-Hall 3.0, Daniel Muñoz Mejía 2.9, Micky van de Ven 2.8, Ollie Watkins 2.4, Djed Spence 2.0b, Enzo Fernández 1.5b, Bernardo Mota Veiga de Carvalho e Silva 1.3b
+  chip plan: {"bench_boosts": [4], "free_hits": [7], "triple_captains": [13], "wildcards": [3]}
+Planning GW10 (chips + transfers)...
+GW10: 88 pts (651 total), exp 64, 11 scored, 4 transfer(s), bank £0.1m, FT next 1
+pred: Erling Haaland 8.3C, Jean-Philippe Mateta 6.5, Jarrod Bowen 5.6, Ryan Sessegnon 5.3, Bryan Mbeumo 4.9, Ismaïla Sarr 4.9, Jurriën Timber 4.5, Gabriel dos Santos Magalhães 4.4, David Raya Martín 3.9, Kiernan Dewsbury-Hall 3.8, Daniel Muñoz Mejía 3.7, Nick Pope 3.4b, Enzo Fernández 3.4b, Micky van de Ven 3.3b, Djed Spence 2.7b
+  chip plan: {"bench_boosts": [4], "free_hits": [7], "triple_captains": [13], "wildcards": [3]}
+Planning GW11 (chips + transfers)...
+GW11: 38 pts (689 total), exp 62, 11 scored, 0 transfer(s), bank £0.1m, FT next 2
+pred: Erling Haaland 7.5C, Jarrod Bowen 7.1, Jean-Philippe Mateta 6.1, Enzo Fernández 5.9, Ismaïla Sarr 4.9, Bryan Mbeumo 4.5, Ryan Sessegnon 4.2, Gabriel dos Santos Magalhães 4.0, Jurriën Timber 3.8, Kiernan Dewsbury-Hall 3.8b, Daniel Muñoz Mejía 3.7, David Raya Martín 3.4, Nick Pope 3.3b, Micky van de Ven 3.2b, Djed Spence 2.6b
+  chip plan: {"bench_boosts": [4], "free_hits": [7], "triple_captains": [], "wildcards": [3]}
+Planning GW12 (chips + transfers)...
+GW12: 47 pts (736 total), exp 59, 10 scored, 0 transfer(s), bank £0.1m, FT next 3
+pred: Jean-Philippe Mateta 7.0C, Erling Haaland 6.8, Ismaïla Sarr 5.3, Bryan Mbeumo 5.3, Enzo Fernández 4.5, Ryan Sessegnon 4.4, Jurriën Timber 4.3, Daniel Muñoz Mejía 4.0, Jarrod Bowen 3.9, David Raya Martín 3.7, Kiernan Dewsbury-Hall 3.4b, Micky van de Ven 2.6, Nick Pope 2.6b, Djed Spence 2.2b, Gabriel dos Santos Magalhães 0.0b
+  chip plan: {"bench_boosts": [4], "free_hits": [7], "triple_captains": [13], "wildcards": [3]}
+Planning GW13 (chips + transfers)...
+GW13: 31 pts (767 total), exp 58, 10 scored, 0 transfer(s), bank £0.1m, FT next 4
+pred: Erling Haaland 8.4C, Jarrod Bowen 5.6, Ismaïla Sarr 4.5, Jean-Philippe Mateta 4.5, Bryan Mbeumo 4.5, Ryan Sessegnon 4.0, Kiernan Dewsbury-Hall 3.9, Jurriën Timber 3.8, Daniel Muñoz Mejía 3.7, Enzo Fernández 3.6b, David Raya Martín 3.3, Micky van de Ven 3.2, Nick Pope 3.1b, Djed Spence 2.4b, Gabriel dos Santos Magalhães 0.0b
+  chip plan: {"bench_boosts": [4], "free_hits": [7], "triple_captains": [17], "wildcards": [3]}
+Planning GW14 (chips + transfers)...
+GW14: 69 pts (836 total), exp 63, 10 scored, 4 transfer(s), bank £0.7m, FT next 1
+pred: Erling Haaland 7.0C, Bryan Mbeumo 6.8, Jean-Philippe Mateta 6.2, Nick Woltemade 5.7, Jurriën Timber 4.9, Jérémy Doku 4.7, Marcus Tavernier 4.5, Enzo Fernández 4.3, David Raya Martín 4.0, Nico O'Reilly 3.9, Ryan Sessegnon 3.8b, Daniel Muñoz Mejía 3.8, Micky van de Ven 2.9b, Djed Spence 0.1b, Nick Pope 0.0b
+  chip plan: {"bench_boosts": [4], "free_hits": [7], "triple_captains": [17], "wildcards": [3]}
+Planning GW15 (chips + transfers)...
+GW15: 44 pts (880 total), exp 59, 11 scored, 0 transfer(s), bank £0.7m, FT next 5
+pred: Erling Haaland 8.4C, Nick Woltemade 7.2, Bryan Mbeumo 5.6, Nico O'Reilly 5.1, Jérémy Doku 4.7, Jean-Philippe Mateta 4.6, Ryan Sessegnon 4.1, Daniel Muñoz Mejía 3.5, Enzo Fernández 3.5, David Raya Martín 2.8, Marcus Tavernier 2.4b, Jurriën Timber 1.9, Micky van de Ven 0.4b, Djed Spence 0.0b, Nick Pope 0.0b
+  chip plan: {"bench_boosts": [4], "free_hits": [7], "triple_captains": [17], "wildcards": [3]}
+Planning GW16 (chips + transfers)...
+GW16: 54 pts (934 total), exp 60, 11 scored, 4 transfer(s), bank £0.3m, FT next 2
+pred: Igor Thiago Nascimento Rodrigues 6.3C, Benjamin White 6.0, Erling Haaland 5.4, Richarlison de Andrade 5.3, Bryan Mbeumo 5.1, David Raya Martín 4.6, Jérémy Doku 4.6, Amad Diallo 4.5, Enzo Fernández 4.4, Jurriën Timber 4.1, Nico O'Reilly 3.6, Marcus Tavernier 3.2b, Micky van de Ven 2.6b, Daniel Muñoz Mejía 0.0b, Nick Pope 0.0b
+  chip plan: {"bench_boosts": [4], "free_hits": [7], "triple_captains": [], "wildcards": [3]}
+Planning GW17 (chips + transfers)...
+GW17: 76 pts (1010 total), exp 56, 8 scored, 0 transfer(s), bank £0.3m, FT next 3, triple_captain
+pred: Erling Haaland 8.2C, Richarlison de Andrade 6.4, Marcus Tavernier 5.9, Nico O'Reilly 5.1, Enzo Fernández 4.4, Jurriën Timber 3.6, David Raya Martín 3.5, Micky van de Ven 3.1, Amad Diallo 0.0b, Benjamin White 0.0, Bryan Mbeumo 0.0, Daniel Muñoz Mejía 0.0b, Igor Thiago Nascimento Rodrigues 0.0, Jérémy Doku 0.0b, Nick Pope 0.0b
+  chip plan: {"bench_boosts": [4], "free_hits": [7], "triple_captains": [17], "wildcards": [3]}
+Planning GW18 (chips + transfers)...
+GW18: 30 pts (1040 total), exp 52, 10 scored, 3 transfer(s), bank £0.3m, FT next 1
+pred: Erling Haaland 6.9C, Jarrod Bowen 5.8, Matheus Santos Carneiro da Cunha 5.1, Mason Mount 4.4, Jurriën Timber 4.3, Marcus Tavernier 4.0, David Raya Martín 3.9, Nico O'Reilly 3.8, Micky van de Ven 2.6, Enzo Fernández 2.1, Richarlison de Andrade 1.9, Amad Diallo 0.0b, Benjamin White 0.0b, Daniel Muñoz Mejía 0.0b, Nick Pope 0.0b
+  chip plan: {"bench_boosts": [4], "free_hits": [7], "triple_captains": [17], "wildcards": [3]}
+Planning GW19 (chips + transfers)...
+GW19: 39 pts (1079 total), exp 54, 11 scored, 1 transfer(s), bank £0.4m, FT next 1
+pred: Erling Haaland 6.6C, Matheus Santos Carneiro da Cunha 6.6, Jarrod Bowen 5.9, Richarlison de Andrade 4.9, Enzo Fernández 4.1, David Raya Martín 4.0, William Saliba 4.0, Marcus Tavernier 3.7, Nico O'Reilly 3.6, Micky van de Ven 2.7, Mason Mount 1.7, Amad Diallo 0.0b, Benjamin White 0.0b, Daniel Muñoz Mejía 0.0b, Nick Pope 0.0b
+  chip plan: {"bench_boosts": [4], "free_hits": [7], "triple_captains": [17], "wildcards": [3]}
+Planning GW20 (chips + transfers)...
+GW20: 34 pts (1113 total), exp 61, 10 scored, 12 transfer(s), bank £0.0m, FT next 2, wildcard
+pred: Erling Haaland 7.3C, Richarlison de Andrade 6.7, Jean-Philippe Mateta 5.7, Rayan Cherki 5.6, Bukayo Saka 4.7, Harry Wilson 4.6, Leandro Trossard 4.5, Ferdi Kadıoğlu 4.0, Matheus Nunes 3.8, Lewis Miley 3.8b, Jordan Pickford 3.4, Keane Lewis-Potter 3.3, William Saliba 2.9b, Robert Lynch Sánchez 2.7b, Patrick Dorgu 2.6b
+  chip plan: {"bench_boosts": [4, 21], "free_hits": [7], "triple_captains": [17, 23], "wildcards": [3, 20]}
+Planning GW21 (chips + transfers)...
+GW21: 60 pts (1173 total), exp 71, 15 scored, 2 transfer(s), bank £0.3m, FT next 1, bench_boost
+pred: Erling Haaland 7.6C, Jean-Philippe Mateta 5.8, Richarlison de Andrade 5.6, Rayan Cherki 5.3, Gabriel dos Santos Magalhães 5.2, Matheus Santos Carneiro da Cunha 5.1, Harry Wilson 4.6, Lewis Miley 4.3, William Saliba 4.1, Jordan Pickford 4.1, Matheus Nunes 3.5, Patrick Dorgu 2.7b, Leandro Trossard 2.6b, Ferdi Kadıoğlu 2.4b, Robert Lynch Sánchez 0.3b
+  chip plan: {"bench_boosts": [4, 21], "free_hits": [7], "triple_captains": [17, 23], "wildcards": [3, 20]}
+Planning GW22 (chips + transfers)...
+GW22: 57 pts (1230 total), exp 52, 11 scored, 0 transfer(s), bank £0.3m, FT next 2
+pred: Erling Haaland 5.9C, Jean-Philippe Mateta 5.8, Harry Wilson 5.0, Lewis Miley 4.7, Gabriel dos Santos Magalhães 4.5, Matheus Santos Carneiro da Cunha 3.9, William Saliba 3.7, Leandro Trossard 3.5, Ferdi Kadıoğlu 3.4, Jordan Pickford 3.0, Robert Lynch Sánchez 2.7b, Patrick Dorgu 2.6, Matheus Nunes 2.5b, Rayan Cherki 1.7b, Richarlison de Andrade 0.0b
+  chip plan: {"bench_boosts": [4, 21], "free_hits": [7], "triple_captains": [17, 26], "wildcards": [3, 20]}
+Planning GW23 (chips + transfers)...
+GW23: 39 pts (1269 total), exp 61, 11 scored, 2 transfer(s), bank £0.0m, FT next 1
+pred: Erling Haaland 8.0C, Jarrod Bowen 6.3, Jean-Philippe Mateta 5.7, Kevin Schade 5.2, Gabriel dos Santos Magalhães 5.0, Harry Wilson 5.0, William Saliba 4.2, Jordan Pickford 3.8, Rayan Cherki 3.5, Robert Lynch Sánchez 3.4b, Leandro Trossard 3.2, Ferdi Kadıoğlu 3.0, Patrick Dorgu 2.3b, Lewis Miley 1.6b, Matheus Nunes 0.0b
+  chip plan: {"bench_boosts": [4, 21], "free_hits": [7, 24], "triple_captains": [17, 26], "wildcards": [3, 20]}
+Planning GW24 (chips + transfers)...
+GW24: 55 pts (1324 total), exp 58, 10 scored, 10 transfer(s), bank £0.0m, FT next 2, free_hit
+pred: Francisco Evanilson de Lima Barbosa 6.0C, João Pedro Junqueira de Jesus 5.6, Bukayo Saka 5.5, Enzo Fernández 5.1, Jarrod Bowen 4.9, Kevin Schade 4.7, Gabriel dos Santos Magalhães 4.6, Harvey Barnes 4.2, Morgan Gibbs-White 4.2b, Jurriën Timber 4.2, Robert Lynch Sánchez 3.7, Ferdi Kadıoğlu 3.6, Matty Cash 3.4b, José Malheiro de Sá 2.7b, Yerson Mosquera Valdelamar 1.9b
+  chip plan: {"bench_boosts": [4, 21], "free_hits": [7, 24], "triple_captains": [17, 26], "wildcards": [3, 20]}
+Planning GW25 (chips + transfers)...
+GW25: 50 pts (1374 total), exp 45, 10 scored, 0 transfer(s), bank £0.0m, FT next 3
+pred: Leandro Trossard 5.6C, Gabriel dos Santos Magalhães 5.5, Jarrod Bowen 5.4, Erling Haaland 5.3, Harry Wilson 5.1, William Saliba 4.8, Robert Lynch Sánchez 3.8, Jordan Pickford 3.4b, Ferdi Kadıoğlu 3.3, Lewis Miley 0.6, Jean-Philippe Mateta 0.0, Kevin Schade 0.0, Matheus Nunes 0.0b, Patrick Dorgu 0.0b, Rayan Cherki 0.0b
+  chip plan: {"bench_boosts": [4, 21], "free_hits": [7, 24], "triple_captains": [17, 26], "wildcards": [3, 20]}
+Planning GW26 (chips + transfers)...
+GW26: 45 pts (1419 total), exp 75, 11 scored, 3 transfer(s), bank £1.6m, FT next 1
+pred: Gabriel dos Santos Magalhães 8.9C, Mateus Mané 8.0, Leandro Trossard 7.7, William Saliba 7.6, Erling Haaland 7.2, Jarrod Bowen 6.0, Bryan Mbeumo 5.2, Harvey Barnes 4.9, Robert Lynch Sánchez 3.9, Harry Wilson 3.7, Jordan Pickford 3.6b, Ferdi Kadıoğlu 2.7, Lewis Miley 0.0b, Matheus Nunes 0.0b, Patrick Dorgu 0.0b
+  chip plan: {"bench_boosts": [4, 21], "free_hits": [7, 24], "triple_captains": [17, 33], "wildcards": [3, 20]}
+Planning GW27 (chips + transfers)...
+GW27: 46 pts (1465 total), exp 51, 10 scored, 0 transfer(s), bank £1.6m, FT next 2
+pred: Jarrod Bowen 6.6C, Bryan Mbeumo 5.4, Mateus Mané 4.5, Robert Lynch Sánchez 4.4, Erling Haaland 4.4, Harry Wilson 4.1, Harvey Barnes 4.0, Gabriel dos Santos Magalhães 3.9, Jordan Pickford 3.4b, William Saliba 2.8, Ferdi Kadıoğlu 2.8, Leandro Trossard 1.8, Lewis Miley 0.0b, Matheus Nunes 0.0b, Patrick Dorgu 0.0b
+  chip plan: {"bench_boosts": [4, 21], "free_hits": [7, 24], "triple_captains": [17, 28], "wildcards": [3, 20]}
+Planning GW28 (chips + transfers)...
+GW28: 58 pts (1523 total), exp 54, 11 scored, 0 transfer(s), bank £1.6m, FT next 3
+pred: Erling Haaland 6.0C, Mateus Mané 5.1, Bryan Mbeumo 5.0, Harry Wilson 4.8, Jarrod Bowen 4.7, Gabriel dos Santos Magalhães 4.6, Leandro Trossard 4.2, William Saliba 4.0, Ferdi Kadıoğlu 3.4, Jordan Pickford 3.3, Harvey Barnes 2.5, Robert Lynch Sánchez 2.4b, Lewis Miley 0.0b, Matheus Nunes 0.0b, Patrick Dorgu 0.0b
+  chip plan: {"bench_boosts": [4, 21], "free_hits": [7, 24], "triple_captains": [17, 33], "wildcards": [3, 20]}
+Planning GW29 (chips + transfers)...
+GW29: 47 pts (1570 total), exp 55, 11 scored, 3 transfer(s), bank £2.5m, FT next 1
+pred: Mohamed Salah 7.4C, Jarrod Bowen 5.3, Junior Kroupi 5.3, Ryan Sessegnon 4.8, Mateus Mané 4.8, Bryan Mbeumo 4.4, Jordan Pickford 4.3, Gabriel dos Santos Magalhães 3.4, Robert Lynch Sánchez 2.9b, William Saliba 2.9, Ferdi Kadıoğlu 2.8, Leandro Trossard 2.6, Harvey Barnes 2.1b, Matheus Nunes 0.0b, Patrick Dorgu 0.0b
+  chip plan: {"bench_boosts": [4, 21], "free_hits": [7, 24], "triple_captains": [17, 33], "wildcards": [3, 20]}
+Planning GW30 (chips + transfers)...
+GW30: 47 pts (1617 total), exp 43, 11 scored, 0 transfer(s), bank £2.5m, FT next 2
+pred: Mohamed Salah 6.4C, Jarrod Bowen 5.2, Bryan Mbeumo 4.7, Gabriel dos Santos Magalhães 4.4, Mateus Mané 3.8, Ferdi Kadıoğlu 2.8, Jordan Pickford 2.5, Junior Kroupi 2.4, Harvey Barnes 2.3, Leandro Trossard 1.7, Ryan Sessegnon 1.3b, William Saliba 0.8, Robert Lynch Sánchez 0.5b, Matheus Nunes 0.0b, Patrick Dorgu 0.0b
+  chip plan: {"bench_boosts": [4, 21], "free_hits": [7, 24], "triple_captains": [17, 33], "wildcards": [3, 20]}
+Planning GW31 (chips + transfers)...
+GW31: 23 pts (1640 total), exp 31, 7 scored, 0 transfer(s), bank £2.5m, FT next 3
+pred: Harvey Barnes 5.2C, Jarrod Bowen 5.1, Junior Kroupi 4.8, Bryan Mbeumo 3.7, Ferdi Kadıoğlu 3.5, Jordan Pickford 3.5, Robert Lynch Sánchez 2.7b, Ryan Sessegnon 0.5, Gabriel dos Santos Magalhães 0.0, Leandro Trossard 0.0, Mateus Mané 0.0b, Matheus Nunes 0.0b, Mohamed Salah 0.0b, Patrick Dorgu 0.0, William Saliba 0.0
+  chip plan: {"bench_boosts": [4, 21], "free_hits": [7, 24], "triple_captains": [17, 33], "wildcards": [3, 20]}
+Planning GW32 (chips + transfers)...
+GW32: 51 pts (1691 total), exp 49, 10 scored, 3 transfer(s), bank £0.6m, FT next 1
+pred: Jarrod Bowen 8.3C, João Pedro Junqueira de Jesus 4.7, Bryan Mbeumo 4.7, Morgan Gibbs-White 4.3, Harvey Barnes 3.9, Jordan Pickford 3.5, Keane Lewis-Potter 3.5, Ferdi Kadıoğlu 3.4, Mateus Mané 2.9, Robert Lynch Sánchez 2.8b, Mohamed Salah 1.4, Ryan Sessegnon 1.1b, Matheus Nunes 0.0b, Patrick Dorgu 0.0b, William Saliba 0.0
+  chip plan: {"bench_boosts": [4, 21], "free_hits": [7, 24], "triple_captains": [17, 33], "wildcards": [3, 20]}
+Planning GW33 (chips + transfers)...
+GW33: 78 pts (1769 total), exp 72, 11 scored, 0 transfer(s), bank £0.6m, FT next 2, triple_captain
+pred: João Pedro Junqueira de Jesus 11.3C, Robert Lynch Sánchez 6.3, Jarrod Bowen 6.1, Ferdi Kadıoğlu 6.0, Morgan Gibbs-White 5.4, Mohamed Salah 4.6, Jordan Pickford 3.6b, Keane Lewis-Potter 3.5, Mateus Mané 2.1, Harvey Barnes 1.8, Bryan Mbeumo 1.8, Ryan Sessegnon 1.0b, Matheus Nunes 0.0b, Patrick Dorgu 0.0b, William Saliba 0.0
+  chip plan: {"bench_boosts": [4, 21], "free_hits": [7, 24], "triple_captains": [17, 33], "wildcards": [3, 20]}
+Planning GW34 (chips + transfers)...
+GW34: 61 pts (1830 total), exp 48, 10 scored, 2 transfer(s), bank £0.1m, FT next 1
+pred: Jarrod Bowen 6.5C, Mohamed Salah 6.4, Kai Havertz 5.6, Morgan Gibbs-White 4.6, Jordan Pickford 3.6, Keane Lewis-Potter 3.3, Harvey Barnes 3.2, Mateus Mané 3.0, Ryan Sessegnon 2.9, Tyrick Mitchell 2.7, Bryan Mbeumo 0.0b, Ferdi Kadıoğlu 0.0b, Matheus Nunes 0.0b, Robert Lynch Sánchez 0.0b, William Saliba 0.0
+  chip plan: {"bench_boosts": [4, 21], "free_hits": [7, 24], "triple_captains": [17, 33], "wildcards": [3, 20]}
+Planning GW35 (chips + transfers)...
+GW35: 39 pts (1869 total), exp 36, 11 scored, 0 transfer(s), bank £0.1m, FT next 2
+pred: Jarrod Bowen 5.8C, Mateus Mané 4.7, Morgan Gibbs-White 4.6, Keane Lewis-Potter 4.4, Robert Lynch Sánchez 3.4, Jordan Pickford 3.3b, Ferdi Kadıoğlu 3.1, Harvey Barnes 2.1, Tyrick Mitchell 1.7, Bryan Mbeumo 0.0, Kai Havertz 0.0, Matheus Nunes 0.0b, Mohamed Salah 0.0b, Ryan Sessegnon 0.0b, William Saliba 0.0
+  chip plan: {"bench_boosts": [4, 21], "free_hits": [7, 24], "triple_captains": [17, 33], "wildcards": [3, 20]}
+Planning GW36 (chips + transfers)...
+GW36: 43 pts (1912 total), exp 46, 11 scored, 2 transfer(s), bank £0.9m, FT next 1
+pred: Brennan Johnson 7.4C, Jarrod Bowen 5.7, João Pedro Junqueira de Jesus 5.2, Ferdi Kadıoğlu 4.9, Mateus Mané 3.7, Jordan Pickford 3.6, Tyrick Mitchell 3.1, Keane Lewis-Potter 3.0, Harvey Barnes 1.5, Bryan Mbeumo 0.0, Matheus Nunes 0.0b, Mohamed Salah 0.0b, Robert Lynch Sánchez 0.0b, Ryan Sessegnon 0.0b, William Saliba 0.0
+  chip plan: {"bench_boosts": [4, 21], "free_hits": [7, 24], "triple_captains": [17, 33], "wildcards": [3, 20]}
+Planning GW37 (chips + transfers)...
+GW37: 42 pts (1954 total), exp 44, 11 scored, 0 transfer(s), bank £0.9m, FT next 2
+pred: João Pedro Junqueira de Jesus 6.3C, Jarrod Bowen 6.0, Keane Lewis-Potter 4.3, Jordan Pickford 4.2, Mateus Mané 4.0, Brennan Johnson 3.9, Tyrick Mitchell 3.5, Ferdi Kadıoğlu 3.4, Harvey Barnes 2.1, Bryan Mbeumo 0.0, Matheus Nunes 0.0b, Mohamed Salah 0.0b, Robert Lynch Sánchez 0.0b, Ryan Sessegnon 0.0b, William Saliba 0.0
+  chip plan: {"bench_boosts": [4, 21], "free_hits": [7, 24], "triple_captains": [17, 33], "wildcards": [3, 20]}
+Planning GW38 (chips + transfers)...
+GW38: 55 pts (2009 total), exp 51, 10 scored, 2 transfer(s), bank £12.5m, FT next 1
+pred: Jarrod Bowen 7.3C, Mateus Mané 5.2, Valentín Castellanos 4.4, Rio Ngumoha 4.4, Harvey Barnes 4.3, Keane Lewis-Potter 4.1, Jordan Pickford 4.0, Ferdi Kadıoğlu 4.0, Tyrick Mitchell 3.6, Brennan Johnson 2.6, Bryan Mbeumo 0.0b, Matheus Nunes 0.0b, Robert Lynch Sánchez 0.0b, Ryan Sessegnon 0.0b, William Saliba 0.0
+  chip plan: {"bench_boosts": [4, 21], "free_hits": [7, 24], "triple_captains": [17, 33], "wildcards": [3, 20]}
+Overall rank: ~3,859,912 of ~12,859,433 (top 30.02%, ahead of 69.98% of managers) [interpolated from 69 FPL histories in 2025/26]
+Wrote simulation reports to C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\run_metrics\simulations\run_163

@@ -1,0 +1,70 @@
+{
+  "autosub_recoveries": 12,
+  "availability_affected_gameweeks": 12,
+  "availability_caveat": "Predicted pp90 and minutes are stored raw. Chance-to-play from live FPL or Randdalf/fplcache is applied in squadtools when scoring the linear optimiser.",
+  "chips": {
+    "bench_boosts": [
+      3,
+      23
+    ],
+    "free_hits": [
+      5,
+      21
+    ],
+    "triple_captains": [
+      19,
+      36
+    ],
+    "wildcards": [
+      2,
+      22
+    ]
+  },
+  "config": {
+    "bench_boost_gameweeks": [
+      7,
+      16,
+      25
+    ],
+    "chip_strategy": true,
+    "fh_recovery_threshold": 8.0,
+    "fh_threshold": 8.0,
+    "free_hit_gameweeks": [
+      35
+    ],
+    "gameweek_from": 1,
+    "gameweek_to": 38,
+    "horizon_gameweeks": 5,
+    "initial_budget": 1000,
+    "max_transfers_per_gameweek": 5,
+    "min_current_gw_gain": 0.0,
+    "min_horizon_gain": 0.0,
+    "output_dir": null,
+    "prediction_set_id": 2,
+    "relax_thresholds_at_max_ft": false,
+    "season_start_year": 25,
+    "tc_above_average_threshold": 4.0,
+    "tc_window": 10,
+    "triple_captain_gameweeks": [
+      13,
+      30
+    ],
+    "wc_threshold": 15.0,
+    "wildcard_gameweeks": [
+      6,
+      24
+    ]
+  },
+  "final_bank": 140,
+  "final_squad_value": 996,
+  "fixture_caveat": "Predictions use the final season fixture calendar, including reschedules that may not have been announced at the deadline.",
+  "hold_gameweeks": 0,
+  "prediction_scope": "rest_of_season",
+  "prediction_set_id": 2,
+  "season": "25/26",
+  "simulation_run_id": 8,
+  "total_points": 2109.0,
+  "transfers_made": 66,
+  "unexpected_zero_minute_starters": 19,
+  "zero_minute_captains": 1
+}

@@ -21,6 +21,16 @@ from premierlearning.config_constants import (
     RETURN_CONSECUTIVE_APPS,
 )
 from premierlearning.helper_functions import coerce_bool, coerce_optional_int
+from premierlearning.learning_v2.kickoff import parse_kickoff
+
+
+def _kickoff_from_json(match_json, team_match):
+    raw = match_json.get('kickoff_time') if isinstance(match_json, dict) else None
+    if raw in (None, ''):
+        fixture = getattr(team_match, 'fixture_json', None) or {}
+        if isinstance(fixture, dict):
+            raw = fixture.get('kickoff_time')
+    return parse_kickoff(raw)
 
 
 class RawMatch(ABC):
@@ -108,6 +118,7 @@ class AbstractMatch(RawMatch):
         self.past_stats: PastStats = get_default_past_stats()
         self.game_stats: GameStats = get_default_game_stats()
         self.new_stats_included = True
+        self.kickoff_time = _kickoff_from_json(match_json, self.team_match)
 
     
     @abstractmethod
@@ -430,7 +441,14 @@ class PastMatch(AbstractMatch):
             if key in NEW_STATS and key not in match_json:
                 continue
             self.game_stats[key] = float(match_json[key])
-        
+        for extra_key in ('expected_goals', 'expected_assists'):
+            if extra_key not in match_json or match_json[extra_key] in (None, ''):
+                continue
+            try:
+                self.game_stats[extra_key] = float(match_json[extra_key])
+            except (TypeError, ValueError):
+                self.game_stats[extra_key] = 0.0
+
         if self.game_stats['goals_conceded'] >= 2:
             self.game_stats['conceded_2_plus'] = 1
             if self.game_stats['goals_conceded'] >= 4:

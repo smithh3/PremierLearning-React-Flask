@@ -1,0 +1,169 @@
+{
+  "player_id_embedding": "embedding",
+  "team_id_embedding": "embedding",
+  "opposition_team_id_embedding": "embedding",
+  "position": "int",
+
+  "current_team": {
+    "team_id_embedding": "embedding",
+
+    "team_features": {
+      "xG_last_n": "float",
+      "xGC_last_n": "float",
+      "goals_last_n": "float",
+      "goals_conceded_last_n": "float",
+      "defcon_last_n": "float"
+    },
+
+    "teammates": {
+      "attention": [
+        {
+          "player_id_embedding": "embedding",
+          "position": "int",
+          "xG_last_n": "float",
+          "xA_last_n": "float",
+          "goals_last_n": "float",
+          "assists_last_n": "float",
+          "defcon_last_n": "float",
+          "xGC_last_n": "float",
+          "minutes_last_n": "float"
+        }
+      ]
+    }
+  },
+
+  "current_opposition": {
+    "opposition_team_id_embedding": "embedding",
+
+    "team_features": {
+      "xG_last_n": "float",
+      "xGC_last_n": "float",
+      "goals_last_n": "float",
+      "goals_conceded_last_n": "float",
+      "defcon_last_n": "float"
+    },
+
+    "players": {
+      "attention": [
+        {
+          "player_id_embedding": "embedding",
+          "position": "int",
+          "xG_last_n": "float",
+          "xA_last_n": "float",
+          "goals_last_n": "float",
+          "assists_last_n": "float",
+          "defcon_last_n": "float",
+          "xGC_last_n": "float",
+          "minutes_last_n": "float"
+        }
+      ]
+    }
+  },
+
+  "match_facts": {
+    "home_away": "int",
+    "days_since_previous_match": "float"
+  },
+
+  "player_fixture_history": {
+    "transformer": [
+      {
+        "team_id_embedding": "embedding",
+        "opposition_team_id_embedding": "embedding",
+
+        "match_facts": {
+          "home_away": "int",
+          "days_since_previous_match": "float"
+        },
+
+        "player_performance": {
+          "points_scored": "float",
+          "minutes_played": "float",
+          "xG": "float",
+          "xA": "float",
+          "xGC": "float",
+          "goals": "float",
+          "assists": "float",
+          "defcon": "float"
+        },
+
+        "opposition_team": {
+          "team_features": {
+            "xG_pre_match": "float",
+            "xGC_pre_match": "float",
+            "goals_pre_match": "float",
+            "goals_conceded_pre_match": "float"
+          },
+
+          "players": {
+            "attention": [
+              {
+                "player_id_embedding": "embedding",
+                "position": "int",
+                "xG_last_n": "float",
+                "xA_last_n": "float",
+                "goals_last_n": "float",
+                "assists_last_n": "float",
+                "defcon_last_n": "float",
+                "xGC_last_n": "float",
+                "minutes_played_last_n": "float"
+              }
+            ]
+          }
+        },
+
+        "team": {
+          "team_features": {
+            "xG_pre_match": "float",
+            "xGC_pre_match": "float",
+            "goals_pre_match": "float",
+            "goals_conceded_pre_match": "float"
+          },
+
+          "teammates": {
+            "attention": [
+              {
+                "player_id_embedding": "embedding",
+                "position": "int",
+                "xG_last_n": "float",
+                "xA_last_n": "float",
+                "goals_last_n": "float",
+                "assists_last_n": "float",
+                "defcon_last_n": "float",
+                "xGC_last_n": "float",
+                "minutes_played_last_n": "float"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+
+  "past_season_fixture_history": {
+    "transformer": [
+      {
+        "season": "int",
+
+        "player_performance_per_90": {
+          "points_scored": "float",
+          "minutes_played": "float",
+          "xG": "float",
+          "xA": "float",
+          "xGC": "float",
+          "goals": "float",
+          "assists": "float",
+          "defcon": "float"
+        },
+
+        "team_performance_per_90": {
+          "xG": "float",
+          "xGC": "float",
+          "goals": "float",
+          "goals_conceded": "float",
+          "defcon": "float"
+        }
+      }
+    ]
+  }
+}

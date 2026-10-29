@@ -201,11 +201,14 @@ class RawPlayer(ABC):
 
     def get_price_at_gw(self, gw):
         player_file_path = PLAYER_JSON_FILE_LOCATION % (SEASON_YR, SEASON_YR + 1) + str(self.id) + '.json'
-        player_json = read_json(player_file_path)
-        for past_gw in player_json['history']:
+        player_json = read_json(player_file_path) or {}
+        history = player_json.get('history') or []
+        for past_gw in history:
             if past_gw['round'] == gw:
                 return past_gw['value']
-        return player_json['history'][0]['value']
+        if history:
+            return history[0]['value']
+        return self.current_cost
     
     def get_name(self):
         return f'{self.first_name} {self.last_name}'

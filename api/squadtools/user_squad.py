@@ -1,6 +1,23 @@
 from .squad import AbstractSquad
 from .logged_in_action_performer import make_transfers, pick_team
 
+
+# FPL plays wildcard and free hit on the transfers request. Bench Boost and
+# Triple Captain are played on the my-team request. Names are the API values.
+TRANSFER_CHIPS = {
+    'wildcard': 'wildcard',
+    'free_hit': 'freehit',
+}
+TEAM_CHIPS = {
+    'bench_boost': 'bboost',
+    'triple_captain': '3xc',
+}
+
+
+def _fpl_price(value):
+    return int(round(float(value)))
+
+
 class UserSquad(AbstractSquad):
 
     def __init__(self, user_json, players, element_types):
@@ -55,7 +72,7 @@ class UserSquad(AbstractSquad):
             wrapped_player.selling_price = element['selling_price']
             self.budget += wrapped_player.selling_price
 
-    def pick_team_request_format(self):
+    def pick_team_request_format(self, chip=None):
         starting_team = self.future_starting_teams[self.next_gameweek]
         captain = starting_team.captain
         vice_captain = starting_team.vice_captain
@@ -74,19 +91,30 @@ class UserSquad(AbstractSquad):
             picks[player.id] = player.format_as_request_pick(placement, False, False)
             placement += 1
 
-        return {'chip': None, 'picks': list(picks.values())}
+        return {'chip': TEAM_CHIPS.get(chip), 'picks': list(picks.values())}
 
-    def format_transfer_requests(self):
+    def format_transfer_requests(self, chip=None):
         request_payload = {
-            'chips': None,
+            'chip': TRANSFER_CHIPS.get(chip),
             'entry': self.manager_id,
             'event': self.next_gameweek,
             'transfers': []
         }
         for transfer in self.staged_transfers:
-            request_payload['transfers'].append(transfer.format_as_request())
+            request_payload['transfers'].append(self._transfer_body(transfer))
 
         return request_payload
+
+    def _transfer_body(self, transfer):
+        body = transfer.format_as_request()
+        wrapped_out = self.wrapped_player_dict.get(transfer.player_out.id)
+        if wrapped_out is not None and wrapped_out.selling_price is not None:
+            # FPL rejects the whole request if this is not the my-team sell price.
+            body['selling_price'] = _fpl_price(wrapped_out.selling_price)
+        current_cost = getattr(transfer.player_in, 'current_cost', None)
+        if current_cost is not None:
+            body['purchase_price'] = _fpl_price(current_cost)
+        return body
     
     # def get_starting_teams_json(self):
     #     starting_teams = {}
@@ -99,12 +127,12 @@ class UserSquad(AbstractSquad):
     #         }
     #     return starting_teams
 
-    def log_in_and_make_transfers(self, email, password):
-        request_payload = self.format_transfer_requests()
+    def log_in_and_make_transfers(self, email, password, chip=None):
+        request_payload = self.format_transfer_requests(chip=chip)
         make_transfers(request_payload, email, password)
         self.staged_transfers.clear()
 
-    def log_in_and_pick_team(self, email, password):
+    def log_in_and_pick_team(self, email, password, chip=None):
         self.populate_future_starting_teams(5)
         starting_team = self.future_starting_teams[self.next_gameweek]
         print('Starting XI:')
@@ -115,4 +143,6 @@ class UserSquad(AbstractSquad):
             print('  %s' % player)
         print('Captain: %s' % starting_team.captain)
         print('Vice-captain: %s' % starting_team.vice_captain)
-        pick_team(self.pick_team_request_format(), email, password)
+        if TEAM_CHIPS.get(chip):
+            print('Playing %s' % TEAM_CHIPS[chip])
+        pick_team(self.pick_team_request_format(chip=chip), email, password)

@@ -1,0 +1,497 @@
+{
+  "rows": [
+    {
+      "arm": "01_h1_base",
+      "fit": "h1_base",
+      "smear": "off",
+      "note": "Baseline single-gameweek model.",
+      "reps": 5,
+      "weighted_mae": 2.4931,
+      "weighted_mae_std": 0.0239,
+      "weighted_skill": -0.0148,
+      "weighted_skill_std": 0.0097,
+      "points_mae": 1.998,
+      "points_mae_std": 0.0197,
+      "points_calibration": 0.7953,
+      "points_calibration_std": 0.0377,
+      "spearman": 0.5208,
+      "spearman_std": 0.0014,
+      "top20": 0.1928,
+      "top20_std": 0.0113,
+      "window_mae": 5.1364,
+      "window_mae_std": 0.1336,
+      "window_skill": 0.205,
+      "window_skill_std": 0.0207,
+      "fixture_mae": 5.2772,
+      "fixture_mae_std": 0.0264,
+      "fixture_skill": -0.0051,
+      "fixture_skill_std": 0.005,
+      "pred_mean": 3.5367,
+      "pred_mean_std": 0.1627,
+      "slice_cal_lo": 0.0175,
+      "slice_cal_lo_std": 0.0009,
+      "slice_cal_hi": 0.9329,
+      "slice_cal_hi_std": 0.0536,
+      "actual_mean": 6.4411,
+      "starter_pp90_mean": 4.0272,
+      "slice_cal": [
+        0.0175,
+        0.1074,
+        0.5254,
+        0.878,
+        0.8863,
+        0.907,
+        0.9404,
+        0.916,
+        0.9295,
+        0.9329
+      ]
+    },
+    {
+      "arm": "16_hz_poisson_mw",
+      "fit": "hz_poisson_mw",
+      "smear": "off",
+      "note": "Horizon, poisson with exposure.",
+      "reps": 5,
+      "weighted_mae": 2.6503,
+      "weighted_mae_std": 0.019,
+      "weighted_skill": -0.0787,
+      "weighted_skill_std": 0.0077,
+      "points_mae": 2.1234,
+      "points_mae_std": 0.0144,
+      "points_calibration": 0.9469,
+      "points_calibration_std": 0.0165,
+      "spearman": 0.5153,
+      "spearman_std": 0.0008,
+      "top20": 0.195,
+      "top20_std": 0.0044,
+      "window_mae": 4.7924,
+      "window_mae_std": 0.0061,
+      "window_skill": 0.2582,
+      "window_skill_std": 0.0009,
+      "fixture_mae": 5.4332,
+      "fixture_mae_std": 0.0194,
+      "fixture_skill": -0.0348,
+      "fixture_skill_std": 0.0037,
+      "pred_mean": 4.1135,
+      "pred_mean_std": 0.0734,
+      "slice_cal_lo": 0.0197,
+      "slice_cal_lo_std": 0.0004,
+      "slice_cal_hi": 1.122,
+      "slice_cal_hi_std": 0.0294,
+      "actual_mean": 6.4411,
+      "starter_pp90_mean": 4.0272,
+      "slice_cal": [
+        0.0197,
+        0.12,
+        0.5848,
+        1.0217,
+        1.1172,
+        1.0748,
+        1.1004,
+        1.1138,
+        1.0957,
+        1.122
+      ]
+    },
+    {
+      "arm": "20_h1_huber_raw_mw",
+      "fit": "h1_huber_raw_mw",
+      "smear": "off",
+      "note": "Huber on raw pp90 plus minutes weights: was log1p the bug, or is Poisson special?",
+      "reps": 5,
+      "weighted_mae": 2.4217,
+      "weighted_mae_std": 0.0044,
+      "weighted_skill": 0.0143,
+      "weighted_skill_std": 0.0018,
+      "points_mae": 1.9495,
+      "points_mae_std": 0.005,
+      "points_calibration": 0.7434,
+      "points_calibration_std": 0.0096,
+      "spearman": 0.5255,
+      "spearman_std": 0.0008,
+      "top20": 0.2022,
+      "top20_std": 0.0041,
+      "window_mae": 5.1821,
+      "window_mae_std": 0.0494,
+      "window_skill": 0.1979,
+      "window_skill_std": 0.0076,
+      "fixture_mae": 5.2222,
+      "fixture_mae_std": 0.0053,
+      "fixture_skill": 0.0054,
+      "fixture_skill_std": 0.001,
+      "pred_mean": 3.2157,
+      "pred_mean_std": 0.0378,
+      "slice_cal_lo": 0.0151,
+      "slice_cal_lo_std": 0.0002,
+      "slice_cal_hi": 0.8359,
+      "slice_cal_hi_std": 0.0125,
+      "actual_mean": 6.4411,
+      "starter_pp90_mean": 4.0272,
+      "slice_cal": [
+        0.0151,
+        0.0962,
+        0.4443,
+        0.8677,
+        0.8406,
+        0.875,
+        0.8729,
+        0.8592,
+        0.8864,
+        0.8359
+      ]
+    }
+  ],
+  "fit_stats": {
+    "h1_base": {
+      "note": "Single gameweek, exactly as it runs now.",
+      "reps": [
+        {
+          "epochs_ran": 51,
+          "test_mae": 16.483505249023438,
+          "best_val_mae": 4.740169525146484,
+          "pred_mean": 3.53133168818273
+        },
+        {
+          "epochs_ran": 42,
+          "test_mae": 16.505319595336914,
+          "best_val_mae": 4.7363600730896,
+          "pred_mean": 3.727410754417504
+        },
+        {
+          "epochs_ran": 35,
+          "test_mae": 16.519380569458008,
+          "best_val_mae": 4.7381110191345215,
+          "pred_mean": 3.264488764575111
+        },
+        {
+          "epochs_ran": 47,
+          "test_mae": 16.490299224853516,
+          "best_val_mae": 4.7462921142578125,
+          "pred_mean": 3.484758816663717
+        },
+        {
+          "epochs_ran": 39,
+          "test_mae": 16.50409507751465,
+          "best_val_mae": 4.73646879196167,
+          "pred_mean": 3.6753863960100643
+        }
+      ],
+      "smearing": [
+        {
+          "S": 1.66116160001064,
+          "residual_sd_log": 0.7974815995300375,
+          "S_if_lognormal": 1.3743603883653368,
+          "n_rows": 11869,
+          "by_pred_level": [
+            {
+              "lo": 1.5145858392932006,
+              "hi": 2.5555479918405655,
+              "pred_mean": 2.015572311212298,
+              "S": 1.594259975502497,
+              "n": 2374
+            },
+            {
+              "lo": 2.5555479918405655,
+              "hi": 3.1470574978457475,
+              "pred_mean": 2.8858801925628588,
+              "S": 1.5000670438675956,
+              "n": 2374
+            },
+            {
+              "lo": 3.1470574978457475,
+              "hi": 3.616729905089855,
+              "pred_mean": 3.3801664527809745,
+              "S": 1.5520182368460183,
+              "n": 2373
+            },
+            {
+              "lo": 3.616729905089855,
+              "hi": 4.249812555961829,
+              "pred_mean": 3.9117598532792677,
+              "S": 1.6901075003640347,
+              "n": 2374
+            },
+            {
+              "lo": 4.249812555961829,
+              "hi": 10.324611313605393,
+              "pred_mean": 5.016086288492486,
+              "S": 1.9693092690151064,
+              "n": 2374
+            }
+          ]
+        },
+        {
+          "S": 1.6807495815426505,
+          "residual_sd_log": 0.7992360690590756,
+          "S_if_lognormal": 1.3762867986475984,
+          "n_rows": 11869,
+          "by_pred_level": [
+            {
+              "lo": 1.353163455870567,
+              "hi": 2.586555417377193,
+              "pred_mean": 1.9930372813924393,
+              "S": 1.6389624336450168,
+              "n": 2374
+            },
+            {
+              "lo": 2.586555417377193,
+              "hi": 3.150093227052943,
+              "pred_mean": 2.908171319881855,
+              "S": 1.5057776127119917,
+              "n": 2374
+            },
+            {
+              "lo": 3.150093227052943,
+              "hi": 3.5941913060303325,
+              "pred_mean": 3.364126220792724,
+              "S": 1.4854973314270394,
+              "n": 2373
+            },
+            {
+              "lo": 3.5941913060303325,
+              "hi": 4.197771646954974,
+              "pred_mean": 3.880560921742061,
+              "S": 1.7573464946443982,
+              "n": 2374
+            },
+            {
+              "lo": 4.197771646954974,
+              "hi": 8.372727799462133,
+              "pred_mean": 4.831849247655469,
+              "S": 2.016081789181137,
+              "n": 2374
+            }
+          ]
+        },
+        {
+          "S": 1.6884044451261595,
+          "residual_sd_log": 0.800155254918515,
+          "S_if_lognormal": 1.3772988362449452,
+          "n_rows": 11869,
+          "by_pred_level": [
+            {
+              "lo": 1.3855012336854466,
+              "hi": 2.600648466287052,
+              "pred_mean": 2.0792722237532963,
+              "S": 1.5336516603498633,
+              "n": 2374
+            },
+            {
+              "lo": 2.600648466287052,
+              "hi": 3.139632609907617,
+              "pred_mean": 2.897021448552364,
+              "S": 1.4847572537130174,
+              "n": 2374
+            },
+            {
+              "lo": 3.139632609907617,
+              "hi": 3.549388196860731,
+              "pred_mean": 3.3406187642072056,
+              "S": 1.5957725272708512,
+              "n": 2373
+            },
+            {
+              "lo": 3.549388196860731,
+              "hi": 4.091115241283114,
+              "pred_mean": 3.7987359331440524,
+              "S": 1.7071016475143728,
+              "n": 2374
+            },
+            {
+              "lo": 4.091115241283114,
+              "hi": 7.875289293171308,
+              "pred_mean": 4.664830714561993,
+              "S": 2.1207001174407156,
+              "n": 2374
+            }
+          ]
+        },
+        {
+          "S": 1.6530338990436033,
+          "residual_sd_log": 0.7989489205928479,
+          "S_if_lognormal": 1.3759710346064624,
+          "n_rows": 11869,
+          "by_pred_level": [
+            {
+              "lo": 1.5232035918901459,
+              "hi": 2.626466974945543,
+              "pred_mean": 2.1073467949774605,
+              "S": 1.543108546448539,
+              "n": 2374
+            },
+            {
+              "lo": 2.626466974945543,
+              "hi": 3.1862339451017774,
+              "pred_mean": 2.930974046486575,
+              "S": 1.5035889776935916,
+              "n": 2374
+            },
+            {
+              "lo": 3.1862339451017774,
+              "hi": 3.6434376493869673,
+              "pred_mean": 3.4118937951097346,
+              "S": 1.5267906473098178,
+              "n": 2373
+            },
+            {
+              "lo": 3.6434376493869673,
+              "hi": 4.234426299402595,
+              "pred_mean": 3.923932970948698,
+              "S": 1.6923131677467065,
+              "n": 2374
+            },
+            {
+              "lo": 4.234426299402595,
+              "hi": 8.685730545905296,
+              "pred_mean": 4.909992901831735,
+              "S": 1.999314978575498,
+              "n": 2374
+            }
+          ]
+        },
+        {
+          "S": 1.6815870566843598,
+          "residual_sd_log": 0.7990211974496761,
+          "S_if_lognormal": 1.3760504966532523,
+          "n_rows": 11869,
+          "by_pred_level": [
+            {
+              "lo": 1.4052456724910796,
+              "hi": 2.5815894749914854,
+              "pred_mean": 2.0027739004522633,
+              "S": 1.624867501941328,
+              "n": 2374
+            },
+            {
+              "lo": 2.5815894749914854,
+              "hi": 3.1501747594724807,
+              "pred_mean": 2.8950146285895713,
+              "S": 1.5005994317405325,
+              "n": 2374
+            },
+            {
+              "lo": 3.1501747594724807,
+              "hi": 3.5982114154016847,
+              "pred_mean": 3.3748990388635196,
+              "S": 1.565669350243148,
+              "n": 2373
+            },
+            {
+              "lo": 3.5982114154016847,
+              "hi": 4.17448809814272,
+              "pred_mean": 3.8695960558011144,
+              "S": 1.7132118178528641,
+              "n": 2374
+            },
+            {
+              "lo": 4.17448809814272,
+              "hi": 10.377747339971007,
+              "pred_mean": 4.824023516223585,
+              "S": 2.003538353629419,
+              "n": 2374
+            }
+          ]
+        }
+      ]
+    },
+    "h1_huber_raw_mw": {
+      "note": "Single gameweek, Huber on raw pp90 with exposure weights (log off).",
+      "reps": [
+        {
+          "epochs_ran": 52,
+          "test_mae": 16.730327606201172,
+          "best_val_mae": 4.759148120880127,
+          "pred_mean": 3.1655692108591267
+        },
+        {
+          "epochs_ran": 55,
+          "test_mae": 16.731958389282227,
+          "best_val_mae": 4.7583417892456055,
+          "pred_mean": 3.2272958215535836
+        },
+        {
+          "epochs_ran": 43,
+          "test_mae": 16.74960708618164,
+          "best_val_mae": 4.763267993927002,
+          "pred_mean": 3.2025646717181115
+        },
+        {
+          "epochs_ran": 64,
+          "test_mae": 16.72804069519043,
+          "best_val_mae": 4.759151935577393,
+          "pred_mean": 3.202583793562818
+        },
+        {
+          "epochs_ran": 58,
+          "test_mae": 16.7236328125,
+          "best_val_mae": 4.754654884338379,
+          "pred_mean": 3.2802188855975065
+        }
+      ],
+      "smearing": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "hz_poisson_mw": {
+      "note": "Horizon, poisson with exposure weights.",
+      "reps": [
+        {
+          "epochs_ran": 51,
+          "test_mae": 2.7344961166381836,
+          "best_val_mae": 1.5256938934326172,
+          "pred_mean": 3.976124416209525
+        },
+        {
+          "epochs_ran": 57,
+          "test_mae": 2.7077999114990234,
+          "best_val_mae": 1.5287562608718872,
+          "pred_mean": 4.166905693184558
+        },
+        {
+          "epochs_ran": 82,
+          "test_mae": 2.702082633972168,
+          "best_val_mae": 1.5249577760696411,
+          "pred_mean": 4.167393194342688
+        },
+        {
+          "epochs_ran": 59,
+          "test_mae": 2.7052927017211914,
+          "best_val_mae": 1.5210829973220825,
+          "pred_mean": 4.158205973444511
+        },
+        {
+          "epochs_ran": 71,
+          "test_mae": 2.7181241512298584,
+          "best_val_mae": 1.5223819017410278,
+          "pred_mean": 4.1000373433819775
+        }
+      ],
+      "smearing": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  },
+  "context": {
+    "holdout_season": 25,
+    "split_gw": 20,
+    "last_gw": 38,
+    "horizon": 5,
+    "reps": 5,
+    "pack": "full",
+    "score_minutes": "predicted",
+    "n_windows": 4170,
+    "n_fixtures": 20956,
+    "actual_mean": 6.4411,
+    "starter_pp90_mean": 4.0272,
+    "minutes_mae": 20.9949
+  }
+}

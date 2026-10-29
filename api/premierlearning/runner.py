@@ -118,7 +118,7 @@ class Runner:
         team_only = '--team-only' in sys.argv
         horizon_only = '--horizon-only' in sys.argv
         minutes_only = '--minutes-only' in sys.argv
-        expectancies = use_team_expectancies()
+        expectancies = use_team_expectancies() and '--learning-v2' not in sys.argv
         if use_linear_model():
             print('Linear-only mode: RidgeCV for team + player predictions (no neural nets)')
 
@@ -773,6 +773,10 @@ class Runner:
 
 
     def learn(self, horizon_only: bool = False, minutes_only: bool = False):
+        if '--learning-v2' in sys.argv:
+            from premierlearning.learning_v2.learn import learn_h1
+            learn_h1(self)
+            return
         clean_matches = self.populate_formatted_match_data()
 
         valid_clean_matches = [match for match in clean_matches if match['is_valid']]
@@ -848,6 +852,28 @@ class Runner:
 
         if not horizon_only:
             learnt_stats = {}
+            points_loss = parse_points_loss()
+            poisson = points_loss == 'poisson'
+            minutes_weight = parse_points_minutes_weight()
+            points_reps = parse_points_reps()
+            sample_weight = None
+            if minutes_weight:
+                sample_weight = numpy.array(
+                    [
+                        float(m.get('game_stats', {}).get('minutes', 0) or 0) / 90.0
+                        for m in valid_clean_matches
+                    ],
+                    dtype=float,
+                )
+                print(
+                    'h1 points: minutes/90 sample weights on %s rows'
+                    % len(valid_clean_matches)
+                )
+            if poisson:
+                print(
+                    'h1 points: Poisson loss, %s fit(s), log1p off'
+                    % points_reps
+                )
             # Horizon-1: points/90 per fixture (same construction as h5 / last_5), then × mins/90
             h1_pp90_labels = numpy.array(
                 [[self._clean_match_points_per_90(m)] for m in valid_clean_matches],
@@ -855,7 +881,10 @@ class Runner:
             )
             learnt_stats['total_points'] = get_avg_predictions(
                 valid_clean_matches, future_clean_matches, get_input_keys('total_points'),
-                'total_points', True, output_learn=h1_pp90_labels, log_targets=True
+                'total_points', True, output_learn=h1_pp90_labels,
+                log_targets=not poisson, reps=points_reps,
+                sample_weight=sample_weight,
+                loss=points_loss if poisson else None,
             )
             minutes_reps = parse_minutes_reps()
             if minutes_reps > 1:
@@ -891,34 +920,43 @@ class Runner:
         # Next-N GW: label = points/90 over appearances in fixtures assigned to
         # the exact next N gameweeks. Blanks and doubles therefore retain their
         # real gameweek meaning.
-        horizon = self.horizon_gameweeks
-        horizon_train = self.build_horizon_training_data(horizon)
-        horizon_pred = self.build_horizon_predict_data(horizon)
-        if horizon_train['player_clean'] and horizon_pred['player_clean']:
-            horizon_reps = parse_horizon_reps()
-            if horizon_reps > 1:
-                print(
-                    f'Horizon-{horizon} model: {horizon_reps} independent fits '
-                    f'({HORIZON_REPS_FLAG}); h1 points stay 1 fit'
-                )
-            horizon_pp90 = get_avg_predictions(
-                horizon_train['player_clean'],
-                horizon_pred['player_clean'],
-                get_input_keys('total_points'),
-                'total_points',
-                True,
-                output_learn=horizon_train['labels'],
-                log_targets=True,
-                reps=horizon_reps,
-            )
-            self.redistribute_horizon_points(
-                horizon_pred['players'],
-                horizon_pred['fixture_windows'],
-                horizon_pp90,
-                horizon,
+        if parse_no_horizon_model():
+            print(
+                'Skipping horizon model (--h1-poisson / --no-horizon-model); '
+                'h1 fixture scores stay unscaled'
             )
         else:
-            print(f'Skipping next-{horizon} points model (insufficient training or predict rows)')
+            horizon = self.horizon_gameweeks
+            horizon_train = self.build_horizon_training_data(horizon)
+            horizon_pred = self.build_horizon_predict_data(horizon)
+            if horizon_train['player_clean'] and horizon_pred['player_clean']:
+                horizon_reps = parse_horizon_reps()
+                if horizon_reps > 1:
+                    print(
+                        f'Horizon-{horizon} model: {horizon_reps} independent fits '
+                        f'({HORIZON_REPS_FLAG}); h1 points stay 1 fit'
+                    )
+                horizon_pp90 = get_avg_predictions(
+                    horizon_train['player_clean'],
+                    horizon_pred['player_clean'],
+                    get_input_keys('total_points'),
+                    'total_points',
+                    True,
+                    output_learn=horizon_train['labels'],
+                    log_targets=True,
+                    reps=horizon_reps,
+                )
+                self.redistribute_horizon_points(
+                    horizon_pred['players'],
+                    horizon_pred['fixture_windows'],
+                    horizon_pp90,
+                    horizon,
+                )
+            else:
+                print(
+                    f'Skipping next-{horizon} points model '
+                    '(insufficient training or predict rows)'
+                )
 
         self.sync_predicted_pp90(future_matches)
 

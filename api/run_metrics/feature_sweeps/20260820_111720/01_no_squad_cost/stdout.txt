@@ -1,0 +1,488 @@
+0.23s - Expected: c:\Users\hal\.cursor\extensions\ms-python.debugpy-2026.6.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd_attach_to_process\attach_amd64.dll to exist.
+Setting up players and teams...
+Running team expectancies...
+Squad cost YoY prior off (--no-squad-cost / PL_SQUAD_COST=0)
+Seeded early-season form for 20 teams from season (25, 26)
+Promoted/new team prior (bottom-3 PL rates scored=0.97 conceded=1.82): COV, HUL, IPS
+Training team goals expectancy model (neural net)...
+Training rows: 5030; max epochs: 500
+Team model input columns:
+  team_scored_last_5
+  team_scored_avg
+  team_conceded_last_5
+  team_conceded_avg
+  opp_scored_last_5
+  opp_scored_avg
+  opp_conceded_last_5
+  opp_conceded_avg
+  is_home
+  fixture_difficulty
+  opp_fixture_difficulty
+Epoch 1/500
+101/101 - 2s - loss: 0.6935 - root_mean_squared_error: 1.4438 - mean_absolute_error: 1.0929 - val_loss: 0.5370 - val_root_mean_squared_error: 1.2000 - val_mean_absolute_error: 0.9220 - lr: 0.0010 - 2s/epoch - 21ms/step
+Epoch 2/500
+101/101 - 0s - loss: 0.5802 - root_mean_squared_error: 1.2597 - mean_absolute_error: 0.9710 - val_loss: 0.5143 - val_root_mean_squared_error: 1.1578 - val_mean_absolute_error: 0.8972 - lr: 0.0010 - 258ms/epoch - 3ms/step
+Epoch 3/500
+101/101 - 0s - loss: 0.5593 - root_mean_squared_error: 1.2278 - mean_absolute_error: 0.9470 - val_loss: 0.5068 - val_root_mean_squared_error: 1.1486 - val_mean_absolute_error: 0.8908 - lr: 0.0010 - 268ms/epoch - 3ms/step
+Epoch 4/500
+101/101 - 0s - loss: 0.5499 - root_mean_squared_error: 1.2147 - mean_absolute_error: 0.9373 - val_loss: 0.5013 - val_root_mean_squared_error: 1.1346 - val_mean_absolute_error: 0.8828 - lr: 0.0010 - 270ms/epoch - 3ms/step
+Epoch 5/500
+101/101 - 0s - loss: 0.5438 - root_mean_squared_error: 1.2067 - mean_absolute_error: 0.9306 - val_loss: 0.4983 - val_root_mean_squared_error: 1.1301 - val_mean_absolute_error: 0.8798 - lr: 0.0010 - 267ms/epoch - 3ms/step
+Epoch 6/500
+101/101 - 0s - loss: 0.5387 - root_mean_squared_error: 1.1983 - mean_absolute_error: 0.9247 - val_loss: 0.4959 - val_root_mean_squared_error: 1.1245 - val_mean_absolute_error: 0.8770 - lr: 0.0010 - 270ms/epoch - 3ms/step
+Epoch 7/500
+101/101 - 0s - loss: 0.5349 - root_mean_squared_error: 1.1931 - mean_absolute_error: 0.9208 - val_loss: 0.4939 - val_root_mean_squared_error: 1.1232 - val_mean_absolute_error: 0.8751 - lr: 0.0010 - 266ms/epoch - 3ms/step
+Epoch 8/500
+101/101 - 0s - loss: 0.5321 - root_mean_squared_error: 1.1875 - mean_absolute_error: 0.9184 - val_loss: 0.4930 - val_root_mean_squared_error: 1.1223 - val_mean_absolute_error: 0.8746 - lr: 0.0010 - 267ms/epoch - 3ms/step
+Epoch 9/500
+101/101 - 0s - loss: 0.5302 - root_mean_squared_error: 1.1863 - mean_absolute_error: 0.9157 - val_loss: 0.4922 - val_root_mean_squared_error: 1.1211 - val_mean_absolute_error: 0.8740 - lr: 0.0010 - 265ms/epoch - 3ms/step
+Epoch 10/500
+101/101 - 0s - loss: 0.5272 - root_mean_squared_error: 1.1803 - mean_absolute_error: 0.9134 - val_loss: 0.4913 - val_root_mean_squared_error: 1.1266 - val_mean_absolute_error: 0.8733 - lr: 0.0010 - 268ms/epoch - 3ms/step
+Epoch 11/500
+101/101 - 0s - loss: 0.5266 - root_mean_squared_error: 1.1822 - mean_absolute_error: 0.9126 - val_loss: 0.4905 - val_root_mean_squared_error: 1.1183 - val_mean_absolute_error: 0.8733 - lr: 0.0010 - 266ms/epoch - 3ms/step
+Epoch 12/500
+101/101 - 0s - loss: 0.5250 - root_mean_squared_error: 1.1779 - mean_absolute_error: 0.9109 - val_loss: 0.4910 - val_root_mean_squared_error: 1.1203 - val_mean_absolute_error: 0.8748 - lr: 0.0010 - 265ms/epoch - 3ms/step
+Epoch 13/500
+101/101 - 0s - loss: 0.5242 - root_mean_squared_error: 1.1784 - mean_absolute_error: 0.9100 - val_loss: 0.4912 - val_root_mean_squared_error: 1.1163 - val_mean_absolute_error: 0.8756 - lr: 0.0010 - 262ms/epoch - 3ms/step
+Epoch 14/500
+101/101 - 0s - loss: 0.5234 - root_mean_squared_error: 1.1759 - mean_absolute_error: 0.9097 - val_loss: 0.4902 - val_root_mean_squared_error: 1.1195 - val_mean_absolute_error: 0.8733 - lr: 0.0010 - 264ms/epoch - 3ms/step
+Epoch 15/500
+101/101 - 0s - loss: 0.5229 - root_mean_squared_error: 1.1741 - mean_absolute_error: 0.9085 - val_loss: 0.4906 - val_root_mean_squared_error: 1.1179 - val_mean_absolute_error: 0.8752 - lr: 0.0010 - 265ms/epoch - 3ms/step
+Epoch 16/500
+101/101 - 0s - loss: 0.5222 - root_mean_squared_error: 1.1748 - mean_absolute_error: 0.9090 - val_loss: 0.4917 - val_root_mean_squared_error: 1.1180 - val_mean_absolute_error: 0.8767 - lr: 0.0010 - 264ms/epoch - 3ms/step
+Epoch 17/500
+101/101 - 0s - loss: 0.5212 - root_mean_squared_error: 1.1708 - mean_absolute_error: 0.9083 - val_loss: 0.4911 - val_root_mean_squared_error: 1.1236 - val_mean_absolute_error: 0.8752 - lr: 0.0010 - 264ms/epoch - 3ms/step
+Epoch 18/500
+101/101 - 0s - loss: 0.5201 - root_mean_squared_error: 1.1719 - mean_absolute_error: 0.9069 - val_loss: 0.4913 - val_root_mean_squared_error: 1.1177 - val_mean_absolute_error: 0.8754 - lr: 0.0010 - 262ms/epoch - 3ms/step
+Epoch 19/500
+101/101 - 0s - loss: 0.5190 - root_mean_squared_error: 1.1698 - mean_absolute_error: 0.9058 - val_loss: 0.4911 - val_root_mean_squared_error: 1.1192 - val_mean_absolute_error: 0.8749 - lr: 5.0000e-04 - 264ms/epoch - 3ms/step
+Epoch 20/500
+101/101 - 0s - loss: 0.5184 - root_mean_squared_error: 1.1698 - mean_absolute_error: 0.9048 - val_loss: 0.4918 - val_root_mean_squared_error: 1.1179 - val_mean_absolute_error: 0.8762 - lr: 5.0000e-04 - 269ms/epoch - 3ms/step
+Epoch 21/500
+101/101 - 0s - loss: 0.5182 - root_mean_squared_error: 1.1684 - mean_absolute_error: 0.9050 - val_loss: 0.4916 - val_root_mean_squared_error: 1.1182 - val_mean_absolute_error: 0.8755 - lr: 5.0000e-04 - 276ms/epoch - 3ms/step
+{'team_model_train_mae': 0.9050481915473938, 'team_model_test_mae': 0.9318894671339164, 'team_model_test_rmse': 1.1822319365515663, 'epochs_ran': 21, 'pred_range': (0.3569847643375397, 3.199932336807251)}
+Squad cost YoY prior off (--no-squad-cost / PL_SQUAD_COST=0)
+Seeded early-season form for 20 teams from season (25, 26)
+Promoted/new team prior (bottom-3 PL rates scored=0.97 conceded=1.82): COV, HUL, IPS
+Team expectancies applied to all fixtures
+Wrote 380 predicted scorelines to predicted_scorelines.json
+
+=== Sample horizon model columns (validation) ===
+
+Erling Haaland (MCI) — PREDICT (exact model input row)
+  form appearances available: 7
+  last_5 (should = total_points_last_5_avg): GW33:6pts/90m, GW33:7pts/90m, GW35:7pts/90m, GW36:11pts/90m, GW37:9pts/90m -> pp90=8.0000
+  last_7 (should = total_points_avg): GW30:2pts/90m, GW32:2pts/90m, GW33:6pts/90m, GW33:7pts/90m, GW35:7pts/90m, GW36:11pts/90m, GW37:9pts/90m -> pp90=6.2857
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  last_season_points_per_90: 7.284118
+  last_season_xgi_per_90: 0.858551
+  new_stats_included: 1
+  team_xg_over_n: 9.953316
+  team_xc_over_n: 4.606376
+  team_xg_last_5: 8.648708
+  team_xc_last_5: 4.901655
+  defcon_avg_x_new_stats_x_non_att: 0.000000
+  team_xg_over_n_x_outfield: 9.953316
+  total_points_last_5_avg: 8.000000
+  total_points_avg: 6.285714
+  xgi_last_5_avg: 0.918000
+  xgi_avg: 0.788571
+  expected_goals_conceded_last_5_avg: 1.446000
+  expected_goals_conceded_avg: 1.272857
+  defensive_contribution_last_5_avg: 2.600000
+  defensive_contribution_avg: 3.000000
+
+Erling Haaland — TRAIN (25, 26) GW35 vs EVE (A) (exact model input row; target window 3/5 played)
+  form appearances available: 39
+  last_5 (should = total_points_last_5_avg): GW29:2pts/90m, GW30:2pts/90m, GW32:2pts/90m, GW33:6pts/90m, GW33:7pts/90m -> pp90=3.8000
+  last_7 (should = total_points_avg): GW26:5pts/45m, GW27:6pts/90m, GW29:2pts/90m, GW30:2pts/90m, GW32:2pts/90m, GW33:6pts/90m, GW33:7pts/90m -> pp90=4.6154
+  target (points/90 over window): 9.000000
+  --- model input features (exact) ---
+  matches_played: 32
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  last_season_points_per_90: 5.953947
+  last_season_xgi_per_90: 0.787500
+  new_stats_included: 1
+  team_xg_over_n: 9.208898
+  team_xc_over_n: 4.698579
+  team_xg_last_5: 8.778513
+  team_xc_last_5: 4.489361
+  defcon_avg_x_new_stats_x_non_att: 0.000000
+  team_xg_over_n_x_outfield: 9.208898
+  total_points_last_5_avg: 3.800000
+  total_points_avg: 4.615385
+  xgi_last_5_avg: 0.610000
+  xgi_avg: 0.569231
+  expected_goals_conceded_last_5_avg: 0.976000
+  expected_goals_conceded_avg: 0.941538
+  defensive_contribution_last_5_avg: 3.600000
+  defensive_contribution_avg: 3.538462
+
+Bruno Borges Fernandes (MUN) — PREDICT (exact model input row)
+  form appearances available: 7
+  last_5 (should = total_points_last_5_avg): GW34:5pts/90m, GW35:5pts/90m, GW36:3pts/90m, GW37:9pts/90m, GW38:14pts/90m -> pp90=7.2000
+  last_7 (should = total_points_avg): GW32:4pts/90m, GW33:6pts/90m, GW34:5pts/90m, GW35:5pts/90m, GW36:3pts/90m, GW37:9pts/90m, GW38:14pts/90m -> pp90=6.5714
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 6.900489
+  last_season_xgi_per_90: 0.677423
+  new_stats_included: 1
+  team_xg_over_n: 8.499133
+  team_xc_over_n: 4.200838
+  team_xg_last_5: 6.926040
+  team_xc_last_5: 5.725271
+  defcon_avg_x_new_stats_x_non_att: 6.428571
+  team_xg_over_n_x_outfield: 8.499133
+  total_points_last_5_avg: 7.200000
+  total_points_avg: 6.571429
+  xgi_last_5_avg: 0.618000
+  xgi_avg: 0.531429
+  expected_goals_conceded_last_5_avg: 1.248000
+  expected_goals_conceded_avg: 1.454286
+  defensive_contribution_last_5_avg: 7.200000
+  defensive_contribution_avg: 6.428571
+
+Bruno Borges Fernandes — TRAIN (25, 26) GW34 vs BRE (H) (exact model input row; target window 5/5 played)
+  form appearances available: 37
+  last_5 (should = total_points_last_5_avg): GW29:8pts/90m, GW30:10pts/90m, GW31:13pts/90m, GW32:4pts/90m, GW33:6pts/90m -> pp90=8.2000
+  last_7 (should = total_points_avg): GW27:2pts/90m, GW28:13pts/90m, GW29:8pts/90m, GW30:10pts/90m, GW31:13pts/90m, GW32:4pts/90m, GW33:6pts/90m -> pp90=8.0000
+  target (points/90 over window): 7.200000
+  --- model input features (exact) ---
+  matches_played: 30
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 5.190587
+  last_season_xgi_per_90: 0.531588
+  new_stats_included: 1
+  team_xg_over_n: 6.926040
+  team_xc_over_n: 5.725271
+  team_xg_last_5: 7.048200
+  team_xc_last_5: 6.210452
+  defcon_avg_x_new_stats_x_non_att: 5.857143
+  team_xg_over_n_x_outfield: 6.926040
+  total_points_last_5_avg: 8.200000
+  total_points_avg: 8.000000
+  xgi_last_5_avg: 0.754000
+  xgi_avg: 0.731429
+  expected_goals_conceded_last_5_avg: 1.844000
+  expected_goals_conceded_avg: 1.460000
+  defensive_contribution_last_5_avg: 7.400000
+  defensive_contribution_avg: 5.857143
+=== End sample columns ===
+
+Preparing data for learning...
+Skipping predict for 177 players with <3 appearances (incl. last-season carry)
+Horizon-only: skipping minutes model; assuming 90 minutes per fixture
+Fitting horizon-1 linear models for per-match points error...
+Linear horizon-1 OOF RMSE: 2.934; per-match |residual| model — future err mean=2.144 range=(0.000, 5.600)
+Horizon-5 train rows: 50962 (skipped 8126 windows with <3 appearances in-window)
+Getting predictions for total_points...
+{'mean baseline absolute error': 1.8004458591633379, 'mean baseline rms error': 3.145923999097624, 'median baseline absolute error': 1.730548864273657, 'median baseline rms error': 3.1963337032660215, 'linear regression absolute error': 1.6296742176828407, 'linear regression rms error': 2.956905769731018}
+Model input columns:
+  matches_played
+  is_gkp
+  is_def
+  is_mid
+  is_att
+  last_season_points_per_90
+  last_season_xgi_per_90
+  new_stats_included
+  team_xg_over_n
+  team_xc_over_n
+  team_xg_last_5
+  team_xc_last_5
+  defcon_avg_x_new_stats_x_non_att
+  team_xg_over_n_x_outfield
+  total_points_last_5_avg
+  total_points_avg
+  expected_goal_involvements_last_5_avg
+  expected_goal_involvements_avg
+  expected_goals_conceded_last_5_avg
+  expected_goals_conceded_avg
+  defensive_contribution_last_5_avg
+  defensive_contribution_avg
+All inputs/outputs have matching shapes and valid numeric values
+Model capacity: hidden=[33, 16, 8], optimizer=AdamW, l2=0.00225, weight_decay=0.0, lr=0.0005 (n_features=22, loss=Huber(delta=1.8))
+Epoch 1/500
+1020/1020 - 5s - loss: 0.2558 - orig_rmse: 4.1412 - orig_mae: 2.0842 - val_loss: 0.1558 - val_orig_rmse: 2.7258 - val_orig_mae: 1.6062 - lr: 5.0000e-04 - 5s/epoch - 5ms/step
+Epoch 2/500
+1020/1020 - 3s - loss: 0.1433 - orig_rmse: 3.2104 - orig_mae: 1.6717 - val_loss: 0.1158 - val_orig_rmse: 2.6559 - val_orig_mae: 1.5600 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 3/500
+1020/1020 - 3s - loss: 0.1093 - orig_rmse: 3.1125 - orig_mae: 1.6081 - val_loss: 0.0945 - val_orig_rmse: 2.6183 - val_orig_mae: 1.5472 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 4/500
+1020/1020 - 3s - loss: 0.0920 - orig_rmse: 3.0886 - orig_mae: 1.5809 - val_loss: 0.0842 - val_orig_rmse: 2.5968 - val_orig_mae: 1.5495 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 5/500
+1020/1020 - 3s - loss: 0.0846 - orig_rmse: 3.0921 - orig_mae: 1.5763 - val_loss: 0.0800 - val_orig_rmse: 2.6393 - val_orig_mae: 1.5508 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 6/500
+1020/1020 - 3s - loss: 0.0812 - orig_rmse: 3.0867 - orig_mae: 1.5768 - val_loss: 0.0772 - val_orig_rmse: 2.6093 - val_orig_mae: 1.5484 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 7/500
+1020/1020 - 3s - loss: 0.0796 - orig_rmse: 3.0840 - orig_mae: 1.5761 - val_loss: 0.0763 - val_orig_rmse: 2.6106 - val_orig_mae: 1.5527 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 8/500
+1020/1020 - 3s - loss: 0.0790 - orig_rmse: 3.0889 - orig_mae: 1.5770 - val_loss: 0.0758 - val_orig_rmse: 2.6154 - val_orig_mae: 1.5480 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 9/500
+1020/1020 - 3s - loss: 0.0786 - orig_rmse: 3.0863 - orig_mae: 1.5779 - val_loss: 0.0759 - val_orig_rmse: 2.5869 - val_orig_mae: 1.5586 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 10/500
+1020/1020 - 3s - loss: 0.0784 - orig_rmse: 3.0900 - orig_mae: 1.5770 - val_loss: 0.0755 - val_orig_rmse: 2.6291 - val_orig_mae: 1.5456 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 11/500
+1020/1020 - 3s - loss: 0.0781 - orig_rmse: 3.0838 - orig_mae: 1.5732 - val_loss: 0.0755 - val_orig_rmse: 2.6266 - val_orig_mae: 1.5493 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 12/500
+1020/1020 - 3s - loss: 0.0780 - orig_rmse: 3.0807 - orig_mae: 1.5719 - val_loss: 0.0755 - val_orig_rmse: 2.6264 - val_orig_mae: 1.5497 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 13/500
+1020/1020 - 3s - loss: 0.0781 - orig_rmse: 3.0861 - orig_mae: 1.5777 - val_loss: 0.0753 - val_orig_rmse: 2.5977 - val_orig_mae: 1.5503 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 14/500
+1020/1020 - 3s - loss: 0.0780 - orig_rmse: 3.0815 - orig_mae: 1.5732 - val_loss: 0.0752 - val_orig_rmse: 2.6071 - val_orig_mae: 1.5486 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 15/500
+1020/1020 - 3s - loss: 0.0779 - orig_rmse: 3.0818 - orig_mae: 1.5746 - val_loss: 0.0751 - val_orig_rmse: 2.6065 - val_orig_mae: 1.5497 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 16/500
+1020/1020 - 3s - loss: 0.0780 - orig_rmse: 3.0814 - orig_mae: 1.5752 - val_loss: 0.0751 - val_orig_rmse: 2.6183 - val_orig_mae: 1.5456 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 17/500
+1020/1020 - 3s - loss: 0.0778 - orig_rmse: 3.0867 - orig_mae: 1.5727 - val_loss: 0.0750 - val_orig_rmse: 2.6015 - val_orig_mae: 1.5497 - lr: 5.0000e-04 - 3s/epoch - 3ms/step
+Epoch 18/500
+1020/1020 - 3s - loss: 0.0775 - orig_rmse: 3.0759 - orig_mae: 1.5701 - val_loss: 0.0750 - val_orig_rmse: 2.6088 - val_orig_mae: 1.5464 - lr: 1.5000e-04 - 3s/epoch - 3ms/step
+Epoch 19/500
+1020/1020 - 3s - loss: 0.0775 - orig_rmse: 3.0805 - orig_mae: 1.5678 - val_loss: 0.0750 - val_orig_rmse: 2.6192 - val_orig_mae: 1.5447 - lr: 1.5000e-04 - 3s/epoch - 3ms/step
+Epoch 20/500
+1020/1020 - 3s - loss: 0.0776 - orig_rmse: 3.0803 - orig_mae: 1.5701 - val_loss: 0.0750 - val_orig_rmse: 2.5946 - val_orig_mae: 1.5493 - lr: 1.5000e-04 - 3s/epoch - 3ms/step
+Epoch 21/500
+1020/1020 - 3s - loss: 0.0775 - orig_rmse: 3.0780 - orig_mae: 1.5698 - val_loss: 0.0753 - val_orig_rmse: 2.6303 - val_orig_mae: 1.5479 - lr: 1.5000e-04 - 3s/epoch - 3ms/step
+Epoch 22/500
+1020/1020 - 3s - loss: 0.0775 - orig_rmse: 3.0763 - orig_mae: 1.5684 - val_loss: 0.0748 - val_orig_rmse: 2.6031 - val_orig_mae: 1.5459 - lr: 1.5000e-04 - 3s/epoch - 3ms/step
+Epoch 23/500
+1020/1020 - 3s - loss: 0.0774 - orig_rmse: 3.0767 - orig_mae: 1.5675 - val_loss: 0.0748 - val_orig_rmse: 2.6072 - val_orig_mae: 1.5442 - lr: 1.5000e-04 - 3s/epoch - 3ms/step
+Epoch 24/500
+1020/1020 - 3s - loss: 0.0774 - orig_rmse: 3.0776 - orig_mae: 1.5679 - val_loss: 0.0748 - val_orig_rmse: 2.6086 - val_orig_mae: 1.5432 - lr: 1.5000e-04 - 3s/epoch - 3ms/step
+Epoch 25/500
+1020/1020 - 3s - loss: 0.0773 - orig_rmse: 3.0776 - orig_mae: 1.5675 - val_loss: 0.0748 - val_orig_rmse: 2.6011 - val_orig_mae: 1.5453 - lr: 1.5000e-04 - 3s/epoch - 3ms/step
+Epoch 26/500
+1020/1020 - 3s - loss: 0.0775 - orig_rmse: 3.0802 - orig_mae: 1.5684 - val_loss: 0.0747 - val_orig_rmse: 2.6035 - val_orig_mae: 1.5436 - lr: 4.5000e-05 - 3s/epoch - 3ms/step
+Epoch 27/500
+1020/1020 - 3s - loss: 0.0773 - orig_rmse: 3.0729 - orig_mae: 1.5677 - val_loss: 0.0748 - val_orig_rmse: 2.6130 - val_orig_mae: 1.5430 - lr: 4.5000e-05 - 3s/epoch - 3ms/step
+Epoch 28/500
+1020/1020 - 3s - loss: 0.0774 - orig_rmse: 3.0767 - orig_mae: 1.5677 - val_loss: 0.0747 - val_orig_rmse: 2.6051 - val_orig_mae: 1.5440 - lr: 4.5000e-05 - 3s/epoch - 3ms/step
+Epoch 29/500
+1020/1020 - 3s - loss: 0.0774 - orig_rmse: 3.0768 - orig_mae: 1.5695 - val_loss: 0.0747 - val_orig_rmse: 2.6097 - val_orig_mae: 1.5432 - lr: 4.5000e-05 - 3s/epoch - 3ms/step
+Epoch 30/500
+1020/1020 - 3s - loss: 0.0774 - orig_rmse: 3.0791 - orig_mae: 1.5670 - val_loss: 0.0747 - val_orig_rmse: 2.6055 - val_orig_mae: 1.5433 - lr: 4.5000e-05 - 3s/epoch - 3ms/step
+Epoch 31/500
+1020/1020 - 3s - loss: 0.0773 - orig_rmse: 3.0764 - orig_mae: 1.5662 - val_loss: 0.0748 - val_orig_rmse: 2.6125 - val_orig_mae: 1.5433 - lr: 4.5000e-05 - 3s/epoch - 3ms/step
+Epoch 32/500
+1020/1020 - 3s - loss: 0.0774 - orig_rmse: 3.0769 - orig_mae: 1.5690 - val_loss: 0.0747 - val_orig_rmse: 2.6031 - val_orig_mae: 1.5442 - lr: 4.5000e-05 - 3s/epoch - 3ms/step
+Epoch 33/500
+1020/1020 - 3s - loss: 0.0773 - orig_rmse: 3.0759 - orig_mae: 1.5680 - val_loss: 0.0747 - val_orig_rmse: 2.6014 - val_orig_mae: 1.5441 - lr: 4.5000e-05 - 3s/epoch - 3ms/step
+Epoch 34/500
+1020/1020 - 3s - loss: 0.0772 - orig_rmse: 3.0729 - orig_mae: 1.5683 - val_loss: 0.0747 - val_orig_rmse: 2.6090 - val_orig_mae: 1.5436 - lr: 1.3500e-05 - 3s/epoch - 3ms/step
+Epoch 35/500
+1020/1020 - 3s - loss: 0.0773 - orig_rmse: 3.0791 - orig_mae: 1.5678 - val_loss: 0.0747 - val_orig_rmse: 2.6017 - val_orig_mae: 1.5443 - lr: 1.3500e-05 - 3s/epoch - 3ms/step
+Epoch 36/500
+1020/1020 - 3s - loss: 0.0773 - orig_rmse: 3.0735 - orig_mae: 1.5673 - val_loss: 0.0747 - val_orig_rmse: 2.6100 - val_orig_mae: 1.5434 - lr: 1.3500e-05 - 3s/epoch - 3ms/step
+Epoch 37/500
+1020/1020 - 3s - loss: 0.0772 - orig_rmse: 3.0781 - orig_mae: 1.5670 - val_loss: 0.0747 - val_orig_rmse: 2.6050 - val_orig_mae: 1.5436 - lr: 1.3500e-05 - 3s/epoch - 3ms/step
+Epoch 38/500
+1020/1020 - 3s - loss: 0.0772 - orig_rmse: 3.0714 - orig_mae: 1.5658 - val_loss: 0.0747 - val_orig_rmse: 2.6097 - val_orig_mae: 1.5433 - lr: 1.3500e-05 - 3s/epoch - 3ms/step
+Epoch 39/500
+1020/1020 - 3s - loss: 0.0773 - orig_rmse: 3.0765 - orig_mae: 1.5670 - val_loss: 0.0747 - val_orig_rmse: 2.6066 - val_orig_mae: 1.5435 - lr: 1.3500e-05 - 3s/epoch - 3ms/step
+Epoch 40/500
+1020/1020 - 3s - loss: 0.0772 - orig_rmse: 3.0739 - orig_mae: 1.5655 - val_loss: 0.0747 - val_orig_rmse: 2.6061 - val_orig_mae: 1.5434 - lr: 1.3500e-05 - 3s/epoch - 3ms/step
+Epoch 41/500
+1020/1020 - 3s - loss: 0.0772 - orig_rmse: 3.0723 - orig_mae: 1.5666 - val_loss: 0.0747 - val_orig_rmse: 2.6077 - val_orig_mae: 1.5436 - lr: 1.3500e-05 - 3s/epoch - 3ms/step
+Epoch 42/500
+1020/1020 - 3s - loss: 0.0772 - orig_rmse: 3.0740 - orig_mae: 1.5669 - val_loss: 0.0747 - val_orig_rmse: 2.6068 - val_orig_mae: 1.5437 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 43/500
+1020/1020 - 3s - loss: 0.0772 - orig_rmse: 3.0745 - orig_mae: 1.5661 - val_loss: 0.0747 - val_orig_rmse: 2.6081 - val_orig_mae: 1.5436 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 44/500
+1020/1020 - 3s - loss: 0.0773 - orig_rmse: 3.0782 - orig_mae: 1.5679 - val_loss: 0.0747 - val_orig_rmse: 2.6086 - val_orig_mae: 1.5436 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 45/500
+1020/1020 - 3s - loss: 0.0775 - orig_rmse: 3.0779 - orig_mae: 1.5686 - val_loss: 0.0747 - val_orig_rmse: 2.6075 - val_orig_mae: 1.5435 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 46/500
+1020/1020 - 3s - loss: 0.0772 - orig_rmse: 3.0759 - orig_mae: 1.5660 - val_loss: 0.0747 - val_orig_rmse: 2.6076 - val_orig_mae: 1.5435 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 47/500
+1020/1020 - 3s - loss: 0.0772 - orig_rmse: 3.0747 - orig_mae: 1.5655 - val_loss: 0.0747 - val_orig_rmse: 2.6085 - val_orig_mae: 1.5434 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 48/500
+1020/1020 - 3s - loss: 0.0773 - orig_rmse: 3.0764 - orig_mae: 1.5668 - val_loss: 0.0747 - val_orig_rmse: 2.6084 - val_orig_mae: 1.5434 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 49/500
+1020/1020 - 3s - loss: 0.0772 - orig_rmse: 3.0754 - orig_mae: 1.5661 - val_loss: 0.0747 - val_orig_rmse: 2.6079 - val_orig_mae: 1.5434 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 50/500
+1020/1020 - 3s - loss: 0.0773 - orig_rmse: 3.0753 - orig_mae: 1.5671 - val_loss: 0.0747 - val_orig_rmse: 2.6082 - val_orig_mae: 1.5435 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 51/500
+1020/1020 - 3s - loss: 0.0772 - orig_rmse: 3.0723 - orig_mae: 1.5666 - val_loss: 0.0747 - val_orig_rmse: 2.6088 - val_orig_mae: 1.5433 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+Epoch 52/500
+1020/1020 - 3s - loss: 0.0771 - orig_rmse: 3.0734 - orig_mae: 1.5648 - val_loss: 0.0747 - val_orig_rmse: 2.6095 - val_orig_mae: 1.5433 - lr: 1.0000e-05 - 3s/epoch - 3ms/step
+{'epochs_ran': 52, 'model absolute error': 1.5647672414779663, 'model rms error': 3.0734028816223145, 'best val mae': 1.5429517030715942}
+{'test loss': 0.07500916719436646, 'test_orig_rmse': 2.950263500213623, 'test_orig_mae': 1.520079255104065}
+Horizon redistribute sanity check failed for 2 players (T > 60 or T > 2.5× h1 sum); scores still applied:
+  James McConnell: T=91.1 pp90=18.2 h1_sum=0.0
+  Fábio Freitas Gouveia Carvalho: T=69.1 pp90=13.8 h1_sum=0.0
+
+Top 100 players by predicted points over next 5 gameweeks:
+  #  Player                        Pos   Team                 Pts
+  1  James McConnell               3     LIV                 91.1
+  2  Fábio Freitas Gouveia Carvalho  3     BRE                 69.1
+  3  Trey Nyoni                    3     LIV                 46.2
+  4  Joël Piroe                    4     LEE                 33.5
+  5  Sean Longstaff                3     LEE                 33.2
+  6  Erling Haaland                4     MCI                 32.5
+  7  Dane Scarlett                 4     TOT                 32.5
+  8  Viktor Gyökeres               4     ARS                 32.4
+  9  Kai Havertz                   4     ARS                 32.2
+ 10  Josh Dasilva                  3     BRE                 31.2
+ 11  Omar Marmoush                 4     MCI                 31.0
+ 12  Reiss Nelson                  3     ARS                 30.7
+ 13  Taiwo Awoniyi                 4     NFO                 30.5
+ 14  Arnaud Kalimuendo             4     NFO                 30.1
+ 15  Patrick Dorgu                 3     MUN                 29.3
+ 16  Gabriel Fernando de Jesus     4     ARS                 28.7
+ 17  Max Dowman                    3     ARS                 28.6
+ 18  Alexander Isak                4     LIV                 28.5
+ 19  Jonah Kusi-Asare              4     FUL                 28.5
+ 20  Harrison Reed                 3     FUL                 28.4
+ 21  Joshua Zirkzee                4     MUN                 28.4
+ 22  Ollie Watkins                 4     AVL                 28.3
+ 23  Yoane Wissa                   4     NEW                 27.8
+ 24  Wilson Isidor                 4     SUN                 27.6
+ 25  Bukayo Saka                   3     ARS                 27.5
+ 26  Bruno Borges Fernandes        3     MUN                 27.3
+ 27  Rayan Cherki                  3     MCI                 27.2
+ 28  Jérémy Doku                   3     MCI                 27.2
+ 29  Marc Guiu Paz                 4     CHE                 27.0
+ 30  Marcus Rashford               3     MUN                 27.0
+ 31  Jean-Philippe Mateta          4     CRY                 26.9
+ 32  Bryan Mbeumo                  3     MUN                 26.9
+ 33  Federico Chiesa               3     LIV                 26.8
+ 34  Elliot Anderson               3     MCI                 26.7
+ 35  Chido Obi                     4     MUN                 26.7
+ 36  Phil Foden                    3     MCI                 26.6
+ 37  Callum Wilson                 4     BRE                 26.6
+ 38  João Pedro Junqueira de Jesus  4     CHE                 26.5
+ 39  Ben Gannon-Doak               3     BOU                 26.4
+ 40  Mikel Merino Zazón            3     ARS                 26.3
+ 41  William Osula                 4     NEW                 26.2
+ 42  Lukas Nmecha                  4     LEE                 26.2
+ 43  Mateo Kovačić                 3     MCI                 26.2
+ 44  Charalampos Kostoulas         4     BHA                 26.1
+ 45  Noah Okafor                   3     LEE                 26.0
+ 46  Danny Welbeck                 4     CHE                 25.9
+ 47  Norberto Bercique Gomes Betuncal  4     EVE                 25.8
+ 48  Richarlison de Andrade        4     TOT                 25.8
+ 49  Dominic Calvert-Lewin         4     LEE                 25.6
+ 50  Sávio Moreira de Oliveira     3     MCI                 25.6
+ 51  Morgan Gibbs-White            3     NFO                 25.6
+ 52  Thierno Barry                 4     EVE                 25.4
+ 53  Bruno Guimarães Rodriguez Moura  3     ARS                 25.3
+ 54  Igor Jesus Maciel da Cruz     4     NFO                 25.3
+ 55  Carlos Alcaraz Durán          3     EVE                 25.3
+ 56  Igor Thiago Nascimento Rodrigues  4     BRE                 25.2
+ 57  Matheus Santos Carneiro da Cunha  3     MUN                 25.1
+ 58  Noni Madueke                  3     ARS                 25.1
+ 59  Martin Ødegaard               3     ARS                 24.9
+ 60  Gabriel Martinelli Silva      3     ARS                 24.9
+ 61  Shea Lacey                    3     MUN                 24.9
+ 62  Eberechi Eze                  3     ARS                 24.8
+ 63  Eddie Nketiah                 4     CRY                 24.7
+ 64  Chris Wood                    4     NFO                 24.6
+ 65  Harvey Elliott                3     LIV                 24.6
+ 66  Romain Esse                   3     CRY                 24.6
+ 67  Antoine Semenyo               3     MCI                 24.6
+ 68  Nick Woltemade                4     NEW                 24.4
+ 69  Tijjani Reijnders             3     MCI                 24.4
+ 70  Fábio Ferreira Vieira         3     ARS                 24.3
+ 71  Rio Ngumoha                   3     LIV                 24.3
+ 72  Matheus França de Oliveira    3     CRY                 24.3
+ 73  Estêvão Almeida de Oliveira Gonçalves  3     CHE                 24.3
+ 74  Georginio Rutter              4     BHA                 24.2
+ 75  Jack Grealish                 3     MCI                 24.0
+ 76  Declan Rice                   3     ARS                 24.0
+ 77  Alysson Edward Franco da Rocha dos Santos  3     AVL                 23.9
+ 78  Gabriel dos Santos Magalhães  2     ARS                 23.9
+ 79  Amad Diallo                   3     MUN                 23.8
+ 80  Dominic Solanke-Mitchell      4     TOT                 23.8
+ 81  Frank Onyeka                  3     COV                 23.8
+ 82  Florian Wirtz                 3     LIV                 23.7
+ 83  Andrey Nascimento dos Santos  3     MUN                 23.6
+ 84  Liam Delap                    4     CHE                 23.6
+ 85  Dominik Szoboszlai            3     LIV                 23.5
+ 86  Piero Hincapié                2     ARS                 23.5
+ 87  Nico O'Reilly                 2     MCI                 23.5
+ 88  Harvey Barnes                 3     NEW                 23.5
+ 89  Tyrique George                3     EVE                 23.4
+ 90  Marc Guéhi                    2     MCI                 23.4
+ 91  Rayan Aït-Nouri               2     MCI                 23.4
+ 92  Enzo Fernández                3     CHE                 23.4
+ 93  Matt O'Riley                  3     BHA                 23.4
+ 94  Benjamin White                2     ARS                 23.3
+ 95  James McAtee                  3     NFO                 23.3
+ 96  Ethan Nwaneri                 3     ARS                 23.3
+ 97  Alex Tóth                     3     BOU                 23.3
+ 98  Lucas Bergvall                3     TOT                 23.2
+ 99  Jamie Bynoe-Gittens           3     CHE                 23.1
+100  Dango Ouattara                3     BRE                 23.1
+
+======== Predictions top 50 (Fargate email / top_players.csv columns) ========
+Player                            Team  Pos  Price  Pred  Pred mins  Prev pp90  Err   M1 opp  M1 pp90  M1 mins  M1 adj  M2 opp  M2 pp90  M2 mins  M2 adj  M3 opp  M3 pp90  M3 mins  M3 adj  M4 opp  M4 pp90  M4 mins  M4 adj  M5 opp  M5 pp90  M5 mins  M5 adj
+--------------------------------  ----  ---  -----  ----  ---------  ---------  ----  ------  -------  -------  ------  ------  -------  -------  ------  ------  -------  -------  ------  ------  -------  -------  ------  ------  -------  -------  ------
+James McConnell                   LIV   MID  45.0   18.2  90         90.0       5.34  NEW     18.2     90       18.2    NFO     18.2     90       18.2    IPS     18.2     90       18.2    FUL     18.2     90       18.2    BOU     18.2     90       18.2  
+Fábio Freitas Gouveia Carvalho    BRE   MID  50.0   13.8  90         99.0       0.04  TOT     13.8     90       13.8    LEE     13.8     90       13.8    SUN     13.8     90       13.8    BOU     13.8     90       13.8    CHE     13.8     90       13.8  
+Trey Nyoni                        LIV   MID  50.0   9.2   90         22.5       3.54  NEW     9.2      90       9.2     NFO     9.2      90       9.2     IPS     9.2      90       9.2     FUL     9.2      90       9.2     BOU     9.2      90       9.2   
+Joël Piroe                        LEE   FWD  50.0   6.7   90         11.8       3.46  NFO     6.7      90       6.7     BRE     6.7      90       6.7     BHA     6.7      90       6.7     NEW     6.7      90       6.7     CRY     6.7      90       6.7   
+Sean Longstaff                    LEE   MID  50.0   6.6   90         17.7       2.91  NFO     6.6      90       6.6     BRE     6.6      90       6.6     BHA     6.6      90       6.6     NEW     6.6      90       6.6     CRY     6.6      90       6.6   
+Erling Haaland                    MCI   FWD  155.0  6.5   90         8.0        3.84  BOU     6.5      90       6.5     CRY     6.5      90       6.5     COV     6.5      90       6.5     MUN     6.5      90       6.5     SUN     6.5      90       6.5   
+Dane Scarlett                     TOT   FWD  45.0   6.5   90         18.9       2.50  BRE     6.5      90       6.5     NEW     6.5      90       6.5     NFO     6.5      90       6.5     EVE     6.5      90       6.5     AVL     6.5      90       6.5   
+Viktor Gyökeres                   ARS   FWD  75.0   6.5   90         8.1        3.77  COV     6.5      90       6.5     AVL     6.5      90       6.5     CHE     6.5      90       6.5     SUN     6.5      90       6.5     BHA     6.5      90       6.5   
+Kai Havertz                       ARS   FWD  75.0   6.4   90         7.9        3.79  COV     6.4      90       6.4     AVL     6.4      90       6.4     CHE     6.4      90       6.4     SUN     6.4      90       6.4     BHA     6.4      90       6.4   
+Josh Dasilva                      BRE   MID  50.0   6.2   90         18.8       2.88  TOT     6.2      90       6.2     LEE     6.2      90       6.2     SUN     6.2      90       6.2     BOU     6.2      90       6.2     CHE     6.2      90       6.2   
+Omar Marmoush                     MCI   FWD  70.0   6.2   90         9.3        3.49  BOU     6.2      90       6.2     CRY     6.2      90       6.2     COV     6.2      90       6.2     MUN     6.2      90       6.2     SUN     6.2      90       6.2   
+Reiss Nelson                      ARS   MID  55.0   6.1   90         9.5        2.66  COV     6.1      90       6.1     AVL     6.1      90       6.1     CHE     6.1      90       6.1     SUN     6.1      90       6.1     BHA     6.1      90       6.1   
+Taiwo Awoniyi                     NFO   FWD  55.0   6.1   90         9.8        3.65  LEE     6.1      90       6.1     LIV     6.1      90       6.1     TOT     6.1      90       6.1     AVL     6.1      90       6.1     COV     6.1      90       6.1   
+Arnaud Kalimuendo                 NFO   FWD  55.0   6.0   90         18.0       2.25  LEE     6.0      90       6.0     LIV     6.0      90       6.0     TOT     6.0      90       6.0     AVL     6.0      90       6.0     COV     6.0      90       6.0   
+Patrick Dorgu                     MUN   MID  60.0   5.9   90         13.7       2.86  HUL     5.9      90       5.9     IPS     5.9      90       5.9     EVE     5.9      90       5.9     MCI     5.9      90       5.9     FUL     5.9      90       5.9   
+Gabriel Fernando de Jesus         ARS   FWD  60.0   5.7   90         3.6        3.76  COV     5.7      90       5.7     AVL     5.7      90       5.7     CHE     5.7      90       5.7     SUN     5.7      90       5.7     BHA     5.7      90       5.7   
+Max Dowman                        ARS   MID  55.0   5.7   90         8.6        2.95  COV     5.7      90       5.7     AVL     5.7      90       5.7     CHE     5.7      90       5.7     SUN     5.7      90       5.7     BHA     5.7      90       5.7   
+Alexander Isak                    LIV   FWD  90.0   5.7   90         7.8        3.01  NEW     5.7      90       5.7     NFO     5.7      90       5.7     IPS     5.7      90       5.7     FUL     5.7      90       5.7     BOU     5.7      90       5.7   
+Jonah Kusi-Asare                  FUL   FWD  45.0   5.7   90         11.6       2.34  CHE     5.7      90       5.7     SUN     5.7      90       5.7     CRY     5.7      90       5.7     LIV     5.7      90       5.7     MUN     5.7      90       5.7   
+Harrison Reed                     FUL   MID  45.0   5.7   90         14.1       1.77  CHE     5.7      90       5.7     SUN     5.7      90       5.7     CRY     5.7      90       5.7     LIV     5.7      90       5.7     MUN     5.7      90       5.7   
+Joshua Zirkzee                    MUN   FWD  55.0   5.7   90         3.8        3.38  HUL     5.7      90       5.7     IPS     5.7      90       5.7     EVE     5.7      90       5.7     MCI     5.7      90       5.7     FUL     5.7      90       5.7   
+Ollie Watkins                     AVL   FWD  80.0   5.7   90         9.5        3.28  BHA     5.7      90       5.7     ARS     5.7      90       5.7     HUL     5.7      90       5.7     NFO     5.7      90       5.7     TOT     5.7      90       5.7   
+Yoane Wissa                       NEW   FWD  60.0   5.6   90         5.7        3.24  LIV     5.6      90       5.6     TOT     5.6      90       5.6     BOU     5.6      90       5.6     LEE     5.6      90       5.6     HUL     5.6      90       5.6   
+Wilson Isidor                     SUN   FWD  55.0   5.5   90         12.9       3.21  IPS     5.5      90       5.5     FUL     5.5      90       5.5     BRE     5.5      90       5.5     ARS     5.5      90       5.5     MCI     5.5      90       5.5   
+Bukayo Saka                       ARS   MID  95.0   5.5   90         7.8        3.02  COV     5.5      90       5.5     AVL     5.5      90       5.5     CHE     5.5      90       5.5     SUN     5.5      90       5.5     BHA     5.5      90       5.5   
+Bruno Borges Fernandes            MUN   MID  120.0  5.5   90         7.2        2.83  HUL     5.5      90       5.5     IPS     5.5      90       5.5     EVE     5.5      90       5.5     MCI     5.5      90       5.5     FUL     5.5      90       5.5   
+Rayan Cherki                      MCI   MID  75.0   5.4   90         4.8        2.95  BOU     5.4      90       5.4     CRY     5.4      90       5.4     COV     5.4      90       5.4     MUN     5.4      90       5.4     SUN     5.4      90       5.4   
+Jérémy Doku                       MCI   MID  75.0   5.4   90         9.0        2.72  BOU     5.4      90       5.4     CRY     5.4      90       5.4     COV     5.4      90       5.4     MUN     5.4      90       5.4     SUN     5.4      90       5.4   
+Marc Guiu Paz                     CHE   FWD  50.0   5.4   90         5.4        2.97  FUL     5.4      90       5.4     BHA     5.4      90       5.4     ARS     5.4      90       5.4     HUL     5.4      90       5.4     BRE     5.4      90       5.4   
+Marcus Rashford                   MUN   MID  70.0   5.4   90         7.9        2.51  HUL     5.4      90       5.4     IPS     5.4      90       5.4     EVE     5.4      90       5.4     MCI     5.4      90       5.4     FUL     5.4      90       5.4   
+Jean-Philippe Mateta              CRY   FWD  65.0   5.4   90         8.3        2.76  EVE     5.4      90       5.4     MCI     5.4      90       5.4     FUL     5.4      90       5.4     IPS     5.4      90       5.4     LEE     5.4      90       5.4   
+Bryan Mbeumo                      MUN   MID  80.0   5.4   90         6.3        3.01  HUL     5.4      90       5.4     IPS     5.4      90       5.4     EVE     5.4      90       5.4     MCI     5.4      90       5.4     FUL     5.4      90       5.4   
+Federico Chiesa                   LIV   MID  55.0   5.4   90         6.7        2.68  NEW     5.4      90       5.4     NFO     5.4      90       5.4     IPS     5.4      90       5.4     FUL     5.4      90       5.4     BOU     5.4      90       5.4   
+Elliot Anderson                   MCI   MID  65.0   5.3   90         8.5        2.44  BOU     5.3      90       5.3     CRY     5.3      90       5.3     COV     5.3      90       5.3     MUN     5.3      90       5.3     SUN     5.3      90       5.3   
+Chido Obi                         MUN   FWD  45.0   5.3   90         3.9        2.34  HUL     5.3      90       5.3     IPS     5.3      90       5.3     EVE     5.3      90       5.3     MCI     5.3      90       5.3     FUL     5.3      90       5.3   
+Phil Foden                        MCI   MID  70.0   5.3   90         6.1        2.75  BOU     5.3      90       5.3     CRY     5.3      90       5.3     COV     5.3      90       5.3     MUN     5.3      90       5.3     SUN     5.3      90       5.3   
+Callum Wilson                     BRE   FWD  55.0   5.3   90         6.7        3.06  TOT     5.3      90       5.3     LEE     5.3      90       5.3     SUN     5.3      90       5.3     BOU     5.3      90       5.3     CHE     5.3      90       5.3   
+João Pedro Junqueira de Jesus     CHE   FWD  75.0   5.3   90         3.2        3.28  FUL     5.3      90       5.3     BHA     5.3      90       5.3     ARS     5.3      90       5.3     HUL     5.3      90       5.3     BRE     5.3      90       5.3   
+Ben Gannon-Doak                   BOU   MID  50.0   5.3   90         7.3        1.35  MCI     5.3      90       5.3     EVE     5.3      90       5.3     NEW     5.3      90       5.3     BRE     5.3      90       5.3     LIV     5.3      90       5.3   
+Mikel Merino Zazón                ARS   MID  60.0   5.3   90         6.2        2.90  COV     5.3      90       5.3     AVL     5.3      90       5.3     CHE     5.3      90       5.3     SUN     5.3      90       5.3     BHA     5.3      90       5.3   
+William Osula                     NEW   FWD  60.0   5.2   90         7.2        3.11  LIV     5.2      90       5.2     TOT     5.2      90       5.2     BOU     5.2      90       5.2     LEE     5.2      90       5.2     HUL     5.2      90       5.2   
+Lukas Nmecha                      LEE   FWD  55.0   5.2   90         2.7        3.16  NFO     5.2      90       5.2     BRE     5.2      90       5.2     BHA     5.2      90       5.2     NEW     5.2      90       5.2     CRY     5.2      90       5.2   
+Mateo Kovačić                     MCI   MID  55.0   5.2   90         6.0        1.91  BOU     5.2      90       5.2     CRY     5.2      90       5.2     COV     5.2      90       5.2     MUN     5.2      90       5.2     SUN     5.2      90       5.2   
+Charalampos Kostoulas             BHA   FWD  55.0   5.2   90         7.6        3.18  AVL     5.2      90       5.2     CHE     5.2      90       5.2     LEE     5.2      90       5.2     COV     5.2      90       5.2     ARS     5.2      90       5.2   
+Noah Okafor                       LEE   MID  60.0   5.2   90         13.2       2.57  NFO     5.2      90       5.2     BRE     5.2      90       5.2     BHA     5.2      90       5.2     NEW     5.2      90       5.2     CRY     5.2      90       5.2   
+Danny Welbeck                     CHE   FWD  60.0   5.2   90         5.1        3.00  FUL     5.2      90       5.2     BHA     5.2      90       5.2     ARS     5.2      90       5.2     HUL     5.2      90       5.2     BRE     5.2      90       5.2   
+Norberto Bercique Gomes Betuncal  EVE   FWD  55.0   5.2   90         6.7        2.99  CRY     5.2      90       5.2     BOU     5.2      90       5.2     MUN     5.2      90       5.2     TOT     5.2      90       5.2     IPS     5.2      90       5.2   
+Richarlison de Andrade            TOT   FWD  60.0   5.2   90         5.5        3.10  BRE     5.2      90       5.2     NEW     5.2      90       5.2     NFO     5.2      90       5.2     EVE     5.2      90       5.2     AVL     5.2      90       5.2   
+Dominic Calvert-Lewin             LEE   FWD  60.0   5.1   90         5.0        2.93  NFO     5.1      90       5.1     BRE     5.1      90       5.1     BHA     5.1      90       5.1     NEW     5.1      90       5.1     CRY     5.1      90       5.1   
+Sávio Moreira de Oliveira         MCI   MID  65.0   5.1   90         5.2        2.60  BOU     5.1      90       5.1     CRY     5.1      90       5.1     COV     5.1      90       5.1     MUN     5.1      90       5.1     SUN     5.1      90       5.1   
+Skipping live snapshot persistence

@@ -1,0 +1,29 @@
+{
+  "id": "20260821_211522",
+  "reps": 5,
+  "trials": [
+    {
+      "name": "01_current_default_5rep",
+      "note": "Live/historical default net on the current feature set (two-season priors, *_x_early, team xG). Same body as 20260819_121445 01_control, 5 reps instead of 10 so it matches prediction_builder.",
+      "env": {
+        "PL_WIDTH_MULT": "1.5",
+        "PL_N_HIDDEN": "3",
+        "PL_DROPOUT_1": "0.1",
+        "PL_DROPOUT_2": "0.05",
+        "PL_L2": "0.00225",
+        "PL_LEARNING_RATE": "0.0005",
+        "PL_WEIGHT_DECAY": "0",
+        "PL_OPTIMIZER": "adamw",
+        "PL_REDUCE_LR_FACTOR": "0.3",
+        "PL_REDUCE_LR_PATIENCE": "8",
+        "PL_REDUCE_LR_MIN": "1e-5",
+        "PL_HUBER_DELTA": "1.8",
+        "PL_BATCH_SIZE": "32",
+        "PL_EARLY_STOPPING_PATIENCE": "25",
+        "PL_VAL_MAE_KEEP_RATIO": "1.08"
+      },
+      "horizon_only": true,
+      "reps": 5
+    }
+  ]
+}

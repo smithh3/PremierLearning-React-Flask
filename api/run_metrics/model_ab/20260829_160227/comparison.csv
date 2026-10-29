@@ -1,0 +1,7 @@
+arm,fit,smear,reps,actual_mean,starter_pp90_mean,weighted_mae,weighted_mae_std,weighted_skill,weighted_skill_std,points_calibration,points_calibration_std,spearman,spearman_std,top20,top20_std,window_mae,window_mae_std,window_skill,window_skill_std,fixture_mae,fixture_mae_std,fixture_skill,fixture_skill_std,pred_mean,pred_mean_std,note
+06_h1_poisson,h1_poisson,off,1,7.3379,4.0272,3.4941,0.0,-0.4222,0.0,1.3868,0.0,0.1312,0.0,0.0306,0.0,2.7206,0.0,-0.4007,0.0,6.2505,0.0,-0.1228,0.0,5.9327,0.0,"Poisson, no weighting."
+10_hz_base,hz_base,off,1,7.3379,4.0272,2.5899,0.0,-0.0542,0.0,0.9369,0.0,0.2056,0.0,0.0778,0.0,1.8679,0.0,0.0383,0.0,5.5858,0.0,-0.0034,0.0,3.8985,0.0,Baseline horizon model (with the leak).
+11_hz_smear,hz_base,global,1,7.3379,4.0272,2.7955,0.0,-0.1378,0.0,1.0963,0.0,0.2056,0.0,0.0778,0.0,1.9192,0.0,0.0119,0.0,5.7182,0.0,-0.0272,0.0,4.5594,0.0,Horizon plus global smearing.
+12_hz_relsmear,hz_base,relative,1,7.3379,4.0272,2.603,0.0,-0.0595,0.0,0.9489,0.0,0.2057,0.0,0.0778,0.0,1.8668,0.0,0.0389,0.0,5.593,0.0,-0.0047,0.0,3.9493,0.0,Horizon plus relative smearing.
+17_hz_deleak,hz_deleak,off,1,7.3379,4.0272,2.764,0.0,-0.125,0.0,0.8855,0.0,0.1056,0.0,0.0667,0.0,2.3939,0.0,-0.2325,0.0,5.8149,0.0,-0.0446,0.0,3.6249,0.0,"Horizon, non-overlapping windows."
+18_hz_deleak_smear,hz_deleak,global,1,7.3379,4.0272,3.0728,0.0,-0.2507,0.0,1.1123,0.0,0.1056,0.0,0.0667,0.0,2.5186,0.0,-0.2967,0.0,6.0101,0.0,-0.0796,0.0,4.5531,0.0,"Horizon, non-overlapping windows plus smearing."

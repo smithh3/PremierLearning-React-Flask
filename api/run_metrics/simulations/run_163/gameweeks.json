@@ -1,0 +1,4349 @@
+[
+  {
+    "actual_points": 64.0,
+    "autosub_count": 2,
+    "autosubs": [
+      {
+        "in": 38,
+        "out": 403
+      },
+      {
+        "in": 6,
+        "out": 570
+      }
+    ],
+    "bank": 0,
+    "bench": [
+      38,
+      6,
+      246,
+      1
+    ],
+    "captain_fallback": 0,
+    "captain_id": 381,
+    "captain_scored_id": 381,
+    "chip": null,
+    "chip_reason": {
+      "as_of_gameweek": 1,
+      "chips_left": 4,
+      "dgw_half_multiplier": 1.0,
+      "effective_fh_threshold": 6.0,
+      "effective_recovery_threshold": 10.0,
+      "effective_tc_threshold": 1.6,
+      "effective_wc_threshold": 24.0,
+      "expiring_chips_left": 4,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [
+        {
+          "differential": 0.699983696178947,
+          "gameweek": 3
+        },
+        {
+          "differential": 0.44713975595885813,
+          "gameweek": 4
+        }
+      ],
+      "fh_threshold_base": 6.0,
+      "fixture_imbalance": 0.0,
+      "forced": false,
+      "low_minute_owned": 1,
+      "second_half": {
+        "deferred": true,
+        "placeholder_wildcard": 20
+      },
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "wc_differentials": [
+        {
+          "differential": 2.769672970028836,
+          "gameweek": 3
+        },
+        {
+          "differential": 2.1797058686017863,
+          "gameweek": 4
+        }
+      ],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 30.0,
+      "weeks_left": 19
+    },
+    "cumulative_points": 64.0,
+    "current_gain": 57.900884520585066,
+    "expected_hold_current": 0.0,
+    "expected_hold_horizon": 0.0,
+    "expected_selected_current": 57.900884520585066,
+    "expected_selected_horizon": 236.46413078665515,
+    "expected_xi": 57.900884520585066,
+    "free_hit_points": null,
+    "free_transfers_after": 1,
+    "free_transfers_before": 15,
+    "gameweek": 1,
+    "horizon_gain": 236.46413078665515,
+    "planned_chips": {
+      "bench_boosts": [],
+      "free_hits": [],
+      "triple_captains": [],
+      "wildcards": []
+    },
+    "players_scored": 10,
+    "starters": [
+      82,
+      97,
+      119,
+      139,
+      371,
+      381,
+      403,
+      452,
+      525,
+      570,
+      624
+    ],
+    "transfer_count": 0,
+    "transfers": [],
+    "unexpected_zero_minute_starters": 2,
+    "vice_captain_id": 119
+  },
+  {
+    "actual_points": 44.0,
+    "autosub_count": 0,
+    "autosubs": [],
+    "bank": 14,
+    "bench": [
+      570,
+      38,
+      246,
+      139
+    ],
+    "captain_fallback": 0,
+    "captain_id": 381,
+    "captain_scored_id": 381,
+    "chip": null,
+    "chip_reason": {
+      "as_of_gameweek": 2,
+      "bench_boost_after_wildcard": 4,
+      "chips_left": 4,
+      "committed_chip_roll": true,
+      "dgw_half_multiplier": 1.0,
+      "effective_fh_threshold": 5.6,
+      "effective_recovery_threshold": 9.333333333333334,
+      "effective_tc_threshold": 1.6,
+      "effective_wc_threshold": -2.0,
+      "expiring_chips_left": 4,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [
+        {
+          "differential": 10.37581363317426,
+          "gameweek": 3
+        },
+        {
+          "differential": 4.102675164619313,
+          "gameweek": 4
+        },
+        {
+          "differential": 0.0,
+          "gameweek": 5
+        }
+      ],
+      "fh_differentials_after_wildcard": [],
+      "fh_threshold_base": 5.6,
+      "fixture_imbalance": 0.0,
+      "forced": false,
+      "low_minute_owned": 5,
+      "recovery": {
+        "chose_free_hit": false,
+        "gameweek": 3
+      },
+      "second_half": {
+        "deferred": true,
+        "placeholder_wildcard": 20
+      },
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "wc_differentials": [
+        {
+          "differential": 21.797325101457176,
+          "gameweek": 3
+        },
+        {
+          "differential": 10.569908364688729,
+          "gameweek": 4
+        },
+        {
+          "differential": 2.1894050741491355,
+          "gameweek": 5
+        }
+      ],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 28.0,
+      "weeks_left": 18,
+      "wildcard_gameweek": 3
+    },
+    "cumulative_points": 108.0,
+    "current_gain": 4.040446211675473,
+    "expected_hold_current": 55.56019591437528,
+    "expected_hold_horizon": 55.56019591437528,
+    "expected_selected_current": 59.60064212605075,
+    "expected_selected_horizon": 59.60064212605075,
+    "expected_xi": 59.60064212605075,
+    "free_hit_points": null,
+    "free_transfers_after": 1,
+    "free_transfers_before": 1,
+    "gameweek": 2,
+    "horizon_gain": 4.040446211675473,
+    "planned_chips": {
+      "bench_boosts": [
+        4
+      ],
+      "free_hits": [],
+      "triple_captains": [],
+      "wildcards": [
+        3
+      ]
+    },
+    "players_scored": 11,
+    "starters": [
+      1,
+      6,
+      73,
+      82,
+      97,
+      119,
+      371,
+      381,
+      452,
+      525,
+      624
+    ],
+    "transfer_count": 1,
+    "transfers": [
+      {
+        "buy_price": 45,
+        "player_in_id": 73,
+        "player_out_id": 403,
+        "sell_price": 59
+      }
+    ],
+    "unexpected_zero_minute_starters": 0,
+    "vice_captain_id": 97
+  },
+  {
+    "actual_points": 66.0,
+    "autosub_count": 0,
+    "autosubs": [],
+    "bank": 0,
+    "bench": [
+      21,
+      5,
+      256,
+      1
+    ],
+    "captain_fallback": 0,
+    "captain_id": 119,
+    "captain_scored_id": 119,
+    "chip": "wildcard",
+    "chip_reason": {
+      "as_of_gameweek": 3,
+      "bench_boost_after_wildcard": 4,
+      "chips_left": 4,
+      "committed_chip_roll": true,
+      "dgw_half_multiplier": 1.0,
+      "effective_fh_threshold": 5.2,
+      "effective_recovery_threshold": 8.666666666666666,
+      "effective_tc_threshold": 1.6,
+      "effective_wc_threshold": 2.0,
+      "expiring_chips_left": 4,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [
+        {
+          "differential": 8.598134591181804,
+          "gameweek": 3
+        },
+        {
+          "differential": 8.26105448083942,
+          "gameweek": 4
+        },
+        {
+          "differential": 1.3277024166743558,
+          "gameweek": 5
+        },
+        {
+          "differential": 8.703969569027493,
+          "gameweek": 6
+        }
+      ],
+      "fh_differentials_after_wildcard": [],
+      "fh_threshold_base": 5.2,
+      "fixture_imbalance": 0.0,
+      "forced": false,
+      "low_minute_owned": 4,
+      "second_half": {
+        "deferred": true,
+        "placeholder_wildcard": 20
+      },
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "wc_differentials": [
+        {
+          "differential": 25.328575185586487,
+          "gameweek": 3
+        },
+        {
+          "differential": 17.85580525326077,
+          "gameweek": 4
+        },
+        {
+          "differential": 11.079054700191591,
+          "gameweek": 5
+        },
+        {
+          "differential": 13.896896212982597,
+          "gameweek": 6
+        }
+      ],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 26.0,
+      "weeks_left": 17,
+      "wildcard_gameweek": 3
+    },
+    "cumulative_points": 174.0,
+    "current_gain": 5.465183196836399,
+    "expected_hold_current": 54.76657315691498,
+    "expected_hold_horizon": 221.35914186708493,
+    "expected_selected_current": 60.23175635375138,
+    "expected_selected_horizon": 268.2586918918641,
+    "expected_xi": 60.23175635375138,
+    "free_hit_points": null,
+    "free_transfers_after": 2,
+    "free_transfers_before": 1,
+    "gameweek": 3,
+    "horizon_gain": 46.89955002477916,
+    "planned_chips": {
+      "bench_boosts": [
+        4
+      ],
+      "free_hits": [],
+      "triple_captains": [],
+      "wildcards": [
+        3
+      ]
+    },
+    "players_scored": 11,
+    "starters": [
+      64,
+      119,
+      136,
+      242,
+      267,
+      283,
+      381,
+      469,
+      568,
+      573,
+      575
+    ],
+    "transfer_count": 12,
+    "transfers": [
+      {
+        "buy_price": 50,
+        "player_in_id": 469,
+        "player_out_id": 139,
+        "sell_price": 45
+      },
+      {
+        "buy_price": 61,
+        "player_in_id": 5,
+        "player_out_id": 6,
+        "sell_price": 60
+      },
+      {
+        "buy_price": 55,
+        "player_in_id": 256,
+        "player_out_id": 38,
+        "sell_price": 45
+      },
+      {
+        "buy_price": 56,
+        "player_in_id": 568,
+        "player_out_id": 73,
+        "sell_price": 45
+      },
+      {
+        "buy_price": 45,
+        "player_in_id": 573,
+        "player_out_id": 371,
+        "sell_price": 60
+      },
+      {
+        "buy_price": 46,
+        "player_in_id": 575,
+        "player_out_id": 570,
+        "sell_price": 44
+      },
+      {
+        "buy_price": 65,
+        "player_in_id": 21,
+        "player_out_id": 82,
+        "sell_price": 71
+      },
+      {
+        "buy_price": 50,
+        "player_in_id": 242,
+        "player_out_id": 246,
+        "sell_price": 45
+      },
+      {
+        "buy_price": 65,
+        "player_in_id": 267,
+        "player_out_id": 452,
+        "sell_price": 64
+      },
+      {
+        "buy_price": 89,
+        "player_in_id": 64,
+        "player_out_id": 97,
+        "sell_price": 70
+      },
+      {
+        "buy_price": 60,
+        "player_in_id": 136,
+        "player_out_id": 525,
+        "sell_price": 76
+      },
+      {
+        "buy_price": 75,
+        "player_in_id": 283,
+        "player_out_id": 624,
+        "sell_price": 78
+      }
+    ],
+    "unexpected_zero_minute_starters": 0,
+    "vice_captain_id": 381
+  },
+  {
+    "actual_points": 81.0,
+    "autosub_count": 0,
+    "autosubs": [],
+    "bank": 0,
+    "bench": [
+      573,
+      568,
+      267,
+      469
+    ],
+    "captain_fallback": 0,
+    "captain_id": 381,
+    "captain_scored_id": 381,
+    "chip": "bench_boost",
+    "chip_reason": {
+      "as_of_gameweek": 4,
+      "bench_boost_after_played_wildcard": 4,
+      "chips_left": 3,
+      "dgw_half_multiplier": 1.0,
+      "effective_fh_threshold": 4.9411764705882355,
+      "effective_recovery_threshold": 8.235294117647058,
+      "effective_tc_threshold": 1.6,
+      "effective_wc_threshold": 18.705882352941178,
+      "expiring_chips_left": 2,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [
+        {
+          "differential": 4.272520871786384,
+          "gameweek": 4
+        },
+        {
+          "differential": 1.7863008334594497,
+          "gameweek": 5
+        },
+        {
+          "differential": 1.9585329232570814,
+          "gameweek": 6
+        },
+        {
+          "differential": 2.8323498525998616,
+          "gameweek": 7
+        }
+      ],
+      "fh_threshold_base": 4.9411764705882355,
+      "fixture_imbalance": 0.0,
+      "forced": false,
+      "low_minute_owned": 1,
+      "second_half": {
+        "deferred": true,
+        "placeholder_wildcard": 20
+      },
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "triple_captain": {
+        "gameweek": 6,
+        "mean": 6.214817690124619,
+        "player_id": 430,
+        "points": 8.127187597680853,
+        "threshold": 1.6
+      },
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 24.705882352941178,
+      "weeks_left": 16
+    },
+    "cumulative_points": 255.0,
+    "current_gain": 0.0,
+    "expected_hold_current": 67.99955880186356,
+    "expected_hold_horizon": 250.77696792487575,
+    "expected_selected_current": 67.99955880186356,
+    "expected_selected_horizon": 263.9926089920531,
+    "expected_xi": 67.99955880186356,
+    "free_hit_points": null,
+    "free_transfers_after": 3,
+    "free_transfers_before": 2,
+    "gameweek": 4,
+    "horizon_gain": 13.21564106717733,
+    "planned_chips": {
+      "bench_boosts": [
+        4
+      ],
+      "free_hits": [],
+      "triple_captains": [
+        6
+      ],
+      "wildcards": [
+        3
+      ]
+    },
+    "players_scored": 14,
+    "starters": [
+      1,
+      5,
+      21,
+      64,
+      119,
+      136,
+      242,
+      256,
+      283,
+      381,
+      575
+    ],
+    "transfer_count": 0,
+    "transfers": [],
+    "unexpected_zero_minute_starters": 0,
+    "vice_captain_id": 283
+  },
+  {
+    "actual_points": 39.0,
+    "autosub_count": 0,
+    "autosubs": [],
+    "bank": 2,
+    "bench": [
+      575,
+      573,
+      267,
+      469
+    ],
+    "captain_fallback": 0,
+    "captain_id": 381,
+    "captain_scored_id": 381,
+    "chip": null,
+    "chip_reason": {
+      "as_of_gameweek": 5,
+      "chips_left": 2,
+      "dgw_half_multiplier": 1.0,
+      "effective_fh_threshold": 4.588235294117647,
+      "effective_recovery_threshold": 7.647058823529412,
+      "effective_tc_threshold": 1.6,
+      "effective_wc_threshold": 10.941176470588236,
+      "expiring_chips_left": 2,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [
+        {
+          "differential": 1.9699104057942805,
+          "gameweek": 5
+        },
+        {
+          "differential": 3.1708922060923896,
+          "gameweek": 6
+        },
+        {
+          "differential": 3.4174598625399426,
+          "gameweek": 7
+        },
+        {
+          "differential": 1.8788605801893254,
+          "gameweek": 8
+        }
+      ],
+      "fh_threshold_base": 4.588235294117647,
+      "fixture_imbalance": 0.0,
+      "forced": false,
+      "low_minute_owned": 2,
+      "second_half": {
+        "deferred": true,
+        "placeholder_wildcard": 20
+      },
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 22.941176470588236,
+      "weeks_left": 15
+    },
+    "cumulative_points": 294.0,
+    "current_gain": 4.212191240375304,
+    "expected_hold_current": 54.73200816769075,
+    "expected_hold_horizon": 224.6782178092522,
+    "expected_selected_current": 58.944199408066055,
+    "expected_selected_horizon": 241.5747507883339,
+    "expected_xi": 58.944199408066055,
+    "free_hit_points": null,
+    "free_transfers_after": 1,
+    "free_transfers_before": 3,
+    "gameweek": 5,
+    "horizon_gain": 16.896532979081684,
+    "planned_chips": {
+      "bench_boosts": [
+        4
+      ],
+      "free_hits": [],
+      "triple_captains": [],
+      "wildcards": [
+        3
+      ]
+    },
+    "players_scored": 11,
+    "starters": [
+      1,
+      5,
+      8,
+      64,
+      119,
+      237,
+      242,
+      256,
+      283,
+      381,
+      560
+    ],
+    "transfer_count": 3,
+    "transfers": [
+      {
+        "buy_price": 57,
+        "player_in_id": 8,
+        "player_out_id": 568,
+        "sell_price": 56
+      },
+      {
+        "buy_price": 67,
+        "player_in_id": 237,
+        "player_out_id": 21,
+        "sell_price": 65
+      },
+      {
+        "buy_price": 55,
+        "player_in_id": 560,
+        "player_out_id": 136,
+        "sell_price": 60
+      }
+    ],
+    "unexpected_zero_minute_starters": 0,
+    "vice_captain_id": 283
+  },
+  {
+    "actual_points": 52.0,
+    "autosub_count": 0,
+    "autosubs": [],
+    "bank": 2,
+    "bench": [
+      560,
+      256,
+      573,
+      469
+    ],
+    "captain_fallback": 0,
+    "captain_id": 64,
+    "captain_scored_id": 64,
+    "chip": null,
+    "chip_reason": {
+      "as_of_gameweek": 6,
+      "chips_left": 2,
+      "committed_chip_roll": true,
+      "dgw_half_multiplier": 1.0,
+      "effective_fh_threshold": 4.235294117647059,
+      "effective_recovery_threshold": 7.0588235294117645,
+      "effective_tc_threshold": 1.6,
+      "effective_wc_threshold": 9.176470588235293,
+      "expiring_chips_left": 2,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [
+        {
+          "differential": 7.175888287076674,
+          "gameweek": 6
+        },
+        {
+          "differential": 6.2807760761824625,
+          "gameweek": 7
+        },
+        {
+          "differential": 3.3294459531838356,
+          "gameweek": 8
+        },
+        {
+          "differential": 3.1385395852464057,
+          "gameweek": 9
+        }
+      ],
+      "fh_threshold_base": 4.235294117647059,
+      "fixture_imbalance": 0.0,
+      "forced": false,
+      "free_hit_gameweek": 7,
+      "low_minute_owned": 2,
+      "second_half": {
+        "deferred": true,
+        "placeholder_wildcard": 20
+      },
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 21.176470588235293,
+      "weeks_left": 14
+    },
+    "cumulative_points": 346.0,
+    "current_gain": 2.0138106741476705,
+    "expected_hold_current": 57.464840461395845,
+    "expected_hold_horizon": 225.4290270497533,
+    "expected_selected_current": 59.478651135543515,
+    "expected_selected_horizon": 230.03655192152434,
+    "expected_xi": 59.478651135543515,
+    "free_hit_points": null,
+    "free_transfers_after": 1,
+    "free_transfers_before": 1,
+    "gameweek": 6,
+    "horizon_gain": 4.607524871771034,
+    "planned_chips": {
+      "bench_boosts": [
+        4
+      ],
+      "free_hits": [
+        7
+      ],
+      "triple_captains": [],
+      "wildcards": [
+        3
+      ]
+    },
+    "players_scored": 11,
+    "starters": [
+      1,
+      5,
+      8,
+      64,
+      119,
+      237,
+      242,
+      283,
+      381,
+      416,
+      575
+    ],
+    "transfer_count": 1,
+    "transfers": [
+      {
+        "buy_price": 64,
+        "player_in_id": 416,
+        "player_out_id": 267,
+        "sell_price": 64
+      }
+    ],
+    "unexpected_zero_minute_starters": 0,
+    "vice_captain_id": 381
+  },
+  {
+    "actual_points": 63.0,
+    "autosub_count": 0,
+    "autosubs": [],
+    "bank": 2,
+    "bench": [
+      418,
+      256,
+      195,
+      341
+    ],
+    "captain_fallback": 0,
+    "captain_id": 666,
+    "captain_scored_id": 666,
+    "chip": "free_hit",
+    "chip_reason": {
+      "as_of_gameweek": 7,
+      "chips_left": 2,
+      "committed_chip_roll": true,
+      "dgw_half_multiplier": 1.0,
+      "effective_fh_threshold": 3.8823529411764706,
+      "effective_recovery_threshold": 6.470588235294118,
+      "effective_tc_threshold": 1.6,
+      "effective_wc_threshold": 1.4117647058823515,
+      "expiring_chips_left": 2,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [
+        {
+          "differential": 5.974396461693146,
+          "gameweek": 7
+        },
+        {
+          "differential": 3.301660844621182,
+          "gameweek": 8
+        },
+        {
+          "differential": 3.706147281466599,
+          "gameweek": 9
+        },
+        {
+          "differential": 1.9600765991438323,
+          "gameweek": 10
+        }
+      ],
+      "fh_threshold_base": 3.8823529411764706,
+      "fixture_imbalance": 0.0,
+      "forced": false,
+      "free_hit_gameweek": 7,
+      "low_minute_owned": 3,
+      "second_half": {
+        "deferred": true,
+        "placeholder_wildcard": 20
+      },
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 19.41176470588235,
+      "weeks_left": 13
+    },
+    "cumulative_points": 409.0,
+    "current_gain": 5.9743964616931535,
+    "expected_hold_current": 62.34548795293174,
+    "expected_hold_horizon": 232.5319847468691,
+    "expected_selected_current": 68.3198844146249,
+    "expected_selected_horizon": 253.33797967873446,
+    "expected_xi": 68.3198844146249,
+    "free_hit_points": 63.0,
+    "free_transfers_after": 2,
+    "free_transfers_before": 1,
+    "gameweek": 7,
+    "horizon_gain": 20.805994931865342,
+    "planned_chips": {
+      "bench_boosts": [
+        4
+      ],
+      "free_hits": [
+        7
+      ],
+      "triple_captains": [],
+      "wildcards": [
+        3
+      ]
+    },
+    "players_scored": 11,
+    "starters": [
+      5,
+      8,
+      37,
+      82,
+      119,
+      139,
+      160,
+      237,
+      430,
+      597,
+      666
+    ],
+    "transfer_count": 10,
+    "transfers": [
+      {
+        "buy_price": 44,
+        "player_in_id": 139,
+        "player_out_id": 1,
+        "sell_price": 55
+      },
+      {
+        "buy_price": 40,
+        "player_in_id": 341,
+        "player_out_id": 469,
+        "sell_price": 50
+      },
+      {
+        "buy_price": 45,
+        "player_in_id": 37,
+        "player_out_id": 573,
+        "sell_price": 45
+      },
+      {
+        "buy_price": 39,
+        "player_in_id": 195,
+        "player_out_id": 575,
+        "sell_price": 47
+      },
+      {
+        "buy_price": 78,
+        "player_in_id": 82,
+        "player_out_id": 242,
+        "sell_price": 50
+      },
+      {
+        "buy_price": 59,
+        "player_in_id": 160,
+        "player_out_id": 381,
+        "sell_price": 145
+      },
+      {
+        "buy_price": 66,
+        "player_in_id": 418,
+        "player_out_id": 416,
+        "sell_price": 64
+      },
+      {
+        "buy_price": 144,
+        "player_in_id": 430,
+        "player_out_id": 64,
+        "sell_price": 87
+      },
+      {
+        "buy_price": 68,
+        "player_in_id": 597,
+        "player_out_id": 283,
+        "sell_price": 75
+      },
+      {
+        "buy_price": 90,
+        "player_in_id": 666,
+        "player_out_id": 560,
+        "sell_price": 55
+      }
+    ],
+    "unexpected_zero_minute_starters": 0,
+    "vice_captain_id": 430
+  },
+  {
+    "actual_points": 68.0,
+    "autosub_count": 1,
+    "autosubs": [
+      {
+        "in": 416,
+        "out": 237
+      }
+    ],
+    "bank": 2,
+    "bench": [
+      416,
+      242,
+      573,
+      469
+    ],
+    "captain_fallback": 0,
+    "captain_id": 381,
+    "captain_scored_id": 381,
+    "chip": null,
+    "chip_reason": {
+      "as_of_gameweek": 8,
+      "chips_left": 1,
+      "dgw_half_multiplier": 1.0,
+      "effective_fh_threshold": 3.6666666666666665,
+      "effective_recovery_threshold": 6.111111111111111,
+      "effective_tc_threshold": 1.6,
+      "effective_wc_threshold": 0.33333333333333215,
+      "expiring_chips_left": 1,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [],
+      "fh_threshold_base": 3.6666666666666665,
+      "fixture_imbalance": 0.0,
+      "forced": false,
+      "low_minute_owned": 3,
+      "second_half": {
+        "deferred": true,
+        "placeholder_wildcard": 20
+      },
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 18.333333333333332,
+      "weeks_left": 12
+    },
+    "cumulative_points": 477.0,
+    "current_gain": 0.0,
+    "expected_hold_current": 52.207867707839874,
+    "expected_hold_horizon": 204.0006123076273,
+    "expected_selected_current": 52.207867707839874,
+    "expected_selected_horizon": 222.61353119810838,
+    "expected_xi": 52.207867707839874,
+    "free_hit_points": null,
+    "free_transfers_after": 3,
+    "free_transfers_before": 2,
+    "gameweek": 8,
+    "horizon_gain": 18.61291889048107,
+    "planned_chips": {
+      "bench_boosts": [
+        4
+      ],
+      "free_hits": [
+        7
+      ],
+      "triple_captains": [],
+      "wildcards": [
+        3
+      ]
+    },
+    "players_scored": 10,
+    "starters": [
+      1,
+      5,
+      8,
+      64,
+      119,
+      237,
+      256,
+      283,
+      381,
+      560,
+      575
+    ],
+    "transfer_count": 0,
+    "transfers": [],
+    "unexpected_zero_minute_starters": 1,
+    "vice_captain_id": 283
+  },
+  {
+    "actual_points": 86.0,
+    "autosub_count": 0,
+    "autosubs": [],
+    "bank": 2,
+    "bench": [
+      573,
+      237,
+      416,
+      469
+    ],
+    "captain_fallback": 0,
+    "captain_id": 381,
+    "captain_scored_id": 381,
+    "chip": null,
+    "chip_reason": {
+      "as_of_gameweek": 9,
+      "chips_left": 1,
+      "dgw_half_multiplier": 1.0,
+      "effective_fh_threshold": 3.3333333333333335,
+      "effective_recovery_threshold": 5.555555555555555,
+      "effective_tc_threshold": 1.6,
+      "effective_wc_threshold": -1.3333333333333321,
+      "expiring_chips_left": 1,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [],
+      "fh_threshold_base": 3.3333333333333335,
+      "fixture_imbalance": 0.0,
+      "forced": false,
+      "low_minute_owned": 3,
+      "second_half": {
+        "deferred": true,
+        "placeholder_wildcard": 20
+      },
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "triple_captain": {
+        "gameweek": 13,
+        "mean": 7.338413082438162,
+        "player_id": 430,
+        "points": 8.866607041990346,
+        "threshold": 1.3333333333333335
+      },
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 16.666666666666668,
+      "weeks_left": 11
+    },
+    "cumulative_points": 563.0,
+    "current_gain": 0.0,
+    "expected_hold_current": 49.344598251617185,
+    "expected_hold_horizon": 203.73498962384463,
+    "expected_selected_current": 49.344598251617185,
+    "expected_selected_horizon": 234.8482439110412,
+    "expected_xi": 49.344598251617185,
+    "free_hit_points": null,
+    "free_transfers_after": 4,
+    "free_transfers_before": 3,
+    "gameweek": 9,
+    "horizon_gain": 31.113254287196582,
+    "planned_chips": {
+      "bench_boosts": [
+        4
+      ],
+      "free_hits": [
+        7
+      ],
+      "triple_captains": [
+        13
+      ],
+      "wildcards": [
+        3
+      ]
+    },
+    "players_scored": 11,
+    "starters": [
+      1,
+      5,
+      8,
+      64,
+      119,
+      242,
+      256,
+      283,
+      381,
+      560,
+      575
+    ],
+    "transfer_count": 0,
+    "transfers": [],
+    "unexpected_zero_minute_starters": 0,
+    "vice_captain_id": 119
+  },
+  {
+    "actual_points": 88.0,
+    "autosub_count": 0,
+    "autosubs": [],
+    "bank": 1,
+    "bench": [
+      237,
+      575,
+      573,
+      469
+    ],
+    "captain_fallback": 0,
+    "captain_id": 430,
+    "captain_scored_id": 430,
+    "chip": null,
+    "chip_reason": {
+      "as_of_gameweek": 10,
+      "chips_left": 1,
+      "dgw_half_multiplier": 1.0,
+      "effective_fh_threshold": 3.0,
+      "effective_recovery_threshold": 5.0,
+      "effective_tc_threshold": 1.6,
+      "effective_wc_threshold": 9.0,
+      "expiring_chips_left": 1,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [],
+      "fh_threshold_base": 3.0,
+      "fixture_imbalance": 0.0,
+      "forced": false,
+      "low_minute_owned": 1,
+      "second_half": {
+        "deferred": true,
+        "placeholder_wildcard": 20
+      },
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "triple_captain": {
+        "gameweek": 13,
+        "mean": 7.416390776634216,
+        "player_id": 430,
+        "points": 9.085173199395769,
+        "threshold": 1.3333333333333335
+      },
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 15.0,
+      "weeks_left": 10
+    },
+    "cumulative_points": 651.0,
+    "current_gain": 7.7221584766980484,
+    "expected_hold_current": 56.44276511948113,
+    "expected_hold_horizon": 232.59440549092102,
+    "expected_selected_current": 64.16492359617918,
+    "expected_selected_horizon": 260.0856138219417,
+    "expected_xi": 64.16492359617918,
+    "free_hit_points": null,
+    "free_transfers_after": 1,
+    "free_transfers_before": 4,
+    "gameweek": 10,
+    "horizon_gain": 27.491208331020687,
+    "planned_chips": {
+      "bench_boosts": [
+        4
+      ],
+      "free_hits": [
+        7
+      ],
+      "triple_captains": [
+        13
+      ],
+      "wildcards": [
+        3
+      ]
+    },
+    "players_scored": 11,
+    "starters": [
+      1,
+      5,
+      8,
+      119,
+      242,
+      256,
+      267,
+      283,
+      328,
+      430,
+      624
+    ],
+    "transfer_count": 4,
+    "transfers": [
+      {
+        "buy_price": 66,
+        "player_in_id": 267,
+        "player_out_id": 381,
+        "sell_price": 142
+      },
+      {
+        "buy_price": 54,
+        "player_in_id": 328,
+        "player_out_id": 416,
+        "sell_price": 63
+      },
+      {
+        "buy_price": 148,
+        "player_in_id": 430,
+        "player_out_id": 64,
+        "sell_price": 85
+      },
+      {
+        "buy_price": 78,
+        "player_in_id": 624,
+        "player_out_id": 560,
+        "sell_price": 55
+      }
+    ],
+    "unexpected_zero_minute_starters": 0,
+    "vice_captain_id": 283
+  },
+  {
+    "actual_points": 38.0,
+    "autosub_count": 0,
+    "autosubs": [],
+    "bank": 1,
+    "bench": [
+      242,
+      575,
+      573,
+      469
+    ],
+    "captain_fallback": 0,
+    "captain_id": 430,
+    "captain_scored_id": 430,
+    "chip": null,
+    "chip_reason": {
+      "as_of_gameweek": 11,
+      "chips_left": 1,
+      "dgw_half_multiplier": 1.0,
+      "effective_fh_threshold": 2.6666666666666665,
+      "effective_recovery_threshold": 4.444444444444445,
+      "effective_tc_threshold": 1.5111111111111113,
+      "effective_wc_threshold": 13.333333333333334,
+      "expiring_chips_left": 1,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [],
+      "fh_threshold_base": 2.6666666666666665,
+      "fixture_imbalance": 0.0,
+      "forced": false,
+      "low_minute_owned": 0,
+      "second_half": {
+        "deferred": true,
+        "placeholder_wildcard": 20
+      },
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 13.333333333333334,
+      "weeks_left": 9
+    },
+    "cumulative_points": 689.0,
+    "current_gain": 0.0,
+    "expected_hold_current": 62.47804899087846,
+    "expected_hold_horizon": 246.38781840017597,
+    "expected_selected_current": 62.47804899087846,
+    "expected_selected_horizon": 251.0632997647067,
+    "expected_xi": 62.47804899087846,
+    "free_hit_points": null,
+    "free_transfers_after": 2,
+    "free_transfers_before": 1,
+    "gameweek": 11,
+    "horizon_gain": 4.675481364530725,
+    "planned_chips": {
+      "bench_boosts": [
+        4
+      ],
+      "free_hits": [
+        7
+      ],
+      "triple_captains": [],
+      "wildcards": [
+        3
+      ]
+    },
+    "players_scored": 11,
+    "starters": [
+      1,
+      5,
+      8,
+      119,
+      237,
+      256,
+      267,
+      283,
+      328,
+      430,
+      624
+    ],
+    "transfer_count": 0,
+    "transfers": [],
+    "unexpected_zero_minute_starters": 0,
+    "vice_captain_id": 624
+  },
+  {
+    "actual_points": 47.0,
+    "autosub_count": 0,
+    "autosubs": [],
+    "bank": 1,
+    "bench": [
+      242,
+      573,
+      5,
+      469
+    ],
+    "captain_fallback": 0,
+    "captain_id": 283,
+    "captain_scored_id": 283,
+    "chip": null,
+    "chip_reason": {
+      "as_of_gameweek": 12,
+      "chips_left": 1,
+      "dgw_half_multiplier": 1.0,
+      "effective_fh_threshold": 2.3333333333333335,
+      "effective_recovery_threshold": 3.888888888888889,
+      "effective_tc_threshold": 1.4222222222222223,
+      "effective_wc_threshold": 5.666666666666666,
+      "expiring_chips_left": 1,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [],
+      "fh_threshold_base": 2.3333333333333335,
+      "fixture_imbalance": 0.0,
+      "forced": false,
+      "low_minute_owned": 1,
+      "second_half": {
+        "deferred": true,
+        "placeholder_wildcard": 20
+      },
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "triple_captain": {
+        "gameweek": 13,
+        "mean": 6.821318109742131,
+        "player_id": 430,
+        "points": 8.318942749917113,
+        "threshold": 1.3333333333333335
+      },
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 11.666666666666666,
+      "weeks_left": 8
+    },
+    "cumulative_points": 736.0,
+    "current_gain": 0.0,
+    "expected_hold_current": 58.79668041241878,
+    "expected_hold_horizon": 242.28440957970926,
+    "expected_selected_current": 58.79668041241878,
+    "expected_selected_horizon": 252.883026127088,
+    "expected_xi": 58.79668041241878,
+    "free_hit_points": null,
+    "free_transfers_after": 3,
+    "free_transfers_before": 2,
+    "gameweek": 12,
+    "horizon_gain": 10.598616547378725,
+    "planned_chips": {
+      "bench_boosts": [
+        4
+      ],
+      "free_hits": [
+        7
+      ],
+      "triple_captains": [
+        13
+      ],
+      "wildcards": [
+        3
+      ]
+    },
+    "players_scored": 10,
+    "starters": [
+      1,
+      8,
+      119,
+      237,
+      256,
+      267,
+      283,
+      328,
+      430,
+      575,
+      624
+    ],
+    "transfer_count": 0,
+    "transfers": [],
+    "unexpected_zero_minute_starters": 0,
+    "vice_captain_id": 430
+  },
+  {
+    "actual_points": 31.0,
+    "autosub_count": 0,
+    "autosubs": [],
+    "bank": 1,
+    "bench": [
+      237,
+      573,
+      5,
+      469
+    ],
+    "captain_fallback": 0,
+    "captain_id": 430,
+    "captain_scored_id": 430,
+    "chip": null,
+    "chip_reason": {
+      "as_of_gameweek": 13,
+      "chips_left": 1,
+      "dgw_half_multiplier": 1.0,
+      "effective_fh_threshold": 2.0,
+      "effective_recovery_threshold": 3.3333333333333335,
+      "effective_tc_threshold": 1.3333333333333335,
+      "effective_wc_threshold": 4.0,
+      "expiring_chips_left": 1,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [],
+      "fh_threshold_base": 2.0,
+      "fixture_imbalance": 0.0,
+      "forced": false,
+      "low_minute_owned": 1,
+      "second_half": {
+        "deferred": true,
+        "placeholder_wildcard": 20
+      },
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "triple_captain": {
+        "gameweek": 17,
+        "mean": 7.181298173125954,
+        "player_id": 430,
+        "points": 8.476735371905988,
+        "threshold": 0.9777777777777779
+      },
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 10.0,
+      "weeks_left": 7
+    },
+    "cumulative_points": 767.0,
+    "current_gain": 0.0,
+    "expected_hold_current": 57.73650506293277,
+    "expected_hold_horizon": 232.72529292195424,
+    "expected_selected_current": 57.73650506293277,
+    "expected_selected_horizon": 249.65453251881755,
+    "expected_xi": 57.73650506293277,
+    "free_hit_points": null,
+    "free_transfers_after": 4,
+    "free_transfers_before": 3,
+    "gameweek": 13,
+    "horizon_gain": 16.92923959686331,
+    "planned_chips": {
+      "bench_boosts": [
+        4
+      ],
+      "free_hits": [
+        7
+      ],
+      "triple_captains": [
+        17
+      ],
+      "wildcards": [
+        3
+      ]
+    },
+    "players_scored": 10,
+    "starters": [
+      1,
+      8,
+      119,
+      242,
+      256,
+      267,
+      283,
+      328,
+      430,
+      575,
+      624
+    ],
+    "transfer_count": 0,
+    "transfers": [],
+    "unexpected_zero_minute_starters": 0,
+    "vice_captain_id": 624
+  },
+  {
+    "actual_points": 69.0,
+    "autosub_count": 0,
+    "autosubs": [],
+    "bank": 7,
+    "bench": [
+      328,
+      575,
+      573,
+      469
+    ],
+    "captain_fallback": 0,
+    "captain_id": 430,
+    "captain_scored_id": 430,
+    "chip": null,
+    "chip_reason": {
+      "as_of_gameweek": 14,
+      "chips_left": 1,
+      "dgw_half_multiplier": 1.0,
+      "effective_fh_threshold": 1.6666666666666667,
+      "effective_recovery_threshold": 2.7777777777777777,
+      "effective_tc_threshold": 1.2444444444444445,
+      "effective_wc_threshold": -15.666666666666666,
+      "expiring_chips_left": 1,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [],
+      "fh_threshold_base": 1.6666666666666667,
+      "fixture_imbalance": 0.0,
+      "forced": false,
+      "low_minute_owned": 4,
+      "second_half": {
+        "deferred": true,
+        "placeholder_wildcard": 20
+      },
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "triple_captain": {
+        "gameweek": 17,
+        "mean": 7.171872779777066,
+        "player_id": 430,
+        "points": 8.63981296752831,
+        "threshold": 0.9777777777777779
+      },
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 8.333333333333334,
+      "weeks_left": 6
+    },
+    "cumulative_points": 836.0,
+    "current_gain": 4.423124979257707,
+    "expected_hold_current": 58.37658564553114,
+    "expected_hold_horizon": 238.85484844377697,
+    "expected_selected_current": 62.799710624788844,
+    "expected_selected_horizon": 261.35824377512677,
+    "expected_xi": 62.799710624788844,
+    "free_hit_points": null,
+    "free_transfers_after": 1,
+    "free_transfers_before": 4,
+    "gameweek": 14,
+    "horizon_gain": 22.503395331349793,
+    "planned_chips": {
+      "bench_boosts": [
+        4
+      ],
+      "free_hits": [
+        7
+      ],
+      "triple_captains": [
+        17
+      ],
+      "wildcards": [
+        3
+      ]
+    },
+    "players_scored": 10,
+    "starters": [
+      1,
+      8,
+      84,
+      119,
+      237,
+      256,
+      283,
+      411,
+      418,
+      430,
+      714
+    ],
+    "transfer_count": 4,
+    "transfers": [
+      {
+        "buy_price": 52,
+        "player_in_id": 411,
+        "player_out_id": 5,
+        "sell_price": 62
+      },
+      {
+        "buy_price": 55,
+        "player_in_id": 84,
+        "player_out_id": 242,
+        "sell_price": 49
+      },
+      {
+        "buy_price": 66,
+        "player_in_id": 418,
+        "player_out_id": 267,
+        "sell_price": 66
+      },
+      {
+        "buy_price": 74,
+        "player_in_id": 714,
+        "player_out_id": 624,
+        "sell_price": 76
+      }
+    ],
+    "unexpected_zero_minute_starters": 0,
+    "vice_captain_id": 119
+  },
+  {
+    "actual_points": 44.0,
+    "autosub_count": 2,
+    "autosubs": [
+      {
+        "in": 84,
+        "out": 328
+      },
+      {
+        "in": 575,
+        "out": 256
+      }
+    ],
+    "bank": 7,
+    "bench": [
+      84,
+      575,
+      573,
+      469
+    ],
+    "captain_fallback": 0,
+    "captain_id": 430,
+    "captain_scored_id": 430,
+    "chip": null,
+    "chip_reason": {
+      "as_of_gameweek": 15,
+      "chips_left": 1,
+      "dgw_half_multiplier": 1.0,
+      "effective_fh_threshold": 1.3333333333333333,
+      "effective_recovery_threshold": 2.2222222222222223,
+      "effective_tc_threshold": 1.1555555555555557,
+      "effective_wc_threshold": -23.333333333333332,
+      "expiring_chips_left": 1,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [],
+      "fh_threshold_base": 1.3333333333333333,
+      "fixture_imbalance": 0.0,
+      "forced": false,
+      "low_minute_owned": 5,
+      "second_half": {
+        "deferred": true,
+        "placeholder_wildcard": 20
+      },
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "triple_captain": {
+        "gameweek": 17,
+        "mean": 7.6212080345866635,
+        "player_id": 430,
+        "points": 8.602672290031345,
+        "threshold": 0.9777777777777779
+      },
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 6.666666666666667,
+      "weeks_left": 5
+    },
+    "cumulative_points": 880.0,
+    "current_gain": 0.0,
+    "expected_hold_current": 59.47173621264497,
+    "expected_hold_horizon": 238.86406740300754,
+    "expected_selected_current": 59.47173621264497,
+    "expected_selected_horizon": 252.72495312573804,
+    "expected_xi": 59.47173621264497,
+    "free_hit_points": null,
+    "free_transfers_after": 5,
+    "free_transfers_before": 1,
+    "gameweek": 15,
+    "horizon_gain": 13.860885722730501,
+    "planned_chips": {
+      "bench_boosts": [
+        4
+      ],
+      "free_hits": [
+        7
+      ],
+      "triple_captains": [
+        17
+      ],
+      "wildcards": [
+        3
+      ]
+    },
+    "players_scored": 11,
+    "starters": [
+      1,
+      8,
+      119,
+      237,
+      256,
+      283,
+      328,
+      411,
+      418,
+      430,
+      714
+    ],
+    "transfer_count": 0,
+    "transfers": [],
+    "unexpected_zero_minute_starters": 2,
+    "vice_captain_id": 714
+  },
+  {
+    "actual_points": 54.0,
+    "autosub_count": 1,
+    "autosubs": [
+      {
+        "in": 84,
+        "out": 418
+      }
+    ],
+    "bank": 3,
+    "bench": [
+      84,
+      575,
+      256,
+      469
+    ],
+    "captain_fallback": 0,
+    "captain_id": 136,
+    "captain_scored_id": 136,
+    "chip": null,
+    "chip_reason": {
+      "as_of_gameweek": 16,
+      "chips_left": 1,
+      "dgw_half_multiplier": 1.0,
+      "effective_fh_threshold": 1.0,
+      "effective_recovery_threshold": 1.6666666666666667,
+      "effective_tc_threshold": 1.0666666666666669,
+      "effective_wc_threshold": -13.0,
+      "expiring_chips_left": 1,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [],
+      "fh_threshold_base": 1.0,
+      "fixture_imbalance": 0.0,
+      "forced": false,
+      "low_minute_owned": 3,
+      "second_half": {
+        "deferred": true,
+        "placeholder_wildcard": 20
+      },
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 5.0,
+      "weeks_left": 4
+    },
+    "cumulative_points": 934.0,
+    "current_gain": 10.18790995369882,
+    "expected_hold_current": 49.88011578579127,
+    "expected_hold_horizon": 208.36176291708287,
+    "expected_selected_current": 60.06802573949009,
+    "expected_selected_horizon": 237.8984697220269,
+    "expected_xi": 60.06802573949009,
+    "free_hit_points": null,
+    "free_transfers_after": 2,
+    "free_transfers_before": 5,
+    "gameweek": 16,
+    "horizon_gain": 29.536706804944032,
+    "planned_chips": {
+      "bench_boosts": [
+        4
+      ],
+      "free_hits": [
+        7
+      ],
+      "triple_captains": [],
+      "wildcards": [
+        3
+      ]
+    },
+    "players_scored": 11,
+    "starters": [
+      1,
+      8,
+      11,
+      119,
+      136,
+      237,
+      411,
+      418,
+      430,
+      452,
+      597
+    ],
+    "transfer_count": 4,
+    "transfers": [
+      {
+        "buy_price": 54,
+        "player_in_id": 11,
+        "player_out_id": 573,
+        "sell_price": 43
+      },
+      {
+        "buy_price": 63,
+        "player_in_id": 452,
+        "player_out_id": 328,
+        "sell_price": 54
+      },
+      {
+        "buy_price": 71,
+        "player_in_id": 136,
+        "player_out_id": 283,
+        "sell_price": 77
+      },
+      {
+        "buy_price": 64,
+        "player_in_id": 597,
+        "player_out_id": 714,
+        "sell_price": 74
+      }
+    ],
+    "unexpected_zero_minute_starters": 1,
+    "vice_captain_id": 11
+  },
+  {
+    "actual_points": 76.0,
+    "autosub_count": 0,
+    "autosubs": [],
+    "bank": 3,
+    "bench": [
+      256,
+      418,
+      452,
+      469
+    ],
+    "captain_fallback": 0,
+    "captain_id": 430,
+    "captain_scored_id": 430,
+    "chip": "triple_captain",
+    "chip_reason": {
+      "as_of_gameweek": 17,
+      "chips_left": 1,
+      "dgw_half_multiplier": 1.0,
+      "effective_fh_threshold": 0.6666666666666666,
+      "effective_recovery_threshold": 1.1111111111111112,
+      "effective_tc_threshold": 0.9777777777777779,
+      "effective_wc_threshold": -38.666666666666664,
+      "expiring_chips_left": 1,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [],
+      "fh_threshold_base": 0.6666666666666666,
+      "fixture_imbalance": 0.0,
+      "forced": false,
+      "low_minute_owned": 7,
+      "second_half": {
+        "deferred": true,
+        "placeholder_wildcard": 20
+      },
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "triple_captain": {
+        "gameweek": 17,
+        "mean": 7.141391004703578,
+        "player_id": 430,
+        "points": 8.168687747400616,
+        "threshold": 0.9777777777777779
+      },
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 3.3333333333333335,
+      "weeks_left": 3
+    },
+    "cumulative_points": 1010.0,
+    "current_gain": 0.0,
+    "expected_hold_current": 56.48596323925721,
+    "expected_hold_horizon": 141.5776532529673,
+    "expected_selected_current": 56.48596323925721,
+    "expected_selected_horizon": 174.4981392023325,
+    "expected_xi": 56.48596323925721,
+    "free_hit_points": null,
+    "free_transfers_after": 3,
+    "free_transfers_before": 2,
+    "gameweek": 17,
+    "horizon_gain": 32.9204859493652,
+    "planned_chips": {
+      "bench_boosts": [
+        4
+      ],
+      "free_hits": [
+        7
+      ],
+      "triple_captains": [
+        17
+      ],
+      "wildcards": [
+        3
+      ]
+    },
+    "players_scored": 8,
+    "starters": [
+      1,
+      8,
+      11,
+      84,
+      119,
+      136,
+      237,
+      411,
+      430,
+      575,
+      597
+    ],
+    "transfer_count": 0,
+    "transfers": [],
+    "unexpected_zero_minute_starters": 2,
+    "vice_captain_id": 597
+  },
+  {
+    "actual_points": 30.0,
+    "autosub_count": 0,
+    "autosubs": [],
+    "bank": 3,
+    "bench": [
+      11,
+      256,
+      452,
+      469
+    ],
+    "captain_fallback": 0,
+    "captain_id": 430,
+    "captain_scored_id": 430,
+    "chip": null,
+    "chip_reason": {
+      "as_of_gameweek": 18,
+      "chips_left": 0,
+      "dgw_half_multiplier": 1.0,
+      "effective_fh_threshold": 6.0,
+      "effective_recovery_threshold": 10.0,
+      "effective_tc_threshold": 0.888888888888889,
+      "effective_wc_threshold": -24.0,
+      "expiring_chips_left": 0,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [],
+      "fh_threshold_base": 6.0,
+      "fixture_imbalance": 0.0,
+      "forced": false,
+      "low_minute_owned": 9,
+      "second_half": {
+        "deferred": true,
+        "placeholder_wildcard": 20
+      },
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 30.0,
+      "weeks_left": 2
+    },
+    "cumulative_points": 1040.0,
+    "current_gain": 15.313930617547179,
+    "expected_hold_current": 36.30266546944622,
+    "expected_hold_horizon": 73.06110315776459,
+    "expected_selected_current": 51.6165960869934,
+    "expected_selected_horizon": 106.87996062498003,
+    "expected_xi": 51.6165960869934,
+    "free_hit_points": null,
+    "free_transfers_after": 1,
+    "free_transfers_before": 3,
+    "gameweek": 18,
+    "horizon_gain": 33.81885746721544,
+    "planned_chips": {
+      "bench_boosts": [
+        4
+      ],
+      "free_hits": [
+        7
+      ],
+      "triple_captains": [
+        17
+      ],
+      "wildcards": [
+        3
+      ]
+    },
+    "players_scored": 10,
+    "starters": [
+      1,
+      8,
+      84,
+      237,
+      411,
+      430,
+      450,
+      455,
+      575,
+      597,
+      624
+    ],
+    "transfer_count": 3,
+    "transfers": [
+      {
+        "buy_price": 80,
+        "player_in_id": 450,
+        "player_out_id": 119,
+        "sell_price": 80
+      },
+      {
+        "buy_price": 59,
+        "player_in_id": 455,
+        "player_out_id": 418,
+        "sell_price": 64
+      },
+      {
+        "buy_price": 76,
+        "player_in_id": 624,
+        "player_out_id": 136,
+        "sell_price": 71
+      }
+    ],
+    "unexpected_zero_minute_starters": 1,
+    "vice_captain_id": 624
+  },
+  {
+    "actual_points": 39.0,
+    "autosub_count": 1,
+    "autosubs": [
+      {
+        "in": 11,
+        "out": 455
+      }
+    ],
+    "bank": 4,
+    "bench": [
+      11,
+      256,
+      452,
+      469
+    ],
+    "captain_fallback": 0,
+    "captain_id": 430,
+    "captain_scored_id": 430,
+    "chip": null,
+    "chip_reason": {
+      "as_of_gameweek": 19,
+      "chips_left": 0,
+      "dgw_half_multiplier": 1.0,
+      "effective_fh_threshold": 6.0,
+      "effective_recovery_threshold": 10.0,
+      "effective_tc_threshold": 0.8,
+      "effective_wc_threshold": -6.0,
+      "expiring_chips_left": 0,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [],
+      "fh_threshold_base": 6.0,
+      "fixture_imbalance": 0.0,
+      "forced": false,
+      "low_minute_owned": 6,
+      "second_half": {
+        "deferred": true,
+        "placeholder_wildcard": 20
+      },
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 30.0,
+      "weeks_left": 1
+    },
+    "cumulative_points": 1079.0,
+    "current_gain": 3.5410782693605327,
+    "expected_hold_current": 50.81972895882708,
+    "expected_hold_horizon": 50.81972895882708,
+    "expected_selected_current": 54.36080722818761,
+    "expected_selected_horizon": 54.36080722818761,
+    "expected_xi": 54.36080722818761,
+    "free_hit_points": null,
+    "free_transfers_after": 1,
+    "free_transfers_before": 1,
+    "gameweek": 19,
+    "horizon_gain": 3.5410782693605327,
+    "planned_chips": {
+      "bench_boosts": [
+        4
+      ],
+      "free_hits": [
+        7
+      ],
+      "triple_captains": [
+        17
+      ],
+      "wildcards": [
+        3
+      ]
+    },
+    "players_scored": 11,
+    "starters": [
+      1,
+      6,
+      84,
+      237,
+      411,
+      430,
+      450,
+      455,
+      575,
+      597,
+      624
+    ],
+    "transfer_count": 1,
+    "transfers": [
+      {
+        "buy_price": 59,
+        "player_in_id": 6,
+        "player_out_id": 8,
+        "sell_price": 60
+      }
+    ],
+    "unexpected_zero_minute_starters": 1,
+    "vice_captain_id": 450
+  },
+  {
+    "actual_points": 34.0,
+    "autosub_count": 0,
+    "autosubs": [],
+    "bank": 0,
+    "bench": [
+      497,
+      6,
+      441,
+      220
+    ],
+    "captain_fallback": 0,
+    "captain_id": 430,
+    "captain_scored_id": 430,
+    "chip": "wildcard",
+    "chip_reason": {
+      "as_of_gameweek": 20,
+      "bench_boost_after_wildcard": 21,
+      "chips_left": 4,
+      "committed_chip_roll": true,
+      "dgw_half_multiplier": 2.0,
+      "effective_fh_threshold": 6.0,
+      "effective_recovery_threshold": 10.0,
+      "effective_tc_threshold": 1.6,
+      "effective_wc_threshold": -6.0,
+      "expiring_chips_left": 4,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [
+        {
+          "differential": 10.895218750084325,
+          "gameweek": 20
+        },
+        {
+          "differential": 4.206021647378606,
+          "gameweek": 21
+        },
+        {
+          "differential": 4.351930119954034,
+          "gameweek": 22
+        },
+        {
+          "differential": 3.5934959162162556,
+          "gameweek": 23
+        }
+      ],
+      "fh_differentials_after_wildcard": [],
+      "fh_threshold_base": 6.0,
+      "fixture_imbalance": 0.0,
+      "forced": false,
+      "low_minute_owned": 6,
+      "recovery": {
+        "chose_free_hit": false,
+        "gameweek": 20
+      },
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "triple_captain": {
+        "gameweek": 23,
+        "mean": 6.427895083233529,
+        "player_id": 430,
+        "points": 8.599707040440965,
+        "threshold": 1.6
+      },
+      "wc_differentials": [
+        {
+          "differential": 23.26086458375522,
+          "gameweek": 20
+        },
+        {
+          "differential": 14.34340331751784,
+          "gameweek": 21
+        },
+        {
+          "differential": 9.88464841546255,
+          "gameweek": 22
+        },
+        {
+          "differential": 9.597954574281317,
+          "gameweek": 23
+        }
+      ],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 30.0,
+      "weeks_left": 19,
+      "wildcard_gameweek": 20
+    },
+    "cumulative_points": 1113.0,
+    "current_gain": 10.064565309835785,
+    "expected_hold_current": 50.87702475591582,
+    "expected_hold_horizon": 210.512871482384,
+    "expected_selected_current": 60.941590065751605,
+    "expected_selected_horizon": 268.90444057418637,
+    "expected_xi": 60.941590065751605,
+    "free_hit_points": null,
+    "free_transfers_after": 2,
+    "free_transfers_before": 1,
+    "gameweek": 20,
+    "horizon_gain": 58.39156909180235,
+    "planned_chips": {
+      "bench_boosts": [
+        4,
+        21
+      ],
+      "free_hits": [
+        7
+      ],
+      "triple_captains": [
+        17,
+        23
+      ],
+      "wildcards": [
+        3,
+        20
+      ]
+    },
+    "players_scored": 10,
+    "starters": [
+      16,
+      20,
+      107,
+      148,
+      283,
+      287,
+      329,
+      407,
+      417,
+      430,
+      597
+    ],
+    "transfer_count": 12,
+    "transfers": [
+      {
+        "buy_price": 49,
+        "player_in_id": 220,
+        "player_out_id": 1,
+        "sell_price": 57
+      },
+      {
+        "buy_price": 55,
+        "player_in_id": 287,
+        "player_out_id": 469,
+        "sell_price": 50
+      },
+      {
+        "buy_price": 49,
+        "player_in_id": 107,
+        "player_out_id": 11,
+        "sell_price": 51
+      },
+      {
+        "buy_price": 44,
+        "player_in_id": 148,
+        "player_out_id": 256,
+        "sell_price": 56
+      },
+      {
+        "buy_price": 54,
+        "player_in_id": 407,
+        "player_out_id": 411,
+        "sell_price": 52
+      },
+      {
+        "buy_price": 42,
+        "player_in_id": 441,
+        "player_out_id": 575,
+        "sell_price": 45
+      },
+      {
+        "buy_price": 103,
+        "player_in_id": 16,
+        "player_out_id": 84,
+        "sell_price": 55
+      },
+      {
+        "buy_price": 70,
+        "player_in_id": 20,
+        "player_out_id": 237,
+        "sell_price": 64
+      },
+      {
+        "buy_price": 58,
+        "player_in_id": 329,
+        "player_out_id": 450,
+        "sell_price": 81
+      },
+      {
+        "buy_price": 68,
+        "player_in_id": 417,
+        "player_out_id": 452,
+        "sell_price": 63
+      },
+      {
+        "buy_price": 45,
+        "player_in_id": 497,
+        "player_out_id": 455,
+        "sell_price": 59
+      },
+      {
+        "buy_price": 76,
+        "player_in_id": 283,
+        "player_out_id": 624,
+        "sell_price": 76
+      }
+    ],
+    "unexpected_zero_minute_starters": 0,
+    "vice_captain_id": 597
+  },
+  {
+    "actual_points": 60.0,
+    "autosub_count": 0,
+    "autosubs": [],
+    "bank": 3,
+    "bench": [
+      441,
+      20,
+      148,
+      220
+    ],
+    "captain_fallback": 0,
+    "captain_id": 430,
+    "captain_scored_id": 430,
+    "chip": "bench_boost",
+    "chip_reason": {
+      "as_of_gameweek": 21,
+      "bench_boost_after_played_wildcard": 21,
+      "chips_left": 3,
+      "dgw_half_multiplier": 2.0,
+      "effective_fh_threshold": 5.647058823529412,
+      "effective_recovery_threshold": 9.411764705882353,
+      "effective_tc_threshold": 1.6,
+      "effective_wc_threshold": 4.235294117647058,
+      "expiring_chips_left": 2,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [
+        {
+          "differential": 1.2438319328545901,
+          "gameweek": 21
+        },
+        {
+          "differential": 0.040857159552444955,
+          "gameweek": 22
+        },
+        {
+          "differential": 2.465882229583343,
+          "gameweek": 23
+        },
+        {
+          "differential": -0.7546754424245989,
+          "gameweek": 24
+        }
+      ],
+      "fh_threshold_base": 5.647058823529412,
+      "fixture_imbalance": 0.0,
+      "forced": false,
+      "low_minute_owned": 4,
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "triple_captain": {
+        "gameweek": 23,
+        "mean": 6.427114335093469,
+        "player_id": 430,
+        "points": 9.2108872456905,
+        "threshold": 1.6
+      },
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 28.235294117647058,
+      "weeks_left": 18
+    },
+    "cumulative_points": 1173.0,
+    "current_gain": 5.7800302349861,
+    "expected_hold_current": 64.98071405744085,
+    "expected_hold_horizon": 246.66989254946185,
+    "expected_selected_current": 70.76074429242695,
+    "expected_selected_horizon": 262.3397217111574,
+    "expected_xi": 70.76074429242695,
+    "free_hit_points": null,
+    "free_transfers_after": 1,
+    "free_transfers_before": 2,
+    "gameweek": 21,
+    "horizon_gain": 15.669829161695532,
+    "planned_chips": {
+      "bench_boosts": [
+        4,
+        21
+      ],
+      "free_hits": [
+        7
+      ],
+      "triple_captains": [
+        17,
+        23
+      ],
+      "wildcards": [
+        3,
+        20
+      ]
+    },
+    "players_scored": 15,
+    "starters": [
+      5,
+      6,
+      283,
+      287,
+      329,
+      407,
+      417,
+      430,
+      450,
+      497,
+      597
+    ],
+    "transfer_count": 2,
+    "transfers": [
+      {
+        "buy_price": 66,
+        "player_in_id": 5,
+        "player_out_id": 107,
+        "sell_price": 49
+      },
+      {
+        "buy_price": 82,
+        "player_in_id": 450,
+        "player_out_id": 16,
+        "sell_price": 102
+      }
+    ],
+    "unexpected_zero_minute_starters": 0,
+    "vice_captain_id": 283
+  },
+  {
+    "actual_points": 57.0,
+    "autosub_count": 0,
+    "autosubs": [],
+    "bank": 3,
+    "bench": [
+      407,
+      417,
+      597,
+      220
+    ],
+    "captain_fallback": 0,
+    "captain_id": 430,
+    "captain_scored_id": 430,
+    "chip": null,
+    "chip_reason": {
+      "as_of_gameweek": 22,
+      "chips_left": 2,
+      "dgw_half_multiplier": 2.0,
+      "effective_fh_threshold": 5.294117647058823,
+      "effective_recovery_threshold": 8.823529411764707,
+      "effective_tc_threshold": 1.6,
+      "effective_wc_threshold": 8.470588235294116,
+      "expiring_chips_left": 2,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [
+        {
+          "differential": 6.601464415411812,
+          "gameweek": 22
+        },
+        {
+          "differential": 7.876763838354179,
+          "gameweek": 23
+        },
+        {
+          "differential": 1.6466975780687392,
+          "gameweek": 24
+        },
+        {
+          "differential": 0.13263907448629197,
+          "gameweek": 25
+        }
+      ],
+      "fh_threshold_base": 5.294117647058823,
+      "fixture_imbalance": 0.0,
+      "forced": false,
+      "low_minute_owned": 3,
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "triple_captain": {
+        "gameweek": 26,
+        "mean": 4.620455544480414,
+        "player_id": 21,
+        "points": 10.368678319041882,
+        "threshold": 1.6
+      },
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 26.470588235294116,
+      "weeks_left": 17
+    },
+    "cumulative_points": 1230.0,
+    "current_gain": 0.0,
+    "expected_hold_current": 51.71217523954411,
+    "expected_hold_horizon": 219.1217672929244,
+    "expected_selected_current": 51.71217523954411,
+    "expected_selected_horizon": 230.12875411291188,
+    "expected_xi": 51.71217523954411,
+    "free_hit_points": null,
+    "free_transfers_after": 2,
+    "free_transfers_before": 1,
+    "gameweek": 22,
+    "horizon_gain": 11.006986819987475,
+    "planned_chips": {
+      "bench_boosts": [
+        4,
+        21
+      ],
+      "free_hits": [
+        7
+      ],
+      "triple_captains": [
+        17,
+        26
+      ],
+      "wildcards": [
+        3,
+        20
+      ]
+    },
+    "players_scored": 11,
+    "starters": [
+      5,
+      6,
+      20,
+      148,
+      283,
+      287,
+      329,
+      430,
+      441,
+      450,
+      497
+    ],
+    "transfer_count": 0,
+    "transfers": [],
+    "unexpected_zero_minute_starters": 0,
+    "vice_captain_id": 283
+  },
+  {
+    "actual_points": 39.0,
+    "autosub_count": 0,
+    "autosubs": [],
+    "bank": 0,
+    "bench": [
+      441,
+      497,
+      407,
+      220
+    ],
+    "captain_fallback": 0,
+    "captain_id": 430,
+    "captain_scored_id": 430,
+    "chip": null,
+    "chip_reason": {
+      "as_of_gameweek": 23,
+      "chips_left": 2,
+      "committed_chip_roll": true,
+      "dgw_half_multiplier": 2.0,
+      "effective_fh_threshold": 4.9411764705882355,
+      "effective_recovery_threshold": 8.235294117647058,
+      "effective_tc_threshold": 1.6,
+      "effective_wc_threshold": -11.294117647058822,
+      "expiring_chips_left": 2,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [
+        {
+          "differential": 12.299246659715891,
+          "gameweek": 23
+        },
+        {
+          "differential": 8.4058838161734,
+          "gameweek": 24
+        },
+        {
+          "differential": 2.192972432322449,
+          "gameweek": 25
+        },
+        {
+          "differential": 6.391976355484729,
+          "gameweek": 26
+        }
+      ],
+      "fh_threshold_base": 4.9411764705882355,
+      "fixture_imbalance": 0.0,
+      "forced": false,
+      "free_hit_gameweek": 24,
+      "low_minute_owned": 6,
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "triple_captain": {
+        "gameweek": 26,
+        "mean": 4.585635462030482,
+        "player_id": 21,
+        "points": 10.295341742093893,
+        "threshold": 1.6
+      },
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 24.705882352941178,
+      "weeks_left": 16
+    },
+    "cumulative_points": 1269.0,
+    "current_gain": 7.609162417529916,
+    "expected_hold_current": 53.37630777881945,
+    "expected_hold_horizon": 228.86836675145219,
+    "expected_selected_current": 60.98547019634937,
+    "expected_selected_horizon": 256.2257721946158,
+    "expected_xi": 60.98547019634937,
+    "free_hit_points": null,
+    "free_transfers_after": 1,
+    "free_transfers_before": 2,
+    "gameweek": 23,
+    "horizon_gain": 27.3574054431636,
+    "planned_chips": {
+      "bench_boosts": [
+        4,
+        21
+      ],
+      "free_hits": [
+        7,
+        24
+      ],
+      "triple_captains": [
+        17,
+        26
+      ],
+      "wildcards": [
+        3,
+        20
+      ]
+    },
+    "players_scored": 11,
+    "starters": [
+      5,
+      6,
+      20,
+      120,
+      148,
+      283,
+      287,
+      329,
+      417,
+      430,
+      624
+    ],
+    "transfer_count": 2,
+    "transfers": [
+      {
+        "buy_price": 71,
+        "player_in_id": 120,
+        "player_out_id": 450,
+        "sell_price": 80
+      },
+      {
+        "buy_price": 76,
+        "player_in_id": 624,
+        "player_out_id": 597,
+        "sell_price": 64
+      }
+    ],
+    "unexpected_zero_minute_starters": 0,
+    "vice_captain_id": 624
+  },
+  {
+    "actual_points": 55.0,
+    "autosub_count": 1,
+    "autosubs": [
+      {
+        "in": 515,
+        "out": 16
+      }
+    ],
+    "bank": 0,
+    "bench": [
+      515,
+      36,
+      634,
+      628
+    ],
+    "captain_fallback": 0,
+    "captain_id": 97,
+    "captain_scored_id": 97,
+    "chip": "free_hit",
+    "chip_reason": {
+      "as_of_gameweek": 24,
+      "chips_left": 2,
+      "committed_chip_roll": true,
+      "dgw_half_multiplier": 2.0,
+      "effective_fh_threshold": 4.588235294117647,
+      "effective_recovery_threshold": 7.647058823529412,
+      "effective_tc_threshold": 1.6,
+      "effective_wc_threshold": -1.0588235294117645,
+      "expiring_chips_left": 2,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [
+        {
+          "differential": 10.39365603301107,
+          "gameweek": 24
+        },
+        {
+          "differential": 9.699194872397811,
+          "gameweek": 25
+        },
+        {
+          "differential": 4.601487747326985,
+          "gameweek": 26
+        },
+        {
+          "differential": 1.566915042729363,
+          "gameweek": 27
+        }
+      ],
+      "fh_threshold_base": 4.588235294117647,
+      "fixture_imbalance": 0.0,
+      "forced": false,
+      "free_hit_gameweek": 24,
+      "low_minute_owned": 4,
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "triple_captain": {
+        "gameweek": 26,
+        "mean": 5.031497986876239,
+        "player_id": 16,
+        "points": 11.541815953983674,
+        "threshold": 1.6
+      },
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 22.941176470588236,
+      "weeks_left": 15
+    },
+    "cumulative_points": 1324.0,
+    "current_gain": 10.393656033011048,
+    "expected_hold_current": 47.64065873800372,
+    "expected_hold_horizon": 220.03150568417223,
+    "expected_selected_current": 58.03431477101477,
+    "expected_selected_horizon": 264.1974724906505,
+    "expected_xi": 58.03431477101477,
+    "free_hit_points": 55.0,
+    "free_transfers_after": 2,
+    "free_transfers_before": 1,
+    "gameweek": 24,
+    "horizon_gain": 44.16596680647828,
+    "planned_chips": {
+      "bench_boosts": [
+        4,
+        21
+      ],
+      "free_hits": [
+        7,
+        24
+      ],
+      "triple_captains": [
+        17,
+        26
+      ],
+      "wildcards": [
+        3,
+        20
+      ]
+    },
+    "players_scored": 10,
+    "starters": [
+      5,
+      8,
+      16,
+      97,
+      120,
+      148,
+      220,
+      237,
+      249,
+      487,
+      624
+    ],
+    "transfer_count": 10,
+    "transfers": [
+      {
+        "buy_price": 42,
+        "player_in_id": 628,
+        "player_out_id": 287,
+        "sell_price": 55
+      },
+      {
+        "buy_price": 63,
+        "player_in_id": 8,
+        "player_out_id": 6,
+        "sell_price": 59
+      },
+      {
+        "buy_price": 48,
+        "player_in_id": 36,
+        "player_out_id": 407,
+        "sell_price": 54
+      },
+      {
+        "buy_price": 43,
+        "player_in_id": 634,
+        "player_out_id": 441,
+        "sell_price": 43
+      },
+      {
+        "buy_price": 100,
+        "player_in_id": 16,
+        "player_out_id": 20,
+        "sell_price": 68
+      },
+      {
+        "buy_price": 67,
+        "player_in_id": 237,
+        "player_out_id": 329,
+        "sell_price": 59
+      },
+      {
+        "buy_price": 61,
+        "player_in_id": 487,
+        "player_out_id": 417,
+        "sell_price": 66
+      },
+      {
+        "buy_price": 73,
+        "player_in_id": 515,
+        "player_out_id": 497,
+        "sell_price": 45
+      },
+      {
+        "buy_price": 71,
+        "player_in_id": 97,
+        "player_out_id": 283,
+        "sell_price": 75
+      },
+      {
+        "buy_price": 73,
+        "player_in_id": 249,
+        "player_out_id": 430,
+        "sell_price": 149
+      }
+    ],
+    "unexpected_zero_minute_starters": 1,
+    "vice_captain_id": 249
+  },
+  {
+    "actual_points": 50.0,
+    "autosub_count": 2,
+    "autosubs": [
+      {
+        "in": 407,
+        "out": 120
+      },
+      {
+        "in": 417,
+        "out": 497
+      }
+    ],
+    "bank": 0,
+    "bench": [
+      407,
+      417,
+      441,
+      287
+    ],
+    "captain_fallback": 0,
+    "captain_id": 20,
+    "captain_scored_id": 20,
+    "chip": null,
+    "chip_reason": {
+      "as_of_gameweek": 25,
+      "chips_left": 1,
+      "dgw_half_multiplier": 2.0,
+      "effective_fh_threshold": 4.333333333333333,
+      "effective_recovery_threshold": 7.222222222222222,
+      "effective_tc_threshold": 1.6,
+      "effective_wc_threshold": -14.333333333333332,
+      "expiring_chips_left": 1,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [],
+      "fh_threshold_base": 4.333333333333333,
+      "fixture_imbalance": 0.0,
+      "forced": false,
+      "low_minute_owned": 6,
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "triple_captain": {
+        "gameweek": 26,
+        "mean": 4.161349202244149,
+        "player_id": 20,
+        "points": 9.558964443758736,
+        "threshold": 1.6
+      },
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 21.666666666666668,
+      "weeks_left": 14
+    },
+    "cumulative_points": 1374.0,
+    "current_gain": 0.0,
+    "expected_hold_current": 45.03367173447286,
+    "expected_hold_horizon": 197.93988921048665,
+    "expected_selected_current": 45.03367173447286,
+    "expected_selected_horizon": 241.4389473239496,
+    "expected_xi": 45.03367173447286,
+    "free_hit_points": null,
+    "free_transfers_after": 3,
+    "free_transfers_before": 2,
+    "gameweek": 25,
+    "horizon_gain": 43.49905811346295,
+    "planned_chips": {
+      "bench_boosts": [
+        4,
+        21
+      ],
+      "free_hits": [
+        7,
+        24
+      ],
+      "triple_captains": [
+        17,
+        26
+      ],
+      "wildcards": [
+        3,
+        20
+      ]
+    },
+    "players_scored": 10,
+    "starters": [
+      5,
+      6,
+      20,
+      120,
+      148,
+      220,
+      283,
+      329,
+      430,
+      497,
+      624
+    ],
+    "transfer_count": 0,
+    "transfers": [],
+    "unexpected_zero_minute_starters": 3,
+    "vice_captain_id": 5
+  },
+  {
+    "actual_points": 45.0,
+    "autosub_count": 0,
+    "autosubs": [],
+    "bank": 16,
+    "bench": [
+      497,
+      407,
+      441,
+      287
+    ],
+    "captain_fallback": 0,
+    "captain_id": 5,
+    "captain_scored_id": 5,
+    "chip": null,
+    "chip_reason": {
+      "as_of_gameweek": 26,
+      "chips_left": 1,
+      "dgw_half_multiplier": 2.0,
+      "effective_fh_threshold": 4.0,
+      "effective_recovery_threshold": 6.666666666666667,
+      "effective_tc_threshold": 1.6,
+      "effective_wc_threshold": -16.0,
+      "expiring_chips_left": 1,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [],
+      "fh_threshold_base": 4.0,
+      "fixture_imbalance": 0.0,
+      "forced": false,
+      "low_minute_owned": 6,
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "triple_captain": {
+        "gameweek": 33,
+        "mean": 6.210256686416596,
+        "player_id": 430,
+        "points": 10.04220393902918,
+        "threshold": 1.2444444444444445
+      },
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 20.0,
+      "weeks_left": 13
+    },
+    "cumulative_points": 1419.0,
+    "current_gain": 17.978412505379517,
+    "expected_hold_current": 56.71526833371538,
+    "expected_hold_horizon": 185.21079624549606,
+    "expected_selected_current": 74.6936808390949,
+    "expected_selected_horizon": 245.41658982550632,
+    "expected_xi": 74.6936808390949,
+    "free_hit_points": null,
+    "free_transfers_after": 1,
+    "free_transfers_before": 3,
+    "gameweek": 26,
+    "horizon_gain": 60.205793580010265,
+    "planned_chips": {
+      "bench_boosts": [
+        4,
+        21
+      ],
+      "free_hits": [
+        7,
+        24
+      ],
+      "triple_captains": [
+        17,
+        33
+      ],
+      "wildcards": [
+        3,
+        20
+      ]
+    },
+    "players_scored": 11,
+    "starters": [
+      5,
+      6,
+      20,
+      119,
+      148,
+      220,
+      329,
+      430,
+      487,
+      624,
+      749
+    ],
+    "transfer_count": 3,
+    "transfers": [
+      {
+        "buy_price": 86,
+        "player_in_id": 119,
+        "player_out_id": 120,
+        "sell_price": 69
+      },
+      {
+        "buy_price": 61,
+        "player_in_id": 487,
+        "player_out_id": 417,
+        "sell_price": 65
+      },
+      {
+        "buy_price": 46,
+        "player_in_id": 749,
+        "player_out_id": 283,
+        "sell_price": 75
+      }
+    ],
+    "unexpected_zero_minute_starters": 0,
+    "vice_captain_id": 749
+  },
+  {
+    "actual_points": 46.0,
+    "autosub_count": 0,
+    "autosubs": [],
+    "bank": 16,
+    "bench": [
+      407,
+      441,
+      497,
+      287
+    ],
+    "captain_fallback": 0,
+    "captain_id": 624,
+    "captain_scored_id": 624,
+    "chip": null,
+    "chip_reason": {
+      "as_of_gameweek": 27,
+      "chips_left": 1,
+      "dgw_half_multiplier": 2.0,
+      "effective_fh_threshold": 3.6666666666666665,
+      "effective_recovery_threshold": 6.111111111111111,
+      "effective_tc_threshold": 1.6,
+      "effective_wc_threshold": -11.666666666666668,
+      "expiring_chips_left": 1,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [],
+      "fh_threshold_base": 3.6666666666666665,
+      "fixture_imbalance": 0.17999999999999972,
+      "forced": false,
+      "low_minute_owned": 5,
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "triple_captain": {
+        "gameweek": 28,
+        "mean": 5.396295102021456,
+        "player_id": 381,
+        "points": 8.03768147691644,
+        "threshold": 1.6
+      },
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 18.333333333333332,
+      "weeks_left": 12
+    },
+    "cumulative_points": 1465.0,
+    "current_gain": 0.0,
+    "expected_hold_current": 51.403878298222224,
+    "expected_hold_horizon": 210.29569333698225,
+    "expected_selected_current": 51.403878298222224,
+    "expected_selected_horizon": 238.49658627099865,
+    "expected_xi": 51.403878298222224,
+    "free_hit_points": null,
+    "free_transfers_after": 2,
+    "free_transfers_before": 1,
+    "gameweek": 27,
+    "horizon_gain": 28.200892934016395,
+    "planned_chips": {
+      "bench_boosts": [
+        4,
+        21
+      ],
+      "free_hits": [
+        7,
+        24
+      ],
+      "triple_captains": [
+        17,
+        28
+      ],
+      "wildcards": [
+        3,
+        20
+      ]
+    },
+    "players_scored": 10,
+    "starters": [
+      5,
+      6,
+      20,
+      119,
+      148,
+      220,
+      329,
+      430,
+      487,
+      624,
+      749
+    ],
+    "transfer_count": 0,
+    "transfers": [],
+    "unexpected_zero_minute_starters": 0,
+    "vice_captain_id": 119
+  },
+  {
+    "actual_points": 58.0,
+    "autosub_count": 1,
+    "autosubs": [
+      {
+        "in": 407,
+        "out": 430
+      }
+    ],
+    "bank": 16,
+    "bench": [
+      407,
+      441,
+      497,
+      220
+    ],
+    "captain_fallback": 1,
+    "captain_id": 430,
+    "captain_scored_id": 749,
+    "chip": null,
+    "chip_reason": {
+      "as_of_gameweek": 28,
+      "chips_left": 1,
+      "dgw_half_multiplier": 2.0,
+      "effective_fh_threshold": 3.3333333333333335,
+      "effective_recovery_threshold": 5.555555555555555,
+      "effective_tc_threshold": 1.6,
+      "effective_wc_threshold": -7.333333333333332,
+      "expiring_chips_left": 1,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [],
+      "fh_threshold_base": 3.3333333333333335,
+      "fixture_imbalance": 0.17999999999999972,
+      "forced": false,
+      "low_minute_owned": 4,
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "triple_captain": {
+        "gameweek": 33,
+        "mean": 4.860137997055993,
+        "player_id": 430,
+        "points": 9.883949837028437,
+        "threshold": 1.2444444444444445
+      },
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 16.666666666666668,
+      "weeks_left": 11
+    },
+    "cumulative_points": 1523.0,
+    "current_gain": 0.0,
+    "expected_hold_current": 53.50923434420741,
+    "expected_hold_horizon": 189.87189437054656,
+    "expected_selected_current": 53.50923434420741,
+    "expected_selected_horizon": 212.2501533479568,
+    "expected_xi": 53.50923434420741,
+    "free_hit_points": null,
+    "free_transfers_after": 3,
+    "free_transfers_before": 2,
+    "gameweek": 28,
+    "horizon_gain": 22.37825897741024,
+    "planned_chips": {
+      "bench_boosts": [
+        4,
+        21
+      ],
+      "free_hits": [
+        7,
+        24
+      ],
+      "triple_captains": [
+        17,
+        33
+      ],
+      "wildcards": [
+        3,
+        20
+      ]
+    },
+    "players_scored": 11,
+    "starters": [
+      5,
+      6,
+      20,
+      119,
+      148,
+      287,
+      329,
+      430,
+      487,
+      624,
+      749
+    ],
+    "transfer_count": 0,
+    "transfers": [],
+    "unexpected_zero_minute_starters": 1,
+    "vice_captain_id": 749
+  },
+  {
+    "actual_points": 47.0,
+    "autosub_count": 1,
+    "autosubs": [
+      {
+        "in": 407,
+        "out": 6
+      }
+    ],
+    "bank": 25,
+    "bench": [
+      487,
+      407,
+      441,
+      220
+    ],
+    "captain_fallback": 0,
+    "captain_id": 381,
+    "captain_scored_id": 381,
+    "chip": null,
+    "chip_reason": {
+      "as_of_gameweek": 29,
+      "chips_left": 1,
+      "dgw_half_multiplier": 2.0,
+      "effective_fh_threshold": 3.0,
+      "effective_recovery_threshold": 5.0,
+      "effective_tc_threshold": 1.6,
+      "effective_wc_threshold": -27.0,
+      "expiring_chips_left": 1,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [],
+      "fh_threshold_base": 3.0,
+      "fixture_imbalance": 0.17999999999999972,
+      "forced": false,
+      "low_minute_owned": 7,
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "triple_captain": {
+        "gameweek": 33,
+        "mean": 4.914612058703158,
+        "player_id": 249,
+        "points": 10.531017191481013,
+        "threshold": 1.2444444444444445
+      },
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 15.0,
+      "weeks_left": 10
+    },
+    "cumulative_points": 1570.0,
+    "current_gain": 17.398239990875197,
+    "expected_hold_current": 37.9847289538171,
+    "expected_hold_horizon": 148.17820661767595,
+    "expected_selected_current": 55.382968944692294,
+    "expected_selected_horizon": 209.020282380664,
+    "expected_xi": 55.382968944692294,
+    "free_hit_points": null,
+    "free_transfers_after": 1,
+    "free_transfers_before": 3,
+    "gameweek": 29,
+    "horizon_gain": 60.84207576298806,
+    "planned_chips": {
+      "bench_boosts": [
+        4,
+        21
+      ],
+      "free_hits": [
+        7,
+        24
+      ],
+      "triple_captains": [
+        17,
+        33
+      ],
+      "wildcards": [
+        3,
+        20
+      ]
+    },
+    "players_scored": 11,
+    "starters": [
+      5,
+      6,
+      20,
+      100,
+      119,
+      148,
+      287,
+      328,
+      381,
+      624,
+      749
+    ],
+    "transfer_count": 3,
+    "transfers": [
+      {
+        "buy_price": 54,
+        "player_in_id": 328,
+        "player_out_id": 329,
+        "sell_price": 59
+      },
+      {
+        "buy_price": 140,
+        "player_in_id": 381,
+        "player_out_id": 497,
+        "sell_price": 44
+      },
+      {
+        "buy_price": 47,
+        "player_in_id": 100,
+        "player_out_id": 430,
+        "sell_price": 147
+      }
+    ],
+    "unexpected_zero_minute_starters": 1,
+    "vice_captain_id": 624
+  },
+  {
+    "actual_points": 47.0,
+    "autosub_count": 1,
+    "autosubs": [
+      {
+        "in": 328,
+        "out": 20
+      }
+    ],
+    "bank": 25,
+    "bench": [
+      328,
+      407,
+      441,
+      220
+    ],
+    "captain_fallback": 0,
+    "captain_id": 381,
+    "captain_scored_id": 381,
+    "chip": null,
+    "chip_reason": {
+      "as_of_gameweek": 30,
+      "chips_left": 1,
+      "dgw_half_multiplier": 2.0,
+      "effective_fh_threshold": 2.6666666666666665,
+      "effective_recovery_threshold": 4.444444444444445,
+      "effective_tc_threshold": 1.5111111111111113,
+      "effective_wc_threshold": -34.666666666666664,
+      "expiring_chips_left": 1,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [],
+      "fh_threshold_base": 2.6666666666666665,
+      "fixture_imbalance": 0.17999999999999972,
+      "forced": false,
+      "low_minute_owned": 8,
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "triple_captain": {
+        "gameweek": 33,
+        "mean": 5.136536131345201,
+        "player_id": 249,
+        "points": 10.742381999366161,
+        "threshold": 1.2444444444444445
+      },
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 13.333333333333334,
+      "weeks_left": 9
+    },
+    "cumulative_points": 1617.0,
+    "current_gain": 0.0,
+    "expected_hold_current": 43.26990023445099,
+    "expected_hold_horizon": 179.1208829837645,
+    "expected_selected_current": 43.26990023445099,
+    "expected_selected_horizon": 215.07898270136104,
+    "expected_xi": 43.26990023445099,
+    "free_hit_points": null,
+    "free_transfers_after": 2,
+    "free_transfers_before": 1,
+    "gameweek": 30,
+    "horizon_gain": 35.95809971759655,
+    "planned_chips": {
+      "bench_boosts": [
+        4,
+        21
+      ],
+      "free_hits": [
+        7,
+        24
+      ],
+      "triple_captains": [
+        17,
+        33
+      ],
+      "wildcards": [
+        3,
+        20
+      ]
+    },
+    "players_scored": 11,
+    "starters": [
+      5,
+      6,
+      20,
+      100,
+      119,
+      148,
+      287,
+      381,
+      487,
+      624,
+      749
+    ],
+    "transfer_count": 0,
+    "transfers": [],
+    "unexpected_zero_minute_starters": 1,
+    "vice_captain_id": 624
+  },
+  {
+    "actual_points": 23.0,
+    "autosub_count": 0,
+    "autosubs": [],
+    "bank": 25,
+    "bench": [
+      381,
+      407,
+      749,
+      220
+    ],
+    "captain_fallback": 0,
+    "captain_id": 487,
+    "captain_scored_id": 487,
+    "chip": null,
+    "chip_reason": {
+      "as_of_gameweek": 31,
+      "chips_left": 1,
+      "dgw_half_multiplier": 2.0,
+      "effective_fh_threshold": 2.3333333333333335,
+      "effective_recovery_threshold": 3.888888888888889,
+      "effective_tc_threshold": 1.4222222222222223,
+      "effective_wc_threshold": -36.333333333333336,
+      "expiring_chips_left": 1,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [],
+      "fh_threshold_base": 2.3333333333333335,
+      "fixture_imbalance": 0.17999999999999972,
+      "forced": false,
+      "low_minute_owned": 8,
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "triple_captain": {
+        "gameweek": 33,
+        "mean": 5.233536218042874,
+        "player_id": 249,
+        "points": 11.31297010792986,
+        "threshold": 1.2444444444444445
+      },
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 11.666666666666666,
+      "weeks_left": 8
+    },
+    "cumulative_points": 1640.0,
+    "current_gain": 0.0,
+    "expected_hold_current": 31.44090184453149,
+    "expected_hold_horizon": 179.86131044517933,
+    "expected_selected_current": 31.44090184453149,
+    "expected_selected_horizon": 219.74690049512083,
+    "expected_xi": 31.44090184453149,
+    "free_hit_points": null,
+    "free_transfers_after": 3,
+    "free_transfers_before": 2,
+    "gameweek": 31,
+    "horizon_gain": 39.8855900499415,
+    "planned_chips": {
+      "bench_boosts": [
+        4,
+        21
+      ],
+      "free_hits": [
+        7,
+        24
+      ],
+      "triple_captains": [
+        17,
+        33
+      ],
+      "wildcards": [
+        3,
+        20
+      ]
+    },
+    "players_scored": 7,
+    "starters": [
+      5,
+      6,
+      20,
+      100,
+      119,
+      148,
+      287,
+      328,
+      441,
+      487,
+      624
+    ],
+    "transfer_count": 0,
+    "transfers": [],
+    "unexpected_zero_minute_starters": 4,
+    "vice_captain_id": 624
+  },
+  {
+    "actual_points": 51.0,
+    "autosub_count": 0,
+    "autosubs": [],
+    "bank": 6,
+    "bench": [
+      328,
+      407,
+      441,
+      220
+    ],
+    "captain_fallback": 0,
+    "captain_id": 624,
+    "captain_scored_id": 624,
+    "chip": null,
+    "chip_reason": {
+      "as_of_gameweek": 32,
+      "chips_left": 1,
+      "dgw_half_multiplier": 2.0,
+      "effective_fh_threshold": 2.0,
+      "effective_recovery_threshold": 3.3333333333333335,
+      "effective_tc_threshold": 1.3333333333333335,
+      "effective_wc_threshold": -44.0,
+      "expiring_chips_left": 1,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [],
+      "fh_threshold_base": 2.0,
+      "fixture_imbalance": 0.17999999999999972,
+      "forced": false,
+      "low_minute_owned": 9,
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "triple_captain": {
+        "gameweek": 33,
+        "mean": 4.656038274776768,
+        "player_id": 249,
+        "points": 9.904934847593841,
+        "threshold": 1.2444444444444445
+      },
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 10.0,
+      "weeks_left": 7
+    },
+    "cumulative_points": 1691.0,
+    "current_gain": 11.39263348304214,
+    "expected_hold_current": 37.417574519179794,
+    "expected_hold_horizon": 142.86325986612673,
+    "expected_selected_current": 48.810208002221934,
+    "expected_selected_horizon": 199.4830178845616,
+    "expected_xi": 48.810208002221934,
+    "free_hit_points": null,
+    "free_transfers_after": 1,
+    "free_transfers_before": 3,
+    "gameweek": 32,
+    "horizon_gain": 56.61975801843488,
+    "planned_chips": {
+      "bench_boosts": [
+        4,
+        21
+      ],
+      "free_hits": [
+        7,
+        24
+      ],
+      "triple_captains": [
+        17,
+        33
+      ],
+      "wildcards": [
+        3,
+        20
+      ]
+    },
+    "players_scored": 10,
+    "starters": [
+      6,
+      107,
+      119,
+      148,
+      249,
+      287,
+      381,
+      487,
+      515,
+      624,
+      749
+    ],
+    "transfer_count": 3,
+    "transfers": [
+      {
+        "buy_price": 48,
+        "player_in_id": 107,
+        "player_out_id": 5,
+        "sell_price": 69
+      },
+      {
+        "buy_price": 74,
+        "player_in_id": 515,
+        "player_out_id": 20,
+        "sell_price": 65
+      },
+      {
+        "buy_price": 78,
+        "player_in_id": 249,
+        "player_out_id": 100,
+        "sell_price": 47
+      }
+    ],
+    "unexpected_zero_minute_starters": 0,
+    "vice_captain_id": 249
+  },
+  {
+    "actual_points": 78.0,
+    "autosub_count": 1,
+    "autosubs": [
+      {
+        "in": 328,
+        "out": 249
+      }
+    ],
+    "bank": 6,
+    "bench": [
+      328,
+      407,
+      441,
+      287
+    ],
+    "captain_fallback": 1,
+    "captain_id": 249,
+    "captain_scored_id": 220,
+    "chip": "triple_captain",
+    "chip_reason": {
+      "as_of_gameweek": 33,
+      "chips_left": 1,
+      "dgw_half_multiplier": 2.0,
+      "effective_fh_threshold": 1.6666666666666667,
+      "effective_recovery_threshold": 2.7777777777777777,
+      "effective_tc_threshold": 1.2444444444444445,
+      "effective_wc_threshold": -33.666666666666664,
+      "expiring_chips_left": 1,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [],
+      "fh_threshold_base": 1.6666666666666667,
+      "fixture_imbalance": 0.17999999999999972,
+      "forced": false,
+      "low_minute_owned": 7,
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "triple_captain": {
+        "gameweek": 33,
+        "mean": 5.429102508178403,
+        "player_id": 249,
+        "points": 11.330114738142845,
+        "threshold": 1.2444444444444445
+      },
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 8.333333333333334,
+      "weeks_left": 6
+    },
+    "cumulative_points": 1769.0,
+    "current_gain": 0.0,
+    "expected_hold_current": 71.64552272382555,
+    "expected_hold_horizon": 192.89364910274784,
+    "expected_selected_current": 71.64552272382555,
+    "expected_selected_horizon": 217.16601156643,
+    "expected_xi": 71.64552272382555,
+    "free_hit_points": null,
+    "free_transfers_after": 2,
+    "free_transfers_before": 1,
+    "gameweek": 33,
+    "horizon_gain": 24.272362463682157,
+    "planned_chips": {
+      "bench_boosts": [
+        4,
+        21
+      ],
+      "free_hits": [
+        7,
+        24
+      ],
+      "triple_captains": [
+        17,
+        33
+      ],
+      "wildcards": [
+        3,
+        20
+      ]
+    },
+    "players_scored": 11,
+    "starters": [
+      6,
+      107,
+      119,
+      148,
+      220,
+      249,
+      381,
+      487,
+      515,
+      624,
+      749
+    ],
+    "transfer_count": 0,
+    "transfers": [],
+    "unexpected_zero_minute_starters": 1,
+    "vice_captain_id": 220
+  },
+  {
+    "actual_points": 61.0,
+    "autosub_count": 0,
+    "autosubs": [],
+    "bank": 1,
+    "bench": [
+      119,
+      148,
+      407,
+      220
+    ],
+    "captain_fallback": 0,
+    "captain_id": 624,
+    "captain_scored_id": 624,
+    "chip": null,
+    "chip_reason": {
+      "as_of_gameweek": 34,
+      "chips_left": 0,
+      "dgw_half_multiplier": 2.0,
+      "effective_fh_threshold": 6.0,
+      "effective_recovery_threshold": 10.0,
+      "effective_tc_threshold": 1.1555555555555557,
+      "effective_wc_threshold": -18.0,
+      "expiring_chips_left": 0,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [],
+      "fh_threshold_base": 6.0,
+      "fixture_imbalance": 0.4000000000000001,
+      "forced": false,
+      "low_minute_owned": 8,
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 30.0,
+      "weeks_left": 5
+    },
+    "cumulative_points": 1830.0,
+    "current_gain": 8.332961986550224,
+    "expected_hold_current": 40.02796293509191,
+    "expected_hold_horizon": 169.2650604454534,
+    "expected_selected_current": 48.36092492164213,
+    "expected_selected_horizon": 204.59860383838068,
+    "expected_xi": 48.36092492164213,
+    "free_hit_points": null,
+    "free_transfers_after": 1,
+    "free_transfers_before": 2,
+    "gameweek": 34,
+    "horizon_gain": 35.33354339292728,
+    "planned_chips": {
+      "bench_boosts": [
+        4,
+        21
+      ],
+      "free_hits": [
+        7,
+        24
+      ],
+      "triple_captains": [
+        17,
+        33
+      ],
+      "wildcards": [
+        3,
+        20
+      ]
+    },
+    "players_scored": 10,
+    "starters": [
+      6,
+      30,
+      107,
+      258,
+      287,
+      328,
+      381,
+      487,
+      515,
+      624,
+      749
+    ],
+    "transfer_count": 2,
+    "transfers": [
+      {
+        "buy_price": 50,
+        "player_in_id": 258,
+        "player_out_id": 441,
+        "sell_price": 41
+      },
+      {
+        "buy_price": 73,
+        "player_in_id": 30,
+        "player_out_id": 249,
+        "sell_price": 77
+      }
+    ],
+    "unexpected_zero_minute_starters": 0,
+    "vice_captain_id": 381
+  },
+  {
+    "actual_points": 39.0,
+    "autosub_count": 1,
+    "autosubs": [
+      {
+        "in": 407,
+        "out": 30
+      }
+    ],
+    "bank": 1,
+    "bench": [
+      328,
+      381,
+      407,
+      287
+    ],
+    "captain_fallback": 0,
+    "captain_id": 624,
+    "captain_scored_id": 624,
+    "chip": null,
+    "chip_reason": {
+      "as_of_gameweek": 35,
+      "chips_left": 0,
+      "dgw_half_multiplier": 2.0,
+      "effective_fh_threshold": 6.0,
+      "effective_recovery_threshold": 10.0,
+      "effective_tc_threshold": 1.0666666666666669,
+      "effective_wc_threshold": -18.0,
+      "expiring_chips_left": 0,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [],
+      "fh_threshold_base": 6.0,
+      "fixture_imbalance": 0.17999999999999972,
+      "forced": false,
+      "low_minute_owned": 8,
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 30.0,
+      "weeks_left": 4
+    },
+    "cumulative_points": 1869.0,
+    "current_gain": 0.0,
+    "expected_hold_current": 35.69747136198145,
+    "expected_hold_horizon": 148.04803029390703,
+    "expected_selected_current": 35.69747136198145,
+    "expected_selected_horizon": 176.62276403719702,
+    "expected_xi": 35.69747136198145,
+    "free_hit_points": null,
+    "free_transfers_after": 2,
+    "free_transfers_before": 1,
+    "gameweek": 35,
+    "horizon_gain": 28.574733743289983,
+    "planned_chips": {
+      "bench_boosts": [
+        4,
+        21
+      ],
+      "free_hits": [
+        7,
+        24
+      ],
+      "triple_captains": [
+        17,
+        33
+      ],
+      "wildcards": [
+        3,
+        20
+      ]
+    },
+    "players_scored": 11,
+    "starters": [
+      6,
+      30,
+      107,
+      119,
+      148,
+      220,
+      258,
+      487,
+      515,
+      624,
+      749
+    ],
+    "transfer_count": 0,
+    "transfers": [],
+    "unexpected_zero_minute_starters": 1,
+    "vice_captain_id": 749
+  },
+  {
+    "actual_points": 43.0,
+    "autosub_count": 0,
+    "autosubs": [],
+    "bank": 9,
+    "bench": [
+      328,
+      381,
+      407,
+      220
+    ],
+    "captain_fallback": 0,
+    "captain_id": 580,
+    "captain_scored_id": 580,
+    "chip": null,
+    "chip_reason": {
+      "as_of_gameweek": 36,
+      "chips_left": 0,
+      "dgw_half_multiplier": 2.0,
+      "effective_fh_threshold": 6.0,
+      "effective_recovery_threshold": 10.0,
+      "effective_tc_threshold": 0.9777777777777779,
+      "effective_wc_threshold": -24.0,
+      "expiring_chips_left": 0,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [],
+      "fh_threshold_base": 6.0,
+      "fixture_imbalance": 0.18000000000000008,
+      "forced": false,
+      "low_minute_owned": 9,
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 30.0,
+      "weeks_left": 3
+    },
+    "cumulative_points": 1912.0,
+    "current_gain": 14.235705276756661,
+    "expected_hold_current": 31.265666026469972,
+    "expected_hold_horizon": 97.30302772207739,
+    "expected_selected_current": 45.501371303226634,
+    "expected_selected_horizon": 130.33173196110081,
+    "expected_xi": 45.501371303226634,
+    "free_hit_points": null,
+    "free_transfers_after": 1,
+    "free_transfers_before": 2,
+    "gameweek": 36,
+    "horizon_gain": 33.028704239023426,
+    "planned_chips": {
+      "bench_boosts": [
+        4,
+        21
+      ],
+      "free_hits": [
+        7,
+        24
+      ],
+      "triple_captains": [
+        17,
+        33
+      ],
+      "wildcards": [
+        3,
+        20
+      ]
+    },
+    "players_scored": 11,
+    "starters": [
+      6,
+      107,
+      119,
+      148,
+      249,
+      258,
+      287,
+      487,
+      580,
+      624,
+      749
+    ],
+    "transfer_count": 2,
+    "transfers": [
+      {
+        "buy_price": 65,
+        "player_in_id": 580,
+        "player_out_id": 515,
+        "sell_price": 75
+      },
+      {
+        "buy_price": 75,
+        "player_in_id": 249,
+        "player_out_id": 30,
+        "sell_price": 73
+      }
+    ],
+    "unexpected_zero_minute_starters": 0,
+    "vice_captain_id": 624
+  },
+  {
+    "actual_points": 42.0,
+    "autosub_count": 1,
+    "autosubs": [
+      {
+        "in": 381,
+        "out": 249
+      }
+    ],
+    "bank": 9,
+    "bench": [
+      328,
+      381,
+      407,
+      220
+    ],
+    "captain_fallback": 1,
+    "captain_id": 249,
+    "captain_scored_id": 624,
+    "chip": null,
+    "chip_reason": {
+      "as_of_gameweek": 37,
+      "chips_left": 0,
+      "dgw_half_multiplier": 2.0,
+      "effective_fh_threshold": 6.0,
+      "effective_recovery_threshold": 10.0,
+      "effective_tc_threshold": 0.888888888888889,
+      "effective_wc_threshold": -12.0,
+      "expiring_chips_left": 0,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [],
+      "fh_threshold_base": 6.0,
+      "fixture_imbalance": 0.0,
+      "forced": false,
+      "low_minute_owned": 7,
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 30.0,
+      "weeks_left": 2
+    },
+    "cumulative_points": 1954.0,
+    "current_gain": 0.0,
+    "expected_hold_current": 44.16753056986148,
+    "expected_hold_horizon": 89.8239918453951,
+    "expected_selected_current": 44.16753056986148,
+    "expected_selected_horizon": 98.15635827538054,
+    "expected_xi": 44.16753056986148,
+    "free_hit_points": null,
+    "free_transfers_after": 2,
+    "free_transfers_before": 1,
+    "gameweek": 37,
+    "horizon_gain": 8.332366429985441,
+    "planned_chips": {
+      "bench_boosts": [
+        4,
+        21
+      ],
+      "free_hits": [
+        7,
+        24
+      ],
+      "triple_captains": [
+        17,
+        33
+      ],
+      "wildcards": [
+        3,
+        20
+      ]
+    },
+    "players_scored": 11,
+    "starters": [
+      6,
+      107,
+      119,
+      148,
+      249,
+      258,
+      287,
+      487,
+      580,
+      624,
+      749
+    ],
+    "transfer_count": 0,
+    "transfers": [],
+    "unexpected_zero_minute_starters": 1,
+    "vice_captain_id": 624
+  },
+  {
+    "actual_points": 55.0,
+    "autosub_count": 1,
+    "autosubs": [
+      {
+        "in": 119,
+        "out": 580
+      }
+    ],
+    "bank": 125,
+    "bench": [
+      119,
+      328,
+      407,
+      220
+    ],
+    "captain_fallback": 0,
+    "captain_id": 624,
+    "captain_scored_id": 624,
+    "chip": null,
+    "chip_reason": {
+      "as_of_gameweek": 38,
+      "chips_left": 0,
+      "dgw_half_multiplier": 2.0,
+      "effective_fh_threshold": 6.0,
+      "effective_recovery_threshold": 10.0,
+      "effective_tc_threshold": 0.8,
+      "effective_wc_threshold": -18.0,
+      "expiring_chips_left": 0,
+      "fh_after_wildcard_weeks": [],
+      "fh_after_wildcard_weeks_blocked": 3,
+      "fh_differentials": [],
+      "fh_threshold_base": 6.0,
+      "fixture_imbalance": 0.0,
+      "forced": false,
+      "low_minute_owned": 8,
+      "tc_min_captain_points": 8.0,
+      "tc_taper_floor": 0.8,
+      "wc_differentials": [],
+      "wc_early_until_gameweek": 6,
+      "wc_early_weight": 0.0,
+      "wc_threshold_base": 30.0,
+      "weeks_left": 1
+    },
+    "cumulative_points": 2009.0,
+    "current_gain": 8.861184414278732,
+    "expected_hold_current": 42.42602758675924,
+    "expected_hold_horizon": 42.42602758675924,
+    "expected_selected_current": 51.28721200103797,
+    "expected_selected_horizon": 51.28721200103797,
+    "expected_xi": 51.28721200103797,
+    "free_hit_points": null,
+    "free_transfers_after": 1,
+    "free_transfers_before": 2,
+    "gameweek": 38,
+    "horizon_gain": 8.861184414278732,
+    "planned_chips": {
+      "bench_boosts": [
+        4,
+        21
+      ],
+      "free_hits": [
+        7,
+        24
+      ],
+      "triple_captains": [
+        17,
+        33
+      ],
+      "wildcards": [
+        3,
+        20
+      ]
+    },
+    "players_scored": 10,
+    "starters": [
+      6,
+      107,
+      148,
+      258,
+      287,
+      487,
+      580,
+      624,
+      686,
+      749,
+      791
+    ],
+    "transfer_count": 2,
+    "transfers": [
+      {
+        "buy_price": 43,
+        "player_in_id": 686,
+        "player_out_id": 381,
+        "sell_price": 140
+      },
+      {
+        "buy_price": 55,
+        "player_in_id": 791,
+        "player_out_id": 249,
+        "sell_price": 74
+      }
+    ],
+    "unexpected_zero_minute_starters": 2,
+    "vice_captain_id": 749
+  }
+]

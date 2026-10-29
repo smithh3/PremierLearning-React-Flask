@@ -65,6 +65,19 @@ data "aws_iam_policy_document" "task" {
       resources = aws_sqs_queue.learning_done[*].arn
     }
   }
+
+  dynamic "statement" {
+    for_each = var.enable_schedule ? [1] : []
+    content {
+      actions = [
+        "scheduler:GetSchedule",
+        "scheduler:UpdateSchedule",
+      ]
+      resources = [
+        "arn:aws:scheduler:${var.aws_region}:${data.aws_caller_identity.current.account_id}:schedule/default/${var.name_prefix}-daily",
+      ]
+    }
+  }
 }
 
 resource "aws_iam_role_policy" "task" {

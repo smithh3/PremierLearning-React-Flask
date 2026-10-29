@@ -126,3 +126,56 @@ create index if not exists idx_simulation_runs_lookup
 
 create index if not exists idx_simulation_transfers_lookup
     on simulation_transfers (simulation_run_id, gameweek);
+
+create table if not exists manager_fixed_cache (
+    id integer primary key autoincrement not null,
+    prediction_snapshot_id integer not null,
+    gameweek integer not null,
+    payload_json text not null,
+    created_at varchar(64) not null default current_timestamp,
+    unique (prediction_snapshot_id, gameweek)
+);
+
+create table if not exists manager_candidate_cache (
+    id integer primary key autoincrement not null,
+    cache_key varchar(64) not null,
+    prediction_snapshot_id integer not null,
+    gameweek integer not null,
+    horizon integer not null,
+    transfer_count integer not null,
+    optimiser_version varchar(64) not null,
+    squad_codes text not null,
+    result_json text not null,
+    created_at varchar(64) not null default current_timestamp,
+    unique (cache_key)
+);
+
+create table if not exists manager_exact_cache (
+    id integer primary key autoincrement not null,
+    cache_key varchar(64) not null,
+    prediction_snapshot_id integer not null,
+    gameweek integer not null,
+    horizon integer not null,
+    transfer_count integer not null,
+    bank integer not null,
+    free_transfers integer not null,
+    season_start_year integer not null,
+    rules_version varchar(64) not null,
+    optimiser_version varchar(64) not null,
+    action varchar(32) not null,
+    squad_codes text not null,
+    result_json text not null,
+    solve_ms real not null default 0,
+    created_at varchar(64) not null default current_timestamp,
+    unique (cache_key)
+);
+
+create index if not exists idx_manager_candidate_lookup
+    on manager_candidate_cache (
+        prediction_snapshot_id, gameweek, horizon, transfer_count
+    );
+
+create index if not exists idx_manager_exact_lookup
+    on manager_exact_cache (
+        prediction_snapshot_id, gameweek, transfer_count, bank
+    );

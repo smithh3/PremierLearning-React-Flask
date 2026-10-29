@@ -2,13 +2,19 @@ resource "aws_scheduler_schedule" "daily" {
   count = var.enable_schedule ? 1 : 0
   name  = "${var.name_prefix}-daily"
 
-  description                = "06:00 UK: suggest transfers, or apply on FPL deadline day"
+  description                  = "Train and apply two hours before the next FPL deadline"
   schedule_expression          = var.schedule_expression
   schedule_expression_timezone = var.schedule_timezone
   state                        = "ENABLED"
 
   flexible_time_window {
     mode = "OFF"
+  }
+
+  # The task moves this to the following deadline. A later apply must not
+  # put the old one-shot time back.
+  lifecycle {
+    ignore_changes = [schedule_expression]
   }
 
   target {

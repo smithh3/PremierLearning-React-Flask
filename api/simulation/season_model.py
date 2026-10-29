@@ -44,7 +44,14 @@ class FixedSeasonModels:
         self.horizon_gameweeks = int(horizon_gameweeks)
 
     @classmethod
-    def fit(cls, runner):
+    def fit(
+        cls,
+        runner,
+        points_loss='huber',
+        points_minutes_weight=False,
+        use_horizon_model=True,
+        points_reps=1,
+    ):
         """Train on pre-season data only; the supplied runner must be at GW1."""
         if int(runner.as_of_gameweek) != 1:
             raise ValueError('Fixed season models must be fitted from the GW1 cutoff')
@@ -75,14 +82,36 @@ class FixedSeasonModels:
             ],
             dtype=float,
         )
+        poisson = str(points_loss or 'huber').lower() == 'poisson'
+        sample_weight = None
+        if points_minutes_weight:
+            sample_weight = numpy.array(
+                [
+                    float(match.get('game_stats', {}).get('minutes', 0) or 0) / 90.0
+                    for match in valid_clean_matches
+                ],
+                dtype=float,
+            )
+            print(
+                'h1 points: minutes/90 sample weights on %s rows'
+                % len(valid_clean_matches)
+            )
+        points_reps = max(1, int(points_reps))
+        if poisson:
+            print(
+                'h1 points: Poisson loss, %s fit(s), log1p off'
+                % points_reps
+            )
         points_model = fit_reusable_predictor(
             valid_clean_matches,
             get_input_keys('total_points'),
             'total_points',
             True,
             output_learn=h1_labels,
-            log_targets=True,
-            reps=1,
+            log_targets=not poisson,
+            reps=points_reps,
+            sample_weight=sample_weight,
+            loss='poisson' if poisson else None,
         )
         minutes_reps = parse_minutes_reps()
         if minutes_reps > 1:
@@ -102,25 +131,31 @@ class FixedSeasonModels:
             get_input_keys('total_points'),
             True,
         )
-        horizon_training = runner.build_horizon_training_data(
-            runner.horizon_gameweeks
-        )
-        horizon_reps = parse_horizon_reps()
-        if horizon_reps > 1:
-            print(
-                'Horizon-%s model: %s independent fits (%s); '
-                'h1 points stay 1 fit'
-                % (runner.horizon_gameweeks, horizon_reps, HORIZON_REPS_FLAG)
+        horizon_model = None
+        if use_horizon_model:
+            horizon_training = runner.build_horizon_training_data(
+                runner.horizon_gameweeks
             )
-        horizon_model = fit_reusable_predictor(
-            horizon_training['player_clean'],
-            get_input_keys('total_points'),
-            'total_points',
-            True,
-            output_learn=horizon_training['labels'],
-            log_targets=True,
-            reps=horizon_reps,
-        )
+            horizon_reps = parse_horizon_reps()
+            if horizon_reps > 1:
+                print(
+                    'Horizon-%s model: %s independent fits (%s); '
+                    'h1 points stay 1 fit'
+                    % (runner.horizon_gameweeks, horizon_reps, HORIZON_REPS_FLAG)
+                )
+            horizon_model = fit_reusable_predictor(
+                horizon_training['player_clean'],
+                get_input_keys('total_points'),
+                'total_points',
+                True,
+                output_learn=horizon_training['labels'],
+                log_targets=True,
+                reps=horizon_reps,
+            )
+        else:
+            print(
+                'Skipping horizon model; each remaining fixture is scored by h1'
+            )
         return cls(
             team_model,
             points_model,
@@ -192,19 +227,20 @@ class FixedSeasonModels:
                 match.points_error = float(error)
                 match.set_minutes_from_stats()
 
-        horizon_data = runner.build_horizon_predict_data(
-            self.horizon_gameweeks
-        )
-        if horizon_data['player_clean']:
-            horizon_predictions = self.horizon_model.predict(
-                horizon_data['player_clean']
+        if self.horizon_model is not None:
+            horizon_data = runner.build_horizon_predict_data(
+                self.horizon_gameweeks
             )
-            runner.redistribute_horizon_points(
-                horizon_data['players'],
-                horizon_data['fixture_windows'],
-                horizon_predictions,
-                self.horizon_gameweeks,
-            )
+            if horizon_data['player_clean']:
+                horizon_predictions = self.horizon_model.predict(
+                    horizon_data['player_clean']
+                )
+                runner.redistribute_horizon_points(
+                    horizon_data['players'],
+                    horizon_data['fixture_windows'],
+                    horizon_predictions,
+                    self.horizon_gameweeks,
+                )
         runner.sync_predicted_pp90()
         runner.current_season.calculate_player_points_over_next_5_gameweeks()
         return runner.current_season

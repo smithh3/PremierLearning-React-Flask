@@ -59,6 +59,13 @@ HORIZON_REPS_FLAG = '--horizon-reps'
 HORIZON_REPS_DEFAULT = 5
 MINUTES_REPS_FLAG = '--minutes-reps'
 MINUTES_REPS_DEFAULT = 5
+H1_POISSON_FLAG = '--h1-poisson'
+POINTS_LOSS_FLAG = '--points-loss'
+POINTS_MINUTES_WEIGHT_FLAG = '--points-minutes-weight'
+NO_HORIZON_MODEL_FLAG = '--no-horizon-model'
+POINTS_REPS_FLAG = '--points-reps'
+POINTS_REPS_DEFAULT = 1
+POINTS_REPS_NO_HORIZON_DEFAULT = 5
 RUN_METRICS_DIR = Path('run_metrics/horizon_reps')
 LAST_HORIZON_METRICS_DIR = None
 
@@ -195,6 +202,49 @@ def parse_horizon_reps() -> int:
 def parse_minutes_reps() -> int:
     """Independent fits for the minutes model. Same keep/drop averaging as horizon."""
     return _parse_positive_int_flag(MINUTES_REPS_FLAG, MINUTES_REPS_DEFAULT)
+
+
+def _flag_present(flag: str) -> bool:
+    return flag in sys.argv or any(arg.startswith(flag + '=') for arg in sys.argv)
+
+
+def _parse_string_flag(flag: str, default: str) -> str:
+    for i, arg in enumerate(sys.argv):
+        if arg == flag and i + 1 < len(sys.argv):
+            return sys.argv[i + 1]
+        if arg.startswith(flag + '='):
+            return arg.split('=', 1)[1]
+    return default
+
+
+def parse_h1_poisson_recipe() -> bool:
+    """Live/Fargate alias for Poisson h1 + minutes weights, no horizon net."""
+    return H1_POISSON_FLAG in sys.argv
+
+
+def parse_no_horizon_model() -> bool:
+    return parse_h1_poisson_recipe() or NO_HORIZON_MODEL_FLAG in sys.argv
+
+
+def parse_points_minutes_weight() -> bool:
+    return parse_h1_poisson_recipe() or POINTS_MINUTES_WEIGHT_FLAG in sys.argv
+
+
+def parse_points_loss() -> str:
+    if _flag_present(POINTS_LOSS_FLAG):
+        return _parse_string_flag(POINTS_LOSS_FLAG, 'huber').strip().lower()
+    if parse_h1_poisson_recipe():
+        return 'poisson'
+    return 'huber'
+
+
+def parse_points_reps() -> int:
+    """Independent fits for the h1 points net. Default 1, or 5 with no horizon."""
+    if _flag_present(POINTS_REPS_FLAG):
+        return _parse_positive_int_flag(POINTS_REPS_FLAG, POINTS_REPS_DEFAULT)
+    if parse_no_horizon_model():
+        return POINTS_REPS_NO_HORIZON_DEFAULT
+    return POINTS_REPS_DEFAULT
 
 
 def with_learning_rep_flags(argv, horizon_reps=None, minutes_reps=None):
@@ -525,6 +575,8 @@ def fit_reusable_predictor(
     output_learn=None,
     log_targets=False,
     reps=1,
+    sample_weight=None,
+    loss=None,
 ):
     """Fit once and return a predictor reusable across historical GW snapshots."""
     if not clean_matches:
@@ -537,6 +589,8 @@ def fit_reusable_predictor(
         include_standard_stats,
         output_learn=output_learn,
         log_targets=log_targets,
+        sample_weight=sample_weight,
+        loss=loss,
     )
     print(calc_baselines(ml_data))
     print(f'Fitting reusable {output_key} model once for the season')
@@ -575,6 +629,126 @@ def fit_reusable_predictor(
         scaler=ml_data.scaler,
         models=fitted_models,
     )
+
+
+SMEAR_OFF = 'off'
+SMEAR_GLOBAL = 'global'
+SMEAR_CONDITIONAL = 'conditional'
+SMEAR_RELATIVE = 'relative'
+
+
+def apply_smearing(predictions, smearing, mode=SMEAR_GLOBAL):
+    """Turn expm1'd predictions into conditional means using a measured S.
+
+    global      one S for every row: fixes the overall level, leaves ranks alone.
+    conditional S per predicted-level bin: fixes level and re-rates the volatile
+                high end, which is shrunk hardest.
+    relative    bin factors divided by their weighted mean, so ranks move exactly
+                as in conditional while the overall level stays where it was. Use
+                this to test the ranking effect without also changing the level.
+    """
+    preds = numpy.asarray(predictions, dtype=float)
+    if mode == SMEAR_OFF or not smearing:
+        return preds
+    if mode == SMEAR_GLOBAL:
+        return numpy.maximum(0.0, (preds + 1.0) * float(smearing['S']) - 1.0)
+
+    bins = list(smearing.get('by_pred_level') or [])
+    if not bins:
+        return preds
+    factors = numpy.array([b['S'] for b in bins], dtype=float)
+    if mode == SMEAR_RELATIVE:
+        counts = numpy.array([b.get('n', 1) for b in bins], dtype=float)
+        factors = factors / float(numpy.average(factors, weights=counts))
+    flat = preds.reshape(-1)
+    chosen = numpy.empty_like(flat)
+    for i, value in enumerate(flat):
+        # Predictions past the outer edges take the nearest bin's factor.
+        idx = len(bins) - 1
+        for j, b in enumerate(bins):
+            if value < b['hi'] or j == len(bins) - 1:
+                idx = j
+                break
+        chosen[i] = factors[idx]
+    corrected = (flat + 1.0) * chosen - 1.0
+    return numpy.maximum(0.0, corrected).reshape(preds.shape)
+
+
+# Losses that fit E[y|x] on the raw scale. log1p + expm1 is the other path:
+# it targets a median-like value and needs a smearing correction to recover the mean.
+RAW_MEAN_LOSSES = frozenset(('poisson', 'tweedie', 'mse', 'huber_raw', 'hurdle', 'bce'))
+TWEEDIE_POWER = 1.5
+
+
+def uses_log_targets(loss) -> bool:
+    """True when the net should train on log1p(y) (historic Huber/MAE recipe)."""
+    name = (loss or 'huber').strip().lower()
+    return name not in RAW_MEAN_LOSSES and not name.endswith('_raw')
+
+
+class TweedieDeviance(tf.keras.losses.Loss):
+    """Tweedie unit deviance for 1 < p < 2 (compound Poisson–Gamma).
+
+    p=1 is Poisson, p=2 is Gamma. p=1.5 is the usual insurance/claims choice:
+    a point mass at zero and a heavy right tail, which is closer to FPL points
+    (appearance lump, then occasional hauls) than Poisson's mean=variance.
+    """
+
+    def __init__(self, power=TWEEDIE_POWER, name='tweedie_deviance'):
+        super().__init__(name=name)
+        if not 1.0 < float(power) < 2.0:
+            raise ValueError('TweedieDeviance expects 1 < power < 2, got %s' % power)
+        self.power = float(power)
+
+    def call(self, y_true, y_pred):
+        y = tf.cast(y_true, tf.float32)
+        mu = tf.clip_by_value(tf.cast(y_pred, tf.float32), 1e-6, 1e6)
+        p = self.power
+        y_safe = tf.maximum(y, 0.0)
+        term = (
+            tf.math.pow(y_safe, 2.0 - p) / ((1.0 - p) * (2.0 - p))
+            - y * tf.math.pow(mu, 1.0 - p) / (1.0 - p)
+            + tf.math.pow(mu, 2.0 - p) / (2.0 - p)
+        )
+        return 2.0 * term
+
+
+def _loss_label(loss_name, hp):
+    if loss_name == 'mae':
+        return 'MAE'
+    if loss_name == 'poisson':
+        return 'Poisson'
+    if loss_name == 'tweedie':
+        return 'Tweedie(p=%s)' % TWEEDIE_POWER
+    if loss_name == 'mse':
+        return 'MSE'
+    if loss_name == 'huber_raw':
+        return 'HuberRaw(delta=%s)' % hp.huber_delta
+    if loss_name == 'bce':
+        return 'BCE'
+    return 'Huber(delta=%s)' % hp.huber_delta
+
+
+def _output_activation(loss_name):
+    if loss_name in ('poisson', 'tweedie'):
+        return 'softplus'
+    if loss_name == 'bce':
+        return 'sigmoid'
+    return None
+
+
+def _loss_fn(loss_name, hp):
+    if loss_name == 'mae':
+        return MeanAbsoluteError()
+    if loss_name == 'poisson':
+        return tf.keras.losses.Poisson()
+    if loss_name == 'tweedie':
+        return TweedieDeviance(power=TWEEDIE_POWER)
+    if loss_name == 'mse':
+        return MeanSquaredError()
+    if loss_name == 'bce':
+        return tf.keras.losses.BinaryCrossentropy()
+    return Huber(delta=hp.huber_delta)
 
 
 class OrigRMSE(tf.keras.metrics.Metric):
@@ -634,11 +808,13 @@ class MLData:
     """
 
     def __init__(self, clean_matches: List[CleanMatch], input_to_pred, input_keys, output_key, include_standard_stats,
-                 output_learn: Optional[numpy.ndarray] = None, log_targets: bool = False):
+                 output_learn: Optional[numpy.ndarray] = None, log_targets: bool = False,
+                 sample_weight: Optional[numpy.ndarray] = None, loss: Optional[str] = None):
         self.output_key = output_key
         self.ln_inputs = False
         self.mae_name = 'mean_absolute_error'
         self.rmse_name = 'root_mean_squared_error'
+        self.loss_override = loss
 
         inputs_with_headings = get_inputs_from_data_key(
             clean_matches, input_keys, include_standard_stats, include_opponent_features=True
@@ -668,9 +844,22 @@ class MLData:
                 clean_matches, input_to_pred
             )
 
-        self.input_learn, self.input_test, self.output_learn, self.output_test = train_test_split(
-            self.input_learn, self.output_learn, test_size=0.2, random_state=42, shuffle=True
-        )
+        if sample_weight is None:
+            self.weight_learn = None
+            self.weight_test = None
+            self.input_learn, self.input_test, self.output_learn, self.output_test = train_test_split(
+                self.input_learn, self.output_learn, test_size=0.2, random_state=42, shuffle=True
+            )
+        else:
+            weights = numpy.asarray(sample_weight, dtype=float).reshape(-1)
+            (
+                self.input_learn, self.input_test,
+                self.output_learn, self.output_test,
+                self.weight_learn, self.weight_test,
+            ) = train_test_split(
+                self.input_learn, self.output_learn, weights,
+                test_size=0.2, random_state=42, shuffle=True
+            )
 
         if log_targets:
             self.set_options(ln_inputs=True)
@@ -725,15 +914,18 @@ class MLData:
             self.model.add(Dense(units, kernel_regularizer=reg, activation='relu'))
             if i < len(dropouts) and dropouts[i] > 0:
                 self.model.add(Dropout(dropouts[i]))
-        self.model.add(Dense(1))
-        loss_name = (hp.loss or 'huber').lower()
+        loss_name = (self.loss_override or hp.loss or 'huber').lower()
+        # Poisson/Tweedie need a positive mean; softplus gets there without exp's
+        # early blow-ups. Raw-scale losses fit E[y|x] and need no log/expm1 round
+        # trip (and so no smearing correction).
+        self.model.add(Dense(1, activation=_output_activation(loss_name)))
         opt, opt_label = _build_optimizer(hp)
         self.model_config = {
             **hp.as_dict(),
             'hidden_layers': hidden_layers,
             'n_features': int(n_in),
             'max_epochs': EPOCH_MAP.get(self.output_key, EPOCHS),
-            'loss': f'MAE' if loss_name == 'mae' else f'Huber(delta={hp.huber_delta})',
+            'loss': _loss_label(loss_name, hp),
             'optimizer': opt_label,
         }
         print(
@@ -742,10 +934,7 @@ class MLData:
             f'(n_features={n_in}, loss={self.model_config["loss"]})'
         )
 
-        if loss_name == 'mae':
-            loss_fn = MeanAbsoluteError()
-        else:
-            loss_fn = Huber(delta=hp.huber_delta)
+        loss_fn = _loss_fn(loss_name, hp)
         if self.ln_inputs:
             metrics = [OrigRMSE(), OrigMAE()]
         else:
@@ -837,6 +1026,7 @@ class MLData:
         ]
         history = self.model.fit(
             self.input_learn, self.output_learn,
+            sample_weight=self.weight_learn,
             epochs=epochs, batch_size=hp.batch_size, validation_split=0.2,
             verbose=2, callbacks=callbacks, shuffle=True
         )
@@ -873,6 +1063,25 @@ class MLData:
             "test_orig_mae": test_rmse
         })
 
+        if self.ln_inputs:
+            smearing = smearing_factor(
+                self.output_test, self.model.predict(self.input_test, verbose=0)
+            )
+            if smearing:
+                fit_stats['smearing'] = smearing
+                print(
+                    'Smearing (%s, %s held-out rows): S=%.3f, residual sd=%.3f '
+                    '(lognormal S would be %.3f)'
+                    % (
+                        self.output_key, smearing['n_rows'], smearing['S'],
+                        smearing['residual_sd_log'], smearing['S_if_lognormal'],
+                    )
+                )
+                print('  S by predicted level: ' + ', '.join(
+                    '%.1f->%.2f' % (b['pred_mean'], b['S'])
+                    for b in smearing['by_pred_level']
+                ))
+
         results = self.model.predict(self.input_to_pred, verbose=0)
 
         if self.ln_inputs:
@@ -884,6 +1093,54 @@ class MLData:
         fit_stats['pred_mean'] = float(pred_flat.mean())
 
         return results, fit_stats
+
+
+def smearing_factor(output_log, pred_log, bins: int = 5):
+    """Duan's smearing factor for a log1p-trained target.
+
+    Fitting log1p(y) and reporting expm1 of the fit gives a geometric-mean-like
+    quantity, not E[y|x]: with residual e, y + 1 = exp(pred) * exp(e), so
+    E[y|x] = exp(pred) * mean(exp(e)) - 1. That mean is S, and it is >= 1 always,
+    so an uncorrected model under-predicts by a factor that grows with residual
+    spread. Noisier targets are shrunk harder, which is why a one-week target
+    lands lower than a pooled multi-week one trained the same way.
+
+    S is also reported per predicted-level bin. One global S rescales everything
+    and so barely moves rankings; only a bin-varying S changes who is on top.
+    """
+    actual = numpy.asarray(output_log, dtype=float).reshape(-1)
+    pred = numpy.asarray(pred_log, dtype=float).reshape(-1)
+    keep = numpy.isfinite(actual) & numpy.isfinite(pred)
+    actual, pred = actual[keep], pred[keep]
+    resid = actual - pred
+    if resid.size == 0:
+        return None
+    sd = float(resid.std())
+    stats = {
+        'S': float(numpy.mean(numpy.exp(resid))),
+        'residual_sd_log': sd,
+        # What S would be if the residuals were normal. Divergence from the
+        # measured S is the tail the closed form misses.
+        'S_if_lognormal': float(numpy.exp(sd * sd / 2.0)),
+        'n_rows': int(resid.size),
+    }
+    level = numpy.expm1(pred)
+    edges = numpy.quantile(level, numpy.linspace(0.0, 1.0, bins + 1))
+    by_bin = []
+    for i in range(bins):
+        lo, hi = edges[i], edges[i + 1]
+        in_bin = (level >= lo) & (level <= hi if i == bins - 1 else level < hi)
+        if not in_bin.any():
+            continue
+        by_bin.append({
+            'lo': float(lo),
+            'hi': float(hi),
+            'pred_mean': float(level[in_bin].mean()),
+            'S': float(numpy.mean(numpy.exp(resid[in_bin]))),
+            'n': int(in_bin.sum()),
+        })
+    stats['by_pred_level'] = by_bin
+    return stats
 
 
 def calc_baselines(ml_data: MLData):
@@ -1009,7 +1266,8 @@ def fit_linear_points_error_margin(clean_matches, input_keys, include_standard_s
 
 
 def get_avg_predictions(clean_matches, input_pred, input_keys, output_key, include_standard_stats,
-                        output_learn=None, log_targets: bool = False, reps: int = 1):
+                        output_learn=None, log_targets: bool = False, reps: int = 1,
+                        sample_weight=None, loss=None):
     print('Getting predictions for %s...' % output_key)
     if reps > 1:
         print(f'  ({reps} independent fits; rep agreement reported after training)')
@@ -1018,7 +1276,8 @@ def get_avg_predictions(clean_matches, input_pred, input_keys, output_key, inclu
         print("(quick run)")
     ml_data = MLData(
         clean_matches, input_pred, input_keys, output_key, include_standard_stats,
-        output_learn=output_learn, log_targets=log_targets
+        output_learn=output_learn, log_targets=log_targets,
+        sample_weight=sample_weight, loss=loss,
     )
     baselines = calc_baselines(ml_data)
     print(baselines)

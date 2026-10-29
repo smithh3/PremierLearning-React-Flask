@@ -1,0 +1,198 @@
+{
+  "rows": [
+    {
+      "arm": "07_h1_poisson_mw",
+      "fit": "h1_poisson_mw",
+      "smear": "off",
+      "note": "Poisson with exposure weights.",
+      "reps": 5,
+      "weighted_mae": 2.5884,
+      "weighted_mae_std": 0.0409,
+      "weighted_skill": -0.0536,
+      "weighted_skill_std": 0.0166,
+      "points_mae": 2.0784,
+      "points_mae_std": 0.0246,
+      "points_calibration": 0.9192,
+      "points_calibration_std": 0.0272,
+      "spearman": 0.5229,
+      "spearman_std": 0.0004,
+      "top20": 0.2067,
+      "top20_std": 0.0057,
+      "window_mae": 4.8056,
+      "window_mae_std": 0.0341,
+      "window_skill": 0.2562,
+      "window_skill_std": 0.0053,
+      "fixture_mae": 5.3793,
+      "fixture_mae_std": 0.0381,
+      "fixture_skill": -0.0245,
+      "fixture_skill_std": 0.0073,
+      "pred_mean": 3.9947,
+      "pred_mean_std": 0.1052,
+      "slice_cal_lo": 0.0189,
+      "slice_cal_lo_std": 0.0006,
+      "slice_cal_hi": 1.0643,
+      "slice_cal_hi_std": 0.0651,
+      "actual_mean": 6.4411,
+      "starter_pp90_mean": 4.0272,
+      "slice_cal": [
+        0.0189,
+        0.1167,
+        0.5735,
+        1.0038,
+        1.0717,
+        1.0148,
+        1.0742,
+        1.0928,
+        1.0918,
+        1.0643
+      ]
+    },
+    {
+      "arm": "22_h1_tweedie_mw",
+      "fit": "h1_tweedie_mw",
+      "smear": "off",
+      "note": "Tweedie p=1.5 with exposure weights (zero-inflated hauls).",
+      "reps": 5,
+      "weighted_mae": 2.5541,
+      "weighted_mae_std": 0.0299,
+      "weighted_skill": -0.0396,
+      "weighted_skill_std": 0.0122,
+      "points_mae": 2.0541,
+      "points_mae_std": 0.024,
+      "points_calibration": 0.89,
+      "points_calibration_std": 0.0326,
+      "spearman": 0.5218,
+      "spearman_std": 0.0007,
+      "top20": 0.1906,
+      "top20_std": 0.014,
+      "window_mae": 4.7866,
+      "window_mae_std": 0.0672,
+      "window_skill": 0.2591,
+      "window_skill_std": 0.0104,
+      "fixture_mae": 5.3464,
+      "fixture_mae_std": 0.0305,
+      "fixture_skill": -0.0183,
+      "fixture_skill_std": 0.0058,
+      "pred_mean": 3.8813,
+      "pred_mean_std": 0.1395,
+      "slice_cal_lo": 0.0183,
+      "slice_cal_lo_std": 0.0007,
+      "slice_cal_hi": 1.0586,
+      "slice_cal_hi_std": 0.0406,
+      "actual_mean": 6.4411,
+      "starter_pp90_mean": 4.0272,
+      "slice_cal": [
+        0.0183,
+        0.1148,
+        0.5576,
+        0.9457,
+        1.0131,
+        0.9753,
+        1.027,
+        1.0562,
+        1.0658,
+        1.0586
+      ]
+    }
+  ],
+  "fit_stats": {
+    "h1_poisson_mw": {
+      "note": "Single gameweek, poisson with exposure weights (the textbook form).",
+      "reps": [
+        {
+          "epochs_ran": 35,
+          "test_mae": 17.335952758789062,
+          "best_val_mae": 4.937735080718994,
+          "pred_mean": 3.8766793427826407
+        },
+        {
+          "epochs_ran": 41,
+          "test_mae": 17.325054168701172,
+          "best_val_mae": 4.929003715515137,
+          "pred_mean": 3.937801536314131
+        },
+        {
+          "epochs_ran": 40,
+          "test_mae": 17.318347930908203,
+          "best_val_mae": 4.940955638885498,
+          "pred_mean": 4.115151567344426
+        },
+        {
+          "epochs_ran": 26,
+          "test_mae": 17.33014678955078,
+          "best_val_mae": 4.9453043937683105,
+          "pred_mean": 4.127322892647569
+        },
+        {
+          "epochs_ran": 43,
+          "test_mae": 17.31322479248047,
+          "best_val_mae": 4.937697410583496,
+          "pred_mean": 3.9166905741173705
+        }
+      ],
+      "smearing": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "h1_tweedie_mw": {
+      "note": "Single gameweek, Tweedie p=1.5 with exposure weights.",
+      "reps": [
+        {
+          "epochs_ran": 31,
+          "test_mae": 17.309345245361328,
+          "best_val_mae": 4.9433913230896,
+          "pred_mean": 3.910369951059673
+        },
+        {
+          "epochs_ran": 34,
+          "test_mae": 17.31801986694336,
+          "best_val_mae": 4.940088272094727,
+          "pred_mean": 3.963805753377176
+        },
+        {
+          "epochs_ran": 32,
+          "test_mae": 17.316028594970703,
+          "best_val_mae": 4.9331817626953125,
+          "pred_mean": 3.6642599824867896
+        },
+        {
+          "epochs_ran": 45,
+          "test_mae": 17.304372787475586,
+          "best_val_mae": 4.95103120803833,
+          "pred_mean": 4.069933780005561
+        },
+        {
+          "epochs_ran": 28,
+          "test_mae": 17.346115112304688,
+          "best_val_mae": 4.926433086395264,
+          "pred_mean": 3.798128178219095
+        }
+      ],
+      "smearing": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  },
+  "context": {
+    "holdout_season": 25,
+    "split_gw": 20,
+    "last_gw": 38,
+    "horizon": 5,
+    "reps": 5,
+    "pack": "full",
+    "score_minutes": "predicted",
+    "n_windows": 4170,
+    "n_fixtures": 20956,
+    "actual_mean": 6.4411,
+    "starter_pp90_mean": 4.0272,
+    "minutes_mae": 20.9949
+  }
+}

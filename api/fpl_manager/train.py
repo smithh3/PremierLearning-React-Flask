@@ -1,0 +1,331 @@
+"""Masked PPO. There is no second implementation.
+
+Install requirements-ppo.txt into an environment that already runs this
+project. Do not add those packages to the TensorFlow requirement files.
+
+Discounting is the library's. The episode puts the terminal reward on the
+last gameweek only, and the weekly rank on that gameweek. With gamma below
+1, earlier weeks weigh more than later ones, which is why 0.995 and 1.0 are
+worth comparing with the 0.99 start.
+
+Checkpoints are written after each policy update and again when training
+returns, including after an interrupt. The rollout buffer is not stored.
+Stable-Baselines3 does not restore one, so a resume starts a fresh rollout
+from the saved weights and optimiser. A new run refuses an existing
+checkpoint directory. It can still read the optimiser cache when the
+prediction snapshot matches; that cache is not part of this file.
+"""
+from __future__ import annotations
+
+import json
+import pickle
+import random
+from pathlib import Path
+
+import numpy as np
+
+from fpl_manager.actions import ACTIONS
+from fpl_manager.observation import MONEY_SCALE, OBSERVATION_NAMES, POINT_SCALE
+from fpl_manager.reward import TERMINAL_DIVISOR, WEEKLY_COEFFICIENT
+
+
+class CheckpointMismatch(RuntimeError):
+    """The saved policy was trained against a different observation or reward."""
+
+
+def require_ppo():
+    try:
+        import gymnasium  # noqa: F401
+        import sb3_contrib  # noqa: F401
+        import torch  # noqa: F401
+    except ImportError as exc:
+        raise RuntimeError(
+            'Masked PPO needs the optional requirements-ppo.txt libraries '
+            '(gymnasium, stable-baselines3, sb3-contrib, torch). They are '
+            'not part of the TensorFlow training environment, and a second '
+            'PPO implementation is not included. Import failed: %s' % exc
+        ) from exc
+
+
+def _manifest(model, gamma: float) -> dict:
+    return {
+        'features': list(OBSERVATION_NAMES),
+        'actions': list(ACTIONS),
+        'reward': {
+            'terminal_divisor': TERMINAL_DIVISOR,
+            'weekly_coefficient': WEEKLY_COEFFICIENT,
+        },
+        'scales': {'point': POINT_SCALE, 'money': MONEY_SCALE},
+        'gamma': float(gamma),
+        'num_timesteps': int(model.num_timesteps),
+    }
+
+
+def _check_manifest(manifest: dict):
+    if list(manifest.get('features') or ()) != list(OBSERVATION_NAMES):
+        raise CheckpointMismatch('Observation fields do not match this code')
+    if list(manifest.get('actions') or ()) != list(ACTIONS):
+        raise CheckpointMismatch('Action order does not match this code')
+    reward = manifest.get('reward') or {}
+    if (
+        float(reward.get('terminal_divisor', -1)) != float(TERMINAL_DIVISOR)
+        or float(reward.get('weekly_coefficient', -1)) != float(WEEKLY_COEFFICIENT)
+    ):
+        raise CheckpointMismatch('Reward settings do not match this code')
+    scales = manifest.get('scales') or {}
+    if (
+        float(scales.get('point', -1)) != float(POINT_SCALE)
+        or float(scales.get('money', -1)) != float(MONEY_SCALE)
+    ):
+        raise CheckpointMismatch('Feature scales do not match this code')
+
+
+def save_checkpoint(model, directory, gamma: float):
+    directory = Path(directory)
+    directory.mkdir(parents=True, exist_ok=True)
+    model.save(str(directory / 'policy'))
+    manifest = _manifest(model, gamma)
+    (directory / 'manifest.json').write_text(json.dumps(manifest, indent=2, sort_keys=True))
+    import torch
+    with (directory / 'rng.pkl').open('wb') as handle:
+        pickle.dump({
+            'numpy': np.random.get_state(),
+            'python': random.getstate(),
+            'torch': torch.get_rng_state(),
+        }, handle)
+    return manifest
+
+
+def load_checkpoint(directory, env=None):
+    require_ppo()
+    import torch
+
+    directory = Path(directory)
+    manifest_path = directory / 'manifest.json'
+    if not manifest_path.is_file():
+        raise FileNotFoundError('No checkpoint manifest at %s' % directory)
+    manifest = json.loads(manifest_path.read_text())
+    _check_manifest(manifest)
+    model = _checkpoint_class().load(str(directory / 'policy'), env=env, device='cpu')
+    if int(model.num_timesteps) != int(manifest['num_timesteps']):
+        raise CheckpointMismatch(
+            'Saved step counter %s does not match the policy file %s'
+            % (manifest['num_timesteps'], model.num_timesteps)
+        )
+    with (directory / 'rng.pkl').open('rb') as handle:
+        state = pickle.load(handle)
+    np.random.set_state(state['numpy'])
+    random.setstate(state['python'])
+    torch.set_rng_state(state['torch'])
+    return model, manifest
+
+
+_PPO_CLASS = None
+
+
+def _checkpoint_class():
+    """A MaskablePPO that writes a checkpoint after each update.
+
+    The class is built on first use so this module imports without PyTorch,
+    then stored on the module so a saved policy can be unpickled by name.
+    """
+    global _PPO_CLASS
+    if _PPO_CLASS is not None:
+        return _PPO_CLASS
+    from sb3_contrib import MaskablePPO
+
+    class CheckpointPPO(MaskablePPO):
+        def train(self):
+            super().train()
+            directory = getattr(self, 'checkpoint_dir', None)
+            if directory:
+                save_checkpoint(self, directory, float(getattr(self, 'checkpoint_gamma', 0.99)))
+
+    globals()['CheckpointPPO'] = CheckpointPPO
+    _PPO_CLASS = CheckpointPPO
+    return CheckpointPPO
+
+
+def _process_envs(env_fns):
+    """One environment per process. A single function stays in this process."""
+    from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv
+
+    fns = list(env_fns)
+    if len(fns) == 1:
+        return DummyVecEnv(fns)
+
+    class _VecEnv(SubprocVecEnv):
+        def get_attr(self, attr_name, indices=None):
+            # MaskablePPO fetches the action_masks method to see that it exists.
+            # The worker environment cannot be pickled, so answer that here.
+            # The masks themselves are still read by calling the method.
+            if attr_name == 'action_masks':
+                return [True for _remote in self._get_target_remotes(indices)]
+            return super().get_attr(attr_name, indices)
+
+        def close(self):
+            if self.closed:
+                return
+            try:
+                super().close()
+            except (BrokenPipeError, EOFError, OSError):
+                self.closed = True
+                for process in self.processes:
+                    if process.is_alive():
+                        process.terminate()
+                    process.join()
+
+    return _VecEnv(fns, start_method='spawn')
+
+
+def _training_env(episode_factory):
+    """Vector env whose monitor owns action_masks.
+
+    Stable-Baselines looks the mask up on the monitor wrapper. Defining it
+    there keeps Gymnasium from warning about the wrapper attribute lookup.
+    """
+    from stable_baselines3.common.monitor import Monitor
+    from stable_baselines3.common.vec_env import DummyVecEnv
+
+    from fpl_manager.env import ManagerEnv
+
+    class _MaskedMonitor(Monitor):
+        def action_masks(self):
+            return self.env.action_masks()
+
+    return DummyVecEnv([lambda: _MaskedMonitor(ManagerEnv(episode_factory))])
+
+
+def train_policy(
+    episode_factory,
+    directory,
+    total_timesteps: int,
+    resume: bool = False,
+    gamma: float = 0.99,
+    seed: int = 0,
+    n_steps: int = 38,
+    batch_size: int = 38,
+    n_epochs: int = 10,
+    env_fns=None,
+):
+    """Train or continue a MaskablePPO. gamma 0.995 and 1.0 are the later comparisons.
+
+    env_fns runs each environment in its own process. They sample the one
+    policy, and the weight update uses every process's finished run.
+    """
+    require_ppo()
+
+    directory = Path(directory)
+    manifest_path = directory / 'manifest.json'
+    env = _process_envs(env_fns) if env_fns else _training_env(episode_factory)
+    if resume:
+        if not manifest_path.is_file():
+            raise FileNotFoundError('No checkpoint to resume at %s' % directory)
+        model, _manifest = load_checkpoint(directory, env=env)
+        gamma = float(_manifest['gamma'])
+    else:
+        if manifest_path.is_file():
+            raise CheckpointMismatch(
+                'A checkpoint already exists at %s. Resume it, or use a new directory.'
+                % directory
+            )
+        model = _checkpoint_class()(
+            'MlpPolicy',
+            env,
+            learning_rate=3e-4,
+            n_steps=int(n_steps),
+            batch_size=int(batch_size),
+            n_epochs=int(n_epochs),
+            gamma=float(gamma),
+            gae_lambda=0.95,
+            clip_range=0.2,
+            ent_coef=0.01,
+            seed=int(seed),
+            policy_kwargs={'net_arch': [64, 64]},
+            device='cpu',
+            verbose=0,
+        )
+    model.checkpoint_dir = str(directory)
+    model.checkpoint_gamma = float(gamma)
+    processes = len(env_fns) if env_fns else 1
+    try:
+        model.learn(
+            total_timesteps=int(total_timesteps),
+            reset_num_timesteps=not resume,
+        )
+    finally:
+        save_checkpoint(model, directory, gamma)
+        if processes > 1:
+            env.close()
+    return model
+
+
+def policy_weight_sum(model) -> float:
+    total = 0.0
+    for parameter in model.policy.parameters():
+        total += float(parameter.detach().sum().item())
+    return total
+
+
+def _one_point(_player_id, _gameweek):
+    return 1.0
+
+
+def tiny_hold_factory():
+    """One-week hold episode used to check that a checkpoint reloads."""
+    from squadtools.simulation_strategy import OwnedPlayer, PlayerProjection, PredictionPool, SquadState
+
+    from fpl_manager.episode import SeasonEpisode
+
+    counts = {1: 2, 2: 5, 3: 5, 4: 3}
+    players = {}
+    owned = {}
+    player_id = 1
+    for position, count in counts.items():
+        for _index in range(count):
+            player = PlayerProjection(
+                player_id=player_id,
+                player_code=1000 + player_id,
+                name='p%s' % player_id,
+                position=position,
+                team_id=player_id,
+                price=45,
+                selectable=True,
+            )
+            player.points_by_gameweek[1] = 2.0
+            players[player_id] = player
+            owned[player_id] = OwnedPlayer(player_id, 45)
+            player_id += 1
+    # Five spare midfielders so every transfer action has someone to buy.
+    for extra in range(5):
+        spare_id = 100 + extra
+        spare = PlayerProjection(
+            player_id=spare_id,
+            player_code=1000 + spare_id,
+            name='s%s' % spare_id,
+            position=3,
+            team_id=spare_id,
+            price=45,
+            selectable=True,
+        )
+        spare.points_by_gameweek[1] = 3.0
+        players[spare_id] = spare
+    return SeasonEpisode(
+        PredictionPool(players),
+        SquadState(owned=owned, bank=50, free_transfers=1),
+        _one_point,
+        last_gameweek=1,
+    )
+
+
+def tiny_vec_env():
+    """Picklable one-week env for a process worker."""
+    from stable_baselines3.common.monitor import Monitor
+
+    from fpl_manager.env import ManagerEnv
+
+    class _MaskedMonitor(Monitor):
+        def action_masks(self):
+            return self.env.action_masks()
+
+    return _MaskedMonitor(ManagerEnv(tiny_hold_factory))

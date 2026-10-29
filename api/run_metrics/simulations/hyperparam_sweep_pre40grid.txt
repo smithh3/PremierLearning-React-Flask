@@ -1,0 +1,73 @@
+Simulation hyperparameter sweep
+Append-only log: hyperparam_sweep.jsonl
+
+#      pts szn     rank   top%  trn  hold label                  knobs                            chips
+1     2242  25   515192   4.01   62     2 23_xi_hz4              fh=10.0 fill=0.0 gk=None hz=4 mc WC 12,32 BB 13,33 FH 6,23 TC 17,38
+2     2219  25   712280   5.54   64     0 05_patient_wc          fh=10.0 rec=10.0 tc=1.6 wc=45.0  WC 5,22 BB 6,23 FH 9,20 TC 19,36
+3     2219  25   712280   5.54   64     0 17_no_tc_dump          fh=10.0 rec=10.0 tc=1.6 tc_easy= WC 5,22 BB 6,23 FH 9,20 TC 19,36
+4     2212  25   775270   6.03   62     1 19_patient_hz3         fh=10.0 hz=3 mc=1.0 mh=1.5 rec=1 WC 12,33 BB 13,34 FH 7,20 TC 19,26
+5     2203  25   862957   6.71   63     0 09_chips_from_7        earliest=7 fh=10.0 mh=2.5 tc=1.4 WC 7,22 BB 8,23 FH 11,20 TC 19,36
+6     2203  25   862957   6.71   63     0 16_patient_from_7      earliest=7 fh=10.0 mh=2.5 rec=10 WC 7,22 BB 8,23 FH 11,20 TC 19,36
+7     2198  25   922156   7.17   66     3 15_patient_xi          fh=10.0 fill=None gk=None mc=1.0 WC 5,22 BB 6,23 FH 11,33 TC 19,36
+8     2190  25  1010336   7.86   63     0 19_wide_fh_gap         earliest=7 fh=9.0 fh_gap=5 mh=2. WC 7,22 BB 8,23 FH 13,20 TC 19,36
+9     2189  25  1021935   7.95   64     2 20_patient_short_hz    fh=10.0 hz=3 mc=1.0 mh=1.5 rec=1 WC 5,22 BB 6,23 FH 10,20 TC 19,36
+10    2182  25  1099395   8.55   67     4 08_xi_only             fill=None gk=None hz=4 mc=1.0 mh WC 5,22 BB 6,23 FH 10,21 TC 19,36
+11    2179  25  1133810   8.82   62     1 10_hz_4                fh=10.0 hz=4 rec=10.0 tc=1.6 wc= WC 12,31 BB 13,32 FH 6,22 TC 17,33
+12    2172  25  1218117   9.47   63     0 16_from_7              earliest=7 fh=10.0 mh=2.5 rec=10 WC 10,23 BB 11,24 FH 7,22 TC 17,26
+13    2172  25  1218117   9.47   63     0 20_wide_fh_from_7      earliest=7 fh=9.0 fh_gap=5 mh=2. WC 10,23 BB 11,24 FH 7,22 TC 17,26
+14    2169  25  1256099   9.77   67     0 07_tc_near             earliest=6 mh=2.5 tc=1.1 wc=32.0 WC 6,22 BB 7,23 FH 10,20 TC 19,26
+15    2168  25  1269021   9.87   66     1 06_short_horizon       fh=12.0 fill=0.5 gk=0.3 hz=3 mc= WC 5,22 BB 6,23 FH 11,21 TC 19,36
+16    2154  25  1450352  11.28   62     0 07_mh_1.5              fh=10.0 mh=1.5 rec=10.0 tc=1.6 w WC 9,23 BB 10,24 FH 6,22 TC 17,26
+17    2153  25  1464113  11.39   61     2 08_mh_3                fh=10.0 mh=3.0 rec=10.0 tc=1.6 w WC 9,23 BB 10,24 FH 6,28 TC 17,33
+18    2152  25  1478005  11.49   65     0 03_horizon_heavy_bench fh=9.0 fill=0.4 gk=0.25 mc=1.0 m WC 5,20 BB 6,21 FH 10,26 TC 19,36
+19    2150  25  1506185  11.71   62     0 02_wc_40               fh=10.0 rec=10.0 tc=1.6 wc=40.0  WC 8,28 BB 9,29 FH 6,22 TC 17,33
+20    2147  25  1549466  12.05   66     4 02_this_week_patient   earliest=6 fh=10.0 mc=2.0 mh=3.0 WC 6,22 BB 7,23 FH 10,21 TC 19,36
+21    2144  25  1593991  12.40   65     0 04_relax_spend         fh=9.0 fill=0.2 gk=0.1 mh=1.0 re WC 5,20 BB 6,21 FH 10,26 TC 19,36
+22    2142  25  1622512  12.62   62     0 01_patient_wc          fh=10.0 rec=10.0 tc=1.6 wc=45.0  WC 9,23 BB 10,24 FH 6,22 TC 17,33
+23    2142  25  1622512  12.62   62     0 04_fh_9                fh=9.0 rec=10.0 tc=1.6 wc=45.0 w WC 9,23 BB 10,24 FH 6,22 TC 17,33
+24    2142  25  1622512  12.62   62     0 05_rec_8               fh=10.0 rec=8.0 tc=1.6 wc=45.0 w WC 9,23 BB 10,24 FH 6,22 TC 17,33
+25    2142  25  1622512  12.62   62     0 06_tc_1.4              fh=10.0 rec=10.0 tc=1.4 wc=45.0  WC 9,23 BB 10,24 FH 6,22 TC 17,33
+26    2142  25  1622512  12.62   62     0 09_earliest_6          earliest=6 fh=10.0 rec=10.0 tc=1 WC 9,23 BB 10,24 FH 6,22 TC 17,33
+27    2142  25  1622512  12.62   65     2 10_steady              fh=10.0 fill=0.25 mc=1.0 mh=3.0  WC 5,21 BB 6,22 FH 10,20 TC 19,36
+28    2142  25  1622512  12.62   62     0 11_win_10              fh=10.0 rec=10.0 tc=1.6 wc=45.0  WC 9,23 BB 10,24 FH 6,22 TC 17,33
+29    2142  25  1622512  12.62   66     0 18_tight_fh_gap        earliest=6 fh=10.0 fh_gap=1 rec= WC 6,22 BB 7,23 FH 8,20 TC 19,36
+30    2137  25  1691190  13.15   65     0 11_raw_minutes         fill=0.2 gk=0.15 mh=3.0 ms=raw s WC 5,21 BB 6,22 FH 10,26 TC 19,36
+31    2132  25  1762775  13.71   62     0 12_no_tc_dump          fh=10.0 rec=10.0 tc=1.6 tc_easy= WC 9,23 BB 10,24 FH 6,22 TC 19,33
+32    2130  25  1792251  13.94   61     3 03_xi_hz4_noroll       fh=10.0 fill=0.0 gk=None hz=4 mc WC 12,30 BB 13,31 FH 6,22 TC 17,26
+33    2130  25  1792251  13.94   64     0 12_step_80             fh=10.0 fill=0.45 gk=0.25 mc=1.0 WC 5,20 BB 6,21 FH 10,26 TC 19,36
+34    2122  25  1915164  14.89   62     5 13_step_60             earliest=7 fill=0.15 gk=0.1 mc=2 WC 7,24 BB 8,25 FH 12,21 TC 19,36
+35    2114  25  2046507  15.91   60    18 06_from_7_roll_bench   earliest=7 fh=10.0 fill=0.3 gk=0 WC 8,23 BB 9,24 FH 7,28 TC 17,33
+36    2111  25  2098004  16.31   65     1 01_xi_hz4_noroll       defaults                         WC 10,25 BB 11,26 FH 14,22 TC 7,33
+37    2111  25  2098004  16.31   65     1 02_xi_hz4_noroll       fh=10.0 fill=0.0 gk=None hz=4 mc WC 10,25 BB 11,26 FH 14,22 TC 7,33
+38    2111  25  2098004  16.31   65     1 04_dgw_wait            dgw_h2=2.0 fh=10.0 fh_dgw=2.0 fi WC 10,25 BB 11,26 FH 14,22 TC 7,33
+39    2111  25  2098004  16.31   65     1 05_dgw_h2_strong       dgw_h2=3.0 fh=10.0 fh_dgw=2.0 fi WC 10,25 BB 11,26 FH 14,22 TC 7,33
+40    2106  25  2170791  16.88   61    14 04_hz3_roll_bench      fh=10.0 fill=0.3 gk=0.2 hz=3 mc= WC 13,25 BB 14,26 FH 6,23 TC 17,33
+41    2099  25  2282076  17.75   61    18 09_hz5_all_on          dgw_h2=2.0 fh=10.0 fh_dgw=2.0 fi WC 8,24 BB 9,25 FH 13,22 TC 7,33
+42    2092  25  2399065  18.66   58     4 18_from_7_two_bench    earliest=7 fh=10.0 fill=0.0 gk=N WC 13,25 BB 14,26 FH 7,22 TC 8,33
+43    2078  25  2627403  20.43   61    15 02_xi_hz5_roll         fh=10.0 fill=0.0 gk=None hz=5 mc WC 9,24 BB 10,25 FH 6,23 TC 17,33
+44    2078  25  2627403  20.43   62     5 15_patient_two_bench   fh=10.0 fill=0.0 gk=None rec=10. WC 9,22 BB 10,23 FH 6,26 TC 17,33
+45    2069  25  2773386  21.57   64    16 07_xi_hz4_from7_roll   earliest=7 fh=10.0 fill=0.0 gk=N WC 8,24 BB 9,25 FH 13,22 TC 17,33
+46    2068  25  2790099  21.70   65    16 01_xi_hz4_roll         fh=10.0 fill=0.0 gk=None hz=4 mc WC 8,25 BB 9,26 FH 6,23 TC 17,33
+47    2068  25  2790099  21.70   65    16 08_xi_hz4_mh2_roll     fh=10.0 fill=0.0 gk=None hz=4 mc WC 8,25 BB 9,26 FH 6,23 TC 17,33
+48    2068  25  2790099  21.70   65    16 09_tc_1.8_roll         fh=10.0 fill=0.0 gk=None hz=4 mc WC 8,25 BB 9,26 FH 6,23 TC 17,33
+49    2068  25  2790099  21.70   65    16 10_fh_11_roll          fh=11.0 fill=0.0 gk=None hz=4 mc WC 8,25 BB 9,26 FH 6,23 TC 17,33
+50    2068  25  2790099  21.70   62     1 13_patient_xi          fh=10.0 fill=0.0 gk=None rec=10. WC 9,30 BB 10,31 FH 6,24 TC 17,33
+51    2063  25  2875188  22.36   60     1 24_patient_mc1_mh3     fh=10.0 mc=1.0 mh=3.0 rec=10.0 t WC 12,23 BB 13,24 FH 7,28 TC 19,33
+52    2062  25  2892514  22.49   65     0 14_step_70_cliff       fill=0.35 hz=4 ms=step_70 rec=9. WC 5,24 BB 6,25 FH 9,20 TC 19,36
+53    2061  25  2909945  22.63   61    18 10_bench_all_on        dgw_h2=2.0 fh=10.0 fh_dgw=2.0 fi WC 12,24 BB 13,25 FH 6,22 TC 7,33
+54    2059  25  2945123  22.90   64    16 12_from_7_dump_roll    earliest=7 fh=10.0 fill=0.0 gk=N WC 8,24 BB 9,25 FH 13,22 TC 19,33
+55    2058  25  2962871  23.04   65    16 11_xi_dump_hz4_roll    fh=10.0 fill=0.0 gk=None hz=4 mc WC 8,25 BB 9,26 FH 6,23 TC 19,33
+56    2058  25  2962871  23.04   62     1 14_no_tc_dump_xi       fh=10.0 fill=0.0 gk=None rec=10. WC 9,30 BB 10,31 FH 6,24 TC 19,33
+57    2033  25  3425354  26.64   66    16 01_mid                 dgw_h2=2.0 earliest=3 fh_dgw=2.0 WC 8,23 BB 9,24 FH 4,20 TC 17,33
+58    2025  25  3564479  27.72   62    16 08_from7_all_on        dgw_h2=2.0 earliest=7 fh=10.0 fh WC 8,24 BB 9,25 FH 13,20 TC 7,33
+59    2012  25  3802711  29.57   65     1 27_patient_wc          fh=10.0 rec=10.0 tc=1.6 wc=45.0  WC 7,23 BB 8,24 FH 6,21 TC 13,27
+60    2011  25  3821683  29.72   63    16 05_xi_hz3_roll         fh=10.0 fill=0.0 gk=None hz=3 mc WC 12,30 BB 13,31 FH 8,20 TC 17,26
+61    2009  25  3859912  30.02   63     1 17_from_7_xi           earliest=7 fh=10.0 fill=0.0 gk=N WC 12,24 BB 13,25 FH 8,20 TC 19,33
+62    2005  25  3937519  30.62   63     0 03_wc_50               fh=10.0 rec=10.0 tc=1.6 wc=50.0  WC 12,23 BB 13,24 FH 6,20 TC 19,33
+63    1985  25  4329292  33.67   65     0 22_patient_step75      fh=10.0 ms=step_75 rec=10.0 tc=1 WC 6,22 BB 7,23 FH 11,21 TC 17,27
+64    1982  25  4382729  34.08   63    16 01_all_on              dgw_h2=2.0 fh=10.0 fh_dgw=2.0 fi WC 8,22 BB 9,23 FH 6,20 TC 7,33
+65    1979  25  4436826  34.50   61    16 03_xi_hz4_roll         fh=10.0 fill=0.0 gk=None hz=4 mc WC 9,23 BB 10,24 FH 6,20 TC 7,33
+66    1976  25  4491590  34.93   61     1 06_wc_rotation         fh=10.0 fill=0.0 gk=None hz=4 mc WC 11,23 BB 12,24 FH 9,31 TC 7,33
+67    1976  25  4491590  34.93   61     1 07_dgw_rot_noroll      dgw_h2=2.0 fh=10.0 fh_dgw=2.0 fi WC 11,23 BB 12,24 FH 9,31 TC 7,33
+68    1963  25  4736821  36.84   63     0 28_no_tc_dump_xi       fh=10.0 fill=0.0 gk=None rec=10. WC 12,25 BB 13,26 FH 6,23 TC 8,27
+69    1843  25  6922125  53.83   63     3 21_fargate_live        earliest=5 fh=11.0 fill=0.0 gk=N WC 6,20 BB 7,21 FH 13,24 TC 19,33

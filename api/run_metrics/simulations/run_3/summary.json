@@ -1,0 +1,30 @@
+{
+  "autosub_recoveries": 37,
+  "availability_affected_gameweeks": 26,
+  "availability_caveat": "Weekly historical injury percentages were unavailable; predicted minutes were used as the availability proxy.",
+  "config": {
+    "gameweek_from": 1,
+    "gameweek_to": 38,
+    "horizon_gameweeks": 5,
+    "initial_budget": 1000,
+    "max_transfers_per_gameweek": 5,
+    "min_current_gw_gain": 2.0,
+    "min_horizon_gain": 4.0,
+    "output_dir": null,
+    "prediction_set_id": 1,
+    "relax_thresholds_at_max_ft": true,
+    "season_start_year": 25
+  },
+  "final_bank": 136,
+  "final_squad_value": 983,
+  "fixture_caveat": "Predictions use the final season fixture calendar, including reschedules that may not have been announced at the deadline.",
+  "hold_gameweeks": 5,
+  "prediction_scope": "rest_of_season",
+  "prediction_set_id": 1,
+  "season": "25/26",
+  "simulation_run_id": 3,
+  "total_points": 1960.0,
+  "transfers_made": 41,
+  "unexpected_zero_minute_starters": 48,
+  "zero_minute_captains": 3
+}

@@ -1,0 +1,135 @@
+Running team expectancies (needed for the team xG features)...
+Seeded early-season form for 20 teams from season (25, 26)
+Promoted/new team prior (bottom-3 PL rates scored=0.97 conceded=1.82): COV, HUL, IPS
+Squad cost YoY (top 15, centered z, fade-out GW5): BOU +1.33, BRE +1.21, LEE +1.13, SUN +0.89, MCI +0.67, EVE +0.58, CHE +0.20, MUN +0.12, NFO +0.06, BHA -0.12, AVL -0.18, FUL -0.24, ARS -0.38, CRY -0.52, TOT -0.73, NEW -1.07, LIV -2.94
+Training team goals expectancy model (neural net)...
+Training rows: 5030; max epochs: 500
+Team model input columns:
+  team_scored_last_5
+  team_scored_avg
+  team_conceded_last_5
+  team_conceded_avg
+  opp_scored_last_5
+  opp_scored_avg
+  opp_conceded_last_5
+  opp_conceded_avg
+  is_home
+  fixture_difficulty
+  opp_fixture_difficulty
+Epoch 1/500
+101/101 - 4s - loss: 0.9748 - root_mean_squared_error: 1.8053 - mean_absolute_error: 1.3924 - val_loss: 0.6617 - val_root_mean_squared_error: 1.3988 - val_mean_absolute_error: 1.0553 - lr: 0.0010 - 4s/epoch - 35ms/step
+Epoch 2/500
+101/101 - 0s - loss: 0.6271 - root_mean_squared_error: 1.3379 - mean_absolute_error: 1.0223 - val_loss: 0.5459 - val_root_mean_squared_error: 1.2059 - val_mean_absolute_error: 0.9271 - lr: 0.0010 - 439ms/epoch - 4ms/step
+Epoch 3/500
+101/101 - 1s - loss: 0.5709 - root_mean_squared_error: 1.2471 - mean_absolute_error: 0.9591 - val_loss: 0.5269 - val_root_mean_squared_error: 1.1706 - val_mean_absolute_error: 0.9073 - lr: 0.0010 - 579ms/epoch - 6ms/step
+Epoch 4/500
+101/101 - 0s - loss: 0.5557 - root_mean_squared_error: 1.2256 - mean_absolute_error: 0.9423 - val_loss: 0.5183 - val_root_mean_squared_error: 1.1525 - val_mean_absolute_error: 0.9015 - lr: 0.0010 - 472ms/epoch - 5ms/step
+Epoch 5/500
+101/101 - 1s - loss: 0.5451 - root_mean_squared_error: 1.2098 - mean_absolute_error: 0.9311 - val_loss: 0.5139 - val_root_mean_squared_error: 1.1417 - val_mean_absolute_error: 0.8982 - lr: 0.0010 - 619ms/epoch - 6ms/step
+Epoch 6/500
+101/101 - 1s - loss: 0.5402 - root_mean_squared_error: 1.2009 - mean_absolute_error: 0.9248 - val_loss: 0.5129 - val_root_mean_squared_error: 1.1414 - val_mean_absolute_error: 0.8975 - lr: 0.0010 - 650ms/epoch - 6ms/step
+Epoch 7/500
+101/101 - 0s - loss: 0.5340 - root_mean_squared_error: 1.1917 - mean_absolute_error: 0.9191 - val_loss: 0.5072 - val_root_mean_squared_error: 1.1351 - val_mean_absolute_error: 0.8913 - lr: 0.0010 - 484ms/epoch - 5ms/step
+Epoch 8/500
+101/101 - 1s - loss: 0.5316 - root_mean_squared_error: 1.1904 - mean_absolute_error: 0.9158 - val_loss: 0.5060 - val_root_mean_squared_error: 1.1329 - val_mean_absolute_error: 0.8899 - lr: 0.0010 - 553ms/epoch - 5ms/step
+Epoch 9/500
+101/101 - 0s - loss: 0.5279 - root_mean_squared_error: 1.1834 - mean_absolute_error: 0.9125 - val_loss: 0.5057 - val_root_mean_squared_error: 1.1332 - val_mean_absolute_error: 0.8884 - lr: 0.0010 - 500ms/epoch - 5ms/step
+Epoch 10/500
+101/101 - 0s - loss: 0.5266 - root_mean_squared_error: 1.1820 - mean_absolute_error: 0.9089 - val_loss: 0.5031 - val_root_mean_squared_error: 1.1313 - val_mean_absolute_error: 0.8859 - lr: 0.0010 - 359ms/epoch - 4ms/step
+Epoch 11/500
+101/101 - 0s - loss: 0.5242 - root_mean_squared_error: 1.1786 - mean_absolute_error: 0.9080 - val_loss: 0.5029 - val_root_mean_squared_error: 1.1277 - val_mean_absolute_error: 0.8859 - lr: 0.0010 - 388ms/epoch - 4ms/step
+Epoch 12/500
+101/101 - 1s - loss: 0.5234 - root_mean_squared_error: 1.1783 - mean_absolute_error: 0.9066 - val_loss: 0.5046 - val_root_mean_squared_error: 1.1285 - val_mean_absolute_error: 0.8873 - lr: 0.0010 - 544ms/epoch - 5ms/step
+Epoch 13/500
+101/101 - 0s - loss: 0.5221 - root_mean_squared_error: 1.1762 - mean_absolute_error: 0.9051 - val_loss: 0.5015 - val_root_mean_squared_error: 1.1262 - val_mean_absolute_error: 0.8835 - lr: 0.0010 - 460ms/epoch - 5ms/step
+Epoch 14/500
+101/101 - 1s - loss: 0.5213 - root_mean_squared_error: 1.1727 - mean_absolute_error: 0.9046 - val_loss: 0.5002 - val_root_mean_squared_error: 1.1268 - val_mean_absolute_error: 0.8831 - lr: 0.0010 - 540ms/epoch - 5ms/step
+Epoch 15/500
+101/101 - 0s - loss: 0.5203 - root_mean_squared_error: 1.1731 - mean_absolute_error: 0.9035 - val_loss: 0.4991 - val_root_mean_squared_error: 1.1283 - val_mean_absolute_error: 0.8815 - lr: 0.0010 - 415ms/epoch - 4ms/step
+Epoch 16/500
+101/101 - 1s - loss: 0.5189 - root_mean_squared_error: 1.1710 - mean_absolute_error: 0.9018 - val_loss: 0.5008 - val_root_mean_squared_error: 1.1261 - val_mean_absolute_error: 0.8825 - lr: 0.0010 - 537ms/epoch - 5ms/step
+Epoch 17/500
+101/101 - 0s - loss: 0.5194 - root_mean_squared_error: 1.1705 - mean_absolute_error: 0.9021 - val_loss: 0.4992 - val_root_mean_squared_error: 1.1232 - val_mean_absolute_error: 0.8820 - lr: 0.0010 - 410ms/epoch - 4ms/step
+Epoch 18/500
+101/101 - 0s - loss: 0.5178 - root_mean_squared_error: 1.1700 - mean_absolute_error: 0.9003 - val_loss: 0.4990 - val_root_mean_squared_error: 1.1245 - val_mean_absolute_error: 0.8814 - lr: 0.0010 - 397ms/epoch - 4ms/step
+Epoch 19/500
+101/101 - 0s - loss: 0.5179 - root_mean_squared_error: 1.1701 - mean_absolute_error: 0.8998 - val_loss: 0.5002 - val_root_mean_squared_error: 1.1236 - val_mean_absolute_error: 0.8829 - lr: 0.0010 - 409ms/epoch - 4ms/step
+Epoch 20/500
+101/101 - 0s - loss: 0.5170 - root_mean_squared_error: 1.1679 - mean_absolute_error: 0.9006 - val_loss: 0.4983 - val_root_mean_squared_error: 1.1225 - val_mean_absolute_error: 0.8809 - lr: 0.0010 - 403ms/epoch - 4ms/step
+Epoch 21/500
+101/101 - 0s - loss: 0.5163 - root_mean_squared_error: 1.1667 - mean_absolute_error: 0.8990 - val_loss: 0.4989 - val_root_mean_squared_error: 1.1238 - val_mean_absolute_error: 0.8813 - lr: 0.0010 - 397ms/epoch - 4ms/step
+Epoch 22/500
+101/101 - 0s - loss: 0.5150 - root_mean_squared_error: 1.1640 - mean_absolute_error: 0.8990 - val_loss: 0.4971 - val_root_mean_squared_error: 1.1272 - val_mean_absolute_error: 0.8785 - lr: 0.0010 - 426ms/epoch - 4ms/step
+Epoch 23/500
+101/101 - 0s - loss: 0.5152 - root_mean_squared_error: 1.1670 - mean_absolute_error: 0.8976 - val_loss: 0.4962 - val_root_mean_squared_error: 1.1234 - val_mean_absolute_error: 0.8789 - lr: 0.0010 - 285ms/epoch - 3ms/step
+Epoch 24/500
+101/101 - 0s - loss: 0.5147 - root_mean_squared_error: 1.1642 - mean_absolute_error: 0.8978 - val_loss: 0.4963 - val_root_mean_squared_error: 1.1246 - val_mean_absolute_error: 0.8797 - lr: 0.0010 - 299ms/epoch - 3ms/step
+Epoch 25/500
+101/101 - 0s - loss: 0.5139 - root_mean_squared_error: 1.1638 - mean_absolute_error: 0.8967 - val_loss: 0.4959 - val_root_mean_squared_error: 1.1257 - val_mean_absolute_error: 0.8788 - lr: 0.0010 - 280ms/epoch - 3ms/step
+Epoch 26/500
+101/101 - 0s - loss: 0.5123 - root_mean_squared_error: 1.1624 - mean_absolute_error: 0.8942 - val_loss: 0.4970 - val_root_mean_squared_error: 1.1240 - val_mean_absolute_error: 0.8800 - lr: 5.0000e-04 - 318ms/epoch - 3ms/step
+Epoch 27/500
+101/101 - 0s - loss: 0.5117 - root_mean_squared_error: 1.1612 - mean_absolute_error: 0.8944 - val_loss: 0.4983 - val_root_mean_squared_error: 1.1244 - val_mean_absolute_error: 0.8800 - lr: 5.0000e-04 - 305ms/epoch - 3ms/step
+Epoch 28/500
+101/101 - 0s - loss: 0.5117 - root_mean_squared_error: 1.1607 - mean_absolute_error: 0.8941 - val_loss: 0.4978 - val_root_mean_squared_error: 1.1238 - val_mean_absolute_error: 0.8801 - lr: 5.0000e-04 - 283ms/epoch - 3ms/step
+Epoch 29/500
+101/101 - 0s - loss: 0.5114 - root_mean_squared_error: 1.1623 - mean_absolute_error: 0.8937 - val_loss: 0.4981 - val_root_mean_squared_error: 1.1240 - val_mean_absolute_error: 0.8805 - lr: 5.0000e-04 - 281ms/epoch - 3ms/step
+Epoch 30/500
+101/101 - 0s - loss: 0.5111 - root_mean_squared_error: 1.1597 - mean_absolute_error: 0.8937 - val_loss: 0.4981 - val_root_mean_squared_error: 1.1235 - val_mean_absolute_error: 0.8805 - lr: 5.0000e-04 - 400ms/epoch - 4ms/step
+Epoch 31/500
+101/101 - 0s - loss: 0.5100 - root_mean_squared_error: 1.1595 - mean_absolute_error: 0.8920 - val_loss: 0.4981 - val_root_mean_squared_error: 1.1238 - val_mean_absolute_error: 0.8806 - lr: 2.5000e-04 - 288ms/epoch - 3ms/step
+Epoch 32/500
+101/101 - 0s - loss: 0.5100 - root_mean_squared_error: 1.1579 - mean_absolute_error: 0.8929 - val_loss: 0.4983 - val_root_mean_squared_error: 1.1238 - val_mean_absolute_error: 0.8809 - lr: 2.5000e-04 - 330ms/epoch - 3ms/step
+{'team_model_train_mae': 0.8929494023323059, 'team_model_test_mae': 0.9286708233963187, 'team_model_test_rmse': 1.1839520390264788, 'epochs_ran': 32, 'pred_range': (0.1686471849679947, 2.837864637374878)}
+Seeded early-season form for 20 teams from season (25, 26)
+Promoted/new team prior (bottom-3 PL rates scored=0.97 conceded=1.82): COV, HUL, IPS
+Squad cost YoY (top 15, centered z, fade-out GW5): BOU +1.33, BRE +1.21, LEE +1.13, SUN +0.89, MCI +0.67, EVE +0.58, CHE +0.20, MUN +0.12, NFO +0.06, BHA -0.12, AVL -0.18, FUL -0.24, ARS -0.38, CRY -0.52, TOT -0.73, NEW -1.07, LIV -2.94
+Team expectancies applied to all fixtures
+Holdout: 4170 windows, 20956 scored fixtures, GW21-38 of 25/26
+
+--- fit minutes: 101556 rows (shared across all points arms) ---
+All inputs/outputs have matching shapes and valid numeric values
+Model capacity: hidden=[24, 12, 6], optimizer=AdamW, l2=0.00225, weight_decay=0.0, lr=0.0005 (n_features=16, loss=Huber(delta=1.8))
+Minutes early stopping: patience=10 min_delta=0.25 (val MAE minutes)
+Epoch 1/500
+2032/2032 - 10s - loss: 38.8104 - root_mean_squared_error: 35.1563 - mean_absolute_error: 22.1983 - val_loss: 30.9047 - val_root_mean_squared_error: 30.2503 - val_mean_absolute_error: 17.7823 - lr: 5.0000e-04 - 10s/epoch - 5ms/step
+Epoch 2/500
+2032/2032 - 7s - loss: 32.1995 - root_mean_squared_error: 30.7443 - mean_absolute_error: 18.5272 - val_loss: 30.3525 - val_root_mean_squared_error: 30.3207 - val_mean_absolute_error: 17.4849 - lr: 5.0000e-04 - 7s/epoch - 3ms/step
+Epoch 3/500
+2032/2032 - 6s - loss: 31.7078 - root_mean_squared_error: 30.7764 - mean_absolute_error: 18.2512 - val_loss: 29.9895 - val_root_mean_squared_error: 30.4271 - val_mean_absolute_error: 17.2962 - lr: 5.0000e-04 - 6s/epoch - 3ms/step
+Epoch 4/500
+2032/2032 - 6s - loss: 31.5059 - root_mean_squared_error: 30.8127 - mean_absolute_error: 18.1426 - val_loss: 30.1971 - val_root_mean_squared_error: 30.3685 - val_mean_absolute_error: 17.4186 - lr: 5.0000e-04 - 6s/epoch - 3ms/step
+Epoch 5/500
+2032/2032 - 6s - loss: 31.2540 - root_mean_squared_error: 30.7217 - mean_absolute_error: 18.0042 - val_loss: 29.9016 - val_root_mean_squared_error: 30.4742 - val_mean_absolute_error: 17.2610 - lr: 5.0000e-04 - 6s/epoch - 3ms/step
+Epoch 6/500
+2032/2032 - 7s - loss: 31.2610 - root_mean_squared_error: 30.8207 - mean_absolute_error: 18.0127 - val_loss: 29.8761 - val_root_mean_squared_error: 30.5383 - val_mean_absolute_error: 17.2497 - lr: 5.0000e-04 - 7s/epoch - 3ms/step
+Epoch 7/500
+2032/2032 - 7s - loss: 31.1527 - root_mean_squared_error: 30.8721 - mean_absolute_error: 17.9549 - val_loss: 29.9017 - val_root_mean_squared_error: 30.4907 - val_mean_absolute_error: 17.2601 - lr: 5.0000e-04 - 7s/epoch - 4ms/step
+Epoch 8/500
+2032/2032 - 9s - loss: 31.1342 - root_mean_squared_error: 30.8395 - mean_absolute_error: 17.9467 - val_loss: 30.0604 - val_root_mean_squared_error: 30.5796 - val_mean_absolute_error: 17.3596 - lr: 5.0000e-04 - 9s/epoch - 5ms/step
+Epoch 9/500
+2032/2032 - 8s - loss: 31.0567 - root_mean_squared_error: 30.8357 - mean_absolute_error: 17.9059 - val_loss: 29.7336 - val_root_mean_squared_error: 30.6058 - val_mean_absolute_error: 17.1776 - lr: 5.0000e-04 - 8s/epoch - 4ms/step
+Epoch 10/500
+2032/2032 - 7s - loss: 31.0060 - root_mean_squared_error: 30.8525 - mean_absolute_error: 17.8786 - val_loss: 29.8913 - val_root_mean_squared_error: 30.5650 - val_mean_absolute_error: 17.2605 - lr: 1.5000e-04 - 7s/epoch - 3ms/step
+Epoch 11/500
+2032/2032 - 9s - loss: 30.9759 - root_mean_squared_error: 30.8847 - mean_absolute_error: 17.8606 - val_loss: 29.7828 - val_root_mean_squared_error: 30.5967 - val_mean_absolute_error: 17.2067 - lr: 1.5000e-04 - 9s/epoch - 5ms/step
+Epoch 12/500
+2032/2032 - 9s - loss: 30.9189 - root_mean_squared_error: 30.8499 - mean_absolute_error: 17.8309 - val_loss: 29.5697 - val_root_mean_squared_error: 30.6476 - val_mean_absolute_error: 17.0750 - lr: 1.5000e-04 - 9s/epoch - 4ms/step
+Epoch 13/500
+2032/2032 - 7s - loss: 30.8923 - root_mean_squared_error: 30.8266 - mean_absolute_error: 17.8161 - val_loss: 29.7320 - val_root_mean_squared_error: 30.5719 - val_mean_absolute_error: 17.1825 - lr: 1.5000e-04 - 7s/epoch - 3ms/step
+Epoch 14/500
+2032/2032 - 6s - loss: 30.8774 - root_mean_squared_error: 30.8253 - mean_absolute_error: 17.8080 - val_loss: 29.9023 - val_root_mean_squared_error: 30.5163 - val_mean_absolute_error: 17.2741 - lr: 1.5000e-04 - 6s/epoch - 3ms/step
+Epoch 15/500
+2032/2032 - 9s - loss: 30.8942 - root_mean_squared_error: 30.8674 - mean_absolute_error: 17.8177 - val_loss: 29.4840 - val_root_mean_squared_error: 30.6964 - val_mean_absolute_error: 17.0237 - lr: 1.5000e-04 - 9s/epoch - 4ms/step
+Epoch 16/500
+2032/2032 - 10s - loss: 30.8543 - root_mean_squared_error: 30.8248 - mean_absolute_error: 17.7960 - val_loss: 29.7519 - val_root_mean_squared_error: 30.5936 - val_mean_absolute_error: 17.1839 - lr: 1.5000e-04 - 10s/epoch - 5ms/step
+Epoch 17/500
+2032/2032 - 8s - loss: 30.8556 - root_mean_squared_error: 30.8309 - mean_absolute_error: 17.7970 - val_loss: 29.5456 - val_root_mean_squared_error: 30.6476 - val_mean_absolute_error: 17.0605 - lr: 1.5000e-04 - 8s/epoch - 4ms/step
+Epoch 18/500
+2032/2032 - 7s - loss: 30.8848 - root_mean_squared_error: 30.8080 - mean_absolute_error: 17.8135 - val_loss: 29.6782 - val_root_mean_squared_error: 30.6058 - val_mean_absolute_error: 17.1463 - lr: 4.5000e-05 - 7s/epoch - 3ms/step
+Epoch 19/500
+2032/2032 - 7s - loss: 30.8598 - root_mean_squared_error: 30.8621 - mean_absolute_error: 17.7993 - val_loss: 29.6062 - val_root_mean_squared_error: 30.6212 - val_mean_absolute_error: 17.1036 - lr: 4.5000e-05 - 7s/epoch - 3ms/step
+{'epochs_ran': 19, 'model absolute error': 17.799287796020508, 'model rms error': 30.862136840820312, 'best val mae': 17.023725509643555}
+{'test loss': 29.97112274169922, 'test_orig_rmse': 31.04047393798828, 'test_orig_mae': 17.309528350830078}
+Minutes holdout MAE vs realised: 20.9949
+Wrote minutes predictions for 20956 fixtures

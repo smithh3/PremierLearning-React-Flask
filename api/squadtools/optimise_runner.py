@@ -1,4 +1,4 @@
-from .user_squad import AbstractSquad, UserSquad
+from .user_squad import TRANSFER_CHIPS, AbstractSquad, UserSquad
 from .predictions_report import write_predictions_csv
 from persistence import DB_Handler
 from premierlearning.config_constants import POINTS_HORIZON
@@ -106,36 +106,51 @@ class OptimiseRunner:
         this_week_count = self.transfers['scheme'][0]
         return list(self.transfers['transfer_tuple'][:this_week_count])
 
+    def _this_week_chip(self):
+        calendar = getattr(self, 'chip_calendar', None)
+        if calendar is None or self.squad is None:
+            return None
+        return calendar.chip_at(self.squad.next_gameweek)
+
     def apply_this_week_transfers(self, email, password):
-        chip = None
-        if getattr(self, 'chip_calendar', None) is not None:
-            chip = self.chip_calendar.chip_at(self.squad.next_gameweek)
-        if chip in ('wildcard', 'free_hit'):
-            print(
-                'GW %s is planned as %s; not submitting ordinary transfers. '
-                'Play the chip in FPL if you want this rebuild.'
-                % (self.squad.next_gameweek, chip)
-            )
-            self.apply_this_week_team_selection(email, password)
-            return
+        chip = self._this_week_chip()
+        transfer_chip = TRANSFER_CHIPS.get(chip)
         this_week = self.get_this_week_transfers()
         selectable_ids = load_selectable_player_ids()
         if this_week and selectable_ids:
-            available = []
-            for transfer in this_week:
-                if transfer.player_in.id not in selectable_ids:
+            blocked = [
+                transfer for transfer in this_week
+                if transfer.player_in.id not in selectable_ids
+            ]
+            if blocked and transfer_chip:
+                names = ', '.join(str(transfer) for transfer in blocked)
+                raise RuntimeError(
+                    'Refusing to play %s: %s unavailable' % (transfer_chip, names)
+                )
+            if blocked:
+                for transfer in blocked:
                     print('Skipping %s: player is unavailable' % transfer)
-                    continue
-                available.append(transfer)
-            this_week = available
-        if this_week:
-            print('Submitting %d transfer(s) for GW %s:' % (len(this_week), self.squad.next_gameweek))
-            if getattr(self.squad, 'is_pre_gw1', lambda: False)():
+                this_week = [
+                    transfer for transfer in this_week
+                    if transfer not in blocked
+                ]
+        if this_week or transfer_chip:
+            if transfer_chip:
+                print(
+                    'Submitting %d transfer(s) for GW %s with chip %s:'
+                    % (len(this_week), self.squad.next_gameweek, transfer_chip)
+                )
+            else:
+                print(
+                    'Submitting %d transfer(s) for GW %s:'
+                    % (len(this_week), self.squad.next_gameweek)
+                )
+            if getattr(self.squad, 'is_pre_gw1', lambda: False)() and not transfer_chip:
                 print('Pre-GW1: FPL treats these as free squad changes (no wildcard)')
             for transfer in this_week:
                 print('  %s' % transfer)
                 self.squad.stage_transfer(transfer)
-            self.squad.log_in_and_make_transfers(email, password)
+            self.squad.log_in_and_make_transfers(email, password, chip=chip)
             print('Transfers submitted')
         else:
             print('No transfers suggested for this gameweek; skipping transfer submit')
@@ -143,5 +158,5 @@ class OptimiseRunner:
 
     def apply_this_week_team_selection(self, email, password):
         print('Selecting starting XI')
-        self.squad.log_in_and_pick_team(email, password)
+        self.squad.log_in_and_pick_team(email, password, chip=self._this_week_chip())
         print('Starting XI submitted')

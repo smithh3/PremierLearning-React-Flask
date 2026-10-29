@@ -1,0 +1,19 @@
+{
+  "name": "02_squad_cost_yoy",
+  "note": "Top-15 FPL cost YoY nudge on team seed, fade-out GW5.",
+  "env": {
+    "PL_WIDTH_MULT": "1.5",
+    "PL_N_HIDDEN": "3",
+    "PL_DROPOUT_1": "0.1",
+    "PL_DROPOUT_2": "0.05",
+    "PL_L2": "0.00225",
+    "PL_LEARNING_RATE": "0.0005",
+    "PL_WEIGHT_DECAY": "0",
+    "PL_OPTIMIZER": "adamw",
+    "PL_REDUCE_LR_FACTOR": "0.3",
+    "PL_SQUAD_COST": "1",
+    "PL_EMAIL_TOP_N": "50"
+  },
+  "extra_args": [],
+  "reps": 1
+}

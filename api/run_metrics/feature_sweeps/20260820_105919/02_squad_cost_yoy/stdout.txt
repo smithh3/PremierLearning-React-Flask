@@ -1,0 +1,72 @@
+0.25s - Expected: c:\Users\hal\.cursor\extensions\ms-python.debugpy-2026.6.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd_attach_to_process\attach_amd64.dll to exist.
+Setting up players and teams...
+Running team expectancies...
+Seeded early-season form for 20 teams from season (25, 26)
+Promoted/new team prior (bottom-3 PL rates scored=0.97 conceded=1.82): COV, HUL, IPS
+Squad cost YoY (top 15, centered z, fade-out GW5): BOU +1.33, BRE +1.21, LEE +1.13, SUN +0.89, MCI +0.67, EVE +0.58, CHE +0.20, MUN +0.12, NFO +0.06, BHA -0.12, AVL -0.18, FUL -0.24, ARS -0.38, CRY -0.52, TOT -0.73, NEW -1.07, LIV -2.94
+Training team goals expectancy model (neural net)...
+Training rows: 5030; max epochs: 500
+Team model input columns:
+  team_scored_last_5
+  team_scored_avg
+  team_conceded_last_5
+  team_conceded_avg
+  opp_scored_last_5
+  opp_scored_avg
+  opp_conceded_last_5
+  opp_conceded_avg
+  is_home
+  fixture_difficulty
+  opp_fixture_difficulty
+Epoch 1/500
+101/101 - 2s - loss: 0.7949 - root_mean_squared_error: 1.5953 - mean_absolute_error: 1.1959 - val_loss: 0.5507 - val_root_mean_squared_error: 1.2054 - val_mean_absolute_error: 0.9413 - lr: 0.0010 - 2s/epoch - 24ms/step
+Epoch 2/500
+101/101 - 0s - loss: 0.5683 - root_mean_squared_error: 1.2432 - mean_absolute_error: 0.9595 - val_loss: 0.5233 - val_root_mean_squared_error: 1.1642 - val_mean_absolute_error: 0.9103 - lr: 0.0010 - 271ms/epoch - 3ms/step
+Epoch 3/500
+101/101 - 0s - loss: 0.5491 - root_mean_squared_error: 1.2184 - mean_absolute_error: 0.9357 - val_loss: 0.5119 - val_root_mean_squared_error: 1.1408 - val_mean_absolute_error: 0.8977 - lr: 0.0010 - 293ms/epoch - 3ms/step
+Epoch 4/500
+101/101 - 0s - loss: 0.5397 - root_mean_squared_error: 1.1993 - mean_absolute_error: 0.9251 - val_loss: 0.5055 - val_root_mean_squared_error: 1.1384 - val_mean_absolute_error: 0.8913 - lr: 0.0010 - 298ms/epoch - 3ms/step
+Epoch 5/500
+101/101 - 0s - loss: 0.5341 - root_mean_squared_error: 1.1912 - mean_absolute_error: 0.9200 - val_loss: 0.5028 - val_root_mean_squared_error: 1.1371 - val_mean_absolute_error: 0.8890 - lr: 0.0010 - 269ms/epoch - 3ms/step
+Epoch 6/500
+101/101 - 0s - loss: 0.5325 - root_mean_squared_error: 1.1903 - mean_absolute_error: 0.9186 - val_loss: 0.5007 - val_root_mean_squared_error: 1.1346 - val_mean_absolute_error: 0.8878 - lr: 0.0010 - 276ms/epoch - 3ms/step
+Epoch 7/500
+101/101 - 0s - loss: 0.5290 - root_mean_squared_error: 1.1843 - mean_absolute_error: 0.9151 - val_loss: 0.4986 - val_root_mean_squared_error: 1.1229 - val_mean_absolute_error: 0.8866 - lr: 0.0010 - 273ms/epoch - 3ms/step
+Epoch 8/500
+101/101 - 0s - loss: 0.5269 - root_mean_squared_error: 1.1805 - mean_absolute_error: 0.9127 - val_loss: 0.4975 - val_root_mean_squared_error: 1.1286 - val_mean_absolute_error: 0.8848 - lr: 0.0010 - 272ms/epoch - 3ms/step
+Epoch 9/500
+101/101 - 0s - loss: 0.5252 - root_mean_squared_error: 1.1778 - mean_absolute_error: 0.9115 - val_loss: 0.4968 - val_root_mean_squared_error: 1.1269 - val_mean_absolute_error: 0.8839 - lr: 0.0010 - 276ms/epoch - 3ms/step
+Epoch 10/500
+101/101 - 0s - loss: 0.5239 - root_mean_squared_error: 1.1774 - mean_absolute_error: 0.9095 - val_loss: 0.4970 - val_root_mean_squared_error: 1.1199 - val_mean_absolute_error: 0.8836 - lr: 0.0010 - 315ms/epoch - 3ms/step
+Epoch 11/500
+101/101 - 0s - loss: 0.5223 - root_mean_squared_error: 1.1746 - mean_absolute_error: 0.9084 - val_loss: 0.4994 - val_root_mean_squared_error: 1.1206 - val_mean_absolute_error: 0.8852 - lr: 0.0010 - 275ms/epoch - 3ms/step
+Epoch 12/500
+101/101 - 0s - loss: 0.5216 - root_mean_squared_error: 1.1699 - mean_absolute_error: 0.9079 - val_loss: 0.4964 - val_root_mean_squared_error: 1.1294 - val_mean_absolute_error: 0.8816 - lr: 0.0010 - 288ms/epoch - 3ms/step
+Epoch 13/500
+101/101 - 0s - loss: 0.5208 - root_mean_squared_error: 1.1722 - mean_absolute_error: 0.9056 - val_loss: 0.4947 - val_root_mean_squared_error: 1.1238 - val_mean_absolute_error: 0.8810 - lr: 0.0010 - 292ms/epoch - 3ms/step
+Epoch 14/500
+101/101 - 0s - loss: 0.5199 - root_mean_squared_error: 1.1709 - mean_absolute_error: 0.9045 - val_loss: 0.4952 - val_root_mean_squared_error: 1.1192 - val_mean_absolute_error: 0.8816 - lr: 0.0010 - 282ms/epoch - 3ms/step
+Epoch 15/500
+101/101 - 0s - loss: 0.5186 - root_mean_squared_error: 1.1682 - mean_absolute_error: 0.9039 - val_loss: 0.4950 - val_root_mean_squared_error: 1.1241 - val_mean_absolute_error: 0.8812 - lr: 0.0010 - 272ms/epoch - 3ms/step
+Epoch 16/500
+101/101 - 0s - loss: 0.5190 - root_mean_squared_error: 1.1718 - mean_absolute_error: 0.9034 - val_loss: 0.4953 - val_root_mean_squared_error: 1.1236 - val_mean_absolute_error: 0.8811 - lr: 0.0010 - 270ms/epoch - 3ms/step
+Epoch 17/500
+101/101 - 0s - loss: 0.5179 - root_mean_squared_error: 1.1676 - mean_absolute_error: 0.9034 - val_loss: 0.4947 - val_root_mean_squared_error: 1.1282 - val_mean_absolute_error: 0.8817 - lr: 0.0010 - 273ms/epoch - 3ms/step
+Epoch 18/500
+101/101 - 0s - loss: 0.5173 - root_mean_squared_error: 1.1695 - mean_absolute_error: 0.9024 - val_loss: 0.4960 - val_root_mean_squared_error: 1.1198 - val_mean_absolute_error: 0.8820 - lr: 0.0010 - 277ms/epoch - 3ms/step
+Epoch 19/500
+101/101 - 0s - loss: 0.5166 - root_mean_squared_error: 1.1669 - mean_absolute_error: 0.9016 - val_loss: 0.4949 - val_root_mean_squared_error: 1.1216 - val_mean_absolute_error: 0.8810 - lr: 0.0010 - 276ms/epoch - 3ms/step
+Epoch 20/500
+101/101 - 0s - loss: 0.5158 - root_mean_squared_error: 1.1645 - mean_absolute_error: 0.9011 - val_loss: 0.4950 - val_root_mean_squared_error: 1.1221 - val_mean_absolute_error: 0.8811 - lr: 5.0000e-04 - 309ms/epoch - 3ms/step
+Epoch 21/500
+101/101 - 0s - loss: 0.5148 - root_mean_squared_error: 1.1647 - mean_absolute_error: 0.8991 - val_loss: 0.4959 - val_root_mean_squared_error: 1.1209 - val_mean_absolute_error: 0.8820 - lr: 5.0000e-04 - 283ms/epoch - 3ms/step
+Epoch 22/500
+101/101 - 0s - loss: 0.5138 - root_mean_squared_error: 1.1612 - mean_absolute_error: 0.8989 - val_loss: 0.4955 - val_root_mean_squared_error: 1.1251 - val_mean_absolute_error: 0.8817 - lr: 5.0000e-04 - 272ms/epoch - 3ms/step
+Epoch 23/500
+101/101 - 0s - loss: 0.5142 - root_mean_squared_error: 1.1652 - mean_absolute_error: 0.8988 - val_loss: 0.4954 - val_root_mean_squared_error: 1.1217 - val_mean_absolute_error: 0.8819 - lr: 5.0000e-04 - 282ms/epoch - 3ms/step
+{'team_model_train_mae': 0.8988404273986816, 'team_model_test_mae': 0.9241235475416922, 'team_model_test_rmse': 1.1750770427080148, 'epochs_ran': 23, 'pred_range': (0.3017357289791107, 2.8404994010925293)}
+Seeded early-season form for 20 teams from season (25, 26)
+Promoted/new team prior (bottom-3 PL rates scored=0.97 conceded=1.82): COV, HUL, IPS
+Squad cost YoY (top 15, centered z, fade-out GW5): BOU +1.33, BRE +1.21, LEE +1.13, SUN +0.89, MCI +0.67, EVE +0.58, CHE +0.20, MUN +0.12, NFO +0.06, BHA -0.12, AVL -0.18, FUL -0.24, ARS -0.38, CRY -0.52, TOT -0.73, NEW -1.07, LIV -2.94
+Team expectancies applied to all fixtures
+Wrote 380 predicted scorelines to predicted_scorelines.json

@@ -1,0 +1,103 @@
+Horizon rep 4/10 — 20260822_212927
+==================================
+
+session
+-------
+{
+  "argv": [
+    "C:\\Users\\hal\\Documents\\git\\premierlearningweb\\premier-learning-app\\api\\premierlearning\\__main__.py",
+    "--no-persist",
+    "--horizon-only",
+    "--horizon-reps",
+    "10"
+  ],
+  "log_targets": true,
+  "n_predict_rows": 385,
+  "n_reps_averaged": 10,
+  "n_reps_requested": 10,
+  "n_test_rows": 10182,
+  "n_train_rows": 40725,
+  "output_key": "total_points",
+  "selection_threshold_val_mae": 1.722911,
+  "sweep_trial": "01_form_3_7",
+  "timestamp": "20260822_212927"
+}
+
+model_config
+------------
+{
+  "average_all_reps": false,
+  "batch_size": 32,
+  "dropout_1": 0.1,
+  "dropout_2": 0.05,
+  "early_stopping_patience": 25,
+  "hidden_layers": [
+    36,
+    18,
+    9
+  ],
+  "huber_delta": 1.8,
+  "l2": 0.00225,
+  "learning_rate": 0.0005,
+  "loss": "Huber(delta=1.8)",
+  "max_epochs": 500,
+  "n_features": 24,
+  "n_hidden": 3,
+  "optimizer": "AdamW",
+  "reduce_lr_factor": 0.3,
+  "reduce_lr_min": 1e-05,
+  "reduce_lr_patience": 8,
+  "val_mae_keep_ratio": 1.08,
+  "weight_decay": 0.0,
+  "width_mult": 1.5
+}
+
+rep_stats
+---------
+{
+  "best_val_mae": 1.601478,
+  "best_val_rmse": 3.402626,
+  "epochs_ran": 77,
+  "final_lr": 1e-05,
+  "final_val_mae": 1.601863,
+  "final_val_rmse": 3.415494,
+  "kept_for_avg": true,
+  "max_epochs": 500,
+  "pred_max": 6.867453,
+  "pred_mean": 4.239974,
+  "pred_min": 2.309583,
+  "rep_index": 4,
+  "selection_rmse": 2.815176,
+  "test_loss": 0.075501,
+  "test_mae": 3.044314,
+  "test_rmse": 1.521507,
+  "train_mae": 1.54712,
+  "train_rmse": 2.815176
+}
+
+feature_columns
+---------------
+matches_played
+is_gkp
+is_def
+is_mid
+is_att
+last_season_points_per_90
+last_season_xgi_per_90
+two_season_prior_points_per_90
+new_stats_included
+team_xg_next_5
+team_xc_next_5
+team_xg_last_5
+team_xc_last_5
+defcon_last_7_per_90_excl_null_x_non_att
+team_xg_next_5_x_outfield
+last_season_points_per_90_x_early
+points_last_3_per_90_excl_null
+points_last_7_per_90_excl_null
+xgi_last_3_per_90_excl_null
+xgi_last_7_per_90_excl_null
+xgc_last_3_per_90_excl_null
+xgc_last_7_per_90_excl_null
+defcon_last_3_per_90_excl_null
+defcon_last_7_per_90_excl_null

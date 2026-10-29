@@ -1,0 +1,4 @@
+arm,fit,smear,reps,actual_mean,fixture_mae,fixture_mae_std,fixture_rmse,fixture_rmse_std,fixture_skill,fixture_skill_std,window_mae,window_mae_std,window_rmse,window_rmse_std,window_skill,window_skill_std,calibration,calibration_std,spearman,spearman_std,top20,top20_std,pred_mean,pred_mean_std,note
+01_h1_base,h1_base,off,1,7.3379,5.5345,0.0,21.4598,0.0,0.0058,0.0,1.9355,0.0,4.3866,0.0,0.0035,0.0,0.479,0.0,0.1919,0.0,0.0917,0.0,3.5147,0.0,Baseline single-gameweek model.
+02_h1_smear,h1_base,global,1,7.3379,6.5226,0.0,21.1151,0.0,-0.1717,0.0,3.0721,0.0,4.7002,0.0,-0.5817,0.0,0.9134,0.0,0.1919,0.0,0.0917,0.0,6.7025,0.0,"Baseline plus a global smearing correction: level moves, ranks do not."
+03_h1_relsmear,h1_base,relative,1,7.3379,5.5618,0.0,21.4456,0.0,0.0009,0.0,1.9613,0.0,4.3707,0.0,-0.0098,0.0,0.4891,0.0,0.1914,0.0,0.0917,0.0,3.5889,0.0,"Baseline plus relative smearing only: ranks move, level holds."

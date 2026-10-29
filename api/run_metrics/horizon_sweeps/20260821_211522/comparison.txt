@@ -1,0 +1,9 @@
+Horizon-5 hyperparameter sweep comparison
+Current historical-prediction default: 1.5x, 3 layers, Dropout 0.1/0.05, L2 2.25e-3, LR 5e-4, AdamW wd 0, ReduceLR 0.3, Huber 1.8, batch 32. 5 horizon reps (same as prediction_builder --horizon-reps 5). horizon-only so tau/jaccard/Haaland compare to HISTORY.md.
+Higher kendall/jaccard and lower pred_std = stabler ranks.
+haaland_pts is 5-GW total in --horizon-only mode (not h1 pp90).
+
+trial                             tau      j20     pstd     reps   epochs     H_rk    H_pts  testMAE
+----------------------------------------------------------------------------------------------------
+01_current_default_5rep        0.9495   0.8291   0.0687      5/5     85.4                     2.8823
+    Live/historical default net on the current feature set (two-season priors, *_x_early, team xG). Same body as 20260819_121445 01_control, 5 reps instead of 10 so it matches prediction_builder.

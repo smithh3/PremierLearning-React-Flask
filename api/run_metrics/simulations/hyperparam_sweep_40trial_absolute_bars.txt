@@ -1,0 +1,101 @@
+Simulation hyperparameter sweep
+Append-only log: hyperparam_sweep.jsonl
+
+#      pts szn     rank   top%  trn  hold label                  knobs                            chips
+1     2352  24   957036   8.34   60    17 10_rot_off             dgw_h2=2.0 earliest=3 fh_dgw=2.0 WC 11,30 BB 12 FH 16 TC 24
+2     2229  24  2432966  21.20   56    18 01_mid                 dgw_h2=2.0 earliest=3 fh_dgw=2.0 WC 6,26 BB 7 FH 10 TC 12
+3     2229  24  2432966  21.20   56    18 02_dgw_off             dgw_h2=2.0 earliest=3 fh_dgw=0.0 WC 6,26 BB 7 FH 10 TC 12
+4     2229  24  2432966  21.20   56    18 03_dgw_light           dgw_h2=2.0 earliest=3 fh_dgw=1.0 WC 6,26 BB 7 FH 10 TC 12
+5     2229  24  2432966  21.20   56    18 04_dgw_heavy           dgw_h2=2.0 earliest=3 fh_dgw=4.0 WC 6,26 BB 7 FH 10 TC 12
+6     2229  24  2432966  21.20   56    18 06_h2_flat             dgw_h2=1.0 earliest=3 fh_dgw=2.0 WC 6,26 BB 7 FH 10 TC 12
+7     2229  24  2432966  21.20   56    18 07_h2_mild             dgw_h2=1.5 earliest=3 fh_dgw=2.0 WC 6,26 BB 7 FH 10 TC 12
+8     2229  24  2432966  21.20   56    18 08_h2_strong           dgw_h2=3.0 earliest=3 fh_dgw=2.0 WC 6,26 BB 7 FH 10 TC 12
+9     2229  24  2432966  21.20   56    18 09_h2_extreme          dgw_h2=6.0 earliest=3 fh_dgw=2.0 WC 6,26 BB 7 FH 10 TC 12
+10    2229  24  2432966  21.20   56    18 12_rot_heavy           dgw_h2=2.0 earliest=3 fh_dgw=2.0 WC 6,26 BB 7 FH 10 TC 12
+11    2211  24  2686388  23.41   56    18 05_dgw_extreme         dgw_h2=2.0 earliest=3 fh_dgw=10. WC 6,28 BB 7 FH 10 TC 12
+12    2211  24  2686388  23.41   56    18 11_rot_light           dgw_h2=2.0 earliest=3 fh_dgw=2.0 WC 6,28 BB 7 FH 10 TC 12
+13    2168  25  1269021   9.87   64    17 39_stuck_rot           dgw_h2=2.0 earliest=3 fh_dgw=2.0 WC 4,22 BB 5,23 FH 13,30 TC 17,33
+14    2108  25  2140004  16.64   62    17 27_hz_long             dgw_h2=2.0 earliest=3 fh_dgw=2.0 WC 7,29 BB 8,30 FH 4,24 TC 17,33
+15    2092  25  2399065  18.66   65    16 34_rot_wc_low          dgw_h2=2.0 earliest=3 fh_dgw=2.0 WC 3,20 BB 4,21 FH 8,26 TC 17,33
+16    2091  25  2416260  18.79   62    15 13_rot_extreme         dgw_h2=2.0 earliest=3 fh_dgw=2.0 WC 4,21 BB 5,22 FH 8,26 TC 7,33
+17    2055  25  3016759  23.46   65     1 40_noroll_rot          dgw_h2=2.0 earliest=3 fh_dgw=2.0 WC 3,20 BB 4,21 FH 7,24 TC 17,33
+18    2047  25  3165302  24.61   63    17 35_wait_dgw            dgw_h2=6.0 earliest=8 fh_dgw=10. WC 12,23 BB 13,24 FH 8,22 TC 17,33
+19    2042  25  3261832  25.37   62    17 37_patient             dgw_h2=6.0 earliest=8 fh=16.0 fh WC 12,24 BB 13,25 FH 8,22 TC 17,33
+20    2039  25  3321158  25.83   62    16 19_earliest_8          dgw_h2=2.0 earliest=8 fh_dgw=2.0 WC 8,24 BB 9,25 FH 13,20 TC 17,33
+21    2033  25  3425354  26.64   66    16 01_mid                 dgw_h2=2.0 earliest=3 fh_dgw=2.0 WC 8,23 BB 9,24 FH 4,20 TC 17,33
+22    2033  25  3425354  26.64   66    16 02_dgw_off             dgw_h2=2.0 earliest=3 fh_dgw=0.0 WC 8,23 BB 9,24 FH 4,20 TC 17,33
+23    2033  25  3425354  26.64   66    16 03_dgw_light           dgw_h2=2.0 earliest=3 fh_dgw=1.0 WC 8,23 BB 9,24 FH 4,20 TC 17,33
+24    2033  25  3425354  26.64   66    16 04_dgw_heavy           dgw_h2=2.0 earliest=3 fh_dgw=4.0 WC 8,23 BB 9,24 FH 4,20 TC 17,33
+25    2033  25  3425354  26.64   66    16 05_dgw_extreme         dgw_h2=2.0 earliest=3 fh_dgw=10. WC 8,23 BB 9,24 FH 4,20 TC 17,33
+26    2033  25  3425354  26.64   66    16 06_h2_flat             dgw_h2=1.0 earliest=3 fh_dgw=2.0 WC 8,23 BB 9,24 FH 4,20 TC 17,33
+27    2033  25  3425354  26.64   66    16 07_h2_mild             dgw_h2=1.5 earliest=3 fh_dgw=2.0 WC 8,23 BB 9,24 FH 4,20 TC 17,33
+28    2033  25  3425354  26.64   66    16 08_h2_strong           dgw_h2=3.0 earliest=3 fh_dgw=2.0 WC 8,23 BB 9,24 FH 4,20 TC 17,33
+29    2033  25  3425354  26.64   66    16 09_h2_extreme          dgw_h2=6.0 earliest=3 fh_dgw=2.0 WC 8,23 BB 9,24 FH 4,20 TC 17,33
+30    2033  25  3425354  26.64   66    16 10_rot_off             dgw_h2=2.0 earliest=3 fh_dgw=2.0 WC 8,23 BB 9,24 FH 4,20 TC 17,33
+31    2033  25  3425354  26.64   66    16 11_rot_light           dgw_h2=2.0 earliest=3 fh_dgw=2.0 WC 8,23 BB 9,24 FH 4,20 TC 17,33
+32    2033  25  3425354  26.64   66    16 14_early_off           dgw_h2=2.0 earliest=3 fh_dgw=2.0 WC 8,23 BB 9,24 FH 4,20 TC 17,33
+33    2033  25  3425354  26.64   66    16 15_early_light         dgw_h2=2.0 earliest=3 fh_dgw=2.0 WC 8,23 BB 9,24 FH 4,20 TC 17,33
+34    2033  25  3425354  26.64   66    16 16_early_heavy         dgw_h2=2.0 earliest=3 fh_dgw=2.0 WC 8,23 BB 9,24 FH 4,20 TC 17,33
+35    2033  25  3425354  26.64   66    16 17_early_extreme       dgw_h2=2.0 earliest=3 fh_dgw=2.0 WC 8,23 BB 9,24 FH 4,20 TC 17,33
+36    2033  25  3425354  26.64   66    16 24_mh_low              dgw_h2=2.0 earliest=3 fh_dgw=2.0 WC 8,23 BB 9,24 FH 4,20 TC 17,33
+37    2033  25  3425354  26.64   66    16 28_tc_loose            dgw_h2=2.0 earliest=3 fh_dgw=2.0 WC 8,23 BB 9,24 FH 4,20 TC 17,33
+38    2033  25  3425354  26.64   66    16 30_fh_gap_0            dgw_h2=2.0 earliest=3 fh_dgw=2.0 WC 8,23 BB 9,24 FH 4,20 TC 17,33
+39    2033  25  3425354  26.64   66    16 31_fh_gap_6            dgw_h2=2.0 earliest=3 fh_dgw=2.0 WC 8,23 BB 9,24 FH 4,20 TC 17,33
+40    2031  25  3459618  26.90   60    12 38_churn               dgw_h2=2.0 earliest=3 fh_dgw=2.0 WC 12,31 BB 13,32 FH 3,20 TC 7,26
+41    2026  25  3546784  27.58   66    16 22_fh_low              dgw_h2=2.0 earliest=3 fh=6.0 fh_ WC 8,23 BB 9,24 FH 3,20 TC 17,33
+42    2023  25  3600135  28.00   66    16 29_tc_tight            dgw_h2=2.0 earliest=3 fh_dgw=2.0 WC 8,23 BB 9,24 FH 4,20 TC 19,33
+43    2010  25  3840750  29.87   63    17 33_rot_vs_early        dgw_h2=2.0 earliest=3 fh_dgw=2.0 WC 6,20 BB 7,21 FH 4,26 TC 17,33
+44    2009  25  3859912  30.02   66    17 25_mh_high             dgw_h2=2.0 earliest=3 fh_dgw=2.0 WC 8,23 BB 9,24 FH 4,22 TC 17,33
+45    2009  25  3859912  30.02   64    17 36_aggressive          dgw_h2=2.0 earliest=3 fh=6.0 fh_ WC 3,20 BB 4,21 FH 7,24 TC 17,33
+46    2002  25  3996747  31.08   62    17 23_fh_high             dgw_h2=2.0 earliest=3 fh=16.0 fh WC 8,24 BB 9,25 FH 13,31 TC 7,33
+47    1991  25  4218235  32.80   66    16 12_rot_heavy           dgw_h2=2.0 earliest=3 fh_dgw=2.0 WC 8,22 BB 9,23 FH 4,20 TC 17,33
+48    1984  25  4347032  33.80   62    16 21_wc_high             dgw_h2=2.0 earliest=3 fh_dgw=2.0 WC 12,22 BB 13,23 FH 4,20 TC 17,33
+49    1982  25  4382729  34.08   63    16 18_earliest_5          dgw_h2=2.0 earliest=5 fh_dgw=2.0 WC 8,22 BB 9,23 FH 6,20 TC 7,33
+50    1976  25  4491590  34.93   61     1 32_no_roll             dgw_h2=2.0 earliest=3 fh_dgw=2.0 WC 11,23 BB 12,24 FH 9,31 TC 7,33
+51    1958  25  4834667  37.60   63    16 26_hz_short            dgw_h2=2.0 earliest=3 fh_dgw=2.0 WC 12,23 BB 13,24 FH 3,22 TC 7,26
+52    1930  25  5348951  41.60   63    18 20_wc_low              dgw_h2=2.0 earliest=3 fh_dgw=2.0 WC 6,22 BB 7,23 FH 4,21 TC 17,33
+
+Per-trial consistency across seasons (top%% of the FPL field, lower is better)
+Newest run per trial and season only. Blank means that season has not run.
+
+trial                   n     s24     s25    mean  worst spread mean pts
+39_stuck_rot            1       -    9.87    9.87   9.87   0.00     2168
+27_hz_long              1       -   16.64   16.64  16.64   0.00     2108
+10_rot_off              2    8.34   26.64   17.49  26.64  18.30     2192
+34_rot_wc_low           1       -   18.66   18.66  18.66   0.00     2092
+13_rot_extreme          1       -   18.79   18.79  18.79   0.00     2091
+40_noroll_rot           1       -   23.46   23.46  23.46   0.00     2055
+01_mid                  2   21.20   26.64   23.92  26.64   5.44     2131
+02_dgw_off              2   21.20   26.64   23.92  26.64   5.44     2131
+03_dgw_light            2   21.20   26.64   23.92  26.64   5.44     2131
+04_dgw_heavy            2   21.20   26.64   23.92  26.64   5.44     2131
+06_h2_flat              2   21.20   26.64   23.92  26.64   5.44     2131
+07_h2_mild              2   21.20   26.64   23.92  26.64   5.44     2131
+08_h2_strong            2   21.20   26.64   23.92  26.64   5.44     2131
+09_h2_extreme           2   21.20   26.64   23.92  26.64   5.44     2131
+35_wait_dgw             1       -   24.61   24.61  24.61   0.00     2047
+05_dgw_extreme          2   23.41   26.64   25.02  26.64   3.23     2122
+11_rot_light            2   23.41   26.64   25.02  26.64   3.23     2122
+37_patient              1       -   25.37   25.37  25.37   0.00     2042
+19_earliest_8           1       -   25.83   25.83  25.83   0.00     2039
+14_early_off            1       -   26.64   26.64  26.64   0.00     2033
+15_early_light          1       -   26.64   26.64  26.64   0.00     2033
+16_early_heavy          1       -   26.64   26.64  26.64   0.00     2033
+17_early_extreme        1       -   26.64   26.64  26.64   0.00     2033
+24_mh_low               1       -   26.64   26.64  26.64   0.00     2033
+28_tc_loose             1       -   26.64   26.64  26.64   0.00     2033
+30_fh_gap_0             1       -   26.64   26.64  26.64   0.00     2033
+31_fh_gap_6             1       -   26.64   26.64  26.64   0.00     2033
+38_churn                1       -   26.90   26.90  26.90   0.00     2031
+12_rot_heavy            2   21.20   32.80   27.00  32.80  11.60     2110
+22_fh_low               1       -   27.58   27.58  27.58   0.00     2026
+29_tc_tight             1       -   28.00   28.00  28.00   0.00     2023
+33_rot_vs_early         1       -   29.87   29.87  29.87   0.00     2010
+25_mh_high              1       -   30.02   30.02  30.02   0.00     2009
+36_aggressive           1       -   30.02   30.02  30.02   0.00     2009
+23_fh_high              1       -   31.08   31.08  31.08   0.00     2002
+21_wc_high              1       -   33.80   33.80  33.80   0.00     1984
+18_earliest_5           1       -   34.08   34.08  34.08   0.00     1982
+32_no_roll              1       -   34.93   34.93  34.93   0.00     1976
+26_hz_short             1       -   37.60   37.60  37.60   0.00     1958
+20_wc_low               1       -   41.60   41.60  41.60   0.00     1930

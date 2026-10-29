@@ -1,0 +1,11 @@
+Horizon-5 hyperparameter sweep comparison
+Same form-window A/B (last-3 vs last-5 short form, both with a 7-appearance avg) with playing-time points stripped from train labels (1 for any appearance, 2 if 60+) and +2 restored on predicted pp90. 10 horizon reps averaged. Same 1.5x / 3-layer body. horizon-only so tau/jaccard/Haaland compare to HISTORY.md.
+Higher kendall/jaccard and lower pred_std = stabler ranks.
+haaland_pts is 5-GW total in --horizon-only mode (not h1 pp90).
+maePstd is the population std of per-rep test MAE.
+
+trial                             tau      j20     pstd     reps   epochs     H_rk    H_pts  testMAE  maePstd
+-------------------------------------------------------------------------------------------------------------
+01_form_3_7                     0.916   0.8839    0.049    10/10     65.7                     2.1189   0.0026
+    Current default: last-3 form + last-7 avg. Playing-time strip/restore. 10 reps averaged.
+02_form_5_7                                                    /                                             

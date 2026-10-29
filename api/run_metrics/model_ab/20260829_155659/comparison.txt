@@ -1,0 +1,14 @@
+Horizon vs single-gameweek, scored on one forward holdout
+Holdout 25/26 GW21-38; trained on earlier seasons + GW1-20.
+4170 windows, 18395 fixtures. Realised minutes on both sides, so the minutes model is not involved.
+fMAE/wMAE: fixture- and window-level pp90 error (lower better).
+skill: 1 - MAE/constant-median MAE (higher better; 0 = no better than a constant).
+cal: mean predicted / mean actual (1.0 is calibrated).
+rho / top20: within-gameweek rank correlation and top-20 overlap (higher better).
+Actual mean fixture pp90 = 7.3379.
+
+arm                         fMAE       ±  fSkill    wMAE  wSkill     cal     rho   top20
+----------------------------------------------------------------------------------------
+01_h1_base                5.5345     0.0  0.0058  1.9355  0.0035   0.479  0.1919  0.0917
+02_h1_smear               6.5226     0.0 -0.1717  3.0721 -0.5817  0.9134  0.1919  0.0917
+03_h1_relsmear            5.5618     0.0  0.0009  1.9613 -0.0098  0.4891  0.1914  0.0917

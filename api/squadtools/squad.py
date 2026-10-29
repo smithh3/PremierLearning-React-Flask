@@ -48,8 +48,8 @@ class AbstractSquad(ABC):
         return get_current_gameweek() == 0 and self.next_gameweek <= 1
 
     def populate_from_manager_id(self, manager_id):
-        self.manager_id = manager_id
-        manager_json = requests.get(MANAGER_API % manager_id).json()
+        self.manager_id = int(manager_id)
+        manager_json = requests.get(MANAGER_API % self.manager_id).json()
         last_gameweek = manager_json['current_event']
         if last_gameweek is None and self.is_pre_gw1():
             last_gameweek = 1

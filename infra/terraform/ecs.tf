@@ -33,6 +33,8 @@ locals {
     { name = "AWS_DEFAULT_REGION", value = var.aws_region },
     { name = "NOTIFY_EMAIL", value = var.notify_email },
     { name = "SES_FROM_EMAIL", value = var.ses_from_email != "" ? var.ses_from_email : var.notify_email },
+    { name = "PIPELINE_SCHEDULE_NAME", value = var.enable_schedule ? "${var.name_prefix}-daily" : "" },
+    { name = "SCHEDULE_HOURS_BEFORE_DEADLINE", value = "2" },
   ]
 }
 

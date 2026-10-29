@@ -1,0 +1,40 @@
+Horizon vs single-gameweek, scored on one forward holdout
+Holdout 24/25 GW21-38; trained on earlier seasons + GW1-20.
+4252 windows, 21492 fixtures. Expected points use a shared minutes model (pp90 x predicted minutes / 90). Minutes holdout MAE 21.5429.
+
+wMAE   minutes-weighted pp90 error, and sd across reps (lower better).
+       Unweighted fMAE is in the csv but a 5-minute goalscorer posts a pp90
+       over 100, so cameos dominate it. Mean realised pp90 is 5.7928 overall but
+       3.7109 among starters.
+skill  1 - MAE/constant-median MAE. 0 means no better than a constant.
+cal    total predicted points / total actual points. 1.0 is calibrated.
+rho    within-gameweek rank correlation, all players, on expected vs actual points.
+top20  share of the actual top 20 that the arm also ranked top 20.
+cal_lo / cal_hi  calibration in the lowest and highest predicted-points decile.
+wMAE and cal disagree on purpose: MAE on a heavy tail is minimised near the
+median, so an arm can win wMAE while being badly mis-levelled on cal.
+
+arm                          wMAE     sd  wSkill    cal    rho   top20  cal_lo  cal_hi
+--------------------------------------------------------------------------------------
+01_h1_base                 2.3724 0.0176  0.0182 0.7774 0.5078  0.2394  0.0184  0.9148
+04_h1_mw                    2.308 0.0134  0.0448 0.7183 0.5113   0.235  0.0153  0.9004
+07_h1_poisson_mw           2.4937 0.0237  -0.032 0.9317 0.5112  0.2489  0.0203  1.1279
+10_hz_base                 2.5099 0.0096 -0.0387 0.9058 0.5051  0.2644  0.0198  1.1137
+16_hz_poisson_mw           2.5608 0.0146 -0.0598 0.9487 0.5042  0.2628  0.0205  1.1742
+20_h1_huber_raw_mw         2.2892 0.0059  0.0527 0.7117 0.5131    0.24  0.0154  0.8894
+21_h1_mse_raw_mw           2.4685 0.0173 -0.0216 0.9079 0.5085  0.2517  0.0205  1.1267
+22_h1_tweedie_mw           2.4653 0.0357 -0.0203 0.9099 0.5113  0.2411    0.02  1.1028
+23_h1_hurdle               2.3354  0.009  0.0335 0.7459 0.5131  0.2405   0.013  0.9508
+
+Predicted-points calibration by decile (d1 = we called lowest):
+arm                           d1      d2      d3      d4      d5      d6      d7      d8      d9     d10
+--------------------------------------------------------------------------------------------------------
+01_h1_base                0.0184  0.0984  0.5157  0.8029  0.7486  0.8742  0.9889  0.9352  0.9697  0.9148
+04_h1_mw                  0.0153  0.0815  0.4352  0.7142  0.7168  0.8343  0.8989  0.8518  0.8392  0.9004
+07_h1_poisson_mw          0.0203  0.1065  0.5707  0.9837  0.9958  1.1299  1.1301  1.0675   1.091  1.1279
+10_hz_base                0.0198  0.1088  0.5595    0.98  0.9283  1.0585  1.0593  1.0892  1.0761  1.1137
+16_hz_poisson_mw          0.0205   0.109  0.5824  0.9986  1.0323  1.0887  1.1076  1.0951  1.1449  1.1742
+20_h1_huber_raw_mw        0.0154  0.0803  0.4248  0.7243  0.7391  0.8607  0.8835  0.8193  0.8152  0.8894
+21_h1_mse_raw_mw          0.0205  0.1026  0.5534  0.9409  1.0063  1.0609  1.1023  1.0345  1.0474  1.1267
+22_h1_tweedie_mw            0.02  0.1041  0.5542  0.9118  0.9795  1.0959  1.1145  1.0578  1.0624  1.1028
+23_h1_hurdle               0.013  0.0767  0.4391  0.6593  0.7913  0.8353  0.9313  0.8689   0.889  0.9508

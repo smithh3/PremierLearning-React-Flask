@@ -217,6 +217,47 @@ BASELINE = dict(
 RESULTS_DIR = Path(__file__).resolve().parents[1] / 'run_metrics' / 'simulations'
 JSONL_PATH = RESULTS_DIR / 'hyperparam_sweep.jsonl'
 TABLE_PATH = RESULTS_DIR / 'hyperparam_sweep.txt'
+_RESULTS_TAG = None
+
+# Last 20-trial run's variants worth replaying under a new prediction model:
+# baseline, best 25/26, long hz, high FH bar, short hz (2nd on 24/25).
+H1_POISSON_TRIALS = (
+    '02_hz4',
+    '15_mh_max_hz4',
+    '04_hz6',
+    '19_fh_hi',
+    '01_hz3',
+)
+
+# Horizon-model cells that beat or matched Poisson-h1 on 25/26, or won 24/25,
+# and were not in the first Poisson replay. 15_mh_max_hz4 already ran (and
+# collapsed to the baseline); 17_wc_equiv was identical to 16_rot_hi in 25/26.
+H1_POISSON_OLD_WINNER_TRIALS = (
+    '11_mh_off_hz6',
+    '09_hz6_lo',
+    '16_rot_hi',
+    '13_rot_hi_hz6',
+    '06_wc_hi',
+)
+
+
+def apply_results_tag(tag):
+    """Write this sweep's logs under run_metrics/simulations/<tag>/."""
+    global RESULTS_DIR, JSONL_PATH, TABLE_PATH, _RESULTS_TAG
+    root = Path(__file__).resolve().parents[1] / 'run_metrics' / 'simulations'
+    safe = None
+    if tag:
+        safe = ''.join(
+            ch if ch.isalnum() or ch in '-_' else '-' for ch in str(tag)
+        )
+        if not safe:
+            raise SystemExit('--tag must contain a letter or number')
+        root = root / safe
+    _RESULTS_TAG = safe
+    RESULTS_DIR = root
+    JSONL_PATH = RESULTS_DIR / 'hyperparam_sweep.jsonl'
+    TABLE_PATH = RESULTS_DIR / 'hyperparam_sweep.txt'
+    return RESULTS_DIR
 
 
 def trial_overrides(trial):
@@ -436,11 +477,15 @@ def _describe_prediction_set(db_handler, prediction_set_id):
         )
     )
     print(
-        '  training=%s minutes_reps=%s horizon_reps=%s team_expectancies=%s'
+        '  training=%s minutes_reps=%s horizon_reps=%s points_loss=%s '
+        'mw=%s horizon_model=%s team_expectancies=%s'
         % (
             config.get('training_schedule') or meta.get('training_policy'),
             config.get('minutes_reps'),
             config.get('horizon_reps'),
+            config.get('points_loss') or 'huber',
+            config.get('points_minutes_weight'),
+            config.get('horizon_model'),
             config.get('team_expectancies'),
         )
     )
@@ -452,7 +497,7 @@ def _describe_prediction_set(db_handler, prediction_set_id):
             'simulation.prediction_builder --minutes-reps 5'
             % minutes_reps
         )
-    if horizon_reps not in (None, 5):
+    if config.get('horizon_model', True) and horizon_reps not in (None, 5):
         print(
             'WARNING: cache horizon_reps=%s (want 5). Rebuild with '
             '--horizon-reps 5'
@@ -466,6 +511,14 @@ def build_parser():
     )
     parser.add_argument('--from', dest='start', type=int, default=1)
     parser.add_argument('--only', type=int)
+    parser.add_argument(
+        '--trials',
+        help='Comma-separated trial names or 1-based indices from the grid',
+    )
+    parser.add_argument(
+        '--tag',
+        help='Write jsonl/logs under run_metrics/simulations/<tag>/',
+    )
     parser.add_argument(
         '--resume',
         action='store_true',
@@ -501,6 +554,28 @@ def build_parser():
     return parser
 
 
+def _parse_trial_tokens(value):
+    if not isinstance(value, str) or not value.strip():
+        return []
+    return [part.strip() for part in value.split(',') if part.strip()]
+
+
+def _trial_by_token(token):
+    if token.isdigit():
+        index = int(token)
+        if not 1 <= index <= len(TRIALS):
+            raise SystemExit('--trials index must be between 1 and %s' % len(TRIALS))
+        return index, TRIALS[index - 1]
+    trial = TRIAL_BY_NAME.get(token)
+    if trial is None:
+        raise SystemExit(
+            'Unknown trial %s. Names: %s'
+            % (token, ', '.join(t['name'] for t in TRIALS))
+        )
+    index = next(i for i, item in enumerate(TRIALS, start=1) if item['name'] == token)
+    return index, trial
+
+
 def selected_trials(args):
     if getattr(args, 'baseline', False) is True:
         return [(0, BASELINE)]
@@ -509,6 +584,9 @@ def selected_trials(args):
         if not 1 <= index <= len(TRIALS):
             raise SystemExit('--only must be between 1 and %s' % len(TRIALS))
         return [(index, TRIALS[index - 1])]
+    tokens = _parse_trial_tokens(getattr(args, 'trials', None))
+    if tokens:
+        return [_trial_by_token(token) for token in tokens]
     start = int(args.start)
     if not 1 <= start <= len(TRIALS):
         raise SystemExit('--from must be between 1 and %s' % len(TRIALS))
@@ -627,7 +705,7 @@ def _worker_cwd():
     return str(Path(__file__).resolve().parents[1])
 
 
-def _worker_command(index, prediction_set_id, season, trial=None):
+def _worker_command(index, prediction_set_id, season, trial=None, tag=None):
     cmd = [
         _worker_python(),
         '-m',
@@ -644,6 +722,10 @@ def _worker_command(index, prediction_set_id, season, trial=None):
         cmd.append('--baseline')
     else:
         cmd.extend(['--only', str(index)])
+    if tag is None:
+        tag = _RESULTS_TAG
+    if tag:
+        cmd.extend(['--tag', str(tag)])
     return cmd
 
 
@@ -1028,6 +1110,7 @@ def main(argv=None):
     from squadtools.simulation_strategy import ensure_quiet_cbc
 
     args = build_parser().parse_args(argv)
+    apply_results_tag(args.tag if isinstance(getattr(args, 'tag', None), str) else None)
     if args.internal_worker:
         return _run_internal_worker(args)
     season = int(args.season)

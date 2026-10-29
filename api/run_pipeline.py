@@ -7,15 +7,19 @@ Environment:
   SUGGEST_TRANSFERS=true  Print suggestions without submitting (default if no apply flag).
   PREMIERLEARNING_ARGS    Extra argv for learning, e.g. "--horizon-reps 5"
                           (horizon-N and minutes average 5 fits; h1 points stay 1).
-                          Add --horizon-only to skip minutes. Pipeline/Fargate
-                          always prepends --update so injury news is pulled live;
-                          pass --no-update to keep the files copied into the image.
+                          Add --horizon-only to skip minutes. Add --h1-poisson for
+                          Poisson h1 + minutes/90 weights and no horizon net
+                          (5 h1 fits). Pipeline/Fargate always prepends --update
+                          so injury news is pulled live; pass --no-update to keep
+                          the files copied into the image.
   APPLY_WITHIN_HOURS      If set, refuse apply unless the next GW deadline is within this many hours.
   LOGIN_ONLY=1            Skip learning and squadtools; only verify FPL login.
   FPL_STATUS_CHECK=1      Print HTTP/Playwright status for FPL URLs, then exit.
   SKIP_FPL_EGRESS_CHECK=1 Skip the runtime egress-IP / FPL 200 probe.
   LEARNING_DONE_QUEUE_URL If set, publish an SQS message after a successful persist (phase 2).
   APPLY_ON_DEADLINE_DAY=true  If set (default on Fargate), apply transfers when today is the next GW deadline (UK).
+  PIPELINE_SCHEDULE_NAME  If set, move that EventBridge schedule to two hours before the following deadline.
+  SCHEDULE_HOURS_BEFORE_DEADLINE  Hours before that deadline to book (default 2).
   SKIP_BENCH_FILL=true        Skip the second-pass bench refill (rotating XI only).
                               Default is first two outfield bench slots 0.25, other slots 0.
   NOTIFY_EMAIL            If set, email HTML player predictions (and suggested transfers) via SES.
@@ -24,7 +28,7 @@ Environment:
 import os
 import shlex
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 from flask import Flask
 
@@ -311,6 +315,69 @@ def run_status_check():
     print('FPL_STATUS_CHECK done')
 
 
+def _schedule_next_deadline_run():
+    """Book the following gameweek for two hours before its deadline.
+
+    The morning cron is gone. This run is the one near a deadline, so it
+    leaves the scheduler pointing at the deadline after that.
+    """
+    name = (os.environ.get('PIPELINE_SCHEDULE_NAME') or '').strip()
+    if not name:
+        return
+    try:
+        hours = float(os.environ.get('SCHEDULE_HOURS_BEFORE_DEADLINE', '2'))
+    except ValueError:
+        hours = 2.0
+    try:
+        from premierlearning.fpl_apis import GENERAL
+        import requests
+        from squadtools.fpl_deadline import (
+            deadline_for_following_run,
+            london_at_expression,
+        )
+        events = requests.get(GENERAL, timeout=30).json().get('events') or []
+        now = datetime.now(timezone.utc)
+        deadline = deadline_for_following_run(events, now)
+        if deadline is None:
+            print('No future FPL deadline; leaving schedule %s unchanged' % name)
+            return
+        run_at = deadline - timedelta(hours=hours)
+        if run_at <= now:
+            print('Next deadline run %s is already past; leaving schedule %s' % (run_at, name))
+            return
+        expression = london_at_expression(run_at)
+        _update_pipeline_schedule(name, expression)
+        print('Next Fargate run booked at %s UK (%s before GW deadline %s)' % (
+            expression,
+            hours,
+            deadline.strftime('%Y-%m-%d %H:%M UTC'),
+        ))
+    except Exception as exc:
+        print('Could not book the next deadline run: %s' % exc)
+
+
+def _update_pipeline_schedule(name, expression):
+    import boto3
+    region = (
+        os.environ.get('AWS_REGION')
+        or os.environ.get('AWS_DEFAULT_REGION')
+        or 'eu-west-2'
+    )
+    client = boto3.client('scheduler', region_name=region)
+    current = client.get_schedule(Name=name)
+    client.update_schedule(
+        Name=name,
+        GroupName=current.get('GroupName') or 'default',
+        Description='Train and apply two hours before the next FPL deadline',
+        ScheduleExpression=expression,
+        ScheduleExpressionTimezone=current.get('ScheduleExpressionTimezone') or 'Europe/London',
+        FlexibleTimeWindow=current['FlexibleTimeWindow'],
+        Target=current['Target'],
+        State='ENABLED',
+        ActionAfterCompletion=current.get('ActionAfterCompletion') or 'NONE',
+    )
+
+
 def main():
     app = Flask(__name__)
     with app.app_context():
@@ -318,6 +385,7 @@ def main():
             run_status_check()
             return
         _fpl_egress_preflight()
+        _schedule_next_deadline_run()
         if _flag('LOGIN_ONLY'):
             run_login_only()
             return

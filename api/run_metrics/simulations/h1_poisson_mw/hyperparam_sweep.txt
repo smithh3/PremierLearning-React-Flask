@@ -1,0 +1,9 @@
+Simulation hyperparameter sweep
+Append-only log: hyperparam_sweep.jsonl
+
+#      pts szn     rank   top%  trn  hold label                  knobs                            chips
+1     2096  25  2331498  18.13   61    16 19_fh_hi               fh=20.0 hz=4 wc=56.25            WC 17,30 BB 18,31 FH 8,28 TC 19,33
+2     2094  25  2365040  18.39   59    18 04_hz6                 hz=6 wc=56.25                    WC 14,30 BB 15,31 FH 9,24 TC 19,33
+3     2067  25  2806913  21.83   63    16 01_hz3                 hz=3 wc=56.25                    WC 8,25 BB 9,26 FH 3,23 TC 19,33
+4     1998  25  4077106  31.71   63    15 02_hz4                 hz=4 wc=56.25                    WC 8,24 BB 9,25 FH 6,22 TC 19,33
+5     1998  25  4077106  31.71   63    15 15_mh_max_hz4          hz=4 mh=10.0 wc=56.25            WC 8,24 BB 9,25 FH 6,22 TC 19,33

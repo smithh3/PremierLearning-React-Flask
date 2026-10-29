@@ -8,25 +8,39 @@ FOLLOW=0
 SUGGEST=0
 APPLY=0
 NO_BENCH_FILL=0
-for arg in "$@"; do
-  case "$arg" in
+POISSON=0
+TEAM_ID=""
+while [ $# -gt 0 ]; do
+  case "$1" in
     --follow) FOLLOW=1 ;;
     --suggest) SUGGEST=1 ;;
     --apply) APPLY=1 ;;
     --no-bench-fill) NO_BENCH_FILL=1 ;;
-    pipeline|learn|apply) TASK="$arg" ;;
+    --poisson) POISSON=1 ;;
+    --team-id)
+      TEAM_ID="${2:-}"
+      if [ -z "$TEAM_ID" ]; then
+        echo "--team-id requires a manager id" >&2
+        exit 1
+      fi
+      shift
+      ;;
+    pipeline|learn|apply) TASK="$1" ;;
     -h|--help)
-      echo "Usage: $0 [pipeline|learn|apply] [--follow] [--suggest|--apply] [--no-bench-fill]"
+      echo "Usage: $0 [pipeline|learn|apply] [--follow] [--suggest|--apply] [--poisson] [--team-id ID] [--no-bench-fill]"
       echo "  --suggest       Override this run: train, then print/email transfers without submitting."
       echo "  --apply         Override this run: submit this week's transfers (still emails)."
+      echo "  --poisson       Train h1 Poisson + minutes weights, skip the horizon net."
+      echo "  --team-id ID    Public squad lookup for this manager id (no FPL login)."
       echo "  --no-bench-fill Skip the second-pass bench refill (rotating XI only)."
       exit 0
       ;;
     *)
-      echo "Usage: $0 [pipeline|learn|apply] [--follow] [--suggest|--apply] [--no-bench-fill]"
+      echo "Usage: $0 [pipeline|learn|apply] [--follow] [--suggest|--apply] [--poisson] [--team-id ID] [--no-bench-fill]"
       exit 1
       ;;
   esac
+  shift
 done
 
 cd "$ROOT/infra/terraform"
@@ -69,6 +83,14 @@ elif [ "$APPLY" -eq 1 ]; then
     '{"name":"APPLY_ON_DEADLINE_DAY","value":"false"}'
     '{"name":"RUN_LEARNING","value":"1"}'
   )
+fi
+if [ "$POISSON" -eq 1 ]; then
+  echo "Poisson override: PREMIERLEARNING_ARGS=--h1-poisson"
+  ENV_VARS+=('{"name":"PREMIERLEARNING_ARGS","value":"--h1-poisson"}')
+fi
+if [ -n "$TEAM_ID" ]; then
+  echo "Public squad lookup for manager $TEAM_ID (no FPL login)"
+  ENV_VARS+=("{\"name\":\"FPL_MANAGER_ID\",\"value\":\"${TEAM_ID}\"}")
 fi
 if [ "$NO_BENCH_FILL" -eq 1 ]; then
   echo "Skipping bench fill pass: SKIP_BENCH_FILL=true"

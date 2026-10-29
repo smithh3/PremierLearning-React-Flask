@@ -172,6 +172,10 @@ class HistoricalPredictionBuilder:
         adopt_code_hash=False,
         train_once_per_season=False,
         replace_cache=False,
+        points_loss='huber',
+        points_minutes_weight=False,
+        use_horizon_model=True,
+        points_reps=1,
     ):
         self.db = db_handler
         self.seasons = tuple(int(season) for season in seasons)
@@ -183,6 +187,10 @@ class HistoricalPredictionBuilder:
         self.name = name
         self.train_once_per_season = bool(train_once_per_season)
         self.replace_on_build = bool(replace_cache)
+        self.points_loss = str(points_loss or 'huber').lower()
+        self.points_minutes_weight = bool(points_minutes_weight)
+        self.use_horizon_model = bool(use_horizon_model)
+        self.points_reps = max(1, int(points_reps))
         self.sources = {}
         self.config = {
             'horizon_gameweeks': self.horizon_gameweeks,
@@ -194,8 +202,14 @@ class HistoricalPredictionBuilder:
             'availability_mode': 'deferred_chance',
             'fixture_mode': 'final_calendar',
             'prediction_scope': 'rest_of_season',
-            'horizon_reps': parse_horizon_reps(),
+            'horizon_reps': (
+                0 if not self.use_horizon_model else parse_horizon_reps()
+            ),
+            'horizon_model': self.use_horizon_model,
             'minutes_reps': parse_minutes_reps(),
+            'points_loss': self.points_loss,
+            'points_minutes_weight': self.points_minutes_weight,
+            'points_reps': self.points_reps,
             'training_schedule': (
                 'once_per_season'
                 if self.train_once_per_season
@@ -369,7 +383,13 @@ class HistoricalPredictionBuilder:
                 _set_random_seed(self.seed + season_start_year * 100)
                 training_runner = self._new_runner(season_start_year, 1)
                 with _simulation_environment():
-                    fixed_models = FixedSeasonModels.fit(training_runner)
+                    fixed_models = FixedSeasonModels.fit(
+                        training_runner,
+                        points_loss=self.points_loss,
+                        points_minutes_weight=self.points_minutes_weight,
+                        use_horizon_model=self.use_horizon_model,
+                        points_reps=self.points_reps,
+                    )
             for gameweek in range(self.gameweek_from, self.gameweek_to + 1):
                 if gameweek not in available:
                     print(
@@ -486,6 +506,28 @@ def build_parser():
         action='store_true',
         help='Fit at the GW1 cutoff and reuse fixed weights for every GW snapshot',
     )
+    parser.add_argument(
+        '--points-loss',
+        choices=('huber', 'poisson'),
+        default='huber',
+        help='Loss for the single-gameweek points net. Default huber (log1p).',
+    )
+    parser.add_argument(
+        '--points-minutes-weight',
+        action='store_true',
+        help='Weight h1 training rows by minutes/90 (Poisson exposure).',
+    )
+    parser.add_argument(
+        '--no-horizon-model',
+        action='store_true',
+        help='Skip the horizon-N net; leave h1 fixture scores unscaled.',
+    )
+    parser.add_argument(
+        '--points-reps',
+        type=int,
+        default=1,
+        help='Independent fits for the h1 points net. Default 1.',
+    )
     return parser
 
 
@@ -500,6 +542,8 @@ def main(argv=None):
         parser.error('--horizon-reps must be a positive integer')
     if args.minutes_reps < 1:
         parser.error('--minutes-reps must be a positive integer')
+    if args.points_reps < 1:
+        parser.error('--points-reps must be a positive integer')
 
     sys.argv = with_learning_rep_flags(
         sys.argv,
@@ -524,6 +568,10 @@ def main(argv=None):
                 adopt_code_hash=args.adopt_code_hash,
                 train_once_per_season=args.train_once_per_season,
                 replace_cache=args.replace_cache,
+                points_loss=args.points_loss,
+                points_minutes_weight=args.points_minutes_weight,
+                use_horizon_model=not args.no_horizon_model,
+                points_reps=args.points_reps,
             )
             if not args.coverage_only:
                 builder.build()

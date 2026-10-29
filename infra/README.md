@@ -116,9 +116,9 @@ Need a sqlite file in the image for apply-only: have `database/fantasy.db` on di
 
 Idle Fargate costs nothing. Delete later with `terraform destroy` if you want the account empty.
 
-## 4. Daily 06:00 UK schedule
+## 4. One run, two hours before the deadline
 
-Same one task, now every morning. In `terraform.tfvars`:
+Same one task, once per gameweek. In `terraform.tfvars`:
 
 ```hcl
 enable_schedule = true
@@ -126,7 +126,7 @@ run_learning    = true
 apply_transfers = false
 pipeline_cpu    = "4096"
 pipeline_memory = "16384"
-schedule_expression = "cron(0 6 * * ? *)"
+schedule_expression = "at(2026-10-31T09:00:00)"
 schedule_timezone   = "Europe/London"
 notify_email        = "haljsmith97+fpl@gmail.com"
 ses_from_email      = "haljsmith97@gmail.com"
@@ -136,11 +136,11 @@ ses_from_email      = "haljsmith97@gmail.com"
 terraform apply
 ```
 
-The task **suggests** transfers and emails chip + transfer strategy. On FPL **transfer deadline day** (the UK calendar day of the next deadline, while that deadline is still ahead) it **applies** those transfers instead. `APPLY_ON_DEADLINE_DAY` is set on the task; leave `apply_transfers = false` so ordinary mornings stay suggest-only.
+`schedule_expression` is the next start, in UK local time, two hours before that gameweek's deadline. When the task starts it reads the FPL calendar and moves the schedule to two hours before the deadline after that. `APPLY_ON_DEADLINE_DAY` still applies transfers, because that start falls on deadline day. Leave `apply_transfers = false`.
 
 Emails go to the plus-alias so you can add a Gmail filter: **To** `haljsmith97+fpl@gmail.com` → **Never send it to Spam**. Click the SES verify link sent to that alias once.
 
-The combined task still runs **learn then squadtools** in one container (sqlite on the task disk). After GW1 you can set `apply_within_hours` (e.g. `"36"`) so a stray apply cannot submit far from the deadline; leave it empty if you want 6am deadline-day applies when the deadline is later that afternoon.
+The combined task still runs **learn then squadtools** in one container (sqlite on the task disk). Leave `apply_within_hours` empty so the deadline-day run can submit.
 
 ## 5. Phase 2 — split learn and apply
 

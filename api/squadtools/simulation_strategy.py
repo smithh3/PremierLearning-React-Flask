@@ -1208,6 +1208,8 @@ class SimulationStrategy:
         min_current_gw_gain=None,
         min_horizon_gain=None,
         gameweeks=None,
+        hit_cost=0.0,
+        free_transfers=0,
     ):
         if gameweeks is None:
             gameweeks = self._gameweeks(as_of_gameweek)
@@ -1329,6 +1331,22 @@ class SimulationStrategy:
             model += incoming_cost <= int(current_state.bank) + sale_proceeds
 
         horizon_score = lpSum(gw_score_expressions.values())
+        # Paid transfers have to cost points inside the objective. A cap alone
+        # makes the solver spend every allowed move, because extra players
+        # never reduce the score.
+        paid_transfers = None
+        if (
+            current_state is not None
+            and float(hit_cost) > 0
+            and int(max_transfers) > int(free_transfers)
+        ):
+            paid_transfers = LpVariable(
+                'paid_transfers',
+                lowBound=0,
+                upBound=int(max_transfers),
+                cat='Integer',
+            )
+            model += paid_transfers >= outgoing - int(free_transfers)
         if enforce_thresholds:
             min_current = (
                 float(self.config.min_current_gw_gain)
@@ -1348,10 +1366,13 @@ class SimulationStrategy:
                 horizon_score
                 >= float(hold_horizon) + min_horizon
             )
-        model += horizon_score + lpSum(
+        objective = horizon_score + lpSum(
             selected[player_id] * (1e-9 * (10000 - player_id))
             for player_id in valid_ids
         )
+        if paid_transfers is not None:
+            objective = objective - (float(hit_cost) * paid_transfers)
+        model += objective
         model.solve(_cbc_solver())
         if LpStatus[model.status] != 'Optimal':
             raise ValueError(

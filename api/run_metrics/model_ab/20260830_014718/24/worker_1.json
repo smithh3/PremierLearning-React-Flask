@@ -1,0 +1,497 @@
+{
+  "rows": [
+    {
+      "arm": "01_h1_base",
+      "fit": "h1_base",
+      "smear": "off",
+      "note": "Baseline single-gameweek model.",
+      "reps": 5,
+      "weighted_mae": 2.3724,
+      "weighted_mae_std": 0.0176,
+      "weighted_skill": 0.0182,
+      "weighted_skill_std": 0.0073,
+      "points_mae": 1.8656,
+      "points_mae_std": 0.0149,
+      "points_calibration": 0.7774,
+      "points_calibration_std": 0.0264,
+      "spearman": 0.5078,
+      "spearman_std": 0.0012,
+      "top20": 0.2394,
+      "top20_std": 0.0037,
+      "window_mae": 5.0185,
+      "window_mae_std": 0.1012,
+      "window_skill": 0.2097,
+      "window_skill_std": 0.016,
+      "fixture_mae": 4.7742,
+      "fixture_mae_std": 0.0168,
+      "fixture_skill": 0.0008,
+      "fixture_skill_std": 0.0035,
+      "pred_mean": 3.2036,
+      "pred_mean_std": 0.109,
+      "slice_cal_lo": 0.0184,
+      "slice_cal_lo_std": 0.0008,
+      "slice_cal_hi": 0.9148,
+      "slice_cal_hi_std": 0.0454,
+      "actual_mean": 5.7928,
+      "starter_pp90_mean": 3.7109,
+      "slice_cal": [
+        0.0184,
+        0.0984,
+        0.5157,
+        0.8029,
+        0.7486,
+        0.8742,
+        0.9889,
+        0.9352,
+        0.9697,
+        0.9148
+      ]
+    },
+    {
+      "arm": "16_hz_poisson_mw",
+      "fit": "hz_poisson_mw",
+      "smear": "off",
+      "note": "Horizon, poisson with exposure.",
+      "reps": 5,
+      "weighted_mae": 2.5608,
+      "weighted_mae_std": 0.0146,
+      "weighted_skill": -0.0598,
+      "weighted_skill_std": 0.006,
+      "points_mae": 2.0098,
+      "points_mae_std": 0.0103,
+      "points_calibration": 0.9487,
+      "points_calibration_std": 0.012,
+      "spearman": 0.5042,
+      "spearman_std": 0.0006,
+      "top20": 0.2628,
+      "top20_std": 0.0057,
+      "window_mae": 4.774,
+      "window_mae_std": 0.0151,
+      "window_skill": 0.2482,
+      "window_skill_std": 0.0024,
+      "fixture_mae": 4.9579,
+      "fixture_mae_std": 0.0136,
+      "fixture_skill": -0.0377,
+      "fixture_skill_std": 0.0028,
+      "pred_mean": 3.7776,
+      "pred_mean_std": 0.0465,
+      "slice_cal_lo": 0.0205,
+      "slice_cal_lo_std": 0.0003,
+      "slice_cal_hi": 1.1742,
+      "slice_cal_hi_std": 0.0165,
+      "actual_mean": 5.7928,
+      "starter_pp90_mean": 3.7109,
+      "slice_cal": [
+        0.0205,
+        0.109,
+        0.5824,
+        0.9986,
+        1.0323,
+        1.0887,
+        1.1076,
+        1.0951,
+        1.1449,
+        1.1742
+      ]
+    },
+    {
+      "arm": "20_h1_huber_raw_mw",
+      "fit": "h1_huber_raw_mw",
+      "smear": "off",
+      "note": "Huber on raw pp90 plus minutes weights: was log1p the bug, or is Poisson special?",
+      "reps": 5,
+      "weighted_mae": 2.2892,
+      "weighted_mae_std": 0.0059,
+      "weighted_skill": 0.0527,
+      "weighted_skill_std": 0.0024,
+      "points_mae": 1.8079,
+      "points_mae_std": 0.0048,
+      "points_calibration": 0.7117,
+      "points_calibration_std": 0.0093,
+      "spearman": 0.5131,
+      "spearman_std": 0.0006,
+      "top20": 0.24,
+      "top20_std": 0.006,
+      "window_mae": 5.1053,
+      "window_mae_std": 0.0333,
+      "window_skill": 0.196,
+      "window_skill_std": 0.0052,
+      "fixture_mae": 4.7198,
+      "fixture_mae_std": 0.0051,
+      "fixture_skill": 0.0121,
+      "fixture_skill_std": 0.0011,
+      "pred_mean": 2.8361,
+      "pred_mean_std": 0.0377,
+      "slice_cal_lo": 0.0154,
+      "slice_cal_lo_std": 0.0001,
+      "slice_cal_hi": 0.8894,
+      "slice_cal_hi_std": 0.0145,
+      "actual_mean": 5.7928,
+      "starter_pp90_mean": 3.7109,
+      "slice_cal": [
+        0.0154,
+        0.0803,
+        0.4248,
+        0.7243,
+        0.7391,
+        0.8607,
+        0.8835,
+        0.8193,
+        0.8152,
+        0.8894
+      ]
+    }
+  ],
+  "fit_stats": {
+    "h1_base": {
+      "note": "Single gameweek, exactly as it runs now.",
+      "reps": [
+        {
+          "epochs_ran": 38,
+          "test_mae": 17.083602905273438,
+          "best_val_mae": 4.742708683013916,
+          "pred_mean": 3.2721011764661974
+        },
+        {
+          "epochs_ran": 36,
+          "test_mae": 17.089500427246094,
+          "best_val_mae": 4.751621246337891,
+          "pred_mean": 3.179107969274917
+        },
+        {
+          "epochs_ran": 31,
+          "test_mae": 17.13167953491211,
+          "best_val_mae": 4.7397637367248535,
+          "pred_mean": 3.011261526541672
+        },
+        {
+          "epochs_ran": 49,
+          "test_mae": 17.07070541381836,
+          "best_val_mae": 4.745213985443115,
+          "pred_mean": 3.2222688403316835
+        },
+        {
+          "epochs_ran": 49,
+          "test_mae": 17.067548751831055,
+          "best_val_mae": 4.747653961181641,
+          "pred_mean": 3.3330708537912894
+        }
+      ],
+      "smearing": [
+        {
+          "S": 1.7542044005848918,
+          "residual_sd_log": 0.8046156590001295,
+          "S_if_lognormal": 1.3822369697540509,
+          "n_rows": 9663,
+          "by_pred_level": [
+            {
+              "lo": 1.3670759430346346,
+              "hi": 2.4514132719829114,
+              "pred_mean": 1.9437900992369372,
+              "S": 1.7271120946755176,
+              "n": 1933
+            },
+            {
+              "lo": 2.4514132719829114,
+              "hi": 3.033033812925093,
+              "pred_mean": 2.768618241469562,
+              "S": 1.6632415267288732,
+              "n": 1932
+            },
+            {
+              "lo": 3.033033812925093,
+              "hi": 3.4650028224314497,
+              "pred_mean": 3.2474616744865314,
+              "S": 1.5738590008988984,
+              "n": 1933
+            },
+            {
+              "lo": 3.4650028224314497,
+              "hi": 4.079133332537063,
+              "pred_mean": 3.7444541546497625,
+              "S": 1.7735254649091687,
+              "n": 1932
+            },
+            {
+              "lo": 4.079133332537063,
+              "hi": 9.775481493377434,
+              "pred_mean": 4.792327593101026,
+              "S": 2.033246853213537,
+              "n": 1933
+            }
+          ]
+        },
+        {
+          "S": 1.7542279410676302,
+          "residual_sd_log": 0.8056534389696677,
+          "S_if_lognormal": 1.3833923839577884,
+          "n_rows": 9663,
+          "by_pred_level": [
+            {
+              "lo": 1.2764720287236524,
+              "hi": 2.45678707155199,
+              "pred_mean": 1.9477254281027827,
+              "S": 1.7239532961661859,
+              "n": 1933
+            },
+            {
+              "lo": 2.45678707155199,
+              "hi": 3.0514909692350582,
+              "pred_mean": 2.7852696456075163,
+              "S": 1.6212867718499118,
+              "n": 1932
+            },
+            {
+              "lo": 3.0514909692350582,
+              "hi": 3.488433308899234,
+              "pred_mean": 3.265606529747727,
+              "S": 1.6099664638957716,
+              "n": 1933
+            },
+            {
+              "lo": 3.488433308899234,
+              "hi": 4.057410137127773,
+              "pred_mean": 3.761532800650303,
+              "S": 1.8243100447339,
+              "n": 1932
+            },
+            {
+              "lo": 4.057410137127773,
+              "hi": 8.582810335476148,
+              "pred_mean": 4.719521980286094,
+              "S": 1.9915906097759053,
+              "n": 1933
+            }
+          ]
+        },
+        {
+          "S": 1.8242751388598215,
+          "residual_sd_log": 0.8066140859242047,
+          "S_if_lognormal": 1.3844641117009138,
+          "n_rows": 9663,
+          "by_pred_level": [
+            {
+              "lo": 1.1613535474549788,
+              "hi": 2.375539526945049,
+              "pred_mean": 1.8567637157531032,
+              "S": 1.776266489548078,
+              "n": 1933
+            },
+            {
+              "lo": 2.375539526945049,
+              "hi": 2.9441826066624923,
+              "pred_mean": 2.699811985179167,
+              "S": 1.750197787666734,
+              "n": 1932
+            },
+            {
+              "lo": 2.9441826066624923,
+              "hi": 3.3261661953274304,
+              "pred_mean": 3.1369171933327893,
+              "S": 1.6775861745062752,
+              "n": 1932
+            },
+            {
+              "lo": 3.3261661953274304,
+              "hi": 3.8187940006259593,
+              "pred_mean": 3.555394306201949,
+              "S": 1.7682171207144353,
+              "n": 1933
+            },
+            {
+              "lo": 3.8187940006259593,
+              "hi": 7.622306850563934,
+              "pred_mean": 4.417515723175756,
+              "S": 2.1489939126987907,
+              "n": 1933
+            }
+          ]
+        },
+        {
+          "S": 1.7373956947309561,
+          "residual_sd_log": 0.8030871161717682,
+          "S_if_lognormal": 1.3805396287772398,
+          "n_rows": 9663,
+          "by_pred_level": [
+            {
+              "lo": 1.224857766476255,
+              "hi": 2.4903754979076154,
+              "pred_mean": 1.942817903888178,
+              "S": 1.7319033186724648,
+              "n": 1933
+            },
+            {
+              "lo": 2.4903754979076154,
+              "hi": 3.0771152444523997,
+              "pred_mean": 2.8077077655876206,
+              "S": 1.588899150564452,
+              "n": 1932
+            },
+            {
+              "lo": 3.0771152444523997,
+              "hi": 3.5056929511665156,
+              "pred_mean": 3.283485359141213,
+              "S": 1.6126189459581217,
+              "n": 1933
+            },
+            {
+              "lo": 3.5056929511665156,
+              "hi": 4.117385319078396,
+              "pred_mean": 3.7892540612550047,
+              "S": 1.7141919642974301,
+              "n": 1932
+            },
+            {
+              "lo": 4.117385319078396,
+              "hi": 9.565883289623036,
+              "pred_mean": 4.865447311184161,
+              "S": 2.039276268360657,
+              "n": 1933
+            }
+          ]
+        },
+        {
+          "S": 1.7284066675907512,
+          "residual_sd_log": 0.8035289395490441,
+          "S_if_lognormal": 1.3810296972317875,
+          "n_rows": 9663,
+          "by_pred_level": [
+            {
+              "lo": 1.1562381047075965,
+              "hi": 2.4719867905683937,
+              "pred_mean": 1.9632715403954826,
+              "S": 1.6946866273307923,
+              "n": 1933
+            },
+            {
+              "lo": 2.4719867905683937,
+              "hi": 3.0646764346083164,
+              "pred_mean": 2.8023319342110775,
+              "S": 1.6463090730051257,
+              "n": 1932
+            },
+            {
+              "lo": 3.0646764346083164,
+              "hi": 3.5269847175753646,
+              "pred_mean": 3.290911927583367,
+              "S": 1.5830347587617588,
+              "n": 1933
+            },
+            {
+              "lo": 3.5269847175753646,
+              "hi": 4.18743968365629,
+              "pred_mean": 3.833042026227522,
+              "S": 1.7029070208747594,
+              "n": 1932
+            },
+            {
+              "lo": 4.18743968365629,
+              "hi": 9.135961352601536,
+              "pred_mean": 4.913835340219458,
+              "S": 2.015040194638692,
+              "n": 1933
+            }
+          ]
+        }
+      ]
+    },
+    "h1_huber_raw_mw": {
+      "note": "Single gameweek, Huber on raw pp90 with exposure weights (log off).",
+      "reps": [
+        {
+          "epochs_ran": 268,
+          "test_mae": 17.262428283691406,
+          "best_val_mae": 4.758725166320801,
+          "pred_mean": 2.8427495213276446
+        },
+        {
+          "epochs_ran": 103,
+          "test_mae": 17.264324188232422,
+          "best_val_mae": 4.761154651641846,
+          "pred_mean": 2.841069240998716
+        },
+        {
+          "epochs_ran": 36,
+          "test_mae": 17.264284133911133,
+          "best_val_mae": 4.765627861022949,
+          "pred_mean": 2.8879963313093313
+        },
+        {
+          "epochs_ran": 45,
+          "test_mae": 17.2786922454834,
+          "best_val_mae": 4.766462802886963,
+          "pred_mean": 2.7703482221452167
+        },
+        {
+          "epochs_ran": 55,
+          "test_mae": 17.273347854614258,
+          "best_val_mae": 4.763101577758789,
+          "pred_mean": 2.8381612151389723
+        }
+      ],
+      "smearing": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "hz_poisson_mw": {
+      "note": "Horizon, poisson with exposure weights.",
+      "reps": [
+        {
+          "epochs_ran": 67,
+          "test_mae": 2.662348985671997,
+          "best_val_mae": 1.4901187419891357,
+          "pred_mean": 3.77803988700079
+        },
+        {
+          "epochs_ran": 52,
+          "test_mae": 2.664592742919922,
+          "best_val_mae": 1.4862312078475952,
+          "pred_mean": 3.8011415519752485
+        },
+        {
+          "epochs_ran": 66,
+          "test_mae": 2.662177801132202,
+          "best_val_mae": 1.4936342239379883,
+          "pred_mean": 3.8275233052411624
+        },
+        {
+          "epochs_ran": 62,
+          "test_mae": 2.662249803543091,
+          "best_val_mae": 1.4825688600540161,
+          "pred_mean": 3.7011296088024905
+        },
+        {
+          "epochs_ran": 39,
+          "test_mae": 2.668665885925293,
+          "best_val_mae": 1.485322117805481,
+          "pred_mean": 3.7303598442115766
+        }
+      ],
+      "smearing": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  },
+  "context": {
+    "holdout_season": 24,
+    "split_gw": 20,
+    "last_gw": 38,
+    "horizon": 5,
+    "reps": 5,
+    "pack": "full",
+    "score_minutes": "predicted",
+    "n_windows": 4252,
+    "n_fixtures": 21492,
+    "actual_mean": 5.7928,
+    "starter_pp90_mean": 3.7109,
+    "minutes_mae": 21.5429
+  }
+}

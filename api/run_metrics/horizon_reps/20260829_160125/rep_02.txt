@@ -1,0 +1,139 @@
+Horizon rep 2/5 — 20260829_160125
+=================================
+
+session
+-------
+{
+  "argv": [
+    "c:\\Users\\hal\\Documents\\git\\premierlearningweb\\premier-learning-app\\api\\premierlearning\\__main__.py",
+    "--horizon-only",
+    "--no-persist",
+    "-no-update"
+  ],
+  "log_targets": true,
+  "n_predict_rows": 385,
+  "n_reps_averaged": 5,
+  "n_reps_requested": 5,
+  "n_test_rows": 10182,
+  "n_train_rows": 40725,
+  "output_key": "total_points",
+  "selection_threshold_val_mae": 1.698447,
+  "sweep_trial": null,
+  "timestamp": "20260829_160125"
+}
+
+model_config
+------------
+{
+  "average_all_reps": false,
+  "batch_size": 32,
+  "dropout_1": 0.1,
+  "dropout_2": 0.05,
+  "early_stopping_patience": 25,
+  "hidden_layers": [
+    42,
+    21,
+    10
+  ],
+  "huber_delta": 1.8,
+  "l2": 0.00225,
+  "learning_rate": 0.0005,
+  "loss": "Huber(delta=1.8)",
+  "max_epochs": 500,
+  "n_features": 28,
+  "n_hidden": 3,
+  "optimizer": "AdamW",
+  "reduce_lr_factor": 0.3,
+  "reduce_lr_min": 1e-05,
+  "reduce_lr_patience": 8,
+  "val_mae_keep_ratio": 1.08,
+  "weight_decay": 0.0,
+  "width_mult": 1.5
+}
+
+rep_stats
+---------
+{
+  "best_val_mae": 1.574138,
+  "best_val_rmse": 3.348984,
+  "epochs_ran": 146,
+  "final_lr": 1e-05,
+  "final_val_mae": 1.574834,
+  "final_val_rmse": 3.355222,
+  "kept_for_avg": true,
+  "max_epochs": 500,
+  "pred_max": 6.806278,
+  "pred_mean": 4.392232,
+  "pred_min": 2.510763,
+  "rep_index": 2,
+  "selection_rmse": 2.817291,
+  "smearing": {
+    "S": 1.0833024608084494,
+    "S_if_lognormal": 1.0734006759962915,
+    "by_pred_level": [
+      {
+        "S": 1.0590361996719089,
+        "n": 2037,
+        "pred_mean": 2.554799515449829
+      },
+      {
+        "S": 1.0555499517515134,
+        "n": 2036,
+        "pred_mean": 3.1696042193669443
+      },
+      {
+        "S": 1.060595532095197,
+        "n": 2036,
+        "pred_mean": 3.6139833241438097
+      },
+      {
+        "S": 1.0922288910006464,
+        "n": 2036,
+        "pred_mean": 4.135718118838101
+      },
+      {
+        "S": 1.1490813402212745,
+        "n": 2037,
+        "pred_mean": 5.028483324098041
+      }
+    ],
+    "n_rows": 10182,
+    "residual_sd_log": 0.3763822804848455
+  },
+  "test_loss": 0.073851,
+  "test_mae": 2.984086,
+  "test_rmse": 1.51302,
+  "train_mae": 1.534293,
+  "train_rmse": 2.817291
+}
+
+feature_columns
+---------------
+matches_played
+is_gkp
+is_def
+is_mid
+is_att
+last_season_points_per_90_excl_null
+last_season_xgi_per_90_excl_null
+two_season_prior_points_per_90_excl_null
+new_stats_included
+season_points_per_90_excl_null
+season_xgi_per_90_excl_null
+season_xgc_per_90_excl_null
+season_defcon_per_90_excl_null
+team_xg_next_5
+team_xc_next_5
+team_xg_last_5
+team_xc_last_5
+defcon_last_7_per_90_excl_null_x_non_att
+team_xg_next_5_x_outfield
+last_season_points_per_90_excl_null_x_early
+points_last_3_per_90_excl_null
+points_last_7_per_90_excl_null
+xgi_last_3_per_90_excl_null
+xgi_last_7_per_90_excl_null
+xgc_last_3_per_90_excl_null
+xgc_last_7_per_90_excl_null
+defcon_last_3_per_90_excl_null
+defcon_last_7_per_90_excl_null

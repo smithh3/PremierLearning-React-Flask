@@ -30,19 +30,19 @@ variable "pipeline_memory" {
 variable "enable_schedule" {
   type        = bool
   default     = false
-  description = "Daily EventBridge Scheduler that starts the pipeline task at 06:00 UK time."
+  description = "EventBridge Scheduler that starts the pipeline two hours before the next FPL deadline. Each run books the one after."
 }
 
 variable "schedule_expression" {
   type        = string
-  default     = "cron(0 6 * * ? *)"
-  description = "EventBridge Scheduler cron. Combined with schedule_timezone."
+  default     = "at(2026-10-31T09:00:00)"
+  description = "EventBridge Scheduler expression for the next run. The task replaces this with the following deadline minus two hours."
 }
 
 variable "schedule_timezone" {
   type        = string
   default     = "Europe/London"
-  description = "IANA timezone for the daily schedule (6am UK including BST)."
+  description = "IANA timezone for schedule_expression."
 }
 
 variable "enable_split" {

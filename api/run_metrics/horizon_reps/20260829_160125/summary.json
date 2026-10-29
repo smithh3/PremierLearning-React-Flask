@@ -1,0 +1,361 @@
+{
+  "session": {
+    "timestamp": "20260829_160125",
+    "argv": [
+      "c:\\Users\\hal\\Documents\\git\\premierlearningweb\\premier-learning-app\\api\\premierlearning\\__main__.py",
+      "--horizon-only",
+      "--no-persist",
+      "-no-update"
+    ],
+    "sweep_trial": null,
+    "output_key": "total_points",
+    "log_targets": true,
+    "n_reps_requested": 5,
+    "n_reps_averaged": 5,
+    "selection_threshold_val_mae": 1.698447,
+    "n_train_rows": 40725,
+    "n_test_rows": 10182,
+    "n_predict_rows": 385
+  },
+  "model_config": {
+    "learning_rate": 0.0005,
+    "l2": 0.00225,
+    "weight_decay": 0.0,
+    "early_stopping_patience": 25,
+    "reduce_lr_patience": 8,
+    "reduce_lr_factor": 0.3,
+    "reduce_lr_min": 1e-05,
+    "width_mult": 1.5,
+    "n_hidden": 3,
+    "huber_delta": 1.8,
+    "batch_size": 32,
+    "average_all_reps": false,
+    "val_mae_keep_ratio": 1.08,
+    "dropout_1": 0.1,
+    "dropout_2": 0.05,
+    "loss": "Huber(delta=1.8)",
+    "optimizer": "AdamW",
+    "hidden_layers": [
+      42,
+      21,
+      10
+    ],
+    "n_features": 28,
+    "max_epochs": 500
+  },
+  "baselines": {
+    "mean baseline absolute error": 1.790686,
+    "mean baseline rms error": 3.101076,
+    "median baseline absolute error": 1.722761,
+    "median baseline rms error": 3.151224,
+    "linear regression absolute error": 1.640752,
+    "linear regression rms error": 2.944662
+  },
+  "rep_agreement": {
+    "n_reps": 5,
+    "mean_kendall_tau": 0.9396,
+    "min_kendall_tau": 0.9079,
+    "top_20_jaccard_mean": 0.8701,
+    "top_20_jaccard_min": 0.8182,
+    "pred_std_mean": 0.0618,
+    "pred_std_p90": 0.0886,
+    "pred_std_max": 0.2039
+  },
+  "rep_stats": [
+    {
+      "epochs_ran": 52,
+      "max_epochs": 500,
+      "train_mae": 1.534889,
+      "train_rmse": 2.818019,
+      "best_val_mae": 1.574147,
+      "final_val_mae": 1.575267,
+      "best_val_rmse": 3.345901,
+      "final_val_rmse": 3.355744,
+      "selection_rmse": 2.818019,
+      "final_lr": 1e-05,
+      "test_loss": 0.074426,
+      "test_mae": 2.987759,
+      "test_rmse": 1.513611,
+      "smearing": {
+        "S": 1.0856758430729287,
+        "residual_sd_log": 0.3768535042197682,
+        "S_if_lognormal": 1.0735911907037565,
+        "n_rows": 10182,
+        "by_pred_level": [
+          {
+            "pred_mean": 2.5320722690079958,
+            "S": 1.0663214739011029,
+            "n": 2037
+          },
+          {
+            "pred_mean": 3.131921441203352,
+            "S": 1.066725605491609,
+            "n": 2036
+          },
+          {
+            "pred_mean": 3.5877187790838283,
+            "S": 1.0722734506706924,
+            "n": 2036
+          },
+          {
+            "pred_mean": 4.142622033984062,
+            "S": 1.097071035928435,
+            "n": 2036
+          },
+          {
+            "pred_mean": 5.096631341391411,
+            "S": 1.1259773609893342,
+            "n": 2037
+          }
+        ]
+      },
+      "pred_min": 2.422997,
+      "pred_max": 6.986195,
+      "pred_mean": 4.349937,
+      "kept_for_avg": true,
+      "rep_index": 1
+    },
+    {
+      "epochs_ran": 146,
+      "max_epochs": 500,
+      "train_mae": 1.534293,
+      "train_rmse": 2.817291,
+      "best_val_mae": 1.574138,
+      "final_val_mae": 1.574834,
+      "best_val_rmse": 3.348984,
+      "final_val_rmse": 3.355222,
+      "selection_rmse": 2.817291,
+      "final_lr": 1e-05,
+      "test_loss": 0.073851,
+      "test_mae": 2.984086,
+      "test_rmse": 1.51302,
+      "smearing": {
+        "S": 1.0833024608084494,
+        "residual_sd_log": 0.3763822804848455,
+        "S_if_lognormal": 1.0734006759962915,
+        "n_rows": 10182,
+        "by_pred_level": [
+          {
+            "pred_mean": 2.554799515449829,
+            "S": 1.0590361996719089,
+            "n": 2037
+          },
+          {
+            "pred_mean": 3.1696042193669443,
+            "S": 1.0555499517515134,
+            "n": 2036
+          },
+          {
+            "pred_mean": 3.6139833241438097,
+            "S": 1.060595532095197,
+            "n": 2036
+          },
+          {
+            "pred_mean": 4.135718118838101,
+            "S": 1.0922288910006464,
+            "n": 2036
+          },
+          {
+            "pred_mean": 5.028483324098041,
+            "S": 1.1490813402212745,
+            "n": 2037
+          }
+        ]
+      },
+      "pred_min": 2.510763,
+      "pred_max": 6.806278,
+      "pred_mean": 4.392232,
+      "kept_for_avg": true,
+      "rep_index": 2
+    },
+    {
+      "epochs_ran": 52,
+      "max_epochs": 500,
+      "train_mae": 1.531892,
+      "train_rmse": 2.815709,
+      "best_val_mae": 1.572636,
+      "final_val_mae": 1.573031,
+      "best_val_rmse": 3.340861,
+      "final_val_rmse": 3.355919,
+      "selection_rmse": 2.815709,
+      "final_lr": 1e-05,
+      "test_loss": 0.07381,
+      "test_mae": 2.985509,
+      "test_rmse": 1.511379,
+      "smearing": {
+        "S": 1.0881070525812189,
+        "residual_sd_log": 0.3759178168887076,
+        "S_if_lognormal": 1.0732131606870632,
+        "n_rows": 10182,
+        "by_pred_level": [
+          {
+            "pred_mean": 2.52469729979814,
+            "S": 1.068493775797852,
+            "n": 2037
+          },
+          {
+            "pred_mean": 3.1364180174127196,
+            "S": 1.0560934852132084,
+            "n": 2036
+          },
+          {
+            "pred_mean": 3.5941241441685476,
+            "S": 1.0730134674766378,
+            "n": 2036
+          },
+          {
+            "pred_mean": 4.127081686883365,
+            "S": 1.0938090835442686,
+            "n": 2036
+          },
+          {
+            "pred_mean": 5.025044952575103,
+            "S": 1.1491051243539947,
+            "n": 2037
+          }
+        ]
+      },
+      "pred_min": 2.463017,
+      "pred_max": 6.803714,
+      "pred_mean": 4.361101,
+      "kept_for_avg": true,
+      "rep_index": 3
+    },
+    {
+      "epochs_ran": 193,
+      "max_epochs": 500,
+      "train_mae": 1.537386,
+      "train_rmse": 2.822975,
+      "best_val_mae": 1.576725,
+      "final_val_mae": 1.577062,
+      "best_val_rmse": 3.356649,
+      "final_val_rmse": 3.36145,
+      "selection_rmse": 2.822975,
+      "final_lr": 1e-05,
+      "test_loss": 0.074606,
+      "test_mae": 2.988688,
+      "test_rmse": 1.51615,
+      "smearing": {
+        "S": 1.0839047163543625,
+        "residual_sd_log": 0.377084634683681,
+        "S_if_lognormal": 1.0736847357443422,
+        "n_rows": 10182,
+        "by_pred_level": [
+          {
+            "pred_mean": 2.565138672188481,
+            "S": 1.0604805926144736,
+            "n": 2037
+          },
+          {
+            "pred_mean": 3.176159419575589,
+            "S": 1.053030181501714,
+            "n": 2036
+          },
+          {
+            "pred_mean": 3.6183627503665585,
+            "S": 1.0631824047382354,
+            "n": 2036
+          },
+          {
+            "pred_mean": 4.1310019939808065,
+            "S": 1.095025316030632,
+            "n": 2036
+          },
+          {
+            "pred_mean": 4.995333771682001,
+            "S": 1.1477852163679585,
+            "n": 2037
+          }
+        ]
+      },
+      "pred_min": 2.489372,
+      "pred_max": 6.762001,
+      "pred_mean": 4.364425,
+      "kept_for_avg": true,
+      "rep_index": 4
+    },
+    {
+      "epochs_ran": 69,
+      "max_epochs": 500,
+      "train_mae": 1.533626,
+      "train_rmse": 2.81748,
+      "best_val_mae": 1.573258,
+      "final_val_mae": 1.573768,
+      "best_val_rmse": 3.344903,
+      "final_val_rmse": 3.352312,
+      "selection_rmse": 2.81748,
+      "final_lr": 1e-05,
+      "test_loss": 0.074089,
+      "test_mae": 2.982997,
+      "test_rmse": 1.512186,
+      "smearing": {
+        "S": 1.0829352420546081,
+        "residual_sd_log": 0.3761233334384669,
+        "S_if_lognormal": 1.073296100142653,
+        "n_rows": 10182,
+        "by_pred_level": [
+          {
+            "pred_mean": 2.5583463839537948,
+            "S": 1.056216160527659,
+            "n": 2037
+          },
+          {
+            "pred_mean": 3.169020229059697,
+            "S": 1.0497252822006407,
+            "n": 2036
+          },
+          {
+            "pred_mean": 3.6192431870371577,
+            "S": 1.0678925190078352,
+            "n": 2036
+          },
+          {
+            "pred_mean": 4.13170659288411,
+            "S": 1.0931219759313122,
+            "n": 2036
+          },
+          {
+            "pred_mean": 5.029595638033671,
+            "S": 1.1477015853453956,
+            "n": 2037
+          }
+        ]
+      },
+      "pred_min": 2.546135,
+      "pred_max": 7.043443,
+      "pred_mean": 4.285103,
+      "kept_for_avg": true,
+      "rep_index": 5
+    }
+  ],
+  "feature_columns": [
+    "matches_played",
+    "is_gkp",
+    "is_def",
+    "is_mid",
+    "is_att",
+    "last_season_points_per_90_excl_null",
+    "last_season_xgi_per_90_excl_null",
+    "two_season_prior_points_per_90_excl_null",
+    "new_stats_included",
+    "season_points_per_90_excl_null",
+    "season_xgi_per_90_excl_null",
+    "season_xgc_per_90_excl_null",
+    "season_defcon_per_90_excl_null",
+    "team_xg_next_5",
+    "team_xc_next_5",
+    "team_xg_last_5",
+    "team_xc_last_5",
+    "defcon_last_7_per_90_excl_null_x_non_att",
+    "team_xg_next_5_x_outfield",
+    "last_season_points_per_90_excl_null_x_early",
+    "points_last_3_per_90_excl_null",
+    "points_last_7_per_90_excl_null",
+    "xgi_last_3_per_90_excl_null",
+    "xgi_last_7_per_90_excl_null",
+    "xgc_last_3_per_90_excl_null",
+    "xgc_last_7_per_90_excl_null",
+    "defcon_last_3_per_90_excl_null",
+    "defcon_last_7_per_90_excl_null"
+  ]
+}
