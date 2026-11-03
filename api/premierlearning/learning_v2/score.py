@@ -52,13 +52,17 @@ def normalized_tier_weights(points) -> numpy.ndarray:
 LOSS_TIER_MIX = 0.2
 
 
-def blended_tier_weights(points, mix=LOSS_TIER_MIX) -> numpy.ndarray:
+def blended_tier_weights(points, mix=LOSS_TIER_MIX, plateau=False) -> numpy.ndarray:
     """Blend of equal weights and the score bands, then scaled to mean 1.
 
     A blank stays at 1. With mix 0.2 a 3-5 point game is 1.2, a 6-9 is 1.6
-    and a 10-point game is 2.4, before the mean is put back to 1.
+    and a 10-point game is 2.4, before the mean is put back to 1. plateau keeps
+    10+ at the 6-9 band: a haul's loss already grows with the size of the miss,
+    so it needs no extra weight on top.
     """
     bands = tier_weights(points)
+    if plateau:
+        bands = numpy.minimum(bands, TIERS[2][3])
     mix = float(mix)
     weights = (1.0 - mix) + mix * bands
     return _mean_one(weights)
@@ -72,6 +76,125 @@ def _mean_one(weights) -> numpy.ndarray:
     if mean <= 0:
         return numpy.ones_like(weights)
     return weights / mean
+
+
+# 3 points is 1.23 (bands 1.2), 6 is 1.65 (1.6), 10 is 2.4 (2.4); 20 keeps going to 4.96.
+SMOOTH_ALPHA = 1.4
+SMOOTH_SCALE = 10.0
+SMOOTH_POWER = 1.5
+
+
+def smooth_weights(points, alpha=SMOOTH_ALPHA, scale=SMOOTH_SCALE, power=SMOOTH_POWER,
+                   cap=None) -> numpy.ndarray:
+    """1 + alpha * (max(points, 0) / scale) ** power, capped, then scaled to mean 1.
+
+    The defaults sit on the blended bands where those are defined. With no cap
+    the curve keeps rising past 10 points; cap 2.4 makes it the bands without steps.
+    """
+    if float(scale) <= 0:
+        raise ValueError('smooth weight scale must be positive')
+    values = numpy.maximum(numpy.asarray(points, dtype=float).reshape(-1), 0.0)
+    weights = 1.0 + float(alpha) * (values / float(scale)) ** float(power)
+    if cap is not None:
+        weights = numpy.minimum(weights, float(cap))
+    return _mean_one(weights)
+
+
+# Rises like the bands to a peak at 8 points, then eases off: 3 is ~1.22, 6 ~1.50,
+# 8 is 1.70, 10 ~1.67, 15 ~1.43, 20 ~1.17. Hauls already carry a big miss.
+HUMP_PEAK = 8.0
+HUMP_HEIGHT = 0.7
+HUMP_POWER = 1.2
+HUMP_WIDTH = 10.0
+
+
+def hump_weights(points, peak=HUMP_PEAK, height=HUMP_HEIGHT, power=HUMP_POWER,
+                 width=HUMP_WIDTH) -> numpy.ndarray:
+    """1 + height * (points / peak) ** power up to the peak, a Gaussian fall after; mean 1."""
+    values = numpy.maximum(numpy.asarray(points, dtype=float).reshape(-1), 0.0)
+    rising = (numpy.minimum(values, peak) / float(peak)) ** float(power)
+    falling = numpy.exp(-((numpy.maximum(values - peak, 0.0) / float(width)) ** 2))
+    weights = 1.0 + float(height) * numpy.where(values <= peak, rising, falling)
+    return _mean_one(weights)
+
+
+WEIGHTING_NONE = 'none'
+WEIGHTING_TIER = 'tier'
+WEIGHTING_PLATEAU = 'plateau'
+WEIGHTING_SMOOTH = 'smooth'
+WEIGHTING_HUMP = 'hump'
+WEIGHTING_KINDS = (WEIGHTING_NONE, WEIGHTING_TIER, WEIGHTING_PLATEAU, WEIGHTING_SMOOTH, WEIGHTING_HUMP)
+
+
+class LossWeighting:
+    """Per-fixture training weights from actual points. Never from predictions."""
+
+    def __init__(self, kind=WEIGHTING_TIER, tier_mix=LOSS_TIER_MIX,
+                 alpha=SMOOTH_ALPHA, scale=SMOOTH_SCALE, power=SMOOTH_POWER, cap=None,
+                 hump_peak=HUMP_PEAK, hump_height=HUMP_HEIGHT, hump_power=HUMP_POWER,
+                 hump_width=HUMP_WIDTH):
+        kind = str(kind or WEIGHTING_TIER).strip().lower()
+        if kind not in WEIGHTING_KINDS:
+            raise ValueError('loss weighting must be one of %s' % ', '.join(WEIGHTING_KINDS))
+        if float(scale) <= 0:
+            raise ValueError('smooth weight scale must be positive')
+        self.kind = kind
+        self.tier_mix = float(tier_mix)
+        self.alpha = float(alpha)
+        self.scale = float(scale)
+        self.power = float(power)
+        self.cap = None if cap is None else float(cap)
+        self.hump_peak = float(hump_peak)
+        self.hump_height = float(hump_height)
+        self.hump_power = float(hump_power)
+        self.hump_width = float(hump_width)
+
+    def weights(self, points) -> numpy.ndarray:
+        if self.kind == WEIGHTING_NONE:
+            return numpy.ones(numpy.asarray(points).reshape(-1).shape, dtype=numpy.float32)
+        if self.kind == WEIGHTING_TIER:
+            return blended_tier_weights(points, mix=self.tier_mix)
+        if self.kind == WEIGHTING_PLATEAU:
+            return blended_tier_weights(points, mix=self.tier_mix, plateau=True)
+        if self.kind == WEIGHTING_HUMP:
+            return hump_weights(points, self.hump_peak, self.hump_height, self.hump_power, self.hump_width)
+        return smooth_weights(points, self.alpha, self.scale, self.power, self.cap)
+
+    def config(self) -> dict:
+        """Only the settings that change the weights, for cache hashes."""
+        if self.kind in (WEIGHTING_TIER, WEIGHTING_PLATEAU):
+            return {'kind': self.kind, 'tier_mix': self.tier_mix}
+        if self.kind == WEIGHTING_SMOOTH:
+            config = {'kind': self.kind, 'alpha': self.alpha, 'scale': self.scale, 'power': self.power}
+            if self.cap is not None:
+                config['cap'] = self.cap
+            return config
+        if self.kind == WEIGHTING_HUMP:
+            return {'kind': self.kind, 'peak': self.hump_peak, 'height': self.hump_height,
+                    'power': self.hump_power, 'width': self.hump_width}
+        return {'kind': self.kind}
+
+    def describe(self) -> str:
+        if self.kind == WEIGHTING_NONE:
+            return 'every fixture weighted equally'
+        if self.kind in (WEIGHTING_TIER, WEIGHTING_PLATEAU):
+            top = 3.0 if self.kind == WEIGHTING_PLATEAU else 7.0
+            return (
+                'fixture weights %s of the way from equal to the score bands '
+                '(blank x1, 3-5 x%.2f, 6-9 x%.2f, 10+ x%.2f, average weight 1)'
+                % (
+                    self.tier_mix,
+                    1.0 + self.tier_mix, 1.0 + 3.0 * self.tier_mix, 1.0 + top * self.tier_mix,
+                )
+            )
+        if self.kind == WEIGHTING_HUMP:
+            return ('hump fixture weights peaking at x%.2f on %g points, easing off for hauls '
+                    '(average weight 1)' % (1.0 + self.hump_height, self.hump_peak))
+        capped = '' if self.cap is None else ', capped at %g' % self.cap
+        return (
+            'smooth fixture weights 1 + %s * (points / %s)^%s%s (average weight 1)'
+            % (self.alpha, self.scale, self.power, capped)
+        )
 
 
 def score_by_tier(actual, predicted) -> dict:

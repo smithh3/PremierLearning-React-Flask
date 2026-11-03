@@ -725,6 +725,19 @@ class ChipStrategyTests(unittest.TestCase):
         )
         self.assertAlmostEqual(39.0, wc)
 
+    def test_a_pool_without_predicted_minutes_counts_low_points(self):
+        weeks = range(1, 8)
+        pool, current_ids, _ = make_pool(gameweeks=weeks)
+        state = make_state(pool, current_ids)
+        for player in pool.players.values():
+            player.minutes_by_gameweek = {}
+        for player_id in current_ids:
+            pool.players[player_id].points_by_gameweek[1] = 5.0
+        self.assertEqual(0, low_minute_owned_count(state, pool, 1))
+        for player_id in current_ids[:3]:
+            pool.players[player_id].points_by_gameweek[1] = 1.5
+        self.assertEqual(3, low_minute_owned_count(state, pool, 1))
+
     def test_early_wildcard_bonus_fades_linearly_to_gameweek_six(self):
         self.assertAlmostEqual(1.0, wc_early_delay_factor(3, earliest=3, until=6))
         self.assertAlmostEqual(2.0 / 3.0, wc_early_delay_factor(4, earliest=3, until=6))

@@ -7,22 +7,31 @@ from run_pipeline import _learning_argv
 
 class LiveDataUpdateTests(unittest.TestCase):
     def test_pipeline_always_prepends_update(self):
+        blend = ['--learning-v2', '--v2-blend']
         self.assertEqual(
-            ['--update', '--horizon-reps', '5'],
+            ['--update'] + blend + ['--horizon-reps', '5'],
             _learning_argv(['--horizon-reps', '5']),
         )
-        self.assertEqual(['--update'], _learning_argv([]))
+        self.assertEqual(['--update'] + blend, _learning_argv([]))
         self.assertEqual(
-            ['--update', '--horizon-reps', '5'],
+            blend + ['--update', '--horizon-reps', '5'],
             _learning_argv(['--update', '--horizon-reps', '5']),
         )
 
     def test_pipeline_honours_no_update(self):
         self.assertEqual(
-            ['--horizon-reps', '5'],
+            ['--learning-v2', '--v2-blend', '--horizon-reps', '5'],
             _learning_argv(['--horizon-reps', '5', '--no-update']),
         )
-        self.assertEqual([], _learning_argv(['-no-update']))
+        self.assertEqual(['--learning-v2', '--v2-blend'], _learning_argv(['-no-update']))
+
+    def test_v1_and_v1_recipes_keep_the_old_model(self):
+        self.assertEqual(
+            ['--update', '--horizon-reps', '5'],
+            _learning_argv(['--v1', '--horizon-reps', '5']),
+        )
+        self.assertEqual(['--update', '--h1-poisson'], _learning_argv(['--h1-poisson']))
+        self.assertEqual(['--update', '--learning-v2'], _learning_argv(['--learning-v2']))
 
     def test_update_flag_refreshes_even_when_last_event_matches(self):
         runner = Runner(update_data=False)

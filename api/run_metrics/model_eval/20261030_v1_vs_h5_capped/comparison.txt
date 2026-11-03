@@ -1,0 +1,40 @@
+Model evaluation against v1, seasons 25, 38 origins
+Scores are in noise units: 1.0 = one bootstrap standard deviation of that metric for v1.
+Positive is better than v1; v1 scores 0 by definition.
+Each metric is capped at +-3 before weighting; "uncapped" is the old total.
+
+model               total       95% interval   P(>0)  overall   future    calib  ranking  uncapped
+v1_h5_cal           +1.65       [1.41, 1.89]    1.00    +2.85    +1.39    +3.00    +0.41     +4.34
+v1_cal              +1.27       [1.06, 1.44]    1.00    +2.33    +1.06    +3.00    -0.09     +3.40
+v1_h5               +1.02       [0.84, 1.27]    1.00    +1.14    +0.40    +3.00    +0.52     +1.70
+
+What drove each score:
+  v1_h5_cal: helped most by overall +0.71, calibration +0.45
+    v1_h5 plus the same rolling linear calibration.
+  v1_cal: helped most by overall +0.58, calibration +0.45
+    v1 plus the same rolling linear calibration.
+  v1_h5: helped most by calibration +0.45, overall +0.29; regressed on 2B_predicted (-2.36 sd)
+    v1 as used live: a 5-GW total model, split across fixtures by the single-GW points.
+
+By season (total):
+  v1_h5_cal        25 +1.65
+  v1_cal           25 +1.27
+  v1_h5            25 +1.02
+
+Non-overlapping 5-GW origins only (sensitivity check, same sigmas):
+  v1_h5_cal        total +1.82, future +1.98, ranking +0.40
+  v1_cal           total +1.35, future +1.36, ranking -0.05
+  v1_h5            total +1.21, future +1.25, ranking +0.45
+
+Guardrail flags:
+  v1_h5_cal: overall_mae is 11.7% worse than v1
+  v1_cal: overall_mae is 11.5% worse than v1
+  v1_h5: overpredicts its own top_5pct picks by 3.76 points over 5 GWs
+  v1_h5: overpredicts its own top_5 picks by 6.42 points over 5 GWs
+
+Raw metrics (pooled):
+  model             overall_mse  overall_mae overall_bias    2A_actual 2A_predicted    2B_actual 2B_predicted calibration_ calibration_ spearman_sin spearman_fiv
+  v1                      7.615        1.653       -0.712       17.742        8.369        4.306        2.770        0.712        0.848        0.552        0.554
+  v1_h5_cal               7.116        1.845       -0.007       16.180        7.897        4.168        2.791        0.206        1.177        0.557        0.561
+  v1_cal                  7.206        1.842       -0.060       16.948        8.065        4.236        2.744        0.282        1.244        0.552        0.552
+  v1_h5                   7.415        1.691       -0.497       15.788        8.774        4.136        2.906        0.552        0.753        0.557        0.564

@@ -78,6 +78,17 @@ data "aws_iam_policy_document" "task" {
       ]
     }
   }
+
+  # UpdateSchedule re-sends the target, whose role is the events role. Without
+  # this the GW9 run (31 Oct 2026) got AccessDenied on iam:PassRole and could
+  # not book GW10, leaving the schedule on a past date.
+  dynamic "statement" {
+    for_each = var.enable_schedule ? [1] : []
+    content {
+      actions   = ["iam:PassRole"]
+      resources = aws_iam_role.events[*].arn
+    }
+  }
 }
 
 resource "aws_iam_role_policy" "task" {

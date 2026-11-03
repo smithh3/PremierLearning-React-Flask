@@ -1,0 +1,1079 @@
+ 
+Started 03/11/2026  0:55:21.04 
+
+=== v2_log_minbands_teams ===
+C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\venv\Scripts\python.exe -m simulation.model_eval build v2_log_minbands_teams --seasons 23,24,25
+Building v2_log_minbands_teams: --learning-v2 --train-once-per-season --points-reps 1 --v2-weighting none --v2-loss huber --v2-smear global --v2-minutes-head 0.1 --v2-minutes-target bands --model-plan simple_h1_teams --seasons 23,24,25 --name eval-v2_log_minbands_teams
+Using prediction set 36; existing season snapshots are kept
+Training one fixed learning_v2 simple_h1_teams model for the simulated season...
+ 
+Started 03/11/2026  0:56:29.64, 2025/26 only 
+
+=== v2_log_minbands_teams ===
+C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\venv\Scripts\python.exe -m simulation.model_eval build v2_log_minbands_teams --seasons 25
+Building v2_log_minbands_teams: --learning-v2 --train-once-per-season --points-reps 1 --v2-weighting none --v2-loss huber --v2-smear global --v2-minutes-head 0.1 --v2-minutes-target bands --model-plan simple_h1_teams --seasons 25 --name eval-v2_log_minbands_teams
+Using prediction set 36; existing season snapshots are kept
+Training one fixed learning_v2 simple_h1_teams model for the simulated season...
+  167327 train rows, 2119 players, 30 teams (vocab frozen)
+learning_v2 simple_h1_teams: loss=huber, every fixture weighted equally, optimizer=AdamW, epochs=500, train=133861, early stop on unweighted val RMSE, patience=20% of epochs run (at least 15, at most 40)
+learning_v2 minutes head: bands, training only, loss weight 0.1
+Epoch 1/500
+3347/3347 - 243s - loss: 0.4375 - points_loss: 0.1481 - minutes_loss: 0.6292 - points_orig_rmse: 2.1755 - points_orig_mae: 1.0400 - val_loss: 0.2268 - val_points_loss: 0.1472 - val_minutes_loss: 0.6177 - val_points_orig_rmse: 2.0324 - val_points_orig_mae: 1.0745 - lr: 5.0000e-04 - 243s/epoch - 73ms/step
+Epoch 2/500
+3347/3347 - 230s - loss: 0.2054 - points_loss: 0.1336 - minutes_loss: 0.5769 - points_orig_rmse: 2.1228 - points_orig_mae: 0.9901 - val_loss: 0.1995 - val_points_loss: 0.1308 - val_minutes_loss: 0.5675 - val_points_orig_rmse: 2.0542 - val_points_orig_mae: 0.9641 - lr: 5.0000e-04 - 230s/epoch - 69ms/step
+Epoch 3/500
+3347/3347 - 233s - loss: 0.1945 - points_loss: 0.1279 - minutes_loss: 0.5520 - points_orig_rmse: 2.0986 - points_orig_mae: 0.9717 - val_loss: 0.1962 - val_points_loss: 0.1289 - val_minutes_loss: 0.5673 - val_points_orig_rmse: 2.0878 - val_points_orig_mae: 0.9409 - lr: 5.0000e-04 - 233s/epoch - 70ms/step
+Epoch 4/500
+3347/3347 - 237s - loss: 0.1904 - points_loss: 0.1258 - minutes_loss: 0.5421 - points_orig_rmse: 2.0904 - points_orig_mae: 0.9656 - val_loss: 0.2011 - val_points_loss: 0.1347 - val_minutes_loss: 0.5635 - val_points_orig_rmse: 2.1702 - val_points_orig_mae: 0.9399 - lr: 5.0000e-04 - 237s/epoch - 71ms/step
+Epoch 5/500
+3347/3347 - 232s - loss: 0.1879 - points_loss: 0.1246 - minutes_loss: 0.5360 - points_orig_rmse: 2.0843 - points_orig_mae: 0.9591 - val_loss: 0.1892 - val_points_loss: 0.1260 - val_minutes_loss: 0.5374 - val_points_orig_rmse: 2.0452 - val_points_orig_mae: 0.9476 - lr: 5.0000e-04 - 232s/epoch - 69ms/step
+Epoch 6/500
+3347/3347 - 234s - loss: 0.1863 - points_loss: 0.1240 - minutes_loss: 0.5337 - points_orig_rmse: 2.0802 - points_orig_mae: 0.9556 - val_loss: 0.1883 - val_points_loss: 0.1257 - val_minutes_loss: 0.5409 - val_points_orig_rmse: 2.0595 - val_points_orig_mae: 0.9358 - lr: 5.0000e-04 - 234s/epoch - 70ms/step
+Epoch 7/500
+3347/3347 - 236s - loss: 0.1854 - points_loss: 0.1237 - minutes_loss: 0.5321 - points_orig_rmse: 2.0800 - points_orig_mae: 0.9552 - val_loss: 0.1884 - val_points_loss: 0.1256 - val_minutes_loss: 0.5463 - val_points_orig_rmse: 2.0809 - val_points_orig_mae: 0.9526 - lr: 5.0000e-04 - 236s/epoch - 71ms/step
+Epoch 8/500
+3347/3347 - 234s - loss: 0.1842 - points_loss: 0.1231 - minutes_loss: 0.5304 - points_orig_rmse: 2.0762 - points_orig_mae: 0.9535 - val_loss: 0.1871 - val_points_loss: 0.1257 - val_minutes_loss: 0.5355 - val_points_orig_rmse: 2.0323 - val_points_orig_mae: 0.9472 - lr: 5.0000e-04 - 234s/epoch - 70ms/step
+Epoch 9/500
+3347/3347 - 241s - loss: 0.1839 - points_loss: 0.1230 - minutes_loss: 0.5304 - points_orig_rmse: 2.0769 - points_orig_mae: 0.9540 - val_loss: 0.1944 - val_points_loss: 0.1298 - val_minutes_loss: 0.5687 - val_points_orig_rmse: 2.0426 - val_points_orig_mae: 0.9484 - lr: 5.0000e-04 - 241s/epoch - 72ms/step
+Epoch 10/500
+3347/3347 - 238s - loss: 0.1795 - points_loss: 0.1203 - minutes_loss: 0.5199 - points_orig_rmse: 2.0618 - points_orig_mae: 0.9445 - val_loss: 0.1839 - val_points_loss: 0.1237 - val_minutes_loss: 0.5309 - val_points_orig_rmse: 2.0323 - val_points_orig_mae: 0.9505 - lr: 1.5000e-04 - 238s/epoch - 71ms/step
+Epoch 11/500
+3347/3347 - 238s - loss: 0.1789 - points_loss: 0.1201 - minutes_loss: 0.5185 - points_orig_rmse: 2.0615 - points_orig_mae: 0.9434 - val_loss: 0.1843 - val_points_loss: 0.1242 - val_minutes_loss: 0.5327 - val_points_orig_rmse: 2.0369 - val_points_orig_mae: 0.9444 - lr: 1.5000e-04 - 238s/epoch - 71ms/step
+Epoch 12/500
+3347/3347 - 235s - loss: 0.1784 - points_loss: 0.1199 - minutes_loss: 0.5184 - points_orig_rmse: 2.0593 - points_orig_mae: 0.9434 - val_loss: 0.1842 - val_points_loss: 0.1242 - val_minutes_loss: 0.5343 - val_points_orig_rmse: 2.0405 - val_points_orig_mae: 0.9571 - lr: 1.5000e-04 - 235s/epoch - 70ms/step
+Epoch 13/500
+3347/3347 - 233s - loss: 0.1782 - points_loss: 0.1197 - minutes_loss: 0.5182 - points_orig_rmse: 2.0601 - points_orig_mae: 0.9428 - val_loss: 0.1839 - val_points_loss: 0.1241 - val_minutes_loss: 0.5341 - val_points_orig_rmse: 2.0313 - val_points_orig_mae: 0.9587 - lr: 1.5000e-04 - 233s/epoch - 70ms/step
+Epoch 14/500
+3347/3347 - 246s - loss: 0.1777 - points_loss: 0.1195 - minutes_loss: 0.5174 - points_orig_rmse: 2.0579 - points_orig_mae: 0.9418 - val_loss: 0.1828 - val_points_loss: 0.1233 - val_minutes_loss: 0.5317 - val_points_orig_rmse: 2.0421 - val_points_orig_mae: 0.9435 - lr: 1.5000e-04 - 246s/epoch - 74ms/step
+Epoch 15/500
+3347/3347 - 234s - loss: 0.1776 - points_loss: 0.1195 - minutes_loss: 0.5176 - points_orig_rmse: 2.0588 - points_orig_mae: 0.9422 - val_loss: 0.1859 - val_points_loss: 0.1261 - val_minutes_loss: 0.5351 - val_points_orig_rmse: 2.0016 - val_points_orig_mae: 0.9714 - lr: 1.5000e-04 - 234s/epoch - 70ms/step
+Epoch 16/500
+3347/3347 - 236s - loss: 0.1774 - points_loss: 0.1195 - minutes_loss: 0.5170 - points_orig_rmse: 2.0565 - points_orig_mae: 0.9414 - val_loss: 0.1822 - val_points_loss: 0.1236 - val_minutes_loss: 0.5247 - val_points_orig_rmse: 2.0342 - val_points_orig_mae: 0.9459 - lr: 1.5000e-04 - 236s/epoch - 70ms/step
+Epoch 17/500
+3347/3347 - 235s - loss: 0.1772 - points_loss: 0.1193 - minutes_loss: 0.5169 - points_orig_rmse: 2.0556 - points_orig_mae: 0.9412 - val_loss: 0.1823 - val_points_loss: 0.1236 - val_minutes_loss: 0.5271 - val_points_orig_rmse: 2.0609 - val_points_orig_mae: 0.9409 - lr: 1.5000e-04 - 235s/epoch - 70ms/step
+Epoch 18/500
+3347/3347 - 238s - loss: 0.1771 - points_loss: 0.1193 - minutes_loss: 0.5167 - points_orig_rmse: 2.0564 - points_orig_mae: 0.9410 - val_loss: 0.1820 - val_points_loss: 0.1230 - val_minutes_loss: 0.5296 - val_points_orig_rmse: 2.0608 - val_points_orig_mae: 0.9331 - lr: 1.5000e-04 - 238s/epoch - 71ms/step
+Epoch 19/500
+3347/3347 - 237s - loss: 0.1770 - points_loss: 0.1193 - minutes_loss: 0.5163 - points_orig_rmse: 2.0557 - points_orig_mae: 0.9415 - val_loss: 0.1819 - val_points_loss: 0.1233 - val_minutes_loss: 0.5258 - val_points_orig_rmse: 2.0326 - val_points_orig_mae: 0.9420 - lr: 1.5000e-04 - 237s/epoch - 71ms/step
+Epoch 20/500
+3347/3347 - 235s - loss: 0.1767 - points_loss: 0.1190 - minutes_loss: 0.5158 - points_orig_rmse: 2.0546 - points_orig_mae: 0.9410 - val_loss: 0.1829 - val_points_loss: 0.1240 - val_minutes_loss: 0.5292 - val_points_orig_rmse: 2.0422 - val_points_orig_mae: 0.9355 - lr: 1.5000e-04 - 235s/epoch - 70ms/step
+Epoch 21/500
+3347/3347 - 239s - loss: 0.1767 - points_loss: 0.1191 - minutes_loss: 0.5156 - points_orig_rmse: 2.0550 - points_orig_mae: 0.9408 - val_loss: 0.1809 - val_points_loss: 0.1225 - val_minutes_loss: 0.5254 - val_points_orig_rmse: 2.0500 - val_points_orig_mae: 0.9337 - lr: 1.5000e-04 - 239s/epoch - 71ms/step
+Epoch 22/500
+3347/3347 - 237s - loss: 0.1765 - points_loss: 0.1190 - minutes_loss: 0.5150 - points_orig_rmse: 2.0549 - points_orig_mae: 0.9405 - val_loss: 0.1817 - val_points_loss: 0.1229 - val_minutes_loss: 0.5301 - val_points_orig_rmse: 2.0706 - val_points_orig_mae: 0.9323 - lr: 1.5000e-04 - 237s/epoch - 71ms/step
+Epoch 23/500
+3347/3347 - 236s - loss: 0.1763 - points_loss: 0.1189 - minutes_loss: 0.5150 - points_orig_rmse: 2.0544 - points_orig_mae: 0.9392 - val_loss: 0.1820 - val_points_loss: 0.1228 - val_minutes_loss: 0.5330 - val_points_orig_rmse: 2.0460 - val_points_orig_mae: 0.9473 - lr: 1.5000e-04 - 236s/epoch - 71ms/step
+Epoch 24/500
+3347/3347 - 237s - loss: 0.1746 - points_loss: 0.1176 - minutes_loss: 0.5113 - points_orig_rmse: 2.0468 - points_orig_mae: 0.9359 - val_loss: 0.1809 - val_points_loss: 0.1223 - val_minutes_loss: 0.5276 - val_points_orig_rmse: 2.0417 - val_points_orig_mae: 0.9345 - lr: 4.5000e-05 - 237s/epoch - 71ms/step
+Epoch 25/500
+3347/3347 - 234s - loss: 0.1745 - points_loss: 0.1175 - minutes_loss: 0.5110 - points_orig_rmse: 2.0471 - points_orig_mae: 0.9348 - val_loss: 0.1811 - val_points_loss: 0.1228 - val_minutes_loss: 0.5253 - val_points_orig_rmse: 2.0351 - val_points_orig_mae: 0.9374 - lr: 4.5000e-05 - 234s/epoch - 70ms/step
+Epoch 26/500
+3347/3347 - 237s - loss: 0.1743 - points_loss: 0.1174 - minutes_loss: 0.5107 - points_orig_rmse: 2.0451 - points_orig_mae: 0.9345 - val_loss: 0.1807 - val_points_loss: 0.1226 - val_minutes_loss: 0.5236 - val_points_orig_rmse: 2.0384 - val_points_orig_mae: 0.9391 - lr: 4.5000e-05 - 237s/epoch - 71ms/step
+Epoch 27/500
+3347/3347 - 238s - loss: 0.1742 - points_loss: 0.1174 - minutes_loss: 0.5098 - points_orig_rmse: 2.0461 - points_orig_mae: 0.9344 - val_loss: 0.1815 - val_points_loss: 0.1232 - val_minutes_loss: 0.5256 - val_points_orig_rmse: 2.0228 - val_points_orig_mae: 0.9472 - lr: 4.5000e-05 - 238s/epoch - 71ms/step
+Epoch 28/500
+3347/3347 - 234s - loss: 0.1741 - points_loss: 0.1174 - minutes_loss: 0.5098 - points_orig_rmse: 2.0451 - points_orig_mae: 0.9351 - val_loss: 0.1807 - val_points_loss: 0.1225 - val_minutes_loss: 0.5249 - val_points_orig_rmse: 2.0435 - val_points_orig_mae: 0.9366 - lr: 4.5000e-05 - 234s/epoch - 70ms/step
+Epoch 29/500
+3347/3347 - 235s - loss: 0.1741 - points_loss: 0.1174 - minutes_loss: 0.5099 - points_orig_rmse: 2.0459 - points_orig_mae: 0.9340 - val_loss: 0.1814 - val_points_loss: 0.1229 - val_minutes_loss: 0.5272 - val_points_orig_rmse: 2.0255 - val_points_orig_mae: 0.9453 - lr: 4.5000e-05 - 235s/epoch - 70ms/step
+Epoch 30/500
+learning_v2 early stop at epoch 30: best validation at epoch 15 (patience is 20% of epochs run, at least 15 and at most 40)
+3347/3347 - 233s - loss: 0.1740 - points_loss: 0.1173 - minutes_loss: 0.5098 - points_orig_rmse: 2.0452 - points_orig_mae: 0.9340 - val_loss: 0.1814 - val_points_loss: 0.1229 - val_minutes_loss: 0.5291 - val_points_orig_rmse: 2.0210 - val_points_orig_mae: 0.9498 - lr: 4.5000e-05 - 233s/epoch - 70ms/step
+{'test_loss': 0.1856669932603836, 'test_metrics': [0.12638971209526062, 0.5300515294075012, 2.049830436706543, 0.9849386811256409]}
+learning_v2 smearing (global, 33466 held-out rows): S=1.093; by level 0.0->1.00, 0.1->1.04, 0.5->1.16, 1.6->1.14, 3.0->1.13
+Held-out points by actual score (weights: low 0-2 x1, medium 3-5 x2, high 6-9 x4, very high 10+ x8)
+  weighted MAE 2.324    unweighted MAE 1.075    (lower is better, bias = predicted - actual)
+  tier             n     MAE   actual  predicted     bias
+  low          28928   0.640     0.44       0.98    +0.54
+  medium        1792   1.437     3.74       2.65    -1.09
+  high          2123   4.240     6.98       2.74    -4.24
+  very_high      623   9.474    12.48       3.01    -9.47
+Held-out points by recent player level (mean points per gameweek over the previous 5, at least 3 gameweeks)
+  same bands: low under 3, medium 3-5, high 6-9, very high 10+
+  rows 31777, skipped 1689 with too little history    unweighted MAE 1.087
+  tier             n     MAE   actual  predicted     bias     form
+  low          25961   0.805     0.85       0.85    -0.00     0.69
+  medium        4946   2.240     2.99       2.86    -0.13     4.04
+  high           826   2.898     4.03       3.70    -0.33     7.05
+  very_high       44   3.552     5.34       4.29    -1.05    11.11
+
+Building prediction set 36: 25/26 GW1
+Persisted 18316 player-fixture predictions
+
+Building prediction set 36: 25/26 GW2
+Persisted 19573 player-fixture predictions
+
+Building prediction set 36: 25/26 GW3
+Persisted 19620 player-fixture predictions
+
+Building prediction set 36: 25/26 GW4
+Persisted 20230 player-fixture predictions
+
+Building prediction set 36: 25/26 GW5
+Persisted 19856 player-fixture predictions
+
+Building prediction set 36: 25/26 GW6
+Persisted 15411 player-fixture predictions
+
+Building prediction set 36: 25/26 GW7
+Persisted 15008 player-fixture predictions
+
+Building prediction set 36: 25/26 GW8
+Persisted 14384 player-fixture predictions
+
+Building prediction set 36: 25/26 GW9
+Persisted 13800 player-fixture predictions
+
+Building prediction set 36: 25/26 GW10
+Persisted 13485 player-fixture predictions
+
+Building prediction set 36: 25/26 GW11
+Persisted 13132 player-fixture predictions
+
+Building prediction set 36: 25/26 GW12
+Persisted 12609 player-fixture predictions
+
+Building prediction set 36: 25/26 GW13
+Persisted 12116 player-fixture predictions
+
+Building prediction set 36: 25/26 GW14
+Persisted 11500 player-fixture predictions
+
+Building prediction set 36: 25/26 GW15
+Persisted 11088 player-fixture predictions
+
+Building prediction set 36: 25/26 GW16
+Persisted 10580 player-fixture predictions
+
+Building prediction set 36: 25/26 GW17
+Persisted 10164 player-fixture predictions
+
+Building prediction set 36: 25/26 GW18
+Persisted 9891 player-fixture predictions
+
+Building prediction set 36: 25/26 GW19
+Persisted 9520 player-fixture predictions
+
+Building prediction set 36: 25/26 GW20
+Persisted 9120 player-fixture predictions
+
+Building prediction set 36: 25/26 GW21
+Persisted 8748 player-fixture predictions
+
+Building prediction set 36: 25/26 GW22
+Persisted 8381 player-fixture predictions
+
+Building prediction set 36: 25/26 GW23
+Persisted 7888 player-fixture predictions
+
+Building prediction set 36: 25/26 GW24
+Persisted 7350 player-fixture predictions
+
+Building prediction set 36: 25/26 GW25
+Persisted 6860 player-fixture predictions
+
+Building prediction set 36: 25/26 GW26
+Persisted 6383 player-fixture predictions
+
+Building prediction set 36: 25/26 GW27
+Persisted 5794 player-fixture predictions
+
+Building prediction set 36: 25/26 GW28
+Persisted 5307 player-fixture predictions
+
+Building prediction set 36: 25/26 GW29
+Persisted 4840 player-fixture predictions
+
+Building prediction set 36: 25/26 GW30
+Persisted 4342 player-fixture predictions
+
+Building prediction set 36: 25/26 GW31
+Persisted 3878 player-fixture predictions
+
+Building prediction set 36: 25/26 GW32
+Persisted 3487 player-fixture predictions
+
+Building prediction set 36: 25/26 GW33
+Persisted 3015 player-fixture predictions
+
+Building prediction set 36: 25/26 GW34
+Persisted 2361 player-fixture predictions
+
+Building prediction set 36: 25/26 GW35
+Persisted 1997 player-fixture predictions
+
+Building prediction set 36: 25/26 GW36
+Persisted 1516 player-fixture predictions
+
+Building prediction set 36: 25/26 GW37
+Persisted 984 player-fixture predictions
+
+Building prediction set 36: 25/26 GW38
+Persisted 493 player-fixture predictions
+Prediction set ID: 36
+{
+  "prediction_set_id": 36,
+  "expected_snapshots": 38,
+  "complete_snapshots": 38,
+  "missing": [],
+  "failed_or_empty": []
+}
+Recorded v2_log_minbands_teams -> prediction set 36 in C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\run_metrics\model_eval\experiments.json
+v2_log_minbands_teams_blend25: set 37 {"25": {"snapshots": 38, "rows": 363027, "minutes_share": 0.0}}
+Evaluating seasons 25
+  v2_log_minbands_blend25: set eval-v2_log_minbands_blend25 is 35
+  v2_log_minbands_teams_blend25: set eval-v2_log_minbands_teams_blend25 is 37
+  v1: prediction set 7, scored as optimiser
+  v1_h5: prediction set 29, scored as optimiser
+  v2_log: prediction set 21, scored as raw_points
+  v2_log_h5: prediction set 28, scored as raw_points
+  v2_log_minbands: prediction set 32, scored as raw_points
+  v2_log_minbands_teams: prediction set 36, scored as raw_points
+  v2_log_minbands_blend25: prediction set 35, scored as raw_points
+  v2_log_minbands_teams_blend25: prediction set 37, scored as raw_points
+  season 25: 38 origins, 401.3 eligible players on average
+Deriving v1_cal from v1 (rolling linear calibration)
+Deriving v1_h5_cal from v1_h5 (rolling linear calibration)
+Deriving v2_log_cal from v2_log (rolling linear calibration)
+Deriving v2_log_h5_cal from v2_log_h5 (rolling linear calibration)
+Scoring 38 units for 12 models...
+Bootstrapping 200 resamples (blocks of 5 origins)...
+Model evaluation against v1, seasons 25, 38 origins
+Scores are in noise units: 1.0 = one bootstrap standard deviation of that metric for v1.
+Positive is better than v1; v1 scores 0 by definition.
+Each metric is capped at +-3 before weighting; "uncapped" is the old total.
+
+model               total       95% interval   P(>0)  overall   future    calib  ranking fixtures  uncapped
+v2_log_minbands_teams_blend25    +1.82       [1.30, 2.11]    1.00    +3.00    +1.44    +3.00    +1.70    -0.17     +3.48
+v2_log_minbands_teams    +1.79       [1.21, 2.13]    1.00    +3.00    +1.56    +3.00    +1.56    -0.29     +3.35
+v2_log_minbands_blend25    +1.60       [1.00, 1.99]    1.00    +3.00    +1.21    +3.00    +1.55    -0.97     +3.21
+v2_log_minbands     +1.53       [0.91, 1.96]    1.00    +2.99    +1.20    +3.00    +1.38    -1.13     +3.03
+v1_h5_cal           +1.48       [1.34, 1.64]    1.00    +3.00    +1.58    +3.00    +0.54    -0.46     +3.73
+v2_log_cal          +1.40       [0.88, 1.81]    1.00    +3.00    +1.48    +3.00    +0.63    -1.03     +3.97
+v2_log              +1.31       [0.72, 1.79]    1.00    +2.70    +1.06    +3.00    +0.76    -0.78     +2.70
+v1_cal              +1.19       [1.08, 1.33]    1.00    +2.66    +1.29    +3.00    +0.03    -0.54     +3.12
+v1_h5               +0.87       [0.70, 1.09]    1.00    +1.14    +0.40    +3.00    +0.52    -0.02     +1.46
+v2_log_h5_cal       +0.63       [0.16, 1.12]    1.00    +2.18    +1.33    +3.00    -1.20    -1.30     +3.10
+v2_log_h5           +0.44      [-0.03, 1.06]    0.95    +1.80    +0.68    +3.00    -1.34    -0.83     +2.29
+
+What drove each score:
+  v2_log_minbands_teams_blend25: helped most by overall +0.66, calibration +0.39
+  v2_log_minbands_teams: helped most by overall +0.66, calibration +0.39
+    v2_log_minbands plus 3-season team/opponent history transformers, fading xG averages, team time blocks.
+  v2_log_minbands_blend25: helped most by overall +0.66, calibration +0.39
+  v2_log_minbands: helped most by overall +0.66, calibration +0.39; regressed on fixture_swing (-1.13 sd)
+    v2_log plus a training-only cross-entropy head on minutes bands (0, 1-59, 60+).
+  v1_h5_cal: helped most by overall +0.66, calibration +0.39
+    v1_h5 plus the same rolling linear calibration.
+  v2_log_cal: helped most by overall +0.66, calibration +0.39; regressed on fixture_swing (-1.03 sd)
+    v2_log plus the same rolling linear calibration.
+  v2_log: helped most by overall +0.59, calibration +0.39
+    v2, no weights, trained on log1p points, one smearing factor (level only).
+  v1_cal: helped most by overall +0.58, calibration +0.39
+    v1 plus the same rolling linear calibration.
+  v1_h5: helped most by calibration +0.39, overall +0.25; regressed on 2B_predicted (-2.36 sd)
+    v1 as used live: a 5-GW total model, split across fixtures by the single-GW points.
+  v2_log_h5_cal: helped most by overall +0.48, calibration +0.39; regressed on single_gw_rank (-2.38 sd), fixture_swing (-1.30 sd)
+    v2_log_h5 plus the same rolling linear calibration.
+  v2_log_h5: helped most by overall +0.40, calibration +0.39; regressed on 2B_predicted (-1.22 sd), single_gw_rank (-2.88 sd)
+    v2_log plus a 5-GW net on points per fixture; window totals split by h1 shares.
+
+By season (total):
+  v2_log_minbands_teams_blend25 25 +1.82
+  v2_log_minbands_teams 25 +1.79
+  v2_log_minbands_blend25 25 +1.60
+  v2_log_minbands  25 +1.53
+  v1_h5_cal        25 +1.48
+  v2_log_cal       25 +1.40
+  v2_log           25 +1.31
+  v1_cal           25 +1.19
+  v1_h5            25 +0.87
+  v2_log_h5_cal    25 +0.63
+  v2_log_h5        25 +0.44
+
+Non-overlapping 5-GW origins only (sensitivity check, same sigmas):
+  v2_log_minbands_teams_blend25 total +1.89, future +2.08, ranking +1.46
+  v2_log_minbands_teams total +1.82, future +2.12, ranking +1.22
+  v2_log_minbands_blend25 total +1.78, future +1.97, ranking +1.58
+  v2_log_minbands  total +1.64, future +1.65, ranking +1.40
+  v1_h5_cal        total +1.56, future +2.03, ranking +0.48
+  v2_log_cal       total +1.53, future +2.15, ranking +0.61
+  v2_log           total +1.49, future +1.68, ranking +0.73
+  v1_cal           total +1.23, future +1.34, ranking +0.03
+  v1_h5            total +1.06, future +1.25, ranking +0.45
+  v2_log_h5_cal    total +0.95, future +2.03, ranking -1.21
+  v2_log_h5        total +0.88, future +1.78, ranking -1.30
+
+Guardrail flags:
+  v1_h5_cal: overall_mae is 6.6% worse than v1
+  v2_log_cal: overall_mae is 6.7% worse than v1
+  v1_cal: overall_mae is 6.5% worse than v1
+  v1_h5: overpredicts its own top_5pct picks by 3.76 points over 5 GWs
+  v1_h5: overpredicts its own top_5 picks by 6.42 points over 5 GWs
+  v2_log_h5_cal: overall_mae is 10.4% worse than v1
+  v2_log_h5: overall_mae is 6.4% worse than v1
+  v2_log_h5: overpredicts its own top_5 picks by 3.66 points over 5 GWs
+
+Raw metrics (pooled):
+  model             overall_mse  overall_mae overall_bias    2A_actual 2A_predicted    2B_actual 2B_predicted calibration_ calibration_ spearman_sin spearman_fiv
+  v1                      7.615        1.653       -0.712       17.742        8.369        4.306        2.770        0.712        0.848        0.552        0.554
+  v2_log_minbands_teams_blend25        7.046        1.683       -0.329       16.915        7.873        4.192        2.702        0.329        1.081        0.566        0.589
+  v2_log_minbands_teams        7.058        1.672       -0.345       16.900        7.795        4.192        2.687        0.345        1.031        0.569        0.583
+  v2_log_minbands_blend25        7.076        1.690       -0.331       17.112        7.894        4.211        2.709        0.331        1.095        0.563        0.587
+  v2_log_minbands         7.091        1.681       -0.348       17.161        7.768        4.218        2.724        0.348        1.050        0.565        0.581
+  v1_h5_cal               7.068        1.762       -0.123       16.242        7.812        4.154        2.759        0.225        0.986        0.563        0.560
+  v2_log_cal              7.053        1.764       -0.128       16.375        7.871        4.151        2.778        0.160        1.017        0.558        0.567
+  v2_log                  7.142        1.685       -0.370       17.267        7.808        4.224        2.730        0.370        1.054        0.558        0.571
+  v1_cal                  7.149        1.760       -0.170       16.955        8.014        4.216        2.696        0.265        1.018        0.559        0.550
+  v1_h5                   7.415        1.691       -0.497       15.788        8.774        4.136        2.906        0.552        0.753        0.557        0.564
+  v2_log_h5_cal           7.234        1.825       -0.079       16.792        7.807        4.206        2.770        0.163        1.109        0.515        0.554
+  v2_log_h5               7.300        1.758       -0.281       17.033        8.062        4.223        2.840        0.281        1.018        0.508        0.557
+
+Fixture swings: players who played 60+ minutes in each of the next five gameweeks,
+one fixture each. corr: predicted rises and falls vs real ones (higher is better).
+slope: real swing per point of predicted swing (1 is right; above 1, the model's
+swings are too small). mse: error on the swings.
+  model                    corr        slope          mse            n
+  v1                      0.150        1.246        7.996        14885
+  v2_log_minbands_teams_blend25        0.146        1.767        8.031        14885
+  v2_log_minbands_teams        0.144        1.640        8.029        14885
+  v2_log_minbands_blend25        0.128        1.793        8.064        14885
+  v2_log_minbands         0.125        1.791        8.070        14885
+  v1_h5_cal               0.140        1.723        8.041        14885
+  v2_log_cal              0.127        1.737        8.064        14885
+  v2_log                  0.133        1.679        8.052        14885
+  v1_cal                  0.138        1.906        8.052        14885
+  v1_h5                   0.150        1.068        7.990        14885
+  v2_log_h5_cal           0.121        1.874        8.079        14885
+  v2_log_h5               0.132        1.625        8.052        14885
+
+Wrote C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\run_metrics\model_eval\teams_1
+Done 1/3 v2_log_minbands_teams 03/11/2026  3:27:54.69 
+
+=== v2_log_minbands_teams_pblocks ===
+C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\venv\Scripts\python.exe -m simulation.model_eval build v2_log_minbands_teams_pblocks --seasons 25
+Building v2_log_minbands_teams_pblocks: --learning-v2 --train-once-per-season --points-reps 1 --v2-weighting none --v2-loss huber --v2-smear global --v2-minutes-head 0.1 --v2-minutes-target bands --model-plan simple_h1_teams_pblocks --seasons 25 --name eval-v2_log_minbands_teams_pblocks
+Using prediction set 38; existing season snapshots are kept
+Training one fixed learning_v2 simple_h1_teams_pblocks model for the simulated season...
+  167327 train rows, 2119 players, 30 teams (vocab frozen)
+learning_v2 simple_h1_teams_pblocks: loss=huber, every fixture weighted equally, optimizer=AdamW, epochs=500, train=133861, early stop on unweighted val RMSE, patience=20% of epochs run (at least 15, at most 40)
+learning_v2 minutes head: bands, training only, loss weight 0.1
+Epoch 1/500
+3347/3347 - 243s - loss: 0.4373 - points_loss: 0.1479 - minutes_loss: 0.6287 - points_orig_rmse: 2.1742 - points_orig_mae: 1.0394 - val_loss: 0.2277 - val_points_loss: 0.1478 - val_minutes_loss: 0.6170 - val_points_orig_rmse: 2.0314 - val_points_orig_mae: 1.0774 - lr: 5.0000e-04 - 243s/epoch - 73ms/step
+Epoch 2/500
+3347/3347 - 261s - loss: 0.2059 - points_loss: 0.1336 - minutes_loss: 0.5762 - points_orig_rmse: 2.1224 - points_orig_mae: 0.9900 - val_loss: 0.1994 - val_points_loss: 0.1306 - val_minutes_loss: 0.5653 - val_points_orig_rmse: 2.0534 - val_points_orig_mae: 0.9634 - lr: 5.0000e-04 - 261s/epoch - 78ms/step
+Epoch 3/500
+3347/3347 - 250s - loss: 0.1948 - points_loss: 0.1278 - minutes_loss: 0.5512 - points_orig_rmse: 2.0981 - points_orig_mae: 0.9711 - val_loss: 0.1958 - val_points_loss: 0.1285 - val_minutes_loss: 0.5638 - val_points_orig_rmse: 2.0846 - val_points_orig_mae: 0.9418 - lr: 5.0000e-04 - 250s/epoch - 75ms/step
+Epoch 4/500
+3347/3347 - 232s - loss: 0.1906 - points_loss: 0.1256 - minutes_loss: 0.5414 - points_orig_rmse: 2.0894 - points_orig_mae: 0.9646 - val_loss: 0.2002 - val_points_loss: 0.1338 - val_minutes_loss: 0.5596 - val_points_orig_rmse: 2.1643 - val_points_orig_mae: 0.9375 - lr: 5.0000e-04 - 232s/epoch - 69ms/step
+Epoch 5/500
+3347/3347 - 232s - loss: 0.1884 - points_loss: 0.1245 - minutes_loss: 0.5357 - points_orig_rmse: 2.0843 - points_orig_mae: 0.9594 - val_loss: 0.1896 - val_points_loss: 0.1262 - val_minutes_loss: 0.5380 - val_points_orig_rmse: 2.0482 - val_points_orig_mae: 0.9473 - lr: 5.0000e-04 - 232s/epoch - 69ms/step
+Epoch 6/500
+3347/3347 - 232s - loss: 0.1868 - points_loss: 0.1239 - minutes_loss: 0.5339 - points_orig_rmse: 2.0801 - points_orig_mae: 0.9557 - val_loss: 0.1890 - val_points_loss: 0.1259 - val_minutes_loss: 0.5405 - val_points_orig_rmse: 2.0581 - val_points_orig_mae: 0.9364 - lr: 5.0000e-04 - 232s/epoch - 69ms/step
+Epoch 7/500
+3347/3347 - 234s - loss: 0.1859 - points_loss: 0.1237 - minutes_loss: 0.5322 - points_orig_rmse: 2.0798 - points_orig_mae: 0.9552 - val_loss: 0.1896 - val_points_loss: 0.1259 - val_minutes_loss: 0.5511 - val_points_orig_rmse: 2.0791 - val_points_orig_mae: 0.9568 - lr: 5.0000e-04 - 234s/epoch - 70ms/step
+Epoch 8/500
+3347/3347 - 232s - loss: 0.1847 - points_loss: 0.1231 - minutes_loss: 0.5301 - points_orig_rmse: 2.0759 - points_orig_mae: 0.9537 - val_loss: 0.1873 - val_points_loss: 0.1256 - val_minutes_loss: 0.5341 - val_points_orig_rmse: 2.0297 - val_points_orig_mae: 0.9486 - lr: 5.0000e-04 - 232s/epoch - 69ms/step
+Epoch 9/500
+3347/3347 - 233s - loss: 0.1844 - points_loss: 0.1230 - minutes_loss: 0.5300 - points_orig_rmse: 2.0764 - points_orig_mae: 0.9537 - val_loss: 0.1952 - val_points_loss: 0.1296 - val_minutes_loss: 0.5725 - val_points_orig_rmse: 2.0432 - val_points_orig_mae: 0.9456 - lr: 5.0000e-04 - 233s/epoch - 69ms/step
+Epoch 10/500
+3347/3347 - 234s - loss: 0.1838 - points_loss: 0.1228 - minutes_loss: 0.5288 - points_orig_rmse: 2.0745 - points_orig_mae: 0.9529 - val_loss: 0.1875 - val_points_loss: 0.1256 - val_minutes_loss: 0.5398 - val_points_orig_rmse: 2.0529 - val_points_orig_mae: 0.9449 - lr: 5.0000e-04 - 234s/epoch - 70ms/step
+Epoch 11/500
+3347/3347 - 237s - loss: 0.1833 - points_loss: 0.1226 - minutes_loss: 0.5276 - points_orig_rmse: 2.0744 - points_orig_mae: 0.9522 - val_loss: 0.1862 - val_points_loss: 0.1250 - val_minutes_loss: 0.5345 - val_points_orig_rmse: 2.0319 - val_points_orig_mae: 0.9668 - lr: 5.0000e-04 - 237s/epoch - 71ms/step
+Epoch 12/500
+3347/3347 - 229s - loss: 0.1826 - points_loss: 0.1222 - minutes_loss: 0.5266 - points_orig_rmse: 2.0719 - points_orig_mae: 0.9514 - val_loss: 0.1864 - val_points_loss: 0.1249 - val_minutes_loss: 0.5399 - val_points_orig_rmse: 2.0346 - val_points_orig_mae: 0.9642 - lr: 5.0000e-04 - 229s/epoch - 68ms/step
+Epoch 13/500
+3347/3347 - 232s - loss: 0.1819 - points_loss: 0.1218 - minutes_loss: 0.5254 - points_orig_rmse: 2.0709 - points_orig_mae: 0.9510 - val_loss: 0.1854 - val_points_loss: 0.1246 - val_minutes_loss: 0.5361 - val_points_orig_rmse: 2.0342 - val_points_orig_mae: 0.9649 - lr: 5.0000e-04 - 232s/epoch - 69ms/step
+Epoch 14/500
+3347/3347 - 232s - loss: 0.1814 - points_loss: 0.1215 - minutes_loss: 0.5247 - points_orig_rmse: 2.0668 - points_orig_mae: 0.9490 - val_loss: 0.1856 - val_points_loss: 0.1246 - val_minutes_loss: 0.5399 - val_points_orig_rmse: 2.0371 - val_points_orig_mae: 0.9568 - lr: 5.0000e-04 - 232s/epoch - 69ms/step
+Epoch 15/500
+3347/3347 - 232s - loss: 0.1812 - points_loss: 0.1215 - minutes_loss: 0.5242 - points_orig_rmse: 2.0678 - points_orig_mae: 0.9495 - val_loss: 0.1892 - val_points_loss: 0.1279 - val_minutes_loss: 0.5417 - val_points_orig_rmse: 1.9991 - val_points_orig_mae: 0.9846 - lr: 5.0000e-04 - 232s/epoch - 69ms/step
+Epoch 16/500
+3347/3347 - 253s - loss: 0.1809 - points_loss: 0.1213 - minutes_loss: 0.5231 - points_orig_rmse: 2.0648 - points_orig_mae: 0.9480 - val_loss: 0.1833 - val_points_loss: 0.1236 - val_minutes_loss: 0.5278 - val_points_orig_rmse: 2.0649 - val_points_orig_mae: 0.9360 - lr: 5.0000e-04 - 253s/epoch - 75ms/step
+Epoch 17/500
+3347/3347 - 234s - loss: 0.1804 - points_loss: 0.1209 - minutes_loss: 0.5220 - points_orig_rmse: 2.0638 - points_orig_mae: 0.9471 - val_loss: 0.1849 - val_points_loss: 0.1251 - val_minutes_loss: 0.5276 - val_points_orig_rmse: 2.0673 - val_points_orig_mae: 0.9428 - lr: 5.0000e-04 - 234s/epoch - 70ms/step
+Epoch 18/500
+3347/3347 - 233s - loss: 0.1802 - points_loss: 0.1208 - minutes_loss: 0.5220 - points_orig_rmse: 2.0617 - points_orig_mae: 0.9465 - val_loss: 0.1851 - val_points_loss: 0.1247 - val_minutes_loss: 0.5372 - val_points_orig_rmse: 2.0985 - val_points_orig_mae: 0.9377 - lr: 5.0000e-04 - 233s/epoch - 69ms/step
+Epoch 19/500
+3347/3347 - 235s - loss: 0.1798 - points_loss: 0.1206 - minutes_loss: 0.5208 - points_orig_rmse: 2.0611 - points_orig_mae: 0.9462 - val_loss: 0.1840 - val_points_loss: 0.1242 - val_minutes_loss: 0.5299 - val_points_orig_rmse: 2.0413 - val_points_orig_mae: 0.9439 - lr: 5.0000e-04 - 235s/epoch - 70ms/step
+Epoch 20/500
+3347/3347 - 231s - loss: 0.1794 - points_loss: 0.1203 - minutes_loss: 0.5202 - points_orig_rmse: 2.0606 - points_orig_mae: 0.9454 - val_loss: 0.1869 - val_points_loss: 0.1251 - val_minutes_loss: 0.5494 - val_points_orig_rmse: 2.0675 - val_points_orig_mae: 0.9290 - lr: 5.0000e-04 - 231s/epoch - 69ms/step
+Epoch 21/500
+3347/3347 - 232s - loss: 0.1792 - points_loss: 0.1202 - minutes_loss: 0.5199 - points_orig_rmse: 2.0588 - points_orig_mae: 0.9447 - val_loss: 0.1827 - val_points_loss: 0.1230 - val_minutes_loss: 0.5286 - val_points_orig_rmse: 2.0483 - val_points_orig_mae: 0.9321 - lr: 5.0000e-04 - 232s/epoch - 69ms/step
+Epoch 22/500
+3347/3347 - 231s - loss: 0.1790 - points_loss: 0.1202 - minutes_loss: 0.5188 - points_orig_rmse: 2.0599 - points_orig_mae: 0.9443 - val_loss: 0.1836 - val_points_loss: 0.1236 - val_minutes_loss: 0.5338 - val_points_orig_rmse: 2.0799 - val_points_orig_mae: 0.9361 - lr: 5.0000e-04 - 231s/epoch - 69ms/step
+Epoch 23/500
+3347/3347 - 232s - loss: 0.1785 - points_loss: 0.1199 - minutes_loss: 0.5186 - points_orig_rmse: 2.0569 - points_orig_mae: 0.9424 - val_loss: 0.1849 - val_points_loss: 0.1240 - val_minutes_loss: 0.5418 - val_points_orig_rmse: 2.0459 - val_points_orig_mae: 0.9540 - lr: 5.0000e-04 - 232s/epoch - 69ms/step
+Epoch 24/500
+3347/3347 - 233s - loss: 0.1748 - points_loss: 0.1173 - minutes_loss: 0.5103 - points_orig_rmse: 2.0428 - points_orig_mae: 0.9352 - val_loss: 0.1819 - val_points_loss: 0.1224 - val_minutes_loss: 0.5318 - val_points_orig_rmse: 2.0516 - val_points_orig_mae: 0.9282 - lr: 1.5000e-04 - 233s/epoch - 70ms/step
+Epoch 25/500
+3347/3347 - 231s - loss: 0.1742 - points_loss: 0.1171 - minutes_loss: 0.5095 - points_orig_rmse: 2.0419 - points_orig_mae: 0.9333 - val_loss: 0.1816 - val_points_loss: 0.1231 - val_minutes_loss: 0.5254 - val_points_orig_rmse: 2.0307 - val_points_orig_mae: 0.9411 - lr: 1.5000e-04 - 231s/epoch - 69ms/step
+Epoch 26/500
+3347/3347 - 238s - loss: 0.1738 - points_loss: 0.1168 - minutes_loss: 0.5097 - points_orig_rmse: 2.0398 - points_orig_mae: 0.9330 - val_loss: 0.1813 - val_points_loss: 0.1228 - val_minutes_loss: 0.5257 - val_points_orig_rmse: 2.0341 - val_points_orig_mae: 0.9431 - lr: 1.5000e-04 - 238s/epoch - 71ms/step
+Epoch 27/500
+3347/3347 - 234s - loss: 0.1736 - points_loss: 0.1167 - minutes_loss: 0.5086 - points_orig_rmse: 2.0402 - points_orig_mae: 0.9330 - val_loss: 0.1824 - val_points_loss: 0.1237 - val_minutes_loss: 0.5284 - val_points_orig_rmse: 2.0176 - val_points_orig_mae: 0.9493 - lr: 1.5000e-04 - 234s/epoch - 70ms/step
+Epoch 28/500
+3347/3347 - 232s - loss: 0.1736 - points_loss: 0.1168 - minutes_loss: 0.5089 - points_orig_rmse: 2.0405 - points_orig_mae: 0.9332 - val_loss: 0.1810 - val_points_loss: 0.1227 - val_minutes_loss: 0.5266 - val_points_orig_rmse: 2.0485 - val_points_orig_mae: 0.9383 - lr: 1.5000e-04 - 232s/epoch - 69ms/step
+Epoch 29/500
+3347/3347 - 230s - loss: 0.1733 - points_loss: 0.1167 - minutes_loss: 0.5085 - points_orig_rmse: 2.0402 - points_orig_mae: 0.9321 - val_loss: 0.1816 - val_points_loss: 0.1229 - val_minutes_loss: 0.5289 - val_points_orig_rmse: 2.0284 - val_points_orig_mae: 0.9411 - lr: 1.5000e-04 - 230s/epoch - 69ms/step
+Epoch 30/500
+learning_v2 early stop at epoch 30: best validation at epoch 15 (patience is 20% of epochs run, at least 15 and at most 40)
+3347/3347 - 234s - loss: 0.1733 - points_loss: 0.1166 - minutes_loss: 0.5085 - points_orig_rmse: 2.0395 - points_orig_mae: 0.9324 - val_loss: 0.1814 - val_points_loss: 0.1227 - val_minutes_loss: 0.5307 - val_points_orig_rmse: 2.0262 - val_points_orig_mae: 0.9452 - lr: 1.5000e-04 - 234s/epoch - 70ms/step
+{'test_loss': 0.1893044412136078, 'test_metrics': [0.12847131490707397, 0.537238359451294, 2.0494749546051025, 0.9989013075828552]}
+learning_v2 smearing (global, 33466 held-out rows): S=1.071; by level 0.0->0.99, 0.1->1.02, 0.5->1.10, 1.7->1.11, 3.0->1.13
+Held-out points by actual score (weights: low 0-2 x1, medium 3-5 x2, high 6-9 x4, very high 10+ x8)
+  weighted MAE 2.338    unweighted MAE 1.072    (lower is better, bias = predicted - actual)
+  tier             n     MAE   actual  predicted     bias
+  low          28928   0.632     0.44       0.98    +0.54
+  medium        1792   1.405     3.74       2.59    -1.16
+  high          2123   4.302     6.98       2.68    -4.30
+  very_high      623   9.569    12.48       2.92    -9.57
+Held-out points by recent player level (mean points per gameweek over the previous 5, at least 3 gameweeks)
+  same bands: low under 3, medium 3-5, high 6-9, very high 10+
+  rows 31777, skipped 1689 with too little history    unweighted MAE 1.083
+  tier             n     MAE   actual  predicted     bias     form
+  low          25961   0.808     0.85       0.86    +0.01     0.69
+  medium        4946   2.212     2.99       2.76    -0.23     4.04
+  high           826   2.861     4.03       3.49    -0.54     7.05
+  very_high       44   3.521     5.34       4.05    -1.29    11.11
+
+Building prediction set 38: 25/26 GW1
+Persisted 18316 player-fixture predictions
+
+Building prediction set 38: 25/26 GW2
+Persisted 19573 player-fixture predictions
+
+Building prediction set 38: 25/26 GW3
+Persisted 19620 player-fixture predictions
+
+Building prediction set 38: 25/26 GW4
+Persisted 20230 player-fixture predictions
+
+Building prediction set 38: 25/26 GW5
+Persisted 19856 player-fixture predictions
+
+Building prediction set 38: 25/26 GW6
+Persisted 15411 player-fixture predictions
+
+Building prediction set 38: 25/26 GW7
+Persisted 15008 player-fixture predictions
+
+Building prediction set 38: 25/26 GW8
+Persisted 14384 player-fixture predictions
+
+Building prediction set 38: 25/26 GW9
+Persisted 13800 player-fixture predictions
+
+Building prediction set 38: 25/26 GW10
+Persisted 13485 player-fixture predictions
+
+Building prediction set 38: 25/26 GW11
+Persisted 13132 player-fixture predictions
+
+Building prediction set 38: 25/26 GW12
+Persisted 12609 player-fixture predictions
+
+Building prediction set 38: 25/26 GW13
+Persisted 12116 player-fixture predictions
+
+Building prediction set 38: 25/26 GW14
+Persisted 11500 player-fixture predictions
+
+Building prediction set 38: 25/26 GW15
+Persisted 11088 player-fixture predictions
+
+Building prediction set 38: 25/26 GW16
+Persisted 10580 player-fixture predictions
+
+Building prediction set 38: 25/26 GW17
+Persisted 10164 player-fixture predictions
+
+Building prediction set 38: 25/26 GW18
+Persisted 9891 player-fixture predictions
+
+Building prediction set 38: 25/26 GW19
+Persisted 9520 player-fixture predictions
+
+Building prediction set 38: 25/26 GW20
+Persisted 9120 player-fixture predictions
+
+Building prediction set 38: 25/26 GW21
+Persisted 8748 player-fixture predictions
+
+Building prediction set 38: 25/26 GW22
+Persisted 8381 player-fixture predictions
+
+Building prediction set 38: 25/26 GW23
+Persisted 7888 player-fixture predictions
+
+Building prediction set 38: 25/26 GW24
+Persisted 7350 player-fixture predictions
+
+Building prediction set 38: 25/26 GW25
+Persisted 6860 player-fixture predictions
+
+Building prediction set 38: 25/26 GW26
+Persisted 6383 player-fixture predictions
+
+Building prediction set 38: 25/26 GW27
+Persisted 5794 player-fixture predictions
+
+Building prediction set 38: 25/26 GW28
+Persisted 5307 player-fixture predictions
+
+Building prediction set 38: 25/26 GW29
+Persisted 4840 player-fixture predictions
+
+Building prediction set 38: 25/26 GW30
+Persisted 4342 player-fixture predictions
+
+Building prediction set 38: 25/26 GW31
+Persisted 3878 player-fixture predictions
+
+Building prediction set 38: 25/26 GW32
+Persisted 3487 player-fixture predictions
+
+Building prediction set 38: 25/26 GW33
+Persisted 3015 player-fixture predictions
+
+Building prediction set 38: 25/26 GW34
+Persisted 2361 player-fixture predictions
+
+Building prediction set 38: 25/26 GW35
+Persisted 1997 player-fixture predictions
+
+Building prediction set 38: 25/26 GW36
+Persisted 1516 player-fixture predictions
+
+Building prediction set 38: 25/26 GW37
+Persisted 984 player-fixture predictions
+
+Building prediction set 38: 25/26 GW38
+Persisted 493 player-fixture predictions
+Prediction set ID: 38
+{
+  "prediction_set_id": 38,
+  "expected_snapshots": 38,
+  "complete_snapshots": 38,
+  "missing": [],
+  "failed_or_empty": []
+}
+Recorded v2_log_minbands_teams_pblocks -> prediction set 38 in C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\run_metrics\model_eval\experiments.json
+v2_log_minbands_teams_pblocks_blend25: set 39 {"25": {"snapshots": 38, "rows": 363027, "minutes_share": 0.0}}
+Evaluating seasons 25
+  v2_log_minbands_blend25: set eval-v2_log_minbands_blend25 is 35
+  v2_log_minbands_teams_blend25: set eval-v2_log_minbands_teams_blend25 is 37
+  v2_log_minbands_teams_pblocks_blend25: set eval-v2_log_minbands_teams_pblocks_blend25 is 39
+  v1: prediction set 7, scored as optimiser
+  v1_h5: prediction set 29, scored as optimiser
+  v2_log: prediction set 21, scored as raw_points
+  v2_log_h5: prediction set 28, scored as raw_points
+  v2_log_minbands: prediction set 32, scored as raw_points
+  v2_log_minbands_teams: prediction set 36, scored as raw_points
+  v2_log_minbands_teams_pblocks: prediction set 38, scored as raw_points
+  v2_log_minbands_blend25: prediction set 35, scored as raw_points
+  v2_log_minbands_teams_blend25: prediction set 37, scored as raw_points
+  v2_log_minbands_teams_pblocks_blend25: prediction set 39, scored as raw_points
+  season 25: 38 origins, 401.3 eligible players on average
+Deriving v1_cal from v1 (rolling linear calibration)
+Deriving v1_h5_cal from v1_h5 (rolling linear calibration)
+Deriving v2_log_cal from v2_log (rolling linear calibration)
+Deriving v2_log_h5_cal from v2_log_h5 (rolling linear calibration)
+Scoring 38 units for 14 models...
+Bootstrapping 200 resamples (blocks of 5 origins)...
+Model evaluation against v1, seasons 25, 38 origins
+Scores are in noise units: 1.0 = one bootstrap standard deviation of that metric for v1.
+Positive is better than v1; v1 scores 0 by definition.
+Each metric is capped at +-3 before weighting; "uncapped" is the old total.
+
+model               total       95% interval   P(>0)  overall   future    calib  ranking fixtures  uncapped
+v2_log_minbands_teams_blend25    +1.82       [1.30, 2.11]    1.00    +3.00    +1.44    +3.00    +1.70    -0.17     +3.48
+v2_log_minbands_teams_pblocks_blend25    +1.79       [1.25, 2.07]    1.00    +3.00    +1.34    +3.00    +1.65    -0.13     +3.45
+v2_log_minbands_teams    +1.79       [1.21, 2.13]    1.00    +3.00    +1.56    +3.00    +1.56    -0.29     +3.35
+v2_log_minbands_teams_pblocks    +1.71       [1.14, 2.03]    1.00    +3.00    +1.30    +3.00    +1.46    -0.27     +3.28
+v2_log_minbands_blend25    +1.60       [1.00, 1.99]    1.00    +3.00    +1.21    +3.00    +1.55    -0.97     +3.21
+v2_log_minbands     +1.53       [0.91, 1.96]    1.00    +2.99    +1.20    +3.00    +1.38    -1.13     +3.03
+v1_h5_cal           +1.48       [1.34, 1.64]    1.00    +3.00    +1.58    +3.00    +0.54    -0.46     +3.73
+v2_log_cal          +1.40       [0.88, 1.81]    1.00    +3.00    +1.48    +3.00    +0.63    -1.03     +3.97
+v2_log              +1.31       [0.72, 1.79]    1.00    +2.70    +1.06    +3.00    +0.76    -0.78     +2.70
+v1_cal              +1.19       [1.08, 1.33]    1.00    +2.66    +1.29    +3.00    +0.03    -0.54     +3.12
+v1_h5               +0.87       [0.70, 1.09]    1.00    +1.14    +0.40    +3.00    +0.52    -0.02     +1.46
+v2_log_h5_cal       +0.63       [0.16, 1.12]    1.00    +2.18    +1.33    +3.00    -1.20    -1.30     +3.10
+v2_log_h5           +0.44      [-0.03, 1.06]    0.95    +1.80    +0.68    +3.00    -1.34    -0.83     +2.29
+
+What drove each score:
+  v2_log_minbands_teams_blend25: helped most by overall +0.66, calibration +0.39
+  v2_log_minbands_teams_pblocks_blend25: helped most by overall +0.66, calibration +0.39
+  v2_log_minbands_teams: helped most by overall +0.66, calibration +0.39
+    v2_log_minbands plus 3-season team/opponent history transformers, fading xG averages, team time blocks.
+  v2_log_minbands_teams_pblocks: helped most by overall +0.66, calibration +0.39
+    v2_log_minbands_teams with player identities split into the same time blocks.
+  v2_log_minbands_blend25: helped most by overall +0.66, calibration +0.39
+  v2_log_minbands: helped most by overall +0.66, calibration +0.39; regressed on fixture_swing (-1.13 sd)
+    v2_log plus a training-only cross-entropy head on minutes bands (0, 1-59, 60+).
+  v1_h5_cal: helped most by overall +0.66, calibration +0.39
+    v1_h5 plus the same rolling linear calibration.
+  v2_log_cal: helped most by overall +0.66, calibration +0.39; regressed on fixture_swing (-1.03 sd)
+    v2_log plus the same rolling linear calibration.
+  v2_log: helped most by overall +0.59, calibration +0.39
+    v2, no weights, trained on log1p points, one smearing factor (level only).
+  v1_cal: helped most by overall +0.58, calibration +0.39
+    v1 plus the same rolling linear calibration.
+  v1_h5: helped most by calibration +0.39, overall +0.25; regressed on 2B_predicted (-2.36 sd)
+    v1 as used live: a 5-GW total model, split across fixtures by the single-GW points.
+  v2_log_h5_cal: helped most by overall +0.48, calibration +0.39; regressed on single_gw_rank (-2.38 sd), fixture_swing (-1.30 sd)
+    v2_log_h5 plus the same rolling linear calibration.
+  v2_log_h5: helped most by overall +0.40, calibration +0.39; regressed on 2B_predicted (-1.22 sd), single_gw_rank (-2.88 sd)
+    v2_log plus a 5-GW net on points per fixture; window totals split by h1 shares.
+
+By season (total):
+  v2_log_minbands_teams_blend25 25 +1.82
+  v2_log_minbands_teams_pblocks_blend25 25 +1.79
+  v2_log_minbands_teams 25 +1.79
+  v2_log_minbands_teams_pblocks 25 +1.71
+  v2_log_minbands_blend25 25 +1.60
+  v2_log_minbands  25 +1.53
+  v1_h5_cal        25 +1.48
+  v2_log_cal       25 +1.40
+  v2_log           25 +1.31
+  v1_cal           25 +1.19
+  v1_h5            25 +0.87
+  v2_log_h5_cal    25 +0.63
+  v2_log_h5        25 +0.44
+
+Non-overlapping 5-GW origins only (sensitivity check, same sigmas):
+  v2_log_minbands_teams_blend25 total +1.89, future +2.08, ranking +1.46
+  v2_log_minbands_teams_pblocks_blend25 total +1.88, future +1.99, ranking +1.38
+  v2_log_minbands_teams total +1.82, future +2.12, ranking +1.22
+  v2_log_minbands_teams_pblocks total +1.74, future +1.78, ranking +1.08
+  v2_log_minbands_blend25 total +1.78, future +1.97, ranking +1.58
+  v2_log_minbands  total +1.64, future +1.65, ranking +1.40
+  v1_h5_cal        total +1.56, future +2.03, ranking +0.48
+  v2_log_cal       total +1.53, future +2.15, ranking +0.61
+  v2_log           total +1.49, future +1.68, ranking +0.73
+  v1_cal           total +1.23, future +1.34, ranking +0.03
+  v1_h5            total +1.06, future +1.25, ranking +0.45
+  v2_log_h5_cal    total +0.95, future +2.03, ranking -1.21
+  v2_log_h5        total +0.88, future +1.78, ranking -1.30
+
+Guardrail flags:
+  v1_h5_cal: overall_mae is 6.6% worse than v1
+  v2_log_cal: overall_mae is 6.7% worse than v1
+  v1_cal: overall_mae is 6.5% worse than v1
+  v1_h5: overpredicts its own top_5pct picks by 3.76 points over 5 GWs
+  v1_h5: overpredicts its own top_5 picks by 6.42 points over 5 GWs
+  v2_log_h5_cal: overall_mae is 10.4% worse than v1
+  v2_log_h5: overall_mae is 6.4% worse than v1
+  v2_log_h5: overpredicts its own top_5 picks by 3.66 points over 5 GWs
+
+Raw metrics (pooled):
+  model             overall_mse  overall_mae overall_bias    2A_actual 2A_predicted    2B_actual 2B_predicted calibration_ calibration_ spearman_sin spearman_fiv
+  v1                      7.615        1.653       -0.712       17.742        8.369        4.306        2.770        0.712        0.848        0.552        0.554
+  v2_log_minbands_teams_blend25        7.046        1.683       -0.329       16.915        7.873        4.192        2.702        0.329        1.081        0.566        0.589
+  v2_log_minbands_teams_pblocks_blend25        7.054        1.686       -0.326       17.156        7.758        4.212        2.688        0.326        1.118        0.565        0.589
+  v2_log_minbands_teams        7.058        1.672       -0.345       16.900        7.795        4.192        2.687        0.345        1.031        0.569        0.583
+  v2_log_minbands_teams_pblocks        7.066        1.676       -0.341       17.221        7.753        4.219        2.685        0.341        1.074        0.566        0.582
+  v2_log_minbands_blend25        7.076        1.690       -0.331       17.112        7.894        4.211        2.709        0.331        1.095        0.563        0.587
+  v2_log_minbands         7.091        1.681       -0.348       17.161        7.768        4.218        2.724        0.348        1.050        0.565        0.581
+  v1_h5_cal               7.068        1.762       -0.123       16.242        7.812        4.154        2.759        0.225        0.986        0.563        0.560
+  v2_log_cal              7.053        1.764       -0.128       16.375        7.871        4.151        2.778        0.160        1.017        0.558        0.567
+  v2_log                  7.142        1.685       -0.370       17.267        7.808        4.224        2.730        0.370        1.054        0.558        0.571
+  v1_cal                  7.149        1.760       -0.170       16.955        8.014        4.216        2.696        0.265        1.018        0.559        0.550
+  v1_h5                   7.415        1.691       -0.497       15.788        8.774        4.136        2.906        0.552        0.753        0.557        0.564
+  v2_log_h5_cal           7.234        1.825       -0.079       16.792        7.807        4.206        2.770        0.163        1.109        0.515        0.554
+  v2_log_h5               7.300        1.758       -0.281       17.033        8.062        4.223        2.840        0.281        1.018        0.508        0.557
+
+Fixture swings: players who played 60+ minutes in each of the next five gameweeks,
+one fixture each. corr: predicted rises and falls vs real ones (higher is better).
+slope: real swing per point of predicted swing (1 is right; above 1, the model's
+swings are too small). mse: error on the swings.
+  model                    corr        slope          mse            n
+  v1                      0.150        1.246        7.996        14885
+  v2_log_minbands_teams_blend25        0.146        1.767        8.031        14885
+  v2_log_minbands_teams_pblocks_blend25        0.147        1.872        8.034        14885
+  v2_log_minbands_teams        0.144        1.640        8.029        14885
+  v2_log_minbands_teams_pblocks        0.144        1.754        8.034        14885
+  v2_log_minbands_blend25        0.128        1.793        8.064        14885
+  v2_log_minbands         0.125        1.791        8.070        14885
+  v1_h5_cal               0.140        1.723        8.041        14885
+  v2_log_cal              0.127        1.737        8.064        14885
+  v2_log                  0.133        1.679        8.052        14885
+  v1_cal                  0.138        1.906        8.052        14885
+  v1_h5                   0.150        1.068        7.990        14885
+  v2_log_h5_cal           0.121        1.874        8.079        14885
+  v2_log_h5               0.132        1.625        8.052        14885
+
+Wrote C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\run_metrics\model_eval\teams_2
+Done 2/3 v2_log_minbands_teams_pblocks 03/11/2026  6:00:23.99 
+
+=== v2_log_minbands_teams_attn ===
+C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\venv\Scripts\python.exe -m simulation.model_eval build v2_log_minbands_teams_attn --seasons 25
+Building v2_log_minbands_teams_attn: --learning-v2 --train-once-per-season --points-reps 1 --v2-weighting none --v2-loss huber --v2-smear global --v2-minutes-head 0.1 --v2-minutes-target bands --model-plan simple_h1_teams_attn --seasons 25 --name eval-v2_log_minbands_teams_attn
+Using prediction set 40; existing season snapshots are kept
+Training one fixed learning_v2 simple_h1_teams_attn model for the simulated season...
+  167327 train rows, 2119 players, 30 teams (vocab frozen)
+learning_v2 simple_h1_teams_attn: loss=huber, every fixture weighted equally, optimizer=AdamW, epochs=500, train=133861, early stop on unweighted val RMSE, patience=20% of epochs run (at least 15, at most 40)
+learning_v2 minutes head: bands, training only, loss weight 0.1
+Epoch 1/500
+3347/3347 - 91s - loss: 0.4038 - points_loss: 0.1472 - minutes_loss: 0.6281 - points_orig_rmse: 2.1723 - points_orig_mae: 1.0376 - val_loss: 0.2236 - val_points_loss: 0.1455 - val_minutes_loss: 0.6127 - val_points_orig_rmse: 2.0362 - val_points_orig_mae: 1.0669 - lr: 5.0000e-04 - 91s/epoch - 27ms/step
+Epoch 2/500
+3347/3347 - 78s - loss: 0.2050 - points_loss: 0.1338 - minutes_loss: 0.5774 - points_orig_rmse: 2.1233 - points_orig_mae: 0.9908 - val_loss: 0.1997 - val_points_loss: 0.1313 - val_minutes_loss: 0.5677 - val_points_orig_rmse: 2.0514 - val_points_orig_mae: 0.9681 - lr: 5.0000e-04 - 78s/epoch - 23ms/step
+Epoch 3/500
+3347/3347 - 79s - loss: 0.1942 - points_loss: 0.1279 - minutes_loss: 0.5512 - points_orig_rmse: 2.0991 - points_orig_mae: 0.9719 - val_loss: 0.1961 - val_points_loss: 0.1290 - val_minutes_loss: 0.5678 - val_points_orig_rmse: 2.0893 - val_points_orig_mae: 0.9422 - lr: 5.0000e-04 - 79s/epoch - 24ms/step
+Epoch 4/500
+3347/3347 - 78s - loss: 0.1902 - points_loss: 0.1258 - minutes_loss: 0.5414 - points_orig_rmse: 2.0901 - points_orig_mae: 0.9659 - val_loss: 0.1979 - val_points_loss: 0.1328 - val_minutes_loss: 0.5514 - val_points_orig_rmse: 2.1653 - val_points_orig_mae: 0.9409 - lr: 5.0000e-04 - 78s/epoch - 23ms/step
+Epoch 5/500
+3347/3347 - 80s - loss: 0.1878 - points_loss: 0.1246 - minutes_loss: 0.5352 - points_orig_rmse: 2.0836 - points_orig_mae: 0.9601 - val_loss: 0.1899 - val_points_loss: 0.1266 - val_minutes_loss: 0.5399 - val_points_orig_rmse: 2.0445 - val_points_orig_mae: 0.9480 - lr: 5.0000e-04 - 80s/epoch - 24ms/step
+Epoch 6/500
+3347/3347 - 82s - loss: 0.1862 - points_loss: 0.1239 - minutes_loss: 0.5329 - points_orig_rmse: 2.0804 - points_orig_mae: 0.9570 - val_loss: 0.1883 - val_points_loss: 0.1259 - val_minutes_loss: 0.5390 - val_points_orig_rmse: 2.0622 - val_points_orig_mae: 0.9418 - lr: 5.0000e-04 - 82s/epoch - 24ms/step
+Epoch 7/500
+3347/3347 - 84s - loss: 0.1854 - points_loss: 0.1237 - minutes_loss: 0.5321 - points_orig_rmse: 2.0792 - points_orig_mae: 0.9565 - val_loss: 0.1889 - val_points_loss: 0.1257 - val_minutes_loss: 0.5485 - val_points_orig_rmse: 2.0718 - val_points_orig_mae: 0.9546 - lr: 5.0000e-04 - 84s/epoch - 25ms/step
+Epoch 8/500
+3347/3347 - 80s - loss: 0.1841 - points_loss: 0.1230 - minutes_loss: 0.5295 - points_orig_rmse: 2.0750 - points_orig_mae: 0.9536 - val_loss: 0.1875 - val_points_loss: 0.1261 - val_minutes_loss: 0.5350 - val_points_orig_rmse: 2.0256 - val_points_orig_mae: 0.9604 - lr: 5.0000e-04 - 80s/epoch - 24ms/step
+Epoch 9/500
+3347/3347 - 79s - loss: 0.1839 - points_loss: 0.1231 - minutes_loss: 0.5293 - points_orig_rmse: 2.0769 - points_orig_mae: 0.9541 - val_loss: 0.1939 - val_points_loss: 0.1300 - val_minutes_loss: 0.5598 - val_points_orig_rmse: 2.0393 - val_points_orig_mae: 0.9560 - lr: 5.0000e-04 - 79s/epoch - 24ms/step
+Epoch 10/500
+3347/3347 - 83s - loss: 0.1832 - points_loss: 0.1228 - minutes_loss: 0.5280 - points_orig_rmse: 2.0740 - points_orig_mae: 0.9533 - val_loss: 0.1859 - val_points_loss: 0.1250 - val_minutes_loss: 0.5341 - val_points_orig_rmse: 2.0527 - val_points_orig_mae: 0.9450 - lr: 5.0000e-04 - 83s/epoch - 25ms/step
+Epoch 11/500
+3347/3347 - 80s - loss: 0.1828 - points_loss: 0.1227 - minutes_loss: 0.5272 - points_orig_rmse: 2.0740 - points_orig_mae: 0.9526 - val_loss: 0.1861 - val_points_loss: 0.1252 - val_minutes_loss: 0.5362 - val_points_orig_rmse: 2.0166 - val_points_orig_mae: 0.9719 - lr: 5.0000e-04 - 80s/epoch - 24ms/step
+Epoch 12/500
+3347/3347 - 80s - loss: 0.1821 - points_loss: 0.1223 - minutes_loss: 0.5262 - points_orig_rmse: 2.0723 - points_orig_mae: 0.9515 - val_loss: 0.1850 - val_points_loss: 0.1243 - val_minutes_loss: 0.5368 - val_points_orig_rmse: 2.0336 - val_points_orig_mae: 0.9617 - lr: 5.0000e-04 - 80s/epoch - 24ms/step
+Epoch 13/500
+3347/3347 - 81s - loss: 0.1815 - points_loss: 0.1219 - minutes_loss: 0.5258 - points_orig_rmse: 2.0704 - points_orig_mae: 0.9511 - val_loss: 0.1852 - val_points_loss: 0.1247 - val_minutes_loss: 0.5387 - val_points_orig_rmse: 2.0300 - val_points_orig_mae: 0.9631 - lr: 5.0000e-04 - 81s/epoch - 24ms/step
+Epoch 14/500
+3347/3347 - 81s - loss: 0.1810 - points_loss: 0.1216 - minutes_loss: 0.5250 - points_orig_rmse: 2.0674 - points_orig_mae: 0.9497 - val_loss: 0.1854 - val_points_loss: 0.1248 - val_minutes_loss: 0.5403 - val_points_orig_rmse: 2.0377 - val_points_orig_mae: 0.9559 - lr: 5.0000e-04 - 81s/epoch - 24ms/step
+Epoch 15/500
+3347/3347 - 82s - loss: 0.1807 - points_loss: 0.1215 - minutes_loss: 0.5247 - points_orig_rmse: 2.0675 - points_orig_mae: 0.9495 - val_loss: 0.1861 - val_points_loss: 0.1261 - val_minutes_loss: 0.5339 - val_points_orig_rmse: 2.0021 - val_points_orig_mae: 0.9750 - lr: 5.0000e-04 - 82s/epoch - 24ms/step
+Epoch 16/500
+3347/3347 - 80s - loss: 0.1806 - points_loss: 0.1215 - minutes_loss: 0.5238 - points_orig_rmse: 2.0655 - points_orig_mae: 0.9494 - val_loss: 0.1832 - val_points_loss: 0.1239 - val_minutes_loss: 0.5270 - val_points_orig_rmse: 2.0655 - val_points_orig_mae: 0.9346 - lr: 5.0000e-04 - 80s/epoch - 24ms/step
+Epoch 17/500
+3347/3347 - 82s - loss: 0.1801 - points_loss: 0.1211 - minutes_loss: 0.5226 - points_orig_rmse: 2.0643 - points_orig_mae: 0.9484 - val_loss: 0.1849 - val_points_loss: 0.1255 - val_minutes_loss: 0.5280 - val_points_orig_rmse: 2.0638 - val_points_orig_mae: 0.9464 - lr: 5.0000e-04 - 82s/epoch - 24ms/step
+Epoch 18/500
+3347/3347 - 81s - loss: 0.1798 - points_loss: 0.1209 - minutes_loss: 0.5224 - points_orig_rmse: 2.0632 - points_orig_mae: 0.9473 - val_loss: 0.1847 - val_points_loss: 0.1250 - val_minutes_loss: 0.5353 - val_points_orig_rmse: 2.0968 - val_points_orig_mae: 0.9347 - lr: 5.0000e-04 - 81s/epoch - 24ms/step
+Epoch 19/500
+3347/3347 - 80s - loss: 0.1794 - points_loss: 0.1207 - minutes_loss: 0.5216 - points_orig_rmse: 2.0610 - points_orig_mae: 0.9466 - val_loss: 0.1829 - val_points_loss: 0.1238 - val_minutes_loss: 0.5280 - val_points_orig_rmse: 2.0319 - val_points_orig_mae: 0.9485 - lr: 5.0000e-04 - 80s/epoch - 24ms/step
+Epoch 20/500
+3347/3347 - 81s - loss: 0.1789 - points_loss: 0.1203 - minutes_loss: 0.5199 - points_orig_rmse: 2.0606 - points_orig_mae: 0.9454 - val_loss: 0.1860 - val_points_loss: 0.1249 - val_minutes_loss: 0.5449 - val_points_orig_rmse: 2.0569 - val_points_orig_mae: 0.9310 - lr: 5.0000e-04 - 81s/epoch - 24ms/step
+Epoch 21/500
+3347/3347 - 80s - loss: 0.1787 - points_loss: 0.1201 - minutes_loss: 0.5199 - points_orig_rmse: 2.0586 - points_orig_mae: 0.9450 - val_loss: 0.1822 - val_points_loss: 0.1230 - val_minutes_loss: 0.5275 - val_points_orig_rmse: 2.0459 - val_points_orig_mae: 0.9332 - lr: 5.0000e-04 - 80s/epoch - 24ms/step
+Epoch 22/500
+3347/3347 - 81s - loss: 0.1786 - points_loss: 0.1203 - minutes_loss: 0.5194 - points_orig_rmse: 2.0603 - points_orig_mae: 0.9448 - val_loss: 0.1837 - val_points_loss: 0.1239 - val_minutes_loss: 0.5365 - val_points_orig_rmse: 2.0837 - val_points_orig_mae: 0.9352 - lr: 5.0000e-04 - 81s/epoch - 24ms/step
+Epoch 23/500
+3347/3347 - 84s - loss: 0.1782 - points_loss: 0.1200 - minutes_loss: 0.5186 - points_orig_rmse: 2.0591 - points_orig_mae: 0.9434 - val_loss: 0.1849 - val_points_loss: 0.1242 - val_minutes_loss: 0.5432 - val_points_orig_rmse: 2.0420 - val_points_orig_mae: 0.9540 - lr: 5.0000e-04 - 84s/epoch - 25ms/step
+Epoch 24/500
+3347/3347 - 80s - loss: 0.1748 - points_loss: 0.1176 - minutes_loss: 0.5108 - points_orig_rmse: 2.0452 - points_orig_mae: 0.9361 - val_loss: 0.1815 - val_points_loss: 0.1225 - val_minutes_loss: 0.5307 - val_points_orig_rmse: 2.0464 - val_points_orig_mae: 0.9307 - lr: 1.5000e-04 - 80s/epoch - 24ms/step
+Epoch 25/500
+3347/3347 - 81s - loss: 0.1741 - points_loss: 0.1173 - minutes_loss: 0.5093 - points_orig_rmse: 2.0439 - points_orig_mae: 0.9348 - val_loss: 0.1812 - val_points_loss: 0.1229 - val_minutes_loss: 0.5253 - val_points_orig_rmse: 2.0283 - val_points_orig_mae: 0.9425 - lr: 1.5000e-04 - 81s/epoch - 24ms/step
+Epoch 26/500
+3347/3347 - 81s - loss: 0.1740 - points_loss: 0.1172 - minutes_loss: 0.5101 - points_orig_rmse: 2.0426 - points_orig_mae: 0.9345 - val_loss: 0.1812 - val_points_loss: 0.1230 - val_minutes_loss: 0.5253 - val_points_orig_rmse: 2.0307 - val_points_orig_mae: 0.9457 - lr: 1.5000e-04 - 81s/epoch - 24ms/step
+Epoch 27/500
+3347/3347 - 81s - loss: 0.1736 - points_loss: 0.1170 - minutes_loss: 0.5089 - points_orig_rmse: 2.0419 - points_orig_mae: 0.9336 - val_loss: 0.1818 - val_points_loss: 0.1234 - val_minutes_loss: 0.5277 - val_points_orig_rmse: 2.0194 - val_points_orig_mae: 0.9495 - lr: 1.5000e-04 - 81s/epoch - 24ms/step
+Epoch 28/500
+3347/3347 - 82s - loss: 0.1735 - points_loss: 0.1170 - minutes_loss: 0.5095 - points_orig_rmse: 2.0410 - points_orig_mae: 0.9339 - val_loss: 0.1807 - val_points_loss: 0.1226 - val_minutes_loss: 0.5266 - val_points_orig_rmse: 2.0488 - val_points_orig_mae: 0.9392 - lr: 1.5000e-04 - 82s/epoch - 24ms/step
+Epoch 29/500
+3347/3347 - 81s - loss: 0.1733 - points_loss: 0.1169 - minutes_loss: 0.5091 - points_orig_rmse: 2.0412 - points_orig_mae: 0.9326 - val_loss: 0.1811 - val_points_loss: 0.1228 - val_minutes_loss: 0.5278 - val_points_orig_rmse: 2.0285 - val_points_orig_mae: 0.9413 - lr: 1.5000e-04 - 81s/epoch - 24ms/step
+Epoch 30/500
+learning_v2 early stop at epoch 30: best validation at epoch 15 (patience is 20% of epochs run, at least 15 and at most 40)
+3347/3347 - 82s - loss: 0.1730 - points_loss: 0.1167 - minutes_loss: 0.5083 - points_orig_rmse: 2.0389 - points_orig_mae: 0.9322 - val_loss: 0.1814 - val_points_loss: 0.1229 - val_minutes_loss: 0.5310 - val_points_orig_rmse: 2.0222 - val_points_orig_mae: 0.9451 - lr: 1.5000e-04 - 82s/epoch - 25ms/step
+{'test_loss': 0.18672165274620056, 'test_metrics': [0.12706829607486725, 0.530296266078949, 2.054205894470215, 0.9909161329269409]}
+learning_v2 smearing (global, 33466 held-out rows): S=1.086; by level 0.0->0.99, 0.1->1.02, 0.5->1.13, 1.6->1.13, 2.9->1.15
+Held-out points by actual score (weights: low 0-2 x1, medium 3-5 x2, high 6-9 x4, very high 10+ x8)
+  weighted MAE 2.340    unweighted MAE 1.075    (lower is better, bias = predicted - actual)
+  tier             n     MAE   actual  predicted     bias
+  low          28928   0.633     0.44       0.97    +0.53
+  medium        1792   1.437     3.74       2.58    -1.16
+  high          2123   4.304     6.98       2.67    -4.30
+  very_high      623   9.548    12.48       2.94    -9.55
+Held-out points by recent player level (mean points per gameweek over the previous 5, at least 3 gameweeks)
+  same bands: low under 3, medium 3-5, high 6-9, very high 10+
+  rows 31777, skipped 1689 with too little history    unweighted MAE 1.086
+  tier             n     MAE   actual  predicted     bias     form
+  low          25961   0.810     0.85       0.85    +0.00     0.69
+  medium        4946   2.212     2.99       2.77    -0.22     4.04
+  high           826   2.870     4.03       3.57    -0.46     7.05
+  very_high       44   3.543     5.34       4.19    -1.15    11.11
+
+Building prediction set 40: 25/26 GW1
+Persisted 18316 player-fixture predictions
+
+Building prediction set 40: 25/26 GW2
+Persisted 19573 player-fixture predictions
+
+Building prediction set 40: 25/26 GW3
+Persisted 19620 player-fixture predictions
+
+Building prediction set 40: 25/26 GW4
+Persisted 20230 player-fixture predictions
+
+Building prediction set 40: 25/26 GW5
+Persisted 19856 player-fixture predictions
+
+Building prediction set 40: 25/26 GW6
+Persisted 15411 player-fixture predictions
+
+Building prediction set 40: 25/26 GW7
+Persisted 15008 player-fixture predictions
+
+Building prediction set 40: 25/26 GW8
+Persisted 14384 player-fixture predictions
+
+Building prediction set 40: 25/26 GW9
+Persisted 13800 player-fixture predictions
+
+Building prediction set 40: 25/26 GW10
+Persisted 13485 player-fixture predictions
+
+Building prediction set 40: 25/26 GW11
+Persisted 13132 player-fixture predictions
+
+Building prediction set 40: 25/26 GW12
+Persisted 12609 player-fixture predictions
+
+Building prediction set 40: 25/26 GW13
+Persisted 12116 player-fixture predictions
+
+Building prediction set 40: 25/26 GW14
+Persisted 11500 player-fixture predictions
+
+Building prediction set 40: 25/26 GW15
+Persisted 11088 player-fixture predictions
+
+Building prediction set 40: 25/26 GW16
+Persisted 10580 player-fixture predictions
+
+Building prediction set 40: 25/26 GW17
+Persisted 10164 player-fixture predictions
+
+Building prediction set 40: 25/26 GW18
+Persisted 9891 player-fixture predictions
+
+Building prediction set 40: 25/26 GW19
+Persisted 9520 player-fixture predictions
+
+Building prediction set 40: 25/26 GW20
+Persisted 9120 player-fixture predictions
+
+Building prediction set 40: 25/26 GW21
+Persisted 8748 player-fixture predictions
+
+Building prediction set 40: 25/26 GW22
+Persisted 8381 player-fixture predictions
+
+Building prediction set 40: 25/26 GW23
+Persisted 7888 player-fixture predictions
+
+Building prediction set 40: 25/26 GW24
+Persisted 7350 player-fixture predictions
+
+Building prediction set 40: 25/26 GW25
+Persisted 6860 player-fixture predictions
+
+Building prediction set 40: 25/26 GW26
+Persisted 6383 player-fixture predictions
+
+Building prediction set 40: 25/26 GW27
+Persisted 5794 player-fixture predictions
+
+Building prediction set 40: 25/26 GW28
+Persisted 5307 player-fixture predictions
+
+Building prediction set 40: 25/26 GW29
+Persisted 4840 player-fixture predictions
+
+Building prediction set 40: 25/26 GW30
+Persisted 4342 player-fixture predictions
+
+Building prediction set 40: 25/26 GW31
+Persisted 3878 player-fixture predictions
+
+Building prediction set 40: 25/26 GW32
+Persisted 3487 player-fixture predictions
+
+Building prediction set 40: 25/26 GW33
+Persisted 3015 player-fixture predictions
+
+Building prediction set 40: 25/26 GW34
+Persisted 2361 player-fixture predictions
+
+Building prediction set 40: 25/26 GW35
+Persisted 1997 player-fixture predictions
+
+Building prediction set 40: 25/26 GW36
+Persisted 1516 player-fixture predictions
+
+Building prediction set 40: 25/26 GW37
+Persisted 984 player-fixture predictions
+
+Building prediction set 40: 25/26 GW38
+Persisted 493 player-fixture predictions
+Prediction set ID: 40
+{
+  "prediction_set_id": 40,
+  "expected_snapshots": 38,
+  "complete_snapshots": 38,
+  "missing": [],
+  "failed_or_empty": []
+}
+Recorded v2_log_minbands_teams_attn -> prediction set 40 in C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\run_metrics\model_eval\experiments.json
+v2_log_minbands_teams_attn_blend25: set 41 {"25": {"snapshots": 38, "rows": 363027, "minutes_share": 0.0}}
+Evaluating seasons 25
+  v2_log_minbands_blend25: set eval-v2_log_minbands_blend25 is 35
+  v2_log_minbands_teams_blend25: set eval-v2_log_minbands_teams_blend25 is 37
+  v2_log_minbands_teams_pblocks_blend25: set eval-v2_log_minbands_teams_pblocks_blend25 is 39
+  v2_log_minbands_teams_attn_blend25: set eval-v2_log_minbands_teams_attn_blend25 is 41
+  v1: prediction set 7, scored as optimiser
+  v1_h5: prediction set 29, scored as optimiser
+  v2_log: prediction set 21, scored as raw_points
+  v2_log_h5: prediction set 28, scored as raw_points
+  v2_log_minbands: prediction set 32, scored as raw_points
+  v2_log_minbands_teams: prediction set 36, scored as raw_points
+  v2_log_minbands_teams_pblocks: prediction set 38, scored as raw_points
+  v2_log_minbands_teams_attn: prediction set 40, scored as raw_points
+  v2_log_minbands_blend25: prediction set 35, scored as raw_points
+  v2_log_minbands_teams_blend25: prediction set 37, scored as raw_points
+  v2_log_minbands_teams_pblocks_blend25: prediction set 39, scored as raw_points
+  v2_log_minbands_teams_attn_blend25: prediction set 41, scored as raw_points
+  season 25: 38 origins, 401.3 eligible players on average
+Deriving v1_cal from v1 (rolling linear calibration)
+Deriving v1_h5_cal from v1_h5 (rolling linear calibration)
+Deriving v2_log_cal from v2_log (rolling linear calibration)
+Deriving v2_log_h5_cal from v2_log_h5 (rolling linear calibration)
+Scoring 38 units for 16 models...
+Bootstrapping 200 resamples (blocks of 5 origins)...
+Model evaluation against v1, seasons 25, 38 origins
+Scores are in noise units: 1.0 = one bootstrap standard deviation of that metric for v1.
+Positive is better than v1; v1 scores 0 by definition.
+Each metric is capped at +-3 before weighting; "uncapped" is the old total.
+
+model               total       95% interval   P(>0)  overall   future    calib  ranking fixtures  uncapped
+v2_log_minbands_teams_blend25    +1.82       [1.30, 2.11]    1.00    +3.00    +1.44    +3.00    +1.70    -0.17     +3.48
+v2_log_minbands_teams_attn_blend25    +1.81       [1.29, 2.10]    1.00    +3.00    +1.24    +3.00    +1.79    -0.07     +3.47
+v2_log_minbands_teams_pblocks_blend25    +1.79       [1.25, 2.07]    1.00    +3.00    +1.34    +3.00    +1.65    -0.13     +3.45
+v2_log_minbands_teams    +1.79       [1.21, 2.13]    1.00    +3.00    +1.56    +3.00    +1.56    -0.29     +3.35
+v2_log_minbands_teams_attn    +1.77       [1.24, 2.08]    1.00    +3.00    +1.26    +3.00    +1.67    -0.19     +3.32
+v2_log_minbands_teams_pblocks    +1.71       [1.14, 2.03]    1.00    +3.00    +1.30    +3.00    +1.46    -0.27     +3.28
+v2_log_minbands_blend25    +1.60       [1.00, 1.99]    1.00    +3.00    +1.21    +3.00    +1.55    -0.97     +3.21
+v2_log_minbands     +1.53       [0.91, 1.96]    1.00    +2.99    +1.20    +3.00    +1.38    -1.13     +3.03
+v1_h5_cal           +1.48       [1.34, 1.64]    1.00    +3.00    +1.58    +3.00    +0.54    -0.46     +3.73
+v2_log_cal          +1.40       [0.88, 1.81]    1.00    +3.00    +1.48    +3.00    +0.63    -1.03     +3.97
+v2_log              +1.31       [0.72, 1.79]    1.00    +2.70    +1.06    +3.00    +0.76    -0.78     +2.70
+v1_cal              +1.19       [1.08, 1.33]    1.00    +2.66    +1.29    +3.00    +0.03    -0.54     +3.12
+v1_h5               +0.87       [0.70, 1.09]    1.00    +1.14    +0.40    +3.00    +0.52    -0.02     +1.46
+v2_log_h5_cal       +0.63       [0.16, 1.12]    1.00    +2.18    +1.33    +3.00    -1.20    -1.30     +3.10
+v2_log_h5           +0.44      [-0.03, 1.06]    0.95    +1.80    +0.68    +3.00    -1.34    -0.83     +2.29
+
+What drove each score:
+  v2_log_minbands_teams_blend25: helped most by overall +0.66, calibration +0.39
+  v2_log_minbands_teams_attn_blend25: helped most by overall +0.66, calibration +0.39
+  v2_log_minbands_teams_pblocks_blend25: helped most by overall +0.66, calibration +0.39
+  v2_log_minbands_teams: helped most by overall +0.66, calibration +0.39
+    v2_log_minbands plus 3-season team/opponent history transformers, fading xG averages, team time blocks.
+  v2_log_minbands_teams_attn: helped most by overall +0.66, calibration +0.39
+    v2_log_minbands_teams with the team histories pooled by player attention, not transformers.
+  v2_log_minbands_teams_pblocks: helped most by overall +0.66, calibration +0.39
+    v2_log_minbands_teams with player identities split into the same time blocks.
+  v2_log_minbands_blend25: helped most by overall +0.66, calibration +0.39
+  v2_log_minbands: helped most by overall +0.66, calibration +0.39; regressed on fixture_swing (-1.13 sd)
+    v2_log plus a training-only cross-entropy head on minutes bands (0, 1-59, 60+).
+  v1_h5_cal: helped most by overall +0.66, calibration +0.39
+    v1_h5 plus the same rolling linear calibration.
+  v2_log_cal: helped most by overall +0.66, calibration +0.39; regressed on fixture_swing (-1.03 sd)
+    v2_log plus the same rolling linear calibration.
+  v2_log: helped most by overall +0.59, calibration +0.39
+    v2, no weights, trained on log1p points, one smearing factor (level only).
+  v1_cal: helped most by overall +0.58, calibration +0.39
+    v1 plus the same rolling linear calibration.
+  v1_h5: helped most by calibration +0.39, overall +0.25; regressed on 2B_predicted (-2.36 sd)
+    v1 as used live: a 5-GW total model, split across fixtures by the single-GW points.
+  v2_log_h5_cal: helped most by overall +0.48, calibration +0.39; regressed on single_gw_rank (-2.38 sd), fixture_swing (-1.30 sd)
+    v2_log_h5 plus the same rolling linear calibration.
+  v2_log_h5: helped most by overall +0.40, calibration +0.39; regressed on 2B_predicted (-1.22 sd), single_gw_rank (-2.88 sd)
+    v2_log plus a 5-GW net on points per fixture; window totals split by h1 shares.
+
+By season (total):
+  v2_log_minbands_teams_blend25 25 +1.82
+  v2_log_minbands_teams_attn_blend25 25 +1.81
+  v2_log_minbands_teams_pblocks_blend25 25 +1.79
+  v2_log_minbands_teams 25 +1.79
+  v2_log_minbands_teams_attn 25 +1.77
+  v2_log_minbands_teams_pblocks 25 +1.71
+  v2_log_minbands_blend25 25 +1.60
+  v2_log_minbands  25 +1.53
+  v1_h5_cal        25 +1.48
+  v2_log_cal       25 +1.40
+  v2_log           25 +1.31
+  v1_cal           25 +1.19
+  v1_h5            25 +0.87
+  v2_log_h5_cal    25 +0.63
+  v2_log_h5        25 +0.44
+
+Non-overlapping 5-GW origins only (sensitivity check, same sigmas):
+  v2_log_minbands_teams_blend25 total +1.89, future +2.08, ranking +1.46
+  v2_log_minbands_teams_attn_blend25 total +1.93, future +2.06, ranking +1.54
+  v2_log_minbands_teams_pblocks_blend25 total +1.88, future +1.99, ranking +1.38
+  v2_log_minbands_teams total +1.82, future +2.12, ranking +1.22
+  v2_log_minbands_teams_attn total +1.85, future +1.99, ranking +1.31
+  v2_log_minbands_teams_pblocks total +1.74, future +1.78, ranking +1.08
+  v2_log_minbands_blend25 total +1.78, future +1.97, ranking +1.58
+  v2_log_minbands  total +1.64, future +1.65, ranking +1.40
+  v1_h5_cal        total +1.56, future +2.03, ranking +0.48
+  v2_log_cal       total +1.53, future +2.15, ranking +0.61
+  v2_log           total +1.49, future +1.68, ranking +0.73
+  v1_cal           total +1.23, future +1.34, ranking +0.03
+  v1_h5            total +1.06, future +1.25, ranking +0.45
+  v2_log_h5_cal    total +0.95, future +2.03, ranking -1.21
+  v2_log_h5        total +0.88, future +1.78, ranking -1.30
+
+Guardrail flags:
+  v1_h5_cal: overall_mae is 6.6% worse than v1
+  v2_log_cal: overall_mae is 6.7% worse than v1
+  v1_cal: overall_mae is 6.5% worse than v1
+  v1_h5: overpredicts its own top_5pct picks by 3.76 points over 5 GWs
+  v1_h5: overpredicts its own top_5 picks by 6.42 points over 5 GWs
+  v2_log_h5_cal: overall_mae is 10.4% worse than v1
+  v2_log_h5: overall_mae is 6.4% worse than v1
+  v2_log_h5: overpredicts its own top_5 picks by 3.66 points over 5 GWs
+
+Raw metrics (pooled):
+  model             overall_mse  overall_mae overall_bias    2A_actual 2A_predicted    2B_actual 2B_predicted calibration_ calibration_ spearman_sin spearman_fiv
+  v1                      7.615        1.653       -0.712       17.742        8.369        4.306        2.770        0.712        0.848        0.552        0.554
+  v2_log_minbands_teams_blend25        7.046        1.683       -0.329       16.915        7.873        4.192        2.702        0.329        1.081        0.566        0.589
+  v2_log_minbands_teams_attn_blend25        7.044        1.684       -0.331       17.067        7.757        4.205        2.742        0.331        1.112        0.567        0.591
+  v2_log_minbands_teams_pblocks_blend25        7.054        1.686       -0.326       17.156        7.758        4.212        2.688        0.326        1.118        0.565        0.589
+  v2_log_minbands_teams        7.058        1.672       -0.345       16.900        7.795        4.192        2.687        0.345        1.031        0.569        0.583
+  v2_log_minbands_teams_attn        7.052        1.673       -0.348       17.101        7.884        4.209        2.701        0.348        1.069        0.569        0.585
+  v2_log_minbands_teams_pblocks        7.066        1.676       -0.341       17.221        7.753        4.219        2.685        0.341        1.074        0.566        0.582
+  v2_log_minbands_blend25        7.076        1.690       -0.331       17.112        7.894        4.211        2.709        0.331        1.095        0.563        0.587
+  v2_log_minbands         7.091        1.681       -0.348       17.161        7.768        4.218        2.724        0.348        1.050        0.565        0.581
+  v1_h5_cal               7.068        1.762       -0.123       16.242        7.812        4.154        2.759        0.225        0.986        0.563        0.560
+  v2_log_cal              7.053        1.764       -0.128       16.375        7.871        4.151        2.778        0.160        1.017        0.558        0.567
+  v2_log                  7.142        1.685       -0.370       17.267        7.808        4.224        2.730        0.370        1.054        0.558        0.571
+  v1_cal                  7.149        1.760       -0.170       16.955        8.014        4.216        2.696        0.265        1.018        0.559        0.550
+  v1_h5                   7.415        1.691       -0.497       15.788        8.774        4.136        2.906        0.552        0.753        0.557        0.564
+  v2_log_h5_cal           7.234        1.825       -0.079       16.792        7.807        4.206        2.770        0.163        1.109        0.515        0.554
+  v2_log_h5               7.300        1.758       -0.281       17.033        8.062        4.223        2.840        0.281        1.018        0.508        0.557
+
+Fixture swings: players who played 60+ minutes in each of the next five gameweeks,
+one fixture each. corr: predicted rises and falls vs real ones (higher is better).
+slope: real swing per point of predicted swing (1 is right; above 1, the model's
+swings are too small). mse: error on the swings.
+  model                    corr        slope          mse            n
+  v1                      0.150        1.246        7.996        14885
+  v2_log_minbands_teams_blend25        0.146        1.767        8.031        14885
+  v2_log_minbands_teams_attn_blend25        0.148        1.857        8.030        14885
+  v2_log_minbands_teams_pblocks_blend25        0.147        1.872        8.034        14885
+  v2_log_minbands_teams        0.144        1.640        8.029        14885
+  v2_log_minbands_teams_attn        0.146        1.730        8.030        14885
+  v2_log_minbands_teams_pblocks        0.144        1.754        8.034        14885
+  v2_log_minbands_blend25        0.128        1.793        8.064        14885
+  v2_log_minbands         0.125        1.791        8.070        14885
+  v1_h5_cal               0.140        1.723        8.041        14885
+  v2_log_cal              0.127        1.737        8.064        14885
+  v2_log                  0.133        1.679        8.052        14885
+  v1_cal                  0.138        1.906        8.052        14885
+  v1_h5                   0.150        1.068        7.990        14885
+  v2_log_h5_cal           0.121        1.874        8.079        14885
+  v2_log_h5               0.132        1.625        8.052        14885
+
+Wrote C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\run_metrics\model_eval\teams_3
+Done 3/3 v2_log_minbands_teams_attn 03/11/2026  7:10:44.87 
+Finished 03/11/2026  7:10:44.87 

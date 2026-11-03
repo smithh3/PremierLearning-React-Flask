@@ -535,6 +535,13 @@ class Runner:
             )
             return
 
+        # Keep this deadline's chance-of-playing flags for future replays and
+        # v2 training; the live API only ever shows the current ones.
+        from squadtools.chance_to_play import archive_live_chances
+        archived = archive_live_chances(self.target_season_year, fantasy_json_from_api)
+        if archived is not None:
+            print(f'Saved chance-of-playing flags to {archived}')
+
         update_all = self.should_update_data(fantasy_json_from_api)
 
         if update_all:
@@ -774,8 +781,11 @@ class Runner:
 
     def learn(self, horizon_only: bool = False, minutes_only: bool = False):
         if '--learning-v2' in sys.argv:
-            from premierlearning.learning_v2.learn import learn_h1
-            learn_h1(self)
+            from premierlearning.learning_v2.learn import BLEND_FLAG, learn_blend, learn_h1
+            if BLEND_FLAG in sys.argv:
+                learn_blend(self)
+            else:
+                learn_h1(self)
             return
         clean_matches = self.populate_formatted_match_data()
 

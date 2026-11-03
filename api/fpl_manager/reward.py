@@ -1,4 +1,8 @@
-"""Season points dominate. The weekly term is a small rank signal in the same universe."""
+"""Season points dominate.
+
+v1 and v2: the weekly term is a small rank signal in the same universe, and
+a multi-season run is paid once at its end. v3: see WEEKLY_POINTS_WEIGHT.
+"""
 from __future__ import annotations
 
 TERMINAL_DIVISOR = 1000.0
@@ -20,6 +24,23 @@ def multi_season_reward(points, percentiles) -> float:
     total_points = sum(float(value) for value in points)
     total_percentiles = sum(float(value) for value in percentiles)
     return terminal_reward(total_points) + total_percentiles / PERCENTILE_DIVISOR
+
+
+# v3 pays some points every week so each decision gets credit near the time
+# it is made. The season-end payment is still the larger part:
+#   each week:    0.25 x points / 1000      (about 0.5 over a season)
+#   season end:   points / 1000 + finish percentile / 100   (about 2.8)
+# Summed over a three-season run, the season-end parts equal the old
+# end-of-run reward exactly.
+WEEKLY_POINTS_WEIGHT = 0.25
+
+
+def weekly_points_reward(points: float) -> float:
+    return WEEKLY_POINTS_WEIGHT * float(points) / TERMINAL_DIVISOR
+
+
+def season_end_reward(points: float, percentile: float) -> float:
+    return terminal_reward(points) + float(percentile) / PERCENTILE_DIVISOR
 
 
 def percentile_rank(score: float, reference) -> float:

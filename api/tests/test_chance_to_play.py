@@ -8,6 +8,7 @@ from unittest import mock
 from premierlearning.config_constants import SEASON_YR
 from squadtools import chance_to_play as chance_mod
 from squadtools.chance_to_play import (
+    archive_live_chances,
     download_gameweek_chances,
     ensure_gameweek_chances,
     is_live_season,
@@ -237,6 +238,27 @@ class ChanceToPlayTests(unittest.TestCase):
                 )
             download_again.assert_not_called()
             self.assertEqual(0, again[9])
+
+    def test_live_flags_are_archived_until_the_deadline(self):
+        bootstrap = {
+            'events': [
+                {'id': 1, 'deadline_time': '2026-08-14T17:30:00Z', 'is_current': True},
+                {'id': 2, 'deadline_time': '2026-08-21T17:30:00Z', 'is_next': True},
+            ],
+            'elements': [
+                {'id': 5, 'chance_of_playing_next_round': 25, 'chance_of_playing_this_round': 0, 'status': 'd'},
+                {'id': 6, 'chance_of_playing_next_round': None, 'chance_of_playing_this_round': None, 'status': 'i'},
+                {'id': 7, 'chance_of_playing_next_round': None, 'chance_of_playing_this_round': None, 'status': 'a'},
+            ],
+        }
+        with tempfile.TemporaryDirectory() as root:
+            before = datetime(2026, 8, 20, 9, 0, tzinfo=timezone.utc)
+            path = archive_live_chances(13, bootstrap, now=before, data_root=Path(root))
+            self.assertTrue(path.name == 'gw2.json')
+            # Read back the way historical builds read it once the season is over.
+            self.assertEqual({5: 25, 6: 0, 7: None}, ensure_gameweek_chances(13, 2, data_root=Path(root), allow_download=False))
+            after_all = datetime(2026, 8, 22, tzinfo=timezone.utc)
+            self.assertIsNone(archive_live_chances(13, bootstrap, now=after_all, data_root=Path(root)))
 
 
 if __name__ == '__main__':

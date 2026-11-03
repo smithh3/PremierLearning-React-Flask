@@ -19,16 +19,49 @@ from persistence import DB_Handler
 from premierlearning.learning import (
     HORIZON_REPS_DEFAULT,
     MINUTES_REPS_DEFAULT,
+    PlayerNetHParams,
     parse_horizon_reps,
     parse_minutes_reps,
     with_learning_rep_flags,
 )
+from premierlearning.learning_v2.score import (
+    HUMP_HEIGHT,
+    HUMP_PEAK,
+    HUMP_POWER,
+    HUMP_WIDTH,
+    LOSS_TIER_MIX,
+    SMOOTH_ALPHA,
+    SMOOTH_POWER,
+    SMOOTH_SCALE,
+    WEIGHTING_KINDS,
+    WEIGHTING_TIER,
+    LossWeighting,
+)
+from premierlearning.learning_v2.train import PATIENCE_FLOOR, resolve_loss_name
 from premierlearning.runner import Runner
 from simulation.historical_data import VaastavSeasonData
 from simulation.season_model import FixedSeasonModels
+from simulation.season_model_v2 import FixedSeasonModelsV2
 
 
 DEFAULT_SEASONS = (23, 24, 25)
+LEARNING_V2_FLAG = '--learning-v2'
+DEFAULT_V2_PLAN = 'simple_h1'
+# Hashed only for learning_v2 builds, so v1 cache hashes do not move.
+V2_CODE_HASH_FILES = (
+    'premierlearning/learning_v2/dataset.py',
+    'premierlearning/learning_v2/external_hook.py',
+    'premierlearning/learning_v2/external_inputs.py',
+    'premierlearning/learning_v2/kickoff.py',
+    'premierlearning/learning_v2/learn.py',
+    'premierlearning/learning_v2/model.py',
+    'premierlearning/learning_v2/plan.py',
+    'premierlearning/learning_v2/score.py',
+    'premierlearning/learning_v2/staged.py',
+    'premierlearning/learning_v2/teams.py',
+    'premierlearning/learning_v2/train.py',
+    'simulation/season_model_v2.py',
+)
 CODE_HASH_FILES = (
     'premierlearning/runner.py',
     'premierlearning/learning.py',
@@ -60,15 +93,33 @@ def _parse_seasons(value):
     return tuple(result)
 
 
-def _model_hash(config):
+def _model_hash(config, extra_files=()):
     digest = hashlib.sha256()
     digest.update(json.dumps(config, sort_keys=True).encode('utf-8'))
     api_dir = Path(__file__).resolve().parents[1]
-    for relative in CODE_HASH_FILES:
+    for relative in tuple(CODE_HASH_FILES) + tuple(extra_files):
         path = api_dir / relative
         digest.update(relative.encode('utf-8'))
         digest.update(path.read_bytes())
     return digest.hexdigest()
+
+
+def _v2_plan_file(plan_name):
+    return 'premierlearning/learning_v2/model_plans/%s.json' % plan_name
+
+
+@contextmanager
+def _learning_v2_argv(enabled):
+    """Runner reads --learning-v2 from argv; make it match the build, then restore."""
+    previous = list(sys.argv)
+    if enabled and LEARNING_V2_FLAG not in sys.argv:
+        sys.argv.append(LEARNING_V2_FLAG)
+    if not enabled:
+        sys.argv[:] = [arg for arg in sys.argv if arg != LEARNING_V2_FLAG]
+    try:
+        yield
+    finally:
+        sys.argv[:] = previous
 
 
 def _set_random_seed(seed):
@@ -176,8 +227,28 @@ class HistoricalPredictionBuilder:
         points_minutes_weight=False,
         use_horizon_model=True,
         points_reps=1,
+        learning_v2=False,
+        model_plan=DEFAULT_V2_PLAN,
+        v2_weighting=None,
+        v2_loss=None,
+        points_tier_weight=False,
+        v2_smear='off',
+        v2_patience_floor=PATIENCE_FLOOR,
+        v2_horizon=0,
+        v2_minutes_head=0.0,
+        v2_minutes_target='bands',
     ):
         self.db = db_handler
+        self.learning_v2 = bool(learning_v2)
+        self.model_plan = str(model_plan or DEFAULT_V2_PLAN)
+        self.v2_weighting = v2_weighting or LossWeighting()
+        self.v2_loss = resolve_loss_name(v2_loss)
+        self.v2_smear = str(v2_smear or 'off')
+        self.v2_patience_floor = int(v2_patience_floor)
+        self.v2_horizon = int(v2_horizon or 0)
+        self.v2_minutes_head = float(v2_minutes_head or 0.0)
+        self.v2_minutes_target = str(v2_minutes_target or 'bands')
+        self.points_tier_weight = bool(points_tier_weight)
         self.seasons = tuple(int(season) for season in seasons)
         self.gameweek_from = int(gameweek_from)
         self.gameweek_to = int(gameweek_to)
@@ -216,9 +287,40 @@ class HistoricalPredictionBuilder:
                 else 'once_per_snapshot'
             ),
         }
+        if self.points_tier_weight:
+            # Only when set, so unweighted v1 configs hash as before.
+            self.config['points_tier_weight'] = LOSS_TIER_MIX
+        extra_hash_files = ()
+        if self.learning_v2:
+            # v2 skips team expectancies, the minutes net and the horizon net, so
+            # those keys stay as recorded but only these change its output.
+            self.config.update({
+                'model': 'learning_v2',
+                'model_plan': self.model_plan,
+                'v2_loss': self.v2_loss,
+                'v2_weighting': self.v2_weighting.config(),
+                'huber_delta': PlayerNetHParams.from_env().huber_delta,
+                # Training rows carry the FPL flag known at their deadline
+                # (fplcache, 2021/22 on); older v2 sets saw a constant 1.0.
+                'v2_chance_input': 'deadline_flags',
+            })
+            if self.v2_smear != 'off':
+                # Only when set, so existing v2 configs hash as before.
+                self.config['v2_smear'] = self.v2_smear
+            if self.v2_patience_floor != PATIENCE_FLOOR:
+                self.config['v2_patience_floor'] = self.v2_patience_floor
+            if self.v2_horizon:
+                self.config['v2_horizon'] = self.v2_horizon
+            if '_oracle_' in self.model_plan:
+                # fpl_manager refuses these sets.
+                self.config['uses_future_information'] = True
+            if self.v2_minutes_head:
+                self.config['v2_minutes_head'] = self.v2_minutes_head
+                self.config['v2_minutes_target'] = self.v2_minutes_target
+            extra_hash_files = V2_CODE_HASH_FILES + (_v2_plan_file(self.model_plan),)
         self.metadata = {
             'name': self.name,
-            'model_config_hash': _model_hash(self.config),
+            'model_config_hash': _model_hash(self.config, extra_hash_files),
             'horizon_gameweeks': self.horizon_gameweeks,
             'training_policy': 'strict_point_in_time',
             'availability_mode': 'deferred_chance',
@@ -274,7 +376,34 @@ class HistoricalPredictionBuilder:
         )
         runner.populate_past_seasons()
         runner.validate_temporal_cutoff()
+        if self.learning_v2:
+            runner.v2_model_plan = self.model_plan
+            runner.v2_weighting = self.v2_weighting
+            runner.v2_points_reps = self.points_reps
         return runner
+
+    def _fit_fixed_models(self, training_runner):
+        if self.learning_v2:
+            return FixedSeasonModelsV2.fit(
+                training_runner,
+                plan_name=self.model_plan,
+                weighting=self.v2_weighting,
+                points_reps=self.points_reps,
+                loss_name=self.v2_loss,
+                smear_mode=self.v2_smear,
+                patience_floor=self.v2_patience_floor,
+                horizon_gameweeks=self.v2_horizon,
+                minutes_weight=self.v2_minutes_head,
+                minutes_target=self.v2_minutes_target,
+            )
+        return FixedSeasonModels.fit(
+            training_runner,
+            points_loss=self.points_loss,
+            points_minutes_weight=self.points_minutes_weight,
+            use_horizon_model=self.use_horizon_model,
+            points_reps=self.points_reps,
+            points_tier_weight=self.points_tier_weight,
+        )
 
     def build_one(
         self,
@@ -306,7 +435,7 @@ class HistoricalPredictionBuilder:
                 season_start_year,
                 as_of_gameweek,
             )
-            with _simulation_environment():
+            with _simulation_environment(), _learning_v2_argv(self.learning_v2):
                 if fixed_models is None:
                     _set_random_seed(
                         self.seed + season_start_year * 100 + as_of_gameweek
@@ -382,14 +511,8 @@ class HistoricalPredictionBuilder:
             if self.train_once_per_season:
                 _set_random_seed(self.seed + season_start_year * 100)
                 training_runner = self._new_runner(season_start_year, 1)
-                with _simulation_environment():
-                    fixed_models = FixedSeasonModels.fit(
-                        training_runner,
-                        points_loss=self.points_loss,
-                        points_minutes_weight=self.points_minutes_weight,
-                        use_horizon_model=self.use_horizon_model,
-                        points_reps=self.points_reps,
-                    )
+                with _simulation_environment(), _learning_v2_argv(self.learning_v2):
+                    fixed_models = self._fit_fixed_models(training_runner)
             for gameweek in range(self.gameweek_from, self.gameweek_to + 1):
                 if gameweek not in available:
                     print(
@@ -526,12 +649,63 @@ def build_parser():
         '--points-reps',
         type=int,
         default=1,
-        help='Independent fits for the h1 points net. Default 1.',
+        help='Independent fits for the h1 points net (or the learning_v2 net). Default 1.',
     )
+    parser.add_argument(
+        LEARNING_V2_FLAG,
+        dest='learning_v2',
+        action='store_true',
+        help='Predict with the learning_v2 points model instead of v1.',
+    )
+    parser.add_argument(
+        '--model-plan',
+        default=DEFAULT_V2_PLAN,
+        help='learning_v2 model plan. Default %s.' % DEFAULT_V2_PLAN,
+    )
+    parser.add_argument(
+        '--v2-weighting',
+        choices=WEIGHTING_KINDS,
+        default=WEIGHTING_TIER,
+        help='learning_v2 loss weights by actual points. Default tier (the blended bands).',
+    )
+    parser.add_argument('--v2-tier-mix', type=float, default=LOSS_TIER_MIX)
+    parser.add_argument('--v2-smooth-alpha', type=float, default=SMOOTH_ALPHA)
+    parser.add_argument('--v2-smooth-scale', type=float, default=SMOOTH_SCALE)
+    parser.add_argument('--v2-smooth-power', type=float, default=SMOOTH_POWER)
+    parser.add_argument('--v2-smooth-cap', type=float, default=None,
+                        help='Cap smooth weights before scaling to mean 1 (2.4 = the bands without steps).')
+    parser.add_argument('--v2-hump-peak', type=float, default=HUMP_PEAK)
+    parser.add_argument('--v2-hump-height', type=float, default=HUMP_HEIGHT)
+    parser.add_argument('--v2-hump-power', type=float, default=HUMP_POWER)
+    parser.add_argument('--v2-hump-width', type=float, default=HUMP_WIDTH)
+    parser.add_argument('--v2-loss', choices=('huber_raw', 'mse', 'huber', 'poisson'), default=None,
+                        help='learning_v2 loss. Default huber_raw; huber trains on log1p points.')
+    parser.add_argument('--v2-smear', choices=('off', 'global', 'conditional'), default='off',
+                        help='Smearing correction for log-target v2 losses.')
+    parser.add_argument('--v2-horizon', type=int, default=0,
+                        help='Also fit a learning_v2 window net over this many GWs; 0 is h1 only.')
+    parser.add_argument('--v2-minutes-head', type=float, default=0.0,
+                        help='Loss weight of a training-only minutes head on the h1 net; 0 is none.')
+    parser.add_argument('--v2-minutes-target', choices=('bands', 'log'), default='bands',
+                        help='What the minutes head predicts: bands (cross-entropy) or log minutes (Huber).')
+    parser.add_argument('--v2-patience-floor', type=int, default=PATIENCE_FLOOR,
+                        help='Minimum early-stop patience for learning_v2. Default %s; lower it only '
+                             'for evaluation test runs.' % PATIENCE_FLOOR)
+    parser.add_argument('--huber-delta', type=float, default=None,
+                        help='Huber threshold; sets PL_HUBER_DELTA for this build.')
+    parser.add_argument('--points-tier-weight', action='store_true',
+                        help='v1: weight h1 points rows by the blended score bands of the fixture, '
+                             'and horizon rows by the bands of the window points per 90.')
     return parser
 
 
 def main(argv=None):
+    code, _builder = run(argv)
+    return code
+
+
+def run(argv=None):
+    """Build and report coverage. Returns (exit code, builder)."""
     parser = build_parser()
     args = parser.parse_args(argv)
     if not (1 <= args.from_gw <= args.to_gw <= 38):
@@ -550,6 +724,9 @@ def main(argv=None):
         horizon_reps=args.horizon_reps,
         minutes_reps=args.minutes_reps,
     )
+    if args.huber_delta is not None:
+        # PlayerNetHParams.from_env reads it, so the hash and every fit agree.
+        os.environ['PL_HUBER_DELTA'] = str(args.huber_delta)
 
     app = Flask(__name__)
     with app.app_context():
@@ -572,6 +749,27 @@ def main(argv=None):
                 points_minutes_weight=args.points_minutes_weight,
                 use_horizon_model=not args.no_horizon_model,
                 points_reps=args.points_reps,
+                learning_v2=args.learning_v2,
+                model_plan=args.model_plan,
+                v2_weighting=LossWeighting(
+                    kind=args.v2_weighting,
+                    tier_mix=args.v2_tier_mix,
+                    alpha=args.v2_smooth_alpha,
+                    scale=args.v2_smooth_scale,
+                    power=args.v2_smooth_power,
+                    cap=args.v2_smooth_cap,
+                    hump_peak=args.v2_hump_peak,
+                    hump_height=args.v2_hump_height,
+                    hump_power=args.v2_hump_power,
+                    hump_width=args.v2_hump_width,
+                ),
+                v2_loss=args.v2_loss,
+                points_tier_weight=args.points_tier_weight,
+                v2_smear=args.v2_smear,
+                v2_patience_floor=args.v2_patience_floor,
+                v2_horizon=args.v2_horizon,
+                v2_minutes_head=args.v2_minutes_head,
+                v2_minutes_target=args.v2_minutes_target,
             )
             if not args.coverage_only:
                 builder.build()
@@ -580,8 +778,8 @@ def main(argv=None):
             print(f'Prediction set ID: {builder.prediction_set_id}')
             report = builder.coverage()
             if report['missing'] or report['failed_or_empty']:
-                return 1
-            return 0
+                return 1, builder
+            return 0, builder
         finally:
             db_handler.close_connection()
 

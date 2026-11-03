@@ -1,0 +1,954 @@
+ 
+Started 01/11/2026 23:56:38.33 
+
+=== v2_log_minbands ===
+C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\venv\Scripts\python.exe -m simulation.model_eval build v2_log_minbands --seasons 23,24
+Building v2_log_minbands: --learning-v2 --train-once-per-season --points-reps 1 --v2-weighting none --v2-loss huber --v2-smear global --v2-minutes-head 0.1 --v2-minutes-target bands --seasons 23,24 --name eval-v2_log_minbands
+Using prediction set 32; existing season snapshots are kept
+Training one fixed learning_v2 simple_h1 model for the simulated season...
+  109952 train rows, 1643 players, 28 teams (vocab frozen)
+learning_v2 simple_h1: loss=huber, every fixture weighted equally, optimizer=AdamW, epochs=500, train=87961, early stop on unweighted val RMSE, patience=20% of epochs run (at least 15, at most 40)
+learning_v2 minutes head: bands, training only, loss weight 0.1
+Epoch 1/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 47s - loss: 0.4859 - points_loss: 0.1630 - minutes_loss: 0.6735 - points_orig_rmse: 2.2458 - points_orig_mae: 1.1106 - val_loss: 0.2616 - val_points_loss: 0.1647 - val_minutes_loss: 0.6531 - val_points_orig_rmse: 2.1622 - val_points_orig_mae: 1.1515 - lr: 5.0000e-04 - 47s/epoch - 21ms/step
+Epoch 2/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 39s - loss: 0.2332 - points_loss: 0.1505 - minutes_loss: 0.6258 - points_orig_rmse: 2.2031 - points_orig_mae: 1.0683 - val_loss: 0.2368 - val_points_loss: 0.1596 - val_minutes_loss: 0.6241 - val_points_orig_rmse: 2.1161 - val_points_orig_mae: 1.1629 - lr: 5.0000e-04 - 39s/epoch - 18ms/step
+Epoch 3/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 41s - loss: 0.2130 - points_loss: 0.1409 - minutes_loss: 0.5881 - points_orig_rmse: 2.1691 - points_orig_mae: 1.0372 - val_loss: 0.2091 - val_points_loss: 0.1391 - val_minutes_loss: 0.5789 - val_points_orig_rmse: 2.1723 - val_points_orig_mae: 1.0515 - lr: 5.0000e-04 - 41s/epoch - 19ms/step
+Epoch 4/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 40s - loss: 0.2061 - points_loss: 0.1370 - minutes_loss: 0.5733 - points_orig_rmse: 2.1521 - points_orig_mae: 1.0232 - val_loss: 0.2059 - val_points_loss: 0.1376 - val_minutes_loss: 0.5727 - val_points_orig_rmse: 2.1807 - val_points_orig_mae: 1.0373 - lr: 5.0000e-04 - 40s/epoch - 18ms/step
+Epoch 5/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 41s - loss: 0.2033 - points_loss: 0.1356 - minutes_loss: 0.5671 - points_orig_rmse: 2.1469 - points_orig_mae: 1.0180 - val_loss: 0.2055 - val_points_loss: 0.1377 - val_minutes_loss: 0.5706 - val_points_orig_rmse: 2.1402 - val_points_orig_mae: 1.0384 - lr: 5.0000e-04 - 41s/epoch - 19ms/step
+Epoch 6/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 46s - loss: 0.2008 - points_loss: 0.1344 - minutes_loss: 0.5624 - points_orig_rmse: 2.1415 - points_orig_mae: 1.0146 - val_loss: 0.2033 - val_points_loss: 0.1366 - val_minutes_loss: 0.5678 - val_points_orig_rmse: 2.1364 - val_points_orig_mae: 1.0322 - lr: 5.0000e-04 - 46s/epoch - 21ms/step
+Epoch 7/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 48s - loss: 0.1997 - points_loss: 0.1340 - minutes_loss: 0.5604 - points_orig_rmse: 2.1386 - points_orig_mae: 1.0138 - val_loss: 0.2038 - val_points_loss: 0.1379 - val_minutes_loss: 0.5658 - val_points_orig_rmse: 2.1993 - val_points_orig_mae: 1.0219 - lr: 5.0000e-04 - 48s/epoch - 22ms/step
+Epoch 8/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 47s - loss: 0.1983 - points_loss: 0.1333 - minutes_loss: 0.5574 - points_orig_rmse: 2.1351 - points_orig_mae: 1.0106 - val_loss: 0.2022 - val_points_loss: 0.1365 - val_minutes_loss: 0.5664 - val_points_orig_rmse: 2.1930 - val_points_orig_mae: 1.0160 - lr: 5.0000e-04 - 47s/epoch - 22ms/step
+Epoch 9/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 46s - loss: 0.1972 - points_loss: 0.1327 - minutes_loss: 0.5557 - points_orig_rmse: 2.1317 - points_orig_mae: 1.0090 - val_loss: 0.2001 - val_points_loss: 0.1358 - val_minutes_loss: 0.5587 - val_points_orig_rmse: 2.1754 - val_points_orig_mae: 1.0201 - lr: 5.0000e-04 - 46s/epoch - 21ms/step
+Epoch 10/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 46s - loss: 0.1963 - points_loss: 0.1324 - minutes_loss: 0.5542 - points_orig_rmse: 2.1312 - points_orig_mae: 1.0073 - val_loss: 0.1997 - val_points_loss: 0.1357 - val_minutes_loss: 0.5569 - val_points_orig_rmse: 2.1219 - val_points_orig_mae: 1.0374 - lr: 5.0000e-04 - 46s/epoch - 21ms/step
+Epoch 11/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 44s - loss: 0.1922 - points_loss: 0.1295 - minutes_loss: 0.5454 - points_orig_rmse: 2.1161 - points_orig_mae: 0.9986 - val_loss: 0.1983 - val_points_loss: 0.1345 - val_minutes_loss: 0.5575 - val_points_orig_rmse: 2.1435 - val_points_orig_mae: 1.0283 - lr: 1.5000e-04 - 44s/epoch - 20ms/step
+Epoch 12/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 44s - loss: 0.1913 - points_loss: 0.1291 - minutes_loss: 0.5431 - points_orig_rmse: 2.1145 - points_orig_mae: 0.9962 - val_loss: 0.2004 - val_points_loss: 0.1366 - val_minutes_loss: 0.5597 - val_points_orig_rmse: 2.1093 - val_points_orig_mae: 1.0473 - lr: 1.5000e-04 - 44s/epoch - 20ms/step
+Epoch 13/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 45s - loss: 0.1910 - points_loss: 0.1290 - minutes_loss: 0.5429 - points_orig_rmse: 2.1139 - points_orig_mae: 0.9964 - val_loss: 0.1991 - val_points_loss: 0.1355 - val_minutes_loss: 0.5606 - val_points_orig_rmse: 2.1839 - val_points_orig_mae: 1.0108 - lr: 1.5000e-04 - 45s/epoch - 20ms/step
+Epoch 14/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 44s - loss: 0.1909 - points_loss: 0.1291 - minutes_loss: 0.5431 - points_orig_rmse: 2.1152 - points_orig_mae: 0.9961 - val_loss: 0.1973 - val_points_loss: 0.1343 - val_minutes_loss: 0.5560 - val_points_orig_rmse: 2.1542 - val_points_orig_mae: 1.0219 - lr: 1.5000e-04 - 44s/epoch - 20ms/step
+Epoch 15/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 42s - loss: 0.1904 - points_loss: 0.1287 - minutes_loss: 0.5423 - points_orig_rmse: 2.1127 - points_orig_mae: 0.9954 - val_loss: 0.1987 - val_points_loss: 0.1353 - val_minutes_loss: 0.5592 - val_points_orig_rmse: 2.1459 - val_points_orig_mae: 1.0199 - lr: 1.5000e-04 - 42s/epoch - 19ms/step
+Epoch 16/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 45s - loss: 0.1901 - points_loss: 0.1287 - minutes_loss: 0.5413 - points_orig_rmse: 2.1133 - points_orig_mae: 0.9949 - val_loss: 0.1974 - val_points_loss: 0.1344 - val_minutes_loss: 0.5581 - val_points_orig_rmse: 2.1505 - val_points_orig_mae: 1.0308 - lr: 1.5000e-04 - 45s/epoch - 20ms/step
+Epoch 17/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 46s - loss: 0.1901 - points_loss: 0.1287 - minutes_loss: 0.5418 - points_orig_rmse: 2.1126 - points_orig_mae: 0.9951 - val_loss: 0.1980 - val_points_loss: 0.1347 - val_minutes_loss: 0.5590 - val_points_orig_rmse: 2.1494 - val_points_orig_mae: 1.0188 - lr: 1.5000e-04 - 46s/epoch - 21ms/step
+Epoch 18/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 46s - loss: 0.1898 - points_loss: 0.1284 - minutes_loss: 0.5416 - points_orig_rmse: 2.1111 - points_orig_mae: 0.9940 - val_loss: 0.1999 - val_points_loss: 0.1366 - val_minutes_loss: 0.5602 - val_points_orig_rmse: 2.1068 - val_points_orig_mae: 1.0467 - lr: 1.5000e-04 - 46s/epoch - 21ms/step
+Epoch 19/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 46s - loss: 0.1894 - points_loss: 0.1283 - minutes_loss: 0.5400 - points_orig_rmse: 2.1103 - points_orig_mae: 0.9945 - val_loss: 0.1972 - val_points_loss: 0.1344 - val_minutes_loss: 0.5574 - val_points_orig_rmse: 2.1635 - val_points_orig_mae: 1.0163 - lr: 1.5000e-04 - 46s/epoch - 21ms/step
+Epoch 20/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 47s - loss: 0.1892 - points_loss: 0.1281 - minutes_loss: 0.5406 - points_orig_rmse: 2.1090 - points_orig_mae: 0.9931 - val_loss: 0.1971 - val_points_loss: 0.1349 - val_minutes_loss: 0.5525 - val_points_orig_rmse: 2.1297 - val_points_orig_mae: 1.0343 - lr: 1.5000e-04 - 47s/epoch - 21ms/step
+Epoch 21/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 48s - loss: 0.1887 - points_loss: 0.1278 - minutes_loss: 0.5394 - points_orig_rmse: 2.1077 - points_orig_mae: 0.9922 - val_loss: 0.1982 - val_points_loss: 0.1357 - val_minutes_loss: 0.5551 - val_points_orig_rmse: 2.1127 - val_points_orig_mae: 1.0370 - lr: 1.5000e-04 - 48s/epoch - 22ms/step
+Epoch 22/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 46s - loss: 0.1888 - points_loss: 0.1279 - minutes_loss: 0.5393 - points_orig_rmse: 2.1074 - points_orig_mae: 0.9922 - val_loss: 0.1967 - val_points_loss: 0.1344 - val_minutes_loss: 0.5555 - val_points_orig_rmse: 2.1686 - val_points_orig_mae: 1.0166 - lr: 1.5000e-04 - 46s/epoch - 21ms/step
+Epoch 23/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 45s - loss: 0.1886 - points_loss: 0.1279 - minutes_loss: 0.5390 - points_orig_rmse: 2.1078 - points_orig_mae: 0.9921 - val_loss: 0.1966 - val_points_loss: 0.1342 - val_minutes_loss: 0.5559 - val_points_orig_rmse: 2.1375 - val_points_orig_mae: 1.0215 - lr: 1.5000e-04 - 45s/epoch - 21ms/step
+Epoch 24/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 45s - loss: 0.1884 - points_loss: 0.1277 - minutes_loss: 0.5385 - points_orig_rmse: 2.1069 - points_orig_mae: 0.9920 - val_loss: 0.1973 - val_points_loss: 0.1350 - val_minutes_loss: 0.5552 - val_points_orig_rmse: 2.1314 - val_points_orig_mae: 1.0246 - lr: 1.5000e-04 - 45s/epoch - 20ms/step
+Epoch 25/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 46s - loss: 0.1883 - points_loss: 0.1277 - minutes_loss: 0.5384 - points_orig_rmse: 2.1051 - points_orig_mae: 0.9916 - val_loss: 0.1969 - val_points_loss: 0.1343 - val_minutes_loss: 0.5584 - val_points_orig_rmse: 2.1633 - val_points_orig_mae: 1.0097 - lr: 1.5000e-04 - 46s/epoch - 21ms/step
+Epoch 26/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 45s - loss: 0.1881 - points_loss: 0.1275 - minutes_loss: 0.5383 - points_orig_rmse: 2.1053 - points_orig_mae: 0.9911 - val_loss: 0.1959 - val_points_loss: 0.1340 - val_minutes_loss: 0.5527 - val_points_orig_rmse: 2.1607 - val_points_orig_mae: 1.0148 - lr: 1.5000e-04 - 45s/epoch - 20ms/step
+Epoch 27/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 44s - loss: 0.1861 - points_loss: 0.1261 - minutes_loss: 0.5330 - points_orig_rmse: 2.0995 - points_orig_mae: 0.9858 - val_loss: 0.1960 - val_points_loss: 0.1339 - val_minutes_loss: 0.5542 - val_points_orig_rmse: 2.1305 - val_points_orig_mae: 1.0227 - lr: 4.5000e-05 - 44s/epoch - 20ms/step
+Epoch 28/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 42s - loss: 0.1860 - points_loss: 0.1260 - minutes_loss: 0.5334 - points_orig_rmse: 2.0985 - points_orig_mae: 0.9857 - val_loss: 0.1959 - val_points_loss: 0.1337 - val_minutes_loss: 0.5541 - val_points_orig_rmse: 2.1351 - val_points_orig_mae: 1.0204 - lr: 4.5000e-05 - 42s/epoch - 19ms/step
+Epoch 29/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 44s - loss: 0.1859 - points_loss: 0.1259 - minutes_loss: 0.5329 - points_orig_rmse: 2.0968 - points_orig_mae: 0.9854 - val_loss: 0.1960 - val_points_loss: 0.1338 - val_minutes_loss: 0.5544 - val_points_orig_rmse: 2.1357 - val_points_orig_mae: 1.0203 - lr: 4.5000e-05 - 44s/epoch - 20ms/step
+Epoch 30/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 45s - loss: 0.1857 - points_loss: 0.1257 - minutes_loss: 0.5332 - points_orig_rmse: 2.0953 - points_orig_mae: 0.9850 - val_loss: 0.1963 - val_points_loss: 0.1341 - val_minutes_loss: 0.5548 - val_points_orig_rmse: 2.1236 - val_points_orig_mae: 1.0243 - lr: 4.5000e-05 - 45s/epoch - 21ms/step
+Epoch 31/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 45s - loss: 0.1857 - points_loss: 0.1258 - minutes_loss: 0.5324 - points_orig_rmse: 2.0955 - points_orig_mae: 0.9851 - val_loss: 0.1959 - val_points_loss: 0.1337 - val_minutes_loss: 0.5552 - val_points_orig_rmse: 2.1500 - val_points_orig_mae: 1.0126 - lr: 4.5000e-05 - 45s/epoch - 20ms/step
+Epoch 32/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 48s - loss: 0.1858 - points_loss: 0.1259 - minutes_loss: 0.5328 - points_orig_rmse: 2.0965 - points_orig_mae: 0.9855 - val_loss: 0.1958 - val_points_loss: 0.1336 - val_minutes_loss: 0.5557 - val_points_orig_rmse: 2.1457 - val_points_orig_mae: 1.0139 - lr: 4.5000e-05 - 48s/epoch - 22ms/step
+Epoch 33/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+learning_v2 early stop at epoch 33: best validation at epoch 18 (patience is 20% of epochs run, at least 15 and at most 40)
+2199/2199 - 47s - loss: 0.1857 - points_loss: 0.1258 - minutes_loss: 0.5328 - points_orig_rmse: 2.0971 - points_orig_mae: 0.9847 - val_loss: 0.1963 - val_points_loss: 0.1340 - val_minutes_loss: 0.5555 - val_points_orig_rmse: 2.1235 - val_points_orig_mae: 1.0232 - lr: 4.5000e-05 - 47s/epoch - 21ms/step
+{'test_loss': 0.19870726764202118, 'test_metrics': [0.1358059048652649, 0.556481122970581, 2.0815558433532715, 1.0328954458236694]}
+learning_v2 smearing (global, 21991 held-out rows): S=1.122; by level 0.0->1.01, 0.1->1.09, 0.5->1.21, 1.6->1.18, 3.0->1.11
+Held-out points by actual score (weights: low 0-2 x1, medium 3-5 x2, high 6-9 x4, very high 10+ x8)
+  weighted MAE 2.368    unweighted MAE 1.145    (lower is better, bias = predicted - actual)
+  tier             n     MAE   actual  predicted     bias
+  low          18841   0.705     0.47       1.06    +0.59
+  medium        1263   1.471     3.70       2.59    -1.11
+  high          1478   4.234     6.94       2.71    -4.23
+  very_high      409   9.268    12.31       3.04    -9.27
+Held-out points by recent player level (mean points per gameweek over the previous 5, at least 3 gameweeks)
+  same bands: low under 3, medium 3-5, high 6-9, very high 10+
+  rows 20819, skipped 1172 with too little history    unweighted MAE 1.158
+  tier             n     MAE   actual  predicted     bias     form
+  low          16727   0.875     0.91       0.90    -0.01     0.73
+  medium        3532   2.256     2.94       2.93    -0.01     4.02
+  high           541   2.637     3.76       3.74    -0.02     7.04
+  very_high       19   4.406     6.11       4.87    -1.24    10.77
+
+Building prediction set 32: 23/24 GW1
+Persisted 18620 player-fixture predictions
+
+Building prediction set 32: 23/24 GW2
+Persisted 19240 player-fixture predictions
+
+Building prediction set 32: 23/24 GW3
+Persisted 19625 player-fixture predictions
+
+Building prediction set 32: 23/24 GW4
+Persisted 19785 player-fixture predictions
+
+Building prediction set 32: 23/24 GW5
+Persisted 19938 player-fixture predictions
+
+Building prediction set 32: 23/24 GW6
+Persisted 15784 player-fixture predictions
+
+Building prediction set 32: 23/24 GW7
+Persisted 15241 player-fixture predictions
+
+Building prediction set 32: 23/24 GW8
+Persisted 14942 player-fixture predictions
+
+Building prediction set 32: 23/24 GW9
+Persisted 14340 player-fixture predictions
+
+Building prediction set 32: 23/24 GW10
+Persisted 13949 player-fixture predictions
+
+Building prediction set 32: 23/24 GW11
+Persisted 13692 player-fixture predictions
+
+Building prediction set 32: 23/24 GW12
+Persisted 13122 player-fixture predictions
+
+Building prediction set 32: 23/24 GW13
+Persisted 12740 player-fixture predictions
+
+Building prediction set 32: 23/24 GW14
+Persisted 12400 player-fixture predictions
+
+Building prediction set 32: 23/24 GW15
+Persisted 11952 player-fixture predictions
+
+Building prediction set 32: 23/24 GW16
+Persisted 11362 player-fixture predictions
+
+Building prediction set 32: 23/24 GW17
+Persisted 10802 player-fixture predictions
+
+Building prediction set 32: 23/24 GW18
+Persisted 10437 player-fixture predictions
+
+Building prediction set 32: 23/24 GW19
+Persisted 9972 player-fixture predictions
+
+Building prediction set 32: 23/24 GW20
+Persisted 9535 player-fixture predictions
+
+Building prediction set 32: 23/24 GW21
+Persisted 9022 player-fixture predictions
+
+Building prediction set 32: 23/24 GW22
+Persisted 8766 player-fixture predictions
+
+Building prediction set 32: 23/24 GW23
+Persisted 8370 player-fixture predictions
+
+Building prediction set 32: 23/24 GW24
+Persisted 7958 player-fixture predictions
+
+Building prediction set 32: 23/24 GW25
+Persisted 7404 player-fixture predictions
+
+Building prediction set 32: 23/24 GW26
+Persisted 6769 player-fixture predictions
+
+Building prediction set 32: 23/24 GW27
+Persisted 6323 player-fixture predictions
+
+Building prediction set 32: 23/24 GW28
+Persisted 5828 player-fixture predictions
+
+Building prediction set 32: 23/24 GW29
+Persisted 5259 player-fixture predictions
+
+Building prediction set 32: 23/24 GW30
+Persisted 4993 player-fixture predictions
+
+Building prediction set 32: 23/24 GW31
+Persisted 4479 player-fixture predictions
+
+Building prediction set 32: 23/24 GW32
+Persisted 3932 player-fixture predictions
+
+Building prediction set 32: 23/24 GW33
+Persisted 3400 player-fixture predictions
+
+Building prediction set 32: 23/24 GW34
+Persisted 2943 player-fixture predictions
+
+Building prediction set 32: 23/24 GW35
+Persisted 2301 player-fixture predictions
+
+Building prediction set 32: 23/24 GW36
+Persisted 1738 player-fixture predictions
+
+Building prediction set 32: 23/24 GW37
+Persisted 1212 player-fixture predictions
+
+Building prediction set 32: 23/24 GW38
+Persisted 533 player-fixture predictions
+Training one fixed learning_v2 simple_h1 model for the simulated season...
+  139713 train rows, 1868 players, 29 teams (vocab frozen)
+learning_v2 simple_h1: loss=huber, every fixture weighted equally, optimizer=AdamW, epochs=500, train=111770, early stop on unweighted val RMSE, patience=20% of epochs run (at least 15, at most 40)
+learning_v2 minutes head: bands, training only, loss weight 0.1
+Epoch 1/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 186s - loss: 0.4255 - points_loss: 0.1522 - minutes_loss: 0.6388 - points_orig_rmse: 2.1939 - points_orig_mae: 1.0580 - val_loss: 0.2257 - val_points_loss: 0.1429 - val_minutes_loss: 0.6007 - val_points_orig_rmse: 2.2000 - val_points_orig_mae: 1.0094 - lr: 5.0000e-04 - 186s/epoch - 67ms/step
+Epoch 2/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 168s - loss: 0.2113 - points_loss: 0.1373 - minutes_loss: 0.5783 - points_orig_rmse: 2.1397 - points_orig_mae: 1.0072 - val_loss: 0.2154 - val_points_loss: 0.1437 - val_minutes_loss: 0.5891 - val_points_orig_rmse: 2.2485 - val_points_orig_mae: 0.9849 - lr: 5.0000e-04 - 168s/epoch - 60ms/step
+Epoch 3/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 171s - loss: 0.1990 - points_loss: 0.1313 - minutes_loss: 0.5552 - points_orig_rmse: 2.1157 - points_orig_mae: 0.9864 - val_loss: 0.1995 - val_points_loss: 0.1326 - val_minutes_loss: 0.5532 - val_points_orig_rmse: 2.1561 - val_points_orig_mae: 0.9822 - lr: 5.0000e-04 - 171s/epoch - 61ms/step
+Epoch 4/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 164s - loss: 0.1944 - points_loss: 0.1289 - minutes_loss: 0.5454 - points_orig_rmse: 2.1044 - points_orig_mae: 0.9787 - val_loss: 0.1956 - val_points_loss: 0.1301 - val_minutes_loss: 0.5489 - val_points_orig_rmse: 2.1285 - val_points_orig_mae: 0.9767 - lr: 5.0000e-04 - 164s/epoch - 59ms/step
+Epoch 5/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 169s - loss: 0.1921 - points_loss: 0.1279 - minutes_loss: 0.5409 - points_orig_rmse: 2.0987 - points_orig_mae: 0.9744 - val_loss: 0.1926 - val_points_loss: 0.1290 - val_minutes_loss: 0.5420 - val_points_orig_rmse: 2.1059 - val_points_orig_mae: 0.9768 - lr: 5.0000e-04 - 169s/epoch - 61ms/step
+Epoch 6/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 167s - loss: 0.1905 - points_loss: 0.1272 - minutes_loss: 0.5373 - points_orig_rmse: 2.0964 - points_orig_mae: 0.9727 - val_loss: 0.1967 - val_points_loss: 0.1323 - val_minutes_loss: 0.5542 - val_points_orig_rmse: 2.0510 - val_points_orig_mae: 1.0138 - lr: 5.0000e-04 - 167s/epoch - 60ms/step
+Epoch 7/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 171s - loss: 0.1894 - points_loss: 0.1269 - minutes_loss: 0.5351 - points_orig_rmse: 2.0944 - points_orig_mae: 0.9717 - val_loss: 0.1923 - val_points_loss: 0.1298 - val_minutes_loss: 0.5373 - val_points_orig_rmse: 2.0754 - val_points_orig_mae: 0.9914 - lr: 5.0000e-04 - 171s/epoch - 61ms/step
+Epoch 8/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 147s - loss: 0.1879 - points_loss: 0.1260 - minutes_loss: 0.5320 - points_orig_rmse: 2.0896 - points_orig_mae: 0.9681 - val_loss: 0.1922 - val_points_loss: 0.1295 - val_minutes_loss: 0.5435 - val_points_orig_rmse: 2.1408 - val_points_orig_mae: 0.9576 - lr: 5.0000e-04 - 147s/epoch - 53ms/step
+Epoch 9/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 169s - loss: 0.1875 - points_loss: 0.1258 - minutes_loss: 0.5328 - points_orig_rmse: 2.0883 - points_orig_mae: 0.9675 - val_loss: 0.1917 - val_points_loss: 0.1294 - val_minutes_loss: 0.5425 - val_points_orig_rmse: 2.1163 - val_points_orig_mae: 0.9568 - lr: 5.0000e-04 - 169s/epoch - 61ms/step
+Epoch 10/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 165s - loss: 0.1867 - points_loss: 0.1255 - minutes_loss: 0.5304 - points_orig_rmse: 2.0870 - points_orig_mae: 0.9660 - val_loss: 0.1911 - val_points_loss: 0.1294 - val_minutes_loss: 0.5339 - val_points_orig_rmse: 2.0662 - val_points_orig_mae: 0.9872 - lr: 5.0000e-04 - 165s/epoch - 59ms/step
+Epoch 11/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 166s - loss: 0.1860 - points_loss: 0.1250 - minutes_loss: 0.5297 - points_orig_rmse: 2.0842 - points_orig_mae: 0.9647 - val_loss: 0.1892 - val_points_loss: 0.1284 - val_minutes_loss: 0.5311 - val_points_orig_rmse: 2.0988 - val_points_orig_mae: 0.9723 - lr: 5.0000e-04 - 166s/epoch - 59ms/step
+Epoch 12/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 169s - loss: 0.1857 - points_loss: 0.1250 - minutes_loss: 0.5283 - points_orig_rmse: 2.0837 - points_orig_mae: 0.9638 - val_loss: 0.1915 - val_points_loss: 0.1292 - val_minutes_loss: 0.5435 - val_points_orig_rmse: 2.1084 - val_points_orig_mae: 0.9578 - lr: 5.0000e-04 - 169s/epoch - 61ms/step
+Epoch 13/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 166s - loss: 0.1850 - points_loss: 0.1245 - minutes_loss: 0.5281 - points_orig_rmse: 2.0798 - points_orig_mae: 0.9631 - val_loss: 0.1906 - val_points_loss: 0.1297 - val_minutes_loss: 0.5345 - val_points_orig_rmse: 2.0714 - val_points_orig_mae: 0.9801 - lr: 5.0000e-04 - 166s/epoch - 59ms/step
+Epoch 14/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 164s - loss: 0.1846 - points_loss: 0.1245 - minutes_loss: 0.5265 - points_orig_rmse: 2.0806 - points_orig_mae: 0.9622 - val_loss: 0.1900 - val_points_loss: 0.1287 - val_minutes_loss: 0.5396 - val_points_orig_rmse: 2.0705 - val_points_orig_mae: 0.9748 - lr: 5.0000e-04 - 164s/epoch - 59ms/step
+Epoch 15/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 167s - loss: 0.1808 - points_loss: 0.1218 - minutes_loss: 0.5177 - points_orig_rmse: 2.0676 - points_orig_mae: 0.9531 - val_loss: 0.1894 - val_points_loss: 0.1284 - val_minutes_loss: 0.5370 - val_points_orig_rmse: 2.0643 - val_points_orig_mae: 0.9777 - lr: 1.5000e-04 - 167s/epoch - 60ms/step
+Epoch 16/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 170s - loss: 0.1801 - points_loss: 0.1214 - minutes_loss: 0.5166 - points_orig_rmse: 2.0659 - points_orig_mae: 0.9515 - val_loss: 0.1871 - val_points_loss: 0.1271 - val_minutes_loss: 0.5316 - val_points_orig_rmse: 2.0847 - val_points_orig_mae: 0.9665 - lr: 1.5000e-04 - 170s/epoch - 61ms/step
+Epoch 17/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 164s - loss: 0.1798 - points_loss: 0.1213 - minutes_loss: 0.5166 - points_orig_rmse: 2.0649 - points_orig_mae: 0.9512 - val_loss: 0.1873 - val_points_loss: 0.1273 - val_minutes_loss: 0.5317 - val_points_orig_rmse: 2.0711 - val_points_orig_mae: 0.9690 - lr: 1.5000e-04 - 164s/epoch - 59ms/step
+Epoch 18/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 168s - loss: 0.1797 - points_loss: 0.1214 - minutes_loss: 0.5164 - points_orig_rmse: 2.0651 - points_orig_mae: 0.9515 - val_loss: 0.1873 - val_points_loss: 0.1277 - val_minutes_loss: 0.5300 - val_points_orig_rmse: 2.1087 - val_points_orig_mae: 0.9556 - lr: 1.5000e-04 - 168s/epoch - 60ms/step
+Epoch 19/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 169s - loss: 0.1795 - points_loss: 0.1213 - minutes_loss: 0.5161 - points_orig_rmse: 2.0648 - points_orig_mae: 0.9514 - val_loss: 0.1894 - val_points_loss: 0.1288 - val_minutes_loss: 0.5395 - val_points_orig_rmse: 2.0496 - val_points_orig_mae: 0.9932 - lr: 1.5000e-04 - 169s/epoch - 60ms/step
+Epoch 20/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 165s - loss: 0.1793 - points_loss: 0.1212 - minutes_loss: 0.5160 - points_orig_rmse: 2.0628 - points_orig_mae: 0.9511 - val_loss: 0.1872 - val_points_loss: 0.1275 - val_minutes_loss: 0.5325 - val_points_orig_rmse: 2.1132 - val_points_orig_mae: 0.9604 - lr: 1.5000e-04 - 165s/epoch - 59ms/step
+Epoch 21/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 168s - loss: 0.1790 - points_loss: 0.1210 - minutes_loss: 0.5161 - points_orig_rmse: 2.0629 - points_orig_mae: 0.9505 - val_loss: 0.1871 - val_points_loss: 0.1275 - val_minutes_loss: 0.5308 - val_points_orig_rmse: 2.0717 - val_points_orig_mae: 0.9714 - lr: 1.5000e-04 - 168s/epoch - 60ms/step
+Epoch 22/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 166s - loss: 0.1791 - points_loss: 0.1212 - minutes_loss: 0.5153 - points_orig_rmse: 2.0649 - points_orig_mae: 0.9508 - val_loss: 0.1870 - val_points_loss: 0.1274 - val_minutes_loss: 0.5333 - val_points_orig_rmse: 2.0735 - val_points_orig_mae: 0.9700 - lr: 1.5000e-04 - 166s/epoch - 59ms/step
+Epoch 23/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 171s - loss: 0.1786 - points_loss: 0.1208 - minutes_loss: 0.5152 - points_orig_rmse: 2.0619 - points_orig_mae: 0.9502 - val_loss: 0.1877 - val_points_loss: 0.1280 - val_minutes_loss: 0.5338 - val_points_orig_rmse: 2.0642 - val_points_orig_mae: 0.9720 - lr: 1.5000e-04 - 171s/epoch - 61ms/step
+Epoch 24/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 161s - loss: 0.1787 - points_loss: 0.1209 - minutes_loss: 0.5155 - points_orig_rmse: 2.0620 - points_orig_mae: 0.9498 - val_loss: 0.1864 - val_points_loss: 0.1272 - val_minutes_loss: 0.5316 - val_points_orig_rmse: 2.0863 - val_points_orig_mae: 0.9597 - lr: 1.5000e-04 - 161s/epoch - 58ms/step
+Epoch 25/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 171s - loss: 0.1786 - points_loss: 0.1209 - minutes_loss: 0.5152 - points_orig_rmse: 2.0621 - points_orig_mae: 0.9494 - val_loss: 0.1881 - val_points_loss: 0.1285 - val_minutes_loss: 0.5338 - val_points_orig_rmse: 2.0522 - val_points_orig_mae: 0.9783 - lr: 1.5000e-04 - 171s/epoch - 61ms/step
+Epoch 26/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 159s - loss: 0.1783 - points_loss: 0.1207 - minutes_loss: 0.5150 - points_orig_rmse: 2.0605 - points_orig_mae: 0.9497 - val_loss: 0.1863 - val_points_loss: 0.1271 - val_minutes_loss: 0.5314 - val_points_orig_rmse: 2.0840 - val_points_orig_mae: 0.9669 - lr: 1.5000e-04 - 159s/epoch - 57ms/step
+Epoch 27/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 164s - loss: 0.1784 - points_loss: 0.1209 - minutes_loss: 0.5149 - points_orig_rmse: 2.0619 - points_orig_mae: 0.9501 - val_loss: 0.1862 - val_points_loss: 0.1270 - val_minutes_loss: 0.5330 - val_points_orig_rmse: 2.0814 - val_points_orig_mae: 0.9692 - lr: 1.5000e-04 - 164s/epoch - 59ms/step
+Epoch 28/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 169s - loss: 0.1767 - points_loss: 0.1197 - minutes_loss: 0.5110 - points_orig_rmse: 2.0565 - points_orig_mae: 0.9451 - val_loss: 0.1856 - val_points_loss: 0.1267 - val_minutes_loss: 0.5302 - val_points_orig_rmse: 2.0793 - val_points_orig_mae: 0.9644 - lr: 4.5000e-05 - 169s/epoch - 60ms/step
+Epoch 29/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 162s - loss: 0.1765 - points_loss: 0.1195 - minutes_loss: 0.5105 - points_orig_rmse: 2.0547 - points_orig_mae: 0.9451 - val_loss: 0.1859 - val_points_loss: 0.1268 - val_minutes_loss: 0.5325 - val_points_orig_rmse: 2.0803 - val_points_orig_mae: 0.9628 - lr: 4.5000e-05 - 162s/epoch - 58ms/step
+Epoch 30/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 167s - loss: 0.1765 - points_loss: 0.1195 - minutes_loss: 0.5108 - points_orig_rmse: 2.0554 - points_orig_mae: 0.9446 - val_loss: 0.1860 - val_points_loss: 0.1270 - val_minutes_loss: 0.5312 - val_points_orig_rmse: 2.0695 - val_points_orig_mae: 0.9699 - lr: 4.5000e-05 - 167s/epoch - 60ms/step
+Epoch 31/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 165s - loss: 0.1763 - points_loss: 0.1194 - minutes_loss: 0.5106 - points_orig_rmse: 2.0541 - points_orig_mae: 0.9444 - val_loss: 0.1859 - val_points_loss: 0.1270 - val_minutes_loss: 0.5307 - val_points_orig_rmse: 2.0848 - val_points_orig_mae: 0.9609 - lr: 4.5000e-05 - 165s/epoch - 59ms/step
+Epoch 32/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 167s - loss: 0.1763 - points_loss: 0.1195 - minutes_loss: 0.5101 - points_orig_rmse: 2.0549 - points_orig_mae: 0.9451 - val_loss: 0.1857 - val_points_loss: 0.1269 - val_minutes_loss: 0.5301 - val_points_orig_rmse: 2.0813 - val_points_orig_mae: 0.9626 - lr: 4.5000e-05 - 167s/epoch - 60ms/step
+Epoch 33/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 166s - loss: 0.1763 - points_loss: 0.1194 - minutes_loss: 0.5107 - points_orig_rmse: 2.0535 - points_orig_mae: 0.9448 - val_loss: 0.1856 - val_points_loss: 0.1267 - val_minutes_loss: 0.5316 - val_points_orig_rmse: 2.0868 - val_points_orig_mae: 0.9607 - lr: 4.5000e-05 - 166s/epoch - 59ms/step
+Epoch 34/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+learning_v2 early stop at epoch 34: best validation at epoch 19 (patience is 20% of epochs run, at least 15 and at most 40)
+2795/2795 - 166s - loss: 0.1763 - points_loss: 0.1195 - minutes_loss: 0.5102 - points_orig_rmse: 2.0537 - points_orig_mae: 0.9448 - val_loss: 0.1855 - val_points_loss: 0.1267 - val_minutes_loss: 0.5306 - val_points_orig_rmse: 2.0955 - val_points_orig_mae: 0.9608 - lr: 4.5000e-05 - 166s/epoch - 59ms/step
+{'test_loss': 0.18657498061656952, 'test_metrics': [0.12613393366336823, 0.5379565954208374, 2.032503604888916, 0.9810191988945007]}
+learning_v2 smearing (global, 27943 held-out rows): S=1.102; by level 0.0->0.99, 0.1->1.02, 0.5->1.18, 1.5->1.19, 2.9->1.14
+Held-out points by actual score (weights: low 0-2 x1, medium 3-5 x2, high 6-9 x4, very high 10+ x8)
+  weighted MAE 2.290    unweighted MAE 1.075    (lower is better, bias = predicted - actual)
+  tier             n     MAE   actual  predicted     bias
+  low          24161   0.641     0.45       0.97    +0.53
+  medium        1521   1.499     3.75       2.55    -1.19
+  high          1784   4.306     6.93       2.62    -4.31
+  very_high      477   9.589    12.62       3.03    -9.59
+Held-out points by recent player level (mean points per gameweek over the previous 5, at least 3 gameweeks)
+  same bands: low under 3, medium 3-5, high 6-9, very high 10+
+  rows 26484, skipped 1459 with too little history    unweighted MAE 1.090
+  tier             n     MAE   actual  predicted     bias     form
+  low          21545   0.817     0.85       0.84    -0.02     0.69
+  medium        4260   2.159     2.90       2.78    -0.12     4.02
+  high           657   3.045     4.32       3.71    -0.61     6.99
+  very_high       22   3.108     4.27       4.43    +0.16    10.85
+
+Building prediction set 32: 24/25 GW1
+Persisted 17518 player-fixture predictions
+
+Building prediction set 32: 24/25 GW2
+Persisted 18204 player-fixture predictions
+
+Building prediction set 32: 24/25 GW3
+Persisted 18432 player-fixture predictions
+
+Building prediction set 32: 24/25 GW4
+Persisted 18550 player-fixture predictions
+
+Building prediction set 32: 24/25 GW5
+Persisted 18394 player-fixture predictions
+
+Building prediction set 32: 24/25 GW6
+Persisted 15543 player-fixture predictions
+
+Building prediction set 32: 24/25 GW7
+Persisted 14784 player-fixture predictions
+
+Building prediction set 32: 24/25 GW8
+Persisted 14229 player-fixture predictions
+
+Building prediction set 32: 24/25 GW9
+Persisted 13770 player-fixture predictions
+
+Building prediction set 32: 24/25 GW10
+Persisted 13340 player-fixture predictions
+
+Building prediction set 32: 24/25 GW11
+Persisted 12852 player-fixture predictions
+
+Building prediction set 32: 24/25 GW12
+Persisted 12420 player-fixture predictions
+
+Building prediction set 32: 24/25 GW13
+Persisted 12090 player-fixture predictions
+
+Building prediction set 32: 24/25 GW14
+Persisted 11800 player-fixture predictions
+
+Building prediction set 32: 24/25 GW15
+Persisted 11496 player-fixture predictions
+
+Building prediction set 32: 24/25 GW16
+Persisted 11083 player-fixture predictions
+
+Building prediction set 32: 24/25 GW17
+Persisted 10559 player-fixture predictions
+
+Building prediction set 32: 24/25 GW18
+Persisted 10102 player-fixture predictions
+
+Building prediction set 32: 24/25 GW19
+Persisted 9642 player-fixture predictions
+
+Building prediction set 32: 24/25 GW20
+Persisted 9142 player-fixture predictions
+
+Building prediction set 32: 24/25 GW21
+Persisted 8682 player-fixture predictions
+
+Building prediction set 32: 24/25 GW22
+Persisted 8288 player-fixture predictions
+
+Building prediction set 32: 24/25 GW23
+Persisted 7932 player-fixture predictions
+
+Building prediction set 32: 24/25 GW24
+Persisted 7530 player-fixture predictions
+
+Building prediction set 32: 24/25 GW25
+Persisted 7098 player-fixture predictions
+
+Building prediction set 32: 24/25 GW26
+Persisted 6567 player-fixture predictions
+
+Building prediction set 32: 24/25 GW27
+Persisted 6070 player-fixture predictions
+
+Building prediction set 32: 24/25 GW28
+Persisted 5559 player-fixture predictions
+
+Building prediction set 32: 24/25 GW29
+Persisted 4982 player-fixture predictions
+
+Building prediction set 32: 24/25 GW30
+Persisted 4564 player-fixture predictions
+
+Building prediction set 32: 24/25 GW31
+Persisted 4079 player-fixture predictions
+
+Building prediction set 32: 24/25 GW32
+Persisted 3589 player-fixture predictions
+
+Building prediction set 32: 24/25 GW33
+Persisted 3024 player-fixture predictions
+
+Building prediction set 32: 24/25 GW34
+Persisted 2442 player-fixture predictions
+
+Building prediction set 32: 24/25 GW35
+Persisted 2020 player-fixture predictions
+
+Building prediction set 32: 24/25 GW36
+Persisted 1518 player-fixture predictions
+
+Building prediction set 32: 24/25 GW37
+Persisted 1018 player-fixture predictions
+
+Building prediction set 32: 24/25 GW38
+Persisted 512 player-fixture predictions
+Prediction set ID: 32
+{
+  "prediction_set_id": 32,
+  "expected_snapshots": 76,
+  "complete_snapshots": 76,
+  "missing": [],
+  "failed_or_empty": []
+}
+Recorded v2_log_minbands -> prediction set 32 in C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\run_metrics\model_eval\experiments.json
+
+=== v2_log_oracle_minutes ===
+C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\venv\Scripts\python.exe -m simulation.model_eval build v2_log_oracle_minutes --seasons 23,24
+Building v2_log_oracle_minutes: --learning-v2 --train-once-per-season --points-reps 1 --v2-weighting none --v2-loss huber --v2-smear global --model-plan simple_h1_oracle_minutes --seasons 23,24 --name eval-v2_log_oracle_minutes
+Using prediction set 34; existing season snapshots are kept
+Training one fixed learning_v2 simple_h1_oracle_minutes model for the simulated season...
+  109952 train rows, 1643 players, 28 teams (vocab frozen)
+learning_v2 simple_h1_oracle_minutes: loss=huber, every fixture weighted equally, optimizer=AdamW, epochs=500, train=87961, early stop on unweighted val RMSE, patience=20% of epochs run (at least 15, at most 40)
+Epoch 1/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 54s - loss: 0.3230 - orig_rmse: 1.9210 - orig_mae: 0.8666 - val_loss: 0.0960 - val_orig_rmse: 1.8940 - val_orig_mae: 0.8420 - lr: 5.0000e-04 - 54s/epoch - 25ms/step
+Epoch 2/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 44s - loss: 0.0879 - orig_rmse: 1.8939 - orig_mae: 0.8372 - val_loss: 0.0900 - val_orig_rmse: 1.8362 - val_orig_mae: 0.9321 - lr: 5.0000e-04 - 44s/epoch - 20ms/step
+Epoch 3/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 45s - loss: 0.0819 - orig_rmse: 1.8792 - orig_mae: 0.8240 - val_loss: 0.0835 - val_orig_rmse: 1.9395 - val_orig_mae: 0.8083 - lr: 5.0000e-04 - 45s/epoch - 21ms/step
+Epoch 4/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 46s - loss: 0.0795 - orig_rmse: 1.8697 - orig_mae: 0.8140 - val_loss: 0.0828 - val_orig_rmse: 1.9134 - val_orig_mae: 0.8175 - lr: 5.0000e-04 - 46s/epoch - 21ms/step
+Epoch 5/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 45s - loss: 0.0780 - orig_rmse: 1.8603 - orig_mae: 0.8082 - val_loss: 0.0786 - val_orig_rmse: 1.8791 - val_orig_mae: 0.8233 - lr: 5.0000e-04 - 45s/epoch - 21ms/step
+Epoch 6/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 44s - loss: 0.0769 - orig_rmse: 1.8560 - orig_mae: 0.8055 - val_loss: 0.0781 - val_orig_rmse: 1.8896 - val_orig_mae: 0.8240 - lr: 5.0000e-04 - 44s/epoch - 20ms/step
+Epoch 7/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 44s - loss: 0.0761 - orig_rmse: 1.8483 - orig_mae: 0.8030 - val_loss: 0.0784 - val_orig_rmse: 1.9336 - val_orig_mae: 0.8005 - lr: 5.0000e-04 - 44s/epoch - 20ms/step
+Epoch 8/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 45s - loss: 0.0752 - orig_rmse: 1.8459 - orig_mae: 0.8012 - val_loss: 0.0776 - val_orig_rmse: 1.9133 - val_orig_mae: 0.8098 - lr: 5.0000e-04 - 45s/epoch - 20ms/step
+Epoch 9/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 46s - loss: 0.0748 - orig_rmse: 1.8426 - orig_mae: 0.7998 - val_loss: 0.0769 - val_orig_rmse: 1.8684 - val_orig_mae: 0.8361 - lr: 5.0000e-04 - 46s/epoch - 21ms/step
+Epoch 10/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 43s - loss: 0.0746 - orig_rmse: 1.8447 - orig_mae: 0.8003 - val_loss: 0.0787 - val_orig_rmse: 1.8334 - val_orig_mae: 0.8567 - lr: 5.0000e-04 - 43s/epoch - 20ms/step
+Epoch 11/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 44s - loss: 0.0741 - orig_rmse: 1.8407 - orig_mae: 0.7973 - val_loss: 0.0766 - val_orig_rmse: 1.8509 - val_orig_mae: 0.8326 - lr: 5.0000e-04 - 44s/epoch - 20ms/step
+Epoch 12/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 44s - loss: 0.0738 - orig_rmse: 1.8397 - orig_mae: 0.7962 - val_loss: 0.0796 - val_orig_rmse: 1.8264 - val_orig_mae: 0.8546 - lr: 5.0000e-04 - 44s/epoch - 20ms/step
+Epoch 13/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 45s - loss: 0.0735 - orig_rmse: 1.8350 - orig_mae: 0.7947 - val_loss: 0.0773 - val_orig_rmse: 1.9354 - val_orig_mae: 0.7940 - lr: 5.0000e-04 - 45s/epoch - 20ms/step
+Epoch 14/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 46s - loss: 0.0735 - orig_rmse: 1.8356 - orig_mae: 0.7946 - val_loss: 0.0780 - val_orig_rmse: 1.9445 - val_orig_mae: 0.7972 - lr: 5.0000e-04 - 46s/epoch - 21ms/step
+Epoch 15/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 46s - loss: 0.0732 - orig_rmse: 1.8338 - orig_mae: 0.7934 - val_loss: 0.0767 - val_orig_rmse: 1.8774 - val_orig_mae: 0.8051 - lr: 5.0000e-04 - 46s/epoch - 21ms/step
+Epoch 16/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 46s - loss: 0.0733 - orig_rmse: 1.8371 - orig_mae: 0.7948 - val_loss: 0.0776 - val_orig_rmse: 1.8414 - val_orig_mae: 0.8634 - lr: 5.0000e-04 - 46s/epoch - 21ms/step
+Epoch 17/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 45s - loss: 0.0729 - orig_rmse: 1.8342 - orig_mae: 0.7938 - val_loss: 0.0778 - val_orig_rmse: 1.9177 - val_orig_mae: 0.8001 - lr: 5.0000e-04 - 45s/epoch - 20ms/step
+Epoch 18/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 43s - loss: 0.0725 - orig_rmse: 1.8311 - orig_mae: 0.7912 - val_loss: 0.0754 - val_orig_rmse: 1.8595 - val_orig_mae: 0.8141 - lr: 5.0000e-04 - 43s/epoch - 20ms/step
+Epoch 19/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 45s - loss: 0.0727 - orig_rmse: 1.8336 - orig_mae: 0.7940 - val_loss: 0.0761 - val_orig_rmse: 1.8851 - val_orig_mae: 0.8025 - lr: 5.0000e-04 - 45s/epoch - 21ms/step
+Epoch 20/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 44s - loss: 0.0724 - orig_rmse: 1.8294 - orig_mae: 0.7899 - val_loss: 0.0759 - val_orig_rmse: 1.9016 - val_orig_mae: 0.8062 - lr: 5.0000e-04 - 44s/epoch - 20ms/step
+Epoch 21/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 45s - loss: 0.0708 - orig_rmse: 1.8208 - orig_mae: 0.7806 - val_loss: 0.0753 - val_orig_rmse: 1.8413 - val_orig_mae: 0.8213 - lr: 1.5000e-04 - 45s/epoch - 21ms/step
+Epoch 22/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 46s - loss: 0.0708 - orig_rmse: 1.8201 - orig_mae: 0.7808 - val_loss: 0.0747 - val_orig_rmse: 1.8908 - val_orig_mae: 0.7993 - lr: 1.5000e-04 - 46s/epoch - 21ms/step
+Epoch 23/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 45s - loss: 0.0704 - orig_rmse: 1.8191 - orig_mae: 0.7795 - val_loss: 0.0751 - val_orig_rmse: 1.8751 - val_orig_mae: 0.8045 - lr: 1.5000e-04 - 45s/epoch - 20ms/step
+Epoch 24/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 42s - loss: 0.0705 - orig_rmse: 1.8193 - orig_mae: 0.7813 - val_loss: 0.0746 - val_orig_rmse: 1.8837 - val_orig_mae: 0.8006 - lr: 1.5000e-04 - 42s/epoch - 19ms/step
+Epoch 25/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 45s - loss: 0.0703 - orig_rmse: 1.8185 - orig_mae: 0.7804 - val_loss: 0.0758 - val_orig_rmse: 1.9295 - val_orig_mae: 0.7880 - lr: 1.5000e-04 - 45s/epoch - 20ms/step
+Epoch 26/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2199/2199 - 47s - loss: 0.0705 - orig_rmse: 1.8202 - orig_mae: 0.7807 - val_loss: 0.0745 - val_orig_rmse: 1.8846 - val_orig_mae: 0.7977 - lr: 1.5000e-04 - 47s/epoch - 21ms/step
+Epoch 27/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+learning_v2 early stop at epoch 27: best validation at epoch 12 (patience is 20% of epochs run, at least 15 and at most 40)
+2199/2199 - 46s - loss: 0.0702 - orig_rmse: 1.8187 - orig_mae: 0.7802 - val_loss: 0.0746 - val_orig_rmse: 1.8491 - val_orig_mae: 0.8176 - lr: 1.5000e-04 - 46s/epoch - 21ms/step
+{'test_loss': 0.07829540222883224, 'test_metrics': [1.797086477279663, 0.8449780344963074]}
+learning_v2 smearing (global, 21991 held-out rows): S=1.030; by level 0.1->1.02, 2.2->1.03, 3.8->1.05
+Held-out points by actual score (weights: low 0-2 x1, medium 3-5 x2, high 6-9 x4, very high 10+ x8)
+  weighted MAE 1.957    unweighted MAE 0.884    (lower is better, bias = predicted - actual)
+  tier             n     MAE   actual  predicted     bias
+  low          18841   0.512     0.47       0.93    +0.45
+  medium        1263   1.077     3.70       3.45    -0.24
+  high          1478   3.404     6.94       3.54    -3.40
+  very_high      409   8.348    12.31       3.96    -8.35
+Held-out points by recent player level (mean points per gameweek over the previous 5, at least 3 gameweeks)
+  same bands: low under 3, medium 3-5, high 6-9, very high 10+
+  rows 20819, skipped 1172 with too little history    unweighted MAE 0.895
+  tier             n     MAE   actual  predicted     bias     form
+  low          16727   0.622     0.91       0.91    -0.00     0.73
+  medium        3532   1.936     2.94       2.91    -0.03     4.02
+  high           541   2.450     3.76       3.82    +0.06     7.04
+  very_high       19   3.982     6.11       4.75    -1.36    10.77
+
+Building prediction set 34: 23/24 GW1
+Persisted 18620 player-fixture predictions
+
+Building prediction set 34: 23/24 GW2
+Persisted 19240 player-fixture predictions
+
+Building prediction set 34: 23/24 GW3
+Persisted 19625 player-fixture predictions
+
+Building prediction set 34: 23/24 GW4
+Persisted 19785 player-fixture predictions
+
+Building prediction set 34: 23/24 GW5
+Persisted 19938 player-fixture predictions
+
+Building prediction set 34: 23/24 GW6
+Persisted 15784 player-fixture predictions
+
+Building prediction set 34: 23/24 GW7
+Persisted 15241 player-fixture predictions
+
+Building prediction set 34: 23/24 GW8
+Persisted 14942 player-fixture predictions
+
+Building prediction set 34: 23/24 GW9
+Persisted 14340 player-fixture predictions
+
+Building prediction set 34: 23/24 GW10
+Persisted 13949 player-fixture predictions
+
+Building prediction set 34: 23/24 GW11
+Persisted 13692 player-fixture predictions
+
+Building prediction set 34: 23/24 GW12
+Persisted 13122 player-fixture predictions
+
+Building prediction set 34: 23/24 GW13
+Persisted 12740 player-fixture predictions
+
+Building prediction set 34: 23/24 GW14
+Persisted 12400 player-fixture predictions
+
+Building prediction set 34: 23/24 GW15
+Persisted 11952 player-fixture predictions
+
+Building prediction set 34: 23/24 GW16
+Persisted 11362 player-fixture predictions
+
+Building prediction set 34: 23/24 GW17
+Persisted 10802 player-fixture predictions
+
+Building prediction set 34: 23/24 GW18
+Persisted 10437 player-fixture predictions
+
+Building prediction set 34: 23/24 GW19
+Persisted 9972 player-fixture predictions
+
+Building prediction set 34: 23/24 GW20
+Persisted 9535 player-fixture predictions
+
+Building prediction set 34: 23/24 GW21
+Persisted 9022 player-fixture predictions
+
+Building prediction set 34: 23/24 GW22
+Persisted 8766 player-fixture predictions
+
+Building prediction set 34: 23/24 GW23
+Persisted 8370 player-fixture predictions
+
+Building prediction set 34: 23/24 GW24
+Persisted 7958 player-fixture predictions
+
+Building prediction set 34: 23/24 GW25
+Persisted 7404 player-fixture predictions
+
+Building prediction set 34: 23/24 GW26
+Persisted 6769 player-fixture predictions
+
+Building prediction set 34: 23/24 GW27
+Persisted 6323 player-fixture predictions
+
+Building prediction set 34: 23/24 GW28
+Persisted 5828 player-fixture predictions
+
+Building prediction set 34: 23/24 GW29
+Persisted 5259 player-fixture predictions
+
+Building prediction set 34: 23/24 GW30
+Persisted 4993 player-fixture predictions
+
+Building prediction set 34: 23/24 GW31
+Persisted 4479 player-fixture predictions
+
+Building prediction set 34: 23/24 GW32
+Persisted 3932 player-fixture predictions
+
+Building prediction set 34: 23/24 GW33
+Persisted 3400 player-fixture predictions
+
+Building prediction set 34: 23/24 GW34
+Persisted 2943 player-fixture predictions
+
+Building prediction set 34: 23/24 GW35
+Persisted 2301 player-fixture predictions
+
+Building prediction set 34: 23/24 GW36
+Persisted 1738 player-fixture predictions
+
+Building prediction set 34: 23/24 GW37
+Persisted 1212 player-fixture predictions
+
+Building prediction set 34: 23/24 GW38
+Persisted 533 player-fixture predictions
+Training one fixed learning_v2 simple_h1_oracle_minutes model for the simulated season...
+  139713 train rows, 1868 players, 29 teams (vocab frozen)
+learning_v2 simple_h1_oracle_minutes: loss=huber, every fixture weighted equally, optimizer=AdamW, epochs=500, train=111770, early stop on unweighted val RMSE, patience=20% of epochs run (at least 15, at most 40)
+Epoch 1/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 149s - loss: 0.2622 - orig_rmse: 1.8937 - orig_mae: 0.8342 - val_loss: 0.0869 - val_orig_rmse: 1.8296 - val_orig_mae: 0.8298 - lr: 5.0000e-04 - 149s/epoch - 53ms/step
+Epoch 2/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 116s - loss: 0.0834 - orig_rmse: 1.8676 - orig_mae: 0.8078 - val_loss: 0.0798 - val_orig_rmse: 1.9069 - val_orig_mae: 0.7693 - lr: 5.0000e-04 - 116s/epoch - 41ms/step
+Epoch 3/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 112s - loss: 0.0788 - orig_rmse: 1.8504 - orig_mae: 0.7943 - val_loss: 0.0790 - val_orig_rmse: 1.8956 - val_orig_mae: 0.7645 - lr: 5.0000e-04 - 112s/epoch - 40ms/step
+Epoch 4/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 112s - loss: 0.0769 - orig_rmse: 1.8413 - orig_mae: 0.7900 - val_loss: 0.0787 - val_orig_rmse: 1.8972 - val_orig_mae: 0.7593 - lr: 5.0000e-04 - 112s/epoch - 40ms/step
+Epoch 5/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 109s - loss: 0.0756 - orig_rmse: 1.8340 - orig_mae: 0.7848 - val_loss: 0.0760 - val_orig_rmse: 1.8760 - val_orig_mae: 0.7803 - lr: 5.0000e-04 - 109s/epoch - 39ms/step
+Epoch 6/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 108s - loss: 0.0746 - orig_rmse: 1.8301 - orig_mae: 0.7805 - val_loss: 0.0767 - val_orig_rmse: 1.8029 - val_orig_mae: 0.8271 - lr: 5.0000e-04 - 108s/epoch - 39ms/step
+Epoch 7/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 112s - loss: 0.0741 - orig_rmse: 1.8279 - orig_mae: 0.7791 - val_loss: 0.0742 - val_orig_rmse: 1.8213 - val_orig_mae: 0.7804 - lr: 5.0000e-04 - 112s/epoch - 40ms/step
+Epoch 8/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 107s - loss: 0.0735 - orig_rmse: 1.8235 - orig_mae: 0.7766 - val_loss: 0.0770 - val_orig_rmse: 1.8968 - val_orig_mae: 0.7563 - lr: 5.0000e-04 - 107s/epoch - 38ms/step
+Epoch 9/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 105s - loss: 0.0730 - orig_rmse: 1.8222 - orig_mae: 0.7743 - val_loss: 0.0738 - val_orig_rmse: 1.8286 - val_orig_mae: 0.7633 - lr: 5.0000e-04 - 105s/epoch - 37ms/step
+Epoch 10/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 105s - loss: 0.0726 - orig_rmse: 1.8202 - orig_mae: 0.7735 - val_loss: 0.0739 - val_orig_rmse: 1.8023 - val_orig_mae: 0.7850 - lr: 5.0000e-04 - 105s/epoch - 38ms/step
+Epoch 11/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 106s - loss: 0.0725 - orig_rmse: 1.8203 - orig_mae: 0.7725 - val_loss: 0.0740 - val_orig_rmse: 1.8177 - val_orig_mae: 0.7729 - lr: 5.0000e-04 - 106s/epoch - 38ms/step
+Epoch 12/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 104s - loss: 0.0723 - orig_rmse: 1.8175 - orig_mae: 0.7721 - val_loss: 0.0733 - val_orig_rmse: 1.8137 - val_orig_mae: 0.7716 - lr: 5.0000e-04 - 104s/epoch - 37ms/step
+Epoch 13/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 108s - loss: 0.0721 - orig_rmse: 1.8165 - orig_mae: 0.7705 - val_loss: 0.0732 - val_orig_rmse: 1.8084 - val_orig_mae: 0.7844 - lr: 5.0000e-04 - 108s/epoch - 39ms/step
+Epoch 14/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 107s - loss: 0.0718 - orig_rmse: 1.8173 - orig_mae: 0.7707 - val_loss: 0.0724 - val_orig_rmse: 1.8169 - val_orig_mae: 0.7734 - lr: 5.0000e-04 - 107s/epoch - 38ms/step
+Epoch 15/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 101s - loss: 0.0716 - orig_rmse: 1.8144 - orig_mae: 0.7691 - val_loss: 0.0742 - val_orig_rmse: 1.8653 - val_orig_mae: 0.7655 - lr: 5.0000e-04 - 101s/epoch - 36ms/step
+Epoch 16/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 109s - loss: 0.0715 - orig_rmse: 1.8162 - orig_mae: 0.7697 - val_loss: 0.0727 - val_orig_rmse: 1.8060 - val_orig_mae: 0.7832 - lr: 5.0000e-04 - 109s/epoch - 39ms/step
+Epoch 17/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 106s - loss: 0.0713 - orig_rmse: 1.8146 - orig_mae: 0.7693 - val_loss: 0.0769 - val_orig_rmse: 1.7718 - val_orig_mae: 0.8450 - lr: 5.0000e-04 - 106s/epoch - 38ms/step
+Epoch 18/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 104s - loss: 0.0713 - orig_rmse: 1.8127 - orig_mae: 0.7692 - val_loss: 0.0734 - val_orig_rmse: 1.8418 - val_orig_mae: 0.7614 - lr: 5.0000e-04 - 104s/epoch - 37ms/step
+Epoch 19/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 102s - loss: 0.0711 - orig_rmse: 1.8137 - orig_mae: 0.7692 - val_loss: 0.0750 - val_orig_rmse: 1.7751 - val_orig_mae: 0.8116 - lr: 5.0000e-04 - 102s/epoch - 37ms/step
+Epoch 20/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 106s - loss: 0.0711 - orig_rmse: 1.8143 - orig_mae: 0.7683 - val_loss: 0.0724 - val_orig_rmse: 1.7969 - val_orig_mae: 0.7857 - lr: 5.0000e-04 - 106s/epoch - 38ms/step
+Epoch 21/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 102s - loss: 0.0709 - orig_rmse: 1.8133 - orig_mae: 0.7676 - val_loss: 0.0720 - val_orig_rmse: 1.8343 - val_orig_mae: 0.7751 - lr: 5.0000e-04 - 102s/epoch - 36ms/step
+Epoch 22/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 107s - loss: 0.0709 - orig_rmse: 1.8154 - orig_mae: 0.7686 - val_loss: 0.0720 - val_orig_rmse: 1.8448 - val_orig_mae: 0.7711 - lr: 5.0000e-04 - 107s/epoch - 38ms/step
+Epoch 23/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 102s - loss: 0.0710 - orig_rmse: 1.8148 - orig_mae: 0.7694 - val_loss: 0.0727 - val_orig_rmse: 1.7980 - val_orig_mae: 0.7750 - lr: 5.0000e-04 - 102s/epoch - 37ms/step
+Epoch 24/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 109s - loss: 0.0708 - orig_rmse: 1.8130 - orig_mae: 0.7684 - val_loss: 0.0715 - val_orig_rmse: 1.8059 - val_orig_mae: 0.7760 - lr: 5.0000e-04 - 109s/epoch - 39ms/step
+Epoch 25/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 102s - loss: 0.0707 - orig_rmse: 1.8123 - orig_mae: 0.7674 - val_loss: 0.0748 - val_orig_rmse: 1.7778 - val_orig_mae: 0.8206 - lr: 5.0000e-04 - 102s/epoch - 36ms/step
+Epoch 26/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 106s - loss: 0.0690 - orig_rmse: 1.8007 - orig_mae: 0.7580 - val_loss: 0.0715 - val_orig_rmse: 1.8366 - val_orig_mae: 0.7566 - lr: 1.5000e-04 - 106s/epoch - 38ms/step
+Epoch 27/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 106s - loss: 0.0688 - orig_rmse: 1.7997 - orig_mae: 0.7565 - val_loss: 0.0713 - val_orig_rmse: 1.8419 - val_orig_mae: 0.7540 - lr: 1.5000e-04 - 106s/epoch - 38ms/step
+Epoch 28/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 105s - loss: 0.0688 - orig_rmse: 1.8017 - orig_mae: 0.7577 - val_loss: 0.0712 - val_orig_rmse: 1.8239 - val_orig_mae: 0.7624 - lr: 1.5000e-04 - 105s/epoch - 37ms/step
+Epoch 29/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 101s - loss: 0.0688 - orig_rmse: 1.8017 - orig_mae: 0.7575 - val_loss: 0.0717 - val_orig_rmse: 1.8086 - val_orig_mae: 0.7628 - lr: 1.5000e-04 - 101s/epoch - 36ms/step
+Epoch 30/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 105s - loss: 0.0688 - orig_rmse: 1.8019 - orig_mae: 0.7572 - val_loss: 0.0711 - val_orig_rmse: 1.8271 - val_orig_mae: 0.7687 - lr: 1.5000e-04 - 105s/epoch - 38ms/step
+Epoch 31/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+2795/2795 - 107s - loss: 0.0688 - orig_rmse: 1.8036 - orig_mae: 0.7583 - val_loss: 0.0722 - val_orig_rmse: 1.7913 - val_orig_mae: 0.7893 - lr: 1.5000e-04 - 107s/epoch - 38ms/step
+Epoch 32/500
+WARNING:tensorflow:`evaluate()` received a value for `sample_weight`, but `weighted_metrics` were not provided.  Did you mean to pass metrics to `weighted_metrics` in `compile()`?  If this is intentional you can pass `weighted_metrics=[]` to `compile()` in order to silence this warning.
+learning_v2 early stop at epoch 32: best validation at epoch 17 (patience is 20% of epochs run, at least 15 and at most 40)
+2795/2795 - 102s - loss: 0.0688 - orig_rmse: 1.8020 - orig_mae: 0.7580 - val_loss: 0.0723 - val_orig_rmse: 1.8618 - val_orig_mae: 0.7524 - lr: 1.5000e-04 - 102s/epoch - 37ms/step
+{'test_loss': 0.07713574916124344, 'test_metrics': [1.7738826274871826, 0.8435136675834656]}
+learning_v2 smearing (global, 27943 held-out rows): S=0.992; by level 0.0->0.97, 0.2->0.96, 2.0->1.03, 3.9->1.02
+Held-out points by actual score (weights: low 0-2 x1, medium 3-5 x2, high 6-9 x4, very high 10+ x8)
+  weighted MAE 1.922    unweighted MAE 0.842    (lower is better, bias = predicted - actual)
+  tier             n     MAE   actual  predicted     bias
+  low          24161   0.467     0.45       0.86    +0.42
+  medium        1521   1.151     3.75       3.37    -0.38
+  high          1784   3.568     6.93       3.37    -3.56
+  very_high      477   8.679    12.62       3.94    -8.68
+Held-out points by recent player level (mean points per gameweek over the previous 5, at least 3 gameweeks)
+  same bands: low under 3, medium 3-5, high 6-9, very high 10+
+  rows 26484, skipped 1459 with too little history    unweighted MAE 0.856
+  tier             n     MAE   actual  predicted     bias     form
+  low          21545   0.588     0.85       0.84    -0.01     0.69
+  medium        4260   1.896     2.90       2.78    -0.11     4.02
+  high           657   2.832     4.32       3.79    -0.54     6.99
+  very_high       22   3.264     4.27       4.33    +0.05    10.85
+
+Building prediction set 34: 24/25 GW1
+Persisted 17518 player-fixture predictions
+
+Building prediction set 34: 24/25 GW2
+Persisted 18204 player-fixture predictions
+
+Building prediction set 34: 24/25 GW3
+Persisted 18432 player-fixture predictions
+
+Building prediction set 34: 24/25 GW4
+Persisted 18550 player-fixture predictions
+
+Building prediction set 34: 24/25 GW5
+Persisted 18394 player-fixture predictions
+
+Building prediction set 34: 24/25 GW6
+Persisted 15543 player-fixture predictions
+
+Building prediction set 34: 24/25 GW7
+Persisted 14784 player-fixture predictions
+
+Building prediction set 34: 24/25 GW8
+Persisted 14229 player-fixture predictions
+
+Building prediction set 34: 24/25 GW9
+Persisted 13770 player-fixture predictions
+
+Building prediction set 34: 24/25 GW10
+Persisted 13340 player-fixture predictions
+
+Building prediction set 34: 24/25 GW11
+Persisted 12852 player-fixture predictions
+
+Building prediction set 34: 24/25 GW12
+Persisted 12420 player-fixture predictions
+
+Building prediction set 34: 24/25 GW13
+Persisted 12090 player-fixture predictions
+
+Building prediction set 34: 24/25 GW14
+Persisted 11800 player-fixture predictions
+
+Building prediction set 34: 24/25 GW15
+Persisted 11496 player-fixture predictions
+
+Building prediction set 34: 24/25 GW16
+Persisted 11083 player-fixture predictions
+
+Building prediction set 34: 24/25 GW17
+Persisted 10559 player-fixture predictions
+
+Building prediction set 34: 24/25 GW18
+Persisted 10102 player-fixture predictions
+
+Building prediction set 34: 24/25 GW19
+Persisted 9642 player-fixture predictions
+
+Building prediction set 34: 24/25 GW20
+Persisted 9142 player-fixture predictions
+
+Building prediction set 34: 24/25 GW21
+Persisted 8682 player-fixture predictions
+
+Building prediction set 34: 24/25 GW22
+Persisted 8288 player-fixture predictions
+
+Building prediction set 34: 24/25 GW23
+Persisted 7932 player-fixture predictions
+
+Building prediction set 34: 24/25 GW24
+Persisted 7530 player-fixture predictions
+
+Building prediction set 34: 24/25 GW25
+Persisted 7098 player-fixture predictions
+
+Building prediction set 34: 24/25 GW26
+Persisted 6567 player-fixture predictions
+
+Building prediction set 34: 24/25 GW27
+Persisted 6070 player-fixture predictions
+
+Building prediction set 34: 24/25 GW28
+Persisted 5559 player-fixture predictions
+
+Building prediction set 34: 24/25 GW29
+Persisted 4982 player-fixture predictions
+
+Building prediction set 34: 24/25 GW30
+Persisted 4564 player-fixture predictions
+
+Building prediction set 34: 24/25 GW31
+Persisted 4079 player-fixture predictions
+
+Building prediction set 34: 24/25 GW32
+Persisted 3589 player-fixture predictions
+
+Building prediction set 34: 24/25 GW33
+Persisted 3024 player-fixture predictions
+
+Building prediction set 34: 24/25 GW34
+Persisted 2442 player-fixture predictions
+
+Building prediction set 34: 24/25 GW35
+Persisted 2020 player-fixture predictions
+
+Building prediction set 34: 24/25 GW36
+Persisted 1518 player-fixture predictions
+
+Building prediction set 34: 24/25 GW37
+Persisted 1018 player-fixture predictions
+
+Building prediction set 34: 24/25 GW38
+Persisted 512 player-fixture predictions
+Prediction set ID: 34
+{
+  "prediction_set_id": 34,
+  "expected_snapshots": 76,
+  "complete_snapshots": 76,
+  "missing": [],
+  "failed_or_empty": []
+}
+Recorded v2_log_oracle_minutes -> prediction set 34 in C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\run_metrics\model_eval\experiments.json
+v2_log_minbands_blend25: set 35 {"23": {"snapshots": 38, "rows": 378708, "minutes_share": 0.0}, "24": {"snapshots": 38, "rows": 359424, "minutes_share": 0.0}, "25": {"snapshots": 38, "rows": 363027, "minutes_share": 0.0}}
+v2_log_oracle_minutes: set 34 {"23": {"snapshots": 38, "rows": 378708, "minutes_share": 0.0}, "24": {"snapshots": 38, "rows": 359424, "minutes_share": 0.0}, "25": {"snapshots": 38, "rows": 363027, "minutes_share": 0.0}}
+Exit 0 
+Finished 02/11/2026  4:43:29.57 

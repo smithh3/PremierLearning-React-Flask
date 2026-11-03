@@ -223,43 +223,34 @@ class DB_Handler:
 
         h1_points and horizon_scale are the pre-redistribution prediction and the
         factor applied to it, kept so the report can show both sides of the split.
+        points_basis 'raw' marks expected points that already carry minutes risk
+        (learning_v2): the optimiser uses them as they are. minutes_band_* are
+        the bands head's chance of 0, 1-59 and 60+ minutes, when it ran.
         """
+        added = (
+            ('predicted_pp90', 'double precision', 'real'),
+            ('chance_of_playing', 'integer', 'integer'),
+            ('h1_points', 'double precision', 'real'),
+            ('horizon_scale', 'double precision', 'real'),
+            ('points_basis', 'varchar(16)', 'varchar(16)'),
+            ('minutes_band_0', 'double precision', 'real'),
+            ('minutes_band_1_59', 'double precision', 'real'),
+            ('minutes_band_60', 'double precision', 'real'),
+        )
         if self.kind == 'postgres':
-            self.cursor.execute(
-                """alter table future_matches
-                   add column if not exists predicted_pp90 double precision"""
-            )
-            self.cursor.execute(
-                """alter table future_matches
-                   add column if not exists chance_of_playing integer"""
-            )
-            self.cursor.execute(
-                """alter table future_matches
-                   add column if not exists h1_points double precision"""
-            )
-            self.cursor.execute(
-                """alter table future_matches
-                   add column if not exists horizon_scale double precision"""
-            )
+            for column, postgres_type, _sqlite_type in added:
+                self.cursor.execute(
+                    'alter table future_matches add column if not exists %s %s'
+                    % (column, postgres_type)
+                )
         else:
             self.cursor.execute('pragma table_info(future_matches)')
             columns = {row[1] for row in self.cursor.fetchall()}
-            if 'predicted_pp90' not in columns:
-                self.cursor.execute(
-                    'alter table future_matches add column predicted_pp90 real'
-                )
-            if 'chance_of_playing' not in columns:
-                self.cursor.execute(
-                    'alter table future_matches add column chance_of_playing integer'
-                )
-            if 'h1_points' not in columns:
-                self.cursor.execute(
-                    'alter table future_matches add column h1_points real'
-                )
-            if 'horizon_scale' not in columns:
-                self.cursor.execute(
-                    'alter table future_matches add column horizon_scale real'
-                )
+            for column, _postgres_type, sqlite_type in added:
+                if column not in columns:
+                    self.cursor.execute(
+                        'alter table future_matches add column %s %s' % (column, sqlite_type)
+                    )
         self.connection.commit()
 
     def _insert_id(self, sql, params):
@@ -367,10 +358,15 @@ class DB_Handler:
         self.connection.commit()
 
     def latest_prediction_set_id(self, season_start_year=None):
+        """Newest set, ignoring model-evaluation sets (named eval-*): those
+        are experiments and must never become a replay's or manager's default.
+        ('%%' because psycopg2 formats queries that have parameters; to SQLite
+        it is two wildcards.)"""
         self.ensure_simulation_schema()
         if season_start_year is None:
             self.cursor.execute(
-                'select id from prediction_sets order by id desc limit 1'
+                "select id from prediction_sets where name not like 'eval-%' "
+                'order by id desc limit 1'
             )
         else:
             self.cursor.execute(self._sql(
@@ -378,6 +374,7 @@ class DB_Handler:
                    from prediction_sets p
                    join prediction_snapshots s on s.prediction_set_id = p.id
                    where s.season_start_year = ? and s.status = 'complete'
+                     and p.name not like 'eval-%%'
                    order by p.id desc limit 1'''
             ), (int(season_start_year),))
         row = self.cursor.fetchone()
@@ -543,11 +540,20 @@ class DB_Handler:
         self.connection.commit()
 
     def get_historical_predictions(
-        self, prediction_set_id, season_start_year, as_of_gameweek
+        self, prediction_set_id, season_start_year, as_of_gameweek,
+        max_target_gameweek=None,
     ):
         self.ensure_simulation_schema()
-        self.cursor.execute(self._sql(
-            '''select p.target_gameweek, p.fixture_id, p.fixture_order,
+        params = [
+            int(prediction_set_id),
+            int(season_start_year),
+            int(as_of_gameweek),
+        ]
+        target_filter = ''
+        if max_target_gameweek is not None:
+            target_filter = 'and p.target_gameweek <= ?'
+            params.append(int(max_target_gameweek))
+        sql = '''select p.target_gameweek, p.fixture_id, p.fixture_order,
                       p.player_id, p.player_code, p.player_name, p.position,
                       p.team_id, p.opponent_team_id, p.opponent, p.is_home,
                       p.price, p.selectable, p.predicted_minutes,
@@ -557,13 +563,10 @@ class DB_Handler:
                join prediction_snapshots s on s.id = p.prediction_snapshot_id
                where s.prediction_set_id = ? and s.season_start_year = ?
                  and s.as_of_gameweek = ? and s.status = 'complete'
+                 %s
                order by p.player_id, p.target_gameweek, p.fixture_order,
-                        p.fixture_id'''
-        ), (
-            int(prediction_set_id),
-            int(season_start_year),
-            int(as_of_gameweek),
-        ))
+                        p.fixture_id''' % target_filter
+        self.cursor.execute(self._sql(sql), tuple(params))
         columns = (
             'target_gameweek', 'fixture_id', 'fixture_order', 'player_id',
             'player_code', 'player_name', 'position', 'team_id',
@@ -806,8 +809,9 @@ class DB_Handler:
         self.cursor.execute(self._sql(
             '''insert into future_matches (
                    player_id, minutes, points, gameweek, opponent, points_error,
-                   predicted_pp90, chance_of_playing, h1_points, horizon_scale
-               ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
+                   predicted_pp90, chance_of_playing, h1_points, horizon_scale,
+                   points_basis, minutes_band_0, minutes_band_1_59, minutes_band_60
+               ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
         ), tuple(row))
 
     def persist_match(self, match, player_id=None):
@@ -825,7 +829,8 @@ class DB_Handler:
         future_matches = {}
         for db_future_match in self.cursor.execute(
             'select player_id, minutes, points, gameweek, opponent, points_error, '
-            'predicted_pp90, chance_of_playing, h1_points, horizon_scale '
+            'predicted_pp90, chance_of_playing, h1_points, horizon_scale, '
+            'points_basis, minutes_band_0, minutes_band_1_59, minutes_band_60 '
             'from future_matches order by id'
         ).fetchall():
             player_id = db_future_match[0]
@@ -839,6 +844,12 @@ class DB_Handler:
                 'chance_of_playing': db_future_match[7] if len(db_future_match) > 7 else None,
                 'h1_points': db_future_match[8] if len(db_future_match) > 8 else None,
                 'horizon_scale': db_future_match[9] if len(db_future_match) > 9 else None,
+                'points_basis': db_future_match[10] if len(db_future_match) > 10 else None,
+                'minutes_bands': (
+                    tuple(db_future_match[11:14])
+                    if len(db_future_match) > 13 and db_future_match[11] is not None
+                    else None
+                ),
             }
             future_matches.setdefault(player_id, []).append(future_match)
         return future_matches
@@ -860,6 +871,12 @@ class DB_Handler:
         match.h1_points = None if h1_points is None or h1_points == '' else float(h1_points)
         scale = match_json.get('horizon_scale')
         match.horizon_scale = None if scale is None or scale == '' else float(scale)
+        match.points_basis = match_json.get('points_basis') or None
+        bands = match_json.get('minutes_bands')
+        match.minutes_bands = (
+            None if not bands or bands[0] is None
+            else tuple(float(value) for value in bands)
+        )
         return match
 
     def get_match_jsons(self):

@@ -116,6 +116,56 @@ def ensure_gameweek_chances(
     return _players_to_chance_map(payload.get('players') or {})
 
 
+def archive_live_chances(
+    season_start_year: int,
+    bootstrap: dict,
+    now: Optional[datetime] = None,
+    data_root: Optional[Path] = None,
+) -> Optional[Path]:
+    """Save the upcoming gameweek's flags from a live bootstrap, for later replays.
+
+    Same file and format as the fplcache backfill, so once this season is
+    historical its flags are already on disk. Rewritten on every run before the
+    deadline, so it ends up holding the last flags seen before it; left alone
+    once the deadline has passed. Returns the path written, or None.
+    """
+    now = _as_utc(now or datetime.now(timezone.utc))
+    events = (bootstrap or {}).get('events') or []
+    upcoming = None
+    for event in sorted(events, key=lambda row: int(row.get('id') or 0)):
+        deadline = event.get('deadline_time')
+        if not deadline:
+            continue
+        deadline = _as_utc(datetime.fromisoformat(str(deadline).replace('Z', '+00:00')))
+        if deadline > now:
+            upcoming = (int(event['id']), deadline)
+            break
+    if upcoming is None:
+        return None
+    gameweek, deadline = upcoming
+    players = {}
+    for element in bootstrap.get('elements') or []:
+        if element.get('id') in (None, ''):
+            continue
+        players[str(int(element['id']))] = {
+            'chance_of_playing_this_round': element.get('chance_of_playing_this_round'),
+            'chance_of_playing_next_round': element.get('chance_of_playing_next_round'),
+            'chance': _chance_for_gameweek(element, events, gameweek),
+            'status': element.get('status'),
+        }
+    path = chance_cache_path(season_start_year, gameweek, data_root)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    payload = {
+        'source': 'fpl_api',
+        'snapshot': now.isoformat(),
+        'gameweek': gameweek,
+        'deadline': deadline.isoformat(),
+        'players': players,
+    }
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+    return path
+
+
 def download_gameweek_chances(gameweek: int, deadline: datetime) -> dict:
     """Fetch the minimal pre-deadline bootstrap slice from Randdalf/fplcache."""
     deadline = _as_utc(deadline)

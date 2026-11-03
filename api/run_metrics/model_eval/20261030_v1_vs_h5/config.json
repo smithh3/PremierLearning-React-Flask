@@ -1,0 +1,81 @@
+{
+  "bootstrap": {
+    "block_origins": 5,
+    "resamples": 200,
+    "seed": 7
+  },
+  "buckets": [
+    {
+      "from_fraction": 0.5,
+      "name": "bottom_50",
+      "to_fraction": 1.0,
+      "weight": 0.05
+    },
+    {
+      "from_fraction": 0.2,
+      "name": "p50_80",
+      "to_fraction": 0.5,
+      "weight": 0.1
+    },
+    {
+      "from_fraction": 0.05,
+      "name": "p80_95",
+      "to_fraction": 0.2,
+      "weight": 0.15
+    },
+    {
+      "from_fraction": 0.0,
+      "name": "top_5pct",
+      "to_fraction": 0.05,
+      "weight": 0.3
+    },
+    {
+      "name": "top_5",
+      "top_n": 5,
+      "weight": 0.4
+    }
+  ],
+  "calibration_bins": 5,
+  "calibrator": {
+    "min_pairs": 500
+  },
+  "category_weights": {
+    "calibration": 0.15,
+    "future": 0.25,
+    "overall": 0.25,
+    "ranking": 0.35
+  },
+  "eligibility": {
+    "exclude_builder_skipped": true,
+    "last_season_min_minutes": 900.0,
+    "recent_gws": 5
+  },
+  "future_sides": {
+    "actual": 0.5,
+    "predicted": 0.5
+  },
+  "future_weights": {
+    "2A": 0.6,
+    "2B": 0.4
+  },
+  "guardrails": {
+    "calibration_gap_worse_pct": 50.0,
+    "calibration_gap_worse_points": 0.1,
+    "overall_mae_worse_pct": 5.0,
+    "overall_mse_worse_pct": 5.0,
+    "own_top_overprediction_points": 3.0,
+    "season_total_below": -1.0
+  },
+  "horizon": 5,
+  "min_rank_players": 30,
+  "noise_pair": [
+    "v2_huber",
+    "v2_huber_seed2"
+  ],
+  "origin_from": 1,
+  "origin_to": 38,
+  "ranking_weights": {
+    "five_gw": 0.5,
+    "single_gw": 0.5
+  }
+}

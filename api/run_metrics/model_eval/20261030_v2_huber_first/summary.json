@@ -1,0 +1,174 @@
+{
+  "baseline": "v1",
+  "categories": {
+    "v1": {
+      "calibration": 0.0,
+      "future": 0.0,
+      "overall": 0.0,
+      "ranking": 0.0
+    },
+    "v1_cal": {
+      "calibration": 3.0,
+      "future": 1.2877342391401299,
+      "overall": 2.655051991062528,
+      "ranking": 0.03257517086517894
+    },
+    "v1_h5": {
+      "calibration": 3.0,
+      "future": 0.4003394378189333,
+      "overall": 1.1407651121584765,
+      "ranking": 0.5166712654243643
+    },
+    "v1_h5_cal": {
+      "calibration": 3.0,
+      "future": 1.5812035980883572,
+      "overall": 3.0,
+      "ranking": 0.5405393852300451
+    },
+    "v2_huber": {
+      "calibration": 3.0,
+      "future": -0.09003510464146433,
+      "overall": 1.1289235936698248,
+      "ranking": 0.39884705580193214
+    },
+    "v2_huber_cal": {
+      "calibration": 3.0,
+      "future": 1.2124766920952184,
+      "overall": 2.9196172516606897,
+      "ranking": 0.22153994865655363
+    }
+  },
+  "dropped_origins": [],
+  "flags": {
+    "v1": [],
+    "v1_cal": [
+      "overall_mae is 6.5% worse than v1"
+    ],
+    "v1_h5": [
+      "overpredicts its own top_5pct picks by 3.76 points over 5 GWs",
+      "overpredicts its own top_5 picks by 6.42 points over 5 GWs"
+    ],
+    "v1_h5_cal": [
+      "overall_mae is 6.6% worse than v1"
+    ],
+    "v2_huber": [],
+    "v2_huber_cal": [
+      "overall_mae is 5.9% worse than v1"
+    ]
+  },
+  "intervals": {
+    "v1": {
+      "hi": 0.0,
+      "lo": 0.0,
+      "p_above_zero": 0.0
+    },
+    "v1_cal": {
+      "hi": 1.5696213548996594,
+      "lo": 1.3171324871940073,
+      "p_above_zero": 1.0
+    },
+    "v1_h5": {
+      "hi": 1.265690717097906,
+      "lo": 0.8389162158936039,
+      "p_above_zero": 1.0
+    },
+    "v1_h5_cal": {
+      "hi": 1.9787255839494666,
+      "lo": 1.581503889915182,
+      "p_above_zero": 1.0
+    },
+    "v2_huber": {
+      "hi": 1.3063421862765512,
+      "lo": 0.16854190642182285,
+      "p_above_zero": 1.0
+    },
+    "v2_huber_cal": {
+      "hi": 1.932416232907696,
+      "lo": 0.8935818440201586,
+      "p_above_zero": 1.0
+    }
+  },
+  "missing_predictions": {
+    "v1": 0,
+    "v1_cal": 0,
+    "v1_h5": 0,
+    "v1_h5_cal": 0,
+    "v2_huber": 0,
+    "v2_huber_cal": 0
+  },
+  "models": [
+    "v1",
+    "v1_h5",
+    "v2_huber",
+    "v1_cal",
+    "v1_h5_cal",
+    "v2_huber_cal"
+  ],
+  "prediction_sets": {
+    "v1": 7,
+    "v1_h5": 8,
+    "v2_huber": 9
+  },
+  "ranking": [
+    "v1_h5_cal",
+    "v2_huber_cal",
+    "v1_cal",
+    "v1_h5",
+    "v2_huber"
+  ],
+  "scorers": {
+    "v1": "optimiser",
+    "v1_h5": "optimiser",
+    "v2_huber": "raw_points"
+  },
+  "season_scores": {
+    "v1": {
+      "25": 0.0
+    },
+    "v1_cal": {
+      "25": 1.447097867353477
+    },
+    "v1_h5": {
+      "25": 1.01611108039288
+    },
+    "v1_h5_cal": {
+      "25": 1.7844896843526048
+    },
+    "v2_huber": {
+      "25": 0.8493185917877664
+    },
+    "v2_huber_cal": {
+      "25": 1.5605624679687704
+    }
+  },
+  "seasons": [
+    25
+  ],
+  "sigmas": {
+    "2A_actual": 0.3724400743524714,
+    "2A_predicted": 0.4126431931911874,
+    "2B_actual": 0.12725942013619782,
+    "2B_predicted": 0.057791125731654736,
+    "calibration_gap": 0.02492237929876642,
+    "overall_mse": 0.17536366730084282,
+    "spearman_five_gw": 0.013747545991275445,
+    "spearman_single_gw": 0.015577193322179042
+  },
+  "totals": {
+    "v1": 0.0,
+    "v1_cal": 1.447097867353477,
+    "v1_h5": 1.01611108039288,
+    "v1_h5_cal": 1.7844896843526048,
+    "v2_huber": 0.8493185917877664,
+    "v2_huber_cal": 1.5605624679687704
+  },
+  "totals_uncapped": {
+    "v1": 0.0,
+    "v1_cal": 3.6840452673507795,
+    "v1_h5": 1.6977289928215782,
+    "v1_h5_cal": 4.3726317543444395,
+    "v2_huber": 0.9911475601538624,
+    "v2_huber_cal": 4.283226438845627
+  },
+  "units": 38
+}

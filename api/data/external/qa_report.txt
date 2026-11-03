@@ -1,0 +1,55 @@
+== ESPN vs FPL on the same Premier League matches
+appearance rows compared: 118783 (no FPL row: 406)
+minutes |error|: median 0, 90th pct 1, within 5 min 100.0%
+played_agrees exact: 100.00%
+goals exact: 99.99%
+assists exact: 98.56%
+clean_sheet exact: 99.81% of 90248
+goals conceded on pitch exact: 99.42% of 90248
+coverage: 90213/90220 FPL player-matches with minutes>0 found in ESPN appearances (100.0%)
+
+== Matches by category and lineup availability
+premier_league         finished   3130  with lineups 100.0%  scheduled 190
+intl_qualifier         finished   3037  with lineups  96.6%  scheduled 191
+intl_friendly          finished   2491  with lineups  80.4%  scheduled 262
+intl_youth             finished   1514  with lineups  89.8%  scheduled 105
+intl_nations_league    finished   1264  with lineups  99.7%  scheduled 92
+intl_tournament        finished    855  with lineups 100.0%  scheduled 52
+domestic_cup           finished    706  with lineups 100.0%  scheduled 5
+club_friendly          finished    480  with lineups  51.5%  scheduled 8
+champions_league       finished    361  with lineups 100.0%  scheduled 25
+europa_league          finished    249  with lineups 100.0%  scheduled 15
+conference_league      finished     81  with lineups  98.8%  scheduled 4
+other_club             finished     22  with lineups 100.0%  scheduled 0
+club_world_cup         finished     17  with lineups 100.0%  scheduled 0
+domestic_super_cup     finished      9  with lineups 100.0%  scheduled 0
+club_super_cup         finished      5  with lineups 100.0%  scheduled 0
+
+== Non-PL appearances of mapped FPL players by category
+domestic_cup           15335
+intl_qualifier         10133
+intl_friendly          6942
+champions_league       6510
+intl_tournament        5569
+club_friendly          5275
+intl_nations_league    5167
+europa_league          4159
+intl_youth             3349
+conference_league      1286
+other_club             453
+club_world_cup         294
+domestic_super_cup     278
+club_super_cup         103
+
+== Club friendlies of PL clubs: lineup coverage by season
+2018:   91 friendlies, 29% with lineups
+2019:   40 friendlies, 62% with lineups
+2020:   12 friendlies, 83% with lineups
+2021:   30 friendlies, 70% with lineups
+2022:   90 friendlies, 46% with lineups
+2023:   62 friendlies, 63% with lineups
+2024:   49 friendlies, 57% with lineups
+2025:   40 friendlies, 62% with lineups
+2026:   66 friendlies, 48% with lineups
+
+== Weakest player matches (best_score < 0.8): 0

@@ -63,9 +63,13 @@ Learn then apply in the same container:
 
 ```bash
 RUN_LEARNING=1
-PREMIERLEARNING_ARGS=--horizon-reps 5
 APPLY_TRANSFERS=true
 ```
+
+Learning trains the learning_v2 blend by default: 75% v2_log with a
+minutes-bands head, 25% v2_log with a 5-gameweek net, the model the fantasy
+manager evaluation scored best (set 35). `PREMIERLEARNING_ARGS="--v1 --horizon-reps 5"`
+goes back to the old model.
 
 Credentials can still fall back to `.vscode/fantasy_login.json` if you run **outside** Docker with no env vars. Docker/AWS must use `FPL_EMAIL` / `FPL_PASSWORD`.
 

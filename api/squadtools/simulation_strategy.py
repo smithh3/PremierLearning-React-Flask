@@ -3,7 +3,11 @@
 import math
 import os
 import subprocess
+import sys
+import tempfile
+import time
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Dict, Iterable, Optional, Sequence, Tuple
 
 from pulp import (
@@ -12,6 +16,7 @@ from pulp import (
     LpStatus,
     LpVariable,
     PULP_CBC_CMD,
+    PulpSolverError,
     lpSum,
 )
 
@@ -56,7 +61,6 @@ def _quiet_cbc_kwargs(kwargs):
         quiet['creationflags'] = (
             quiet.get('creationflags', 0)
             | getattr(subprocess, 'CREATE_NO_WINDOW', 0x08000000)
-            | getattr(subprocess, 'CREATE_NEW_PROCESS_GROUP', 0)
         )
     else:
         quiet['close_fds'] = True
@@ -78,19 +82,186 @@ def _restore_unpatched_createprocess():
     return True
 
 
+def _pydev_monkey_module():
+    try:
+        from _pydev_bundle import pydev_monkey
+        return pydev_monkey
+    except ImportError:
+        pass
+    for module in list(sys.modules.values()):
+        if module is None:
+            continue
+        name = str(getattr(module, '__name__', '') or '')
+        if name.endswith('pydev_monkey'):
+            return module
+    return None
+
+
+def _popen_for_cbc():
+    """The real Popen, not a debugger wrapper that injects into cbc.exe."""
+    monkey = _pydev_monkey_module()
+    if monkey is not None:
+        for attr in ('original_Popen', 'original_subprocess_Popen'):
+            recorded = getattr(monkey, attr, None)
+            if callable(recorded):
+                return recorded
+        skip = getattr(monkey, 'skip_subprocess_arg_patch', None)
+        if skip is not None:
+            def _skipped(*args, **kwargs):
+                with skip():
+                    return _original_popen(*args, **kwargs)
+            return _skipped
+    return _original_popen
+
+
+# v1, v2 and the fast run each spawn CBC from every worker. Letting all of
+# those start at once exhausts the Windows paging file (WinError 1455) and
+# the worker dies, which the parent then sees as a broken pipe.
+_CBC_SLOTS = 4
+_CBC_ATTEMPTS = 3
+_CBC_MEMORY_WINERRORS = (8, 1450, 1455)
+
+
+def _memory_error(error) -> bool:
+    winerror = getattr(error, 'winerror', None)
+    return winerror in _CBC_MEMORY_WINERRORS
+
+
+class _CbcSlot:
+    """One of a few machine-wide permissions to run cbc.exe."""
+
+    def __init__(self):
+        self._handle = None
+
+    def acquire(self):
+        directory = Path(tempfile.gettempdir()) / 'premier-cbc-slots'
+        directory.mkdir(parents=True, exist_ok=True)
+        deadline = time.time() + 600
+        while True:
+            for index in range(_CBC_SLOTS):
+                handle = open(directory / ('slot-%s.lock' % index), 'a+b')
+                if handle.seek(0, os.SEEK_END) == 0:
+                    handle.write(b'\0')
+                    handle.flush()
+                handle.seek(0)
+                try:
+                    _lock_file(handle)
+                except OSError:
+                    handle.close()
+                    continue
+                self._handle = handle
+                return
+            if time.time() > deadline:
+                raise OSError('No CBC slot became free')
+            time.sleep(0.25)
+
+    def release(self):
+        handle = self._handle
+        self._handle = None
+        if handle is not None:
+            _unlock_file(handle)
+
+
+def _lock_file(handle):
+    if os.name == 'nt':
+        import msvcrt
+        msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
+    else:
+        import fcntl
+        fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+
+
+def _unlock_file(handle):
+    try:
+        handle.seek(0)
+        if os.name == 'nt':
+            import msvcrt
+            msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+        else:
+            import fcntl
+            fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+    finally:
+        handle.close()
+
+
+# A healthy solve takes seconds: the slowest of 55,000 saved in
+# model_eval.db took 6.4s. The bundled CBC sometimes hangs at full CPU and
+# never finishes, which froze a training run for 75 minutes.
+_CBC_WALL_SECONDS = 120
+
+
+class CbcTimedOut(ValueError):
+    """CBC ran past the wall-clock limit and was stopped."""
+
+
+class _ReleasingPopen:
+    """Releases the CBC slot when PuLP finishes waiting on the process.
+
+    PuLP waits with no time limit. A wait without one is capped at
+    `_CBC_WALL_SECONDS`, after which CBC is killed.
+    """
+
+    def __init__(self, process, slot):
+        self._process = process
+        self._slot = slot
+
+    def wait(self, timeout=None):
+        try:
+            if timeout is not None:
+                return self._process.wait(timeout)
+            try:
+                return self._process.wait(_CBC_WALL_SECONDS)
+            except subprocess.TimeoutExpired:
+                self._process.kill()
+                self._process.wait()
+                _remove_pulp_files(getattr(self._process, 'args', None))
+                raise CbcTimedOut(
+                    'CBC was still running after %ss and was stopped' % _CBC_WALL_SECONDS
+                )
+        finally:
+            slot = self._slot
+            self._slot = None
+            if slot is not None:
+                slot.release()
+
+    def __getattr__(self, name):
+        return getattr(self._process, name)
+
+
+def _remove_pulp_files(args):
+    """Delete the model and solution files a killed solve leaves in temp."""
+    if isinstance(args, str):
+        args = args.split()
+    for arg in args or ():
+        text = str(arg)
+        if text.endswith(('-pulp.mps', '-pulp.lp', '-pulp.sol', '-pulp.mst')):
+            try:
+                os.remove(text)
+            except OSError:
+                pass
+
+
 def _cbc_aware_popen(*args, **kwargs):
     cmd = args[0] if args else kwargs.get('args')
-    if _is_cbc_command(cmd):
-        _restore_unpatched_createprocess()
-        kwargs = _quiet_cbc_kwargs(kwargs)
+    if not _is_cbc_command(cmd):
+        return _original_popen(*args, **kwargs)
+    _restore_unpatched_createprocess()
+    kwargs = _quiet_cbc_kwargs(kwargs)
+    last_error = None
+    for attempt in range(_CBC_ATTEMPTS):
+        slot = _CbcSlot()
+        slot.acquire()
         try:
-            from _pydev_bundle.pydev_monkey import skip_subprocess_arg_patch
-        except ImportError:
-            skip_subprocess_arg_patch = None
-        if skip_subprocess_arg_patch is not None:
-            with skip_subprocess_arg_patch():
-                return _original_popen(*args, **kwargs)
-    return _original_popen(*args, **kwargs)
+            process = _popen_for_cbc()(*args, **kwargs)
+        except OSError as error:
+            slot.release()
+            last_error = error
+            if not _memory_error(error) or attempt + 1 == _CBC_ATTEMPTS:
+                raise
+            time.sleep(1.0 * (attempt + 1))
+            continue
+        return _ReleasingPopen(process, slot)
+    raise last_error
 
 
 def ensure_quiet_cbc():
@@ -116,6 +287,24 @@ def _cbc_solver():
     """
     ensure_quiet_cbc()
     return PULP_CBC_CMD(msg=0)
+
+
+def _solve_model(model):
+    """Run CBC, retrying a crash so a full training worker does not die.
+
+    A solve that hangs is not retried: CBC hangs on the same model again.
+    """
+    last_error = None
+    for attempt in range(_CBC_ATTEMPTS):
+        try:
+            return model.solve(_cbc_solver())
+        except CbcTimedOut as error:
+            print('Squad optimisation skipped: %s.' % error, flush=True)
+            raise
+        except (PulpSolverError, OSError) as error:
+            last_error = error
+            time.sleep(0.2 * (attempt + 1))
+    raise ValueError('CBC failed to solve %s (%s)' % (model.name, last_error))
 
 
 SQUAD_POSITION_COUNTS = {1: 2, 2: 5, 3: 5, 4: 3}
@@ -159,6 +348,16 @@ class PlayerProjection:
 class PredictionPool:
     def __init__(self, players: Dict[int, PlayerProjection]):
         self.players = players
+
+    @property
+    def predicts_minutes(self) -> bool:
+        """False for a model with no minutes net (learning_v2): its points carry
+        minutes risk, so anything gated on minutes uses predicted points instead."""
+        return any(
+            float(minutes or 0.0) > 0.0
+            for player in self.players.values()
+            for minutes in player.minutes_by_gameweek.values()
+        )
 
     @classmethod
     def from_rows(cls, rows, minutes_scale=None):
@@ -265,9 +464,11 @@ def optimiser_candidate_ids(pool, current_ids, gameweeks):
     Drops anyone averaging under 50 predicted minutes or 2 points across the
     optimiser window, but always keeps the current squad and two cheapest
     different-club options per position (preferring clubs we can still sign).
+    A pool with no predicted minutes is gated on points alone.
     """
     current_ids = {int(player_id) for player_id in (current_ids or ())}
     gameweeks = tuple(int(gameweek) for gameweek in gameweeks)
+    use_minutes = pool.predicts_minutes
     selectable_ids = [
         int(player_id)
         for player_id, player in pool.players.items()
@@ -284,7 +485,7 @@ def optimiser_candidate_ids(pool, current_ids, gameweeks):
         avg_minutes = _mean_over_gameweeks(player.minutes_by_gameweek, gameweeks)
         avg_points = _mean_over_gameweeks(player.points_by_gameweek, gameweeks)
         if (
-            avg_minutes >= OPTIMISER_MIN_AVG_MINUTES
+            (avg_minutes >= OPTIMISER_MIN_AVG_MINUTES or not use_minutes)
             and avg_points >= OPTIMISER_MIN_AVG_POINTS
         ):
             kept.add(player_id)
@@ -749,7 +950,10 @@ def fill_bench(
         picked[player_id] * (1e-9 * (10000 - player_id))
         for player_id in candidates
     )
-    model.solve(_cbc_solver())
+    try:
+        _solve_model(model)
+    except ValueError:
+        return None
     if LpStatus[model.status] != 'Optimal':
         return None
     bench = tuple(sorted(
@@ -795,7 +999,7 @@ def pick_lineup(
         )
         for player_id in ids
     )
-    model.solve(_cbc_solver())
+    _solve_model(model)
     if LpStatus[model.status] != 'Optimal':
         raise ValueError(f'Could not select legal GW{gameweek} lineup')
     starter_ids = tuple(sorted(
@@ -1373,7 +1577,7 @@ class SimulationStrategy:
         if paid_transfers is not None:
             objective = objective - (float(hit_cost) * paid_transfers)
         model += objective
-        model.solve(_cbc_solver())
+        _solve_model(model)
         if LpStatus[model.status] != 'Optimal':
             raise ValueError(
                 f'No feasible squad for GW{as_of_gameweek}: {LpStatus[model.status]}'

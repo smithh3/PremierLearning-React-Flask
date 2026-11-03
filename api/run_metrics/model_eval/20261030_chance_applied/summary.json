@@ -1,0 +1,197 @@
+{
+  "baseline": "v1",
+  "categories": {
+    "v1": {
+      "calibration": 0.0,
+      "future": 0.0,
+      "overall": 0.0,
+      "ranking": 0.0
+    },
+    "v1_cal": {
+      "calibration": 11.706236952915617,
+      "future": 1.3314308596432944,
+      "overall": 2.160922390974971,
+      "ranking": -0.10151367791820969
+    },
+    "v2_huber": {
+      "calibration": -8.702633151200889,
+      "future": -2.4496323020420734,
+      "overall": -2.5656066348037623,
+      "ranking": -0.0931514173638201
+    },
+    "v2_huber_seed2": {
+      "calibration": -8.384819469289768,
+      "future": -2.219175257999729,
+      "overall": -2.8094489904184576,
+      "ranking": -0.6944577251042499
+    },
+    "v2_smooth": {
+      "calibration": 1.1321639182968781,
+      "future": -0.5246472023788319,
+      "overall": 0.19253706392346848,
+      "ranking": -0.7134467167081621
+    },
+    "v2_smooth_cal": {
+      "calibration": 10.751856464582689,
+      "future": 0.49491481234068524,
+      "overall": 1.7600997569924837,
+      "ranking": -0.7219283002192971
+    },
+    "v2_tier": {
+      "calibration": -0.9724969052748615,
+      "future": -0.30421179299158585,
+      "overall": -0.11065936563562018,
+      "ranking": -0.46409333999191094
+    }
+  },
+  "dropped_origins": [],
+  "flags": {
+    "v1": [],
+    "v1_cal": [
+      "overall_mae is 8.3% worse than v1"
+    ],
+    "v2_huber": [
+      "overall_mse is 5.7% worse than v1"
+    ],
+    "v2_huber_seed2": [
+      "overall_mse is 6.3% worse than v1"
+    ],
+    "v2_smooth": [
+      "overpredicts its own top_5 picks by 5.74 points over 5 GWs"
+    ],
+    "v2_smooth_cal": [
+      "overall_mae is 8.2% worse than v1"
+    ],
+    "v2_tier": []
+  },
+  "intervals": {
+    "v1": {
+      "hi": 0.0,
+      "lo": 0.0,
+      "p_above_zero": 0.0
+    },
+    "v1_cal": {
+      "hi": 2.9890918401904485,
+      "lo": 1.6615804690164244,
+      "p_above_zero": 1.0
+    },
+    "v2_huber": {
+      "hi": -2.0835389033350133,
+      "lo": -3.4333753304491115,
+      "p_above_zero": 0.0
+    },
+    "v2_huber_seed2": {
+      "hi": -2.2235236612856175,
+      "lo": -3.642083879982999,
+      "p_above_zero": 0.0
+    },
+    "v2_smooth": {
+      "hi": 0.3005032142745749,
+      "lo": -0.9961130241348872,
+      "p_above_zero": 0.14
+    },
+    "v2_smooth_cal": {
+      "hi": 2.601765216247299,
+      "lo": 0.7979723346917552,
+      "p_above_zero": 1.0
+    },
+    "v2_tier": {
+      "hi": 0.031953097474555194,
+      "lo": -1.2152029081573688,
+      "p_above_zero": 0.035
+    }
+  },
+  "missing_predictions": {
+    "v1": 0,
+    "v1_cal": 0,
+    "v2_huber": 0,
+    "v2_huber_seed2": 0,
+    "v2_smooth": 0,
+    "v2_smooth_cal": 0,
+    "v2_tier": 0
+  },
+  "models": [
+    "v1",
+    "v2_huber",
+    "v2_tier",
+    "v2_smooth",
+    "v2_huber_seed2",
+    "v1_cal",
+    "v2_smooth_cal"
+  ],
+  "noise_floor": {
+    "pair": [
+      "v2_huber",
+      "v2_huber_seed2"
+    ],
+    "total_gap": 0.16613148331556982
+  },
+  "prediction_sets": {
+    "v1": 1,
+    "v2_huber": 2,
+    "v2_huber_seed2": 5,
+    "v2_smooth": 4,
+    "v2_tier": 3
+  },
+  "ranking": [
+    "v1_cal",
+    "v2_smooth_cal",
+    "v2_smooth",
+    "v2_tier",
+    "v2_huber",
+    "v2_huber_seed2"
+  ],
+  "scorers": {
+    "v1": "optimiser",
+    "v2_huber": "raw_points_x_chance",
+    "v2_huber_seed2": "raw_points_x_chance",
+    "v2_smooth": "raw_points_x_chance",
+    "v2_tier": "raw_points_x_chance"
+  },
+  "season_scores": {
+    "v1": {
+      "25": 0.0
+    },
+    "v1_cal": {
+      "25": 2.5934940683205356
+    },
+    "v2_huber": {
+      "25": -2.5918077029689295
+    },
+    "v2_huber_seed2": {
+      "25": -2.7579391862844993
+    },
+    "v2_smooth": {
+      "25": -0.16290929771716584
+    },
+    "v2_smooth_cal": {
+      "25": 1.9238572069439417
+    },
+    "v2_tier": {
+      "25": -0.4120249944451996
+    }
+  },
+  "seasons": [
+    25
+  ],
+  "sigmas": {
+    "2A_actual": 0.4204067049747608,
+    "2A_predicted": 0.3611575976588904,
+    "2B_actual": 0.1361844938037829,
+    "2B_predicted": 0.07096890261578842,
+    "calibration_gap": 0.03432302058321348,
+    "overall_mse": 0.16778203423348453,
+    "spearman_five_gw": 0.013660345936264678,
+    "spearman_single_gw": 0.014690055240555073
+  },
+  "totals": {
+    "v1": 0.0,
+    "v1_cal": 2.5934940683205356,
+    "v2_huber": -2.5918077029689295,
+    "v2_huber_seed2": -2.7579391862844993,
+    "v2_smooth": -0.16290929771716584,
+    "v2_smooth_cal": 1.9238572069439417,
+    "v2_tier": -0.4120249944451996
+  },
+  "units": 38
+}

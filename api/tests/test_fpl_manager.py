@@ -21,12 +21,16 @@ from squadtools.simulation_strategy import (
 from fpl_manager.actions import ACTIONS, FREE_HIT, HOLD, TRANSFER_1, TRANSFER_2, WILDCARD, legal_mask
 from fpl_manager.baselines import play_existing, play_hold, ExistingManager
 from fpl_manager.cache import (
+    RULES_VERSION_FAST,
+    RULES_VERSION_V2,
     OptimiserCache,
     approximate_key,
     candidate_is_legal,
     exact_key,
     purchase_pairs,
     squad_codes,
+    team_value,
+    team_values_close,
 )
 from fpl_manager.episode import SeasonEpisode, hold_action_index
 from fpl_manager.forecasts import (
@@ -35,7 +39,15 @@ from fpl_manager.forecasts import (
     load_forecast_pool,
 )
 from fpl_manager.mip import MipOptimiser
-from fpl_manager.observation import OBSERVATION_NAMES, build_observation
+from fpl_manager.observation import (
+    OBSERVATION_NAMES,
+    OBSERVATION_NAMES_FAST,
+    OBSERVATION_NAMES_V2,
+    build_observation,
+    build_observation_fast,
+    build_observation_v2,
+    version_for_features,
+)
 from fpl_manager.reward import terminal_reward, weekly_reward
 from fpl_manager.scenarios import (
     FixtureSpec,
@@ -187,6 +199,36 @@ class EpisodeTests(unittest.TestCase):
         self.assertNotEqual(first, second)
         with self.assertRaises(MissingPredictionSnapshot):
             episode.step(hold_action_index())
+
+    def test_an_owned_player_who_leaves_the_snapshot_stays_and_scores_nothing(self):
+        pool, squad = _pool_and_squad()
+        later = PredictionPool({
+            player_id: _player(player_id, player.position, player.price, 2.0, player.team_id)
+            for player_id, player in pool.players.items()
+            if player_id != 1
+        })
+
+        def forecast_at(gameweek):
+            return (pool, 11) if int(gameweek) == 1 else (later, 22)
+
+        episode = SeasonEpisode(
+            pool,
+            squad,
+            lambda *_args: 1.0,
+            last_gameweek=3,
+            forecast_at=forecast_at,
+            optimiser=MipOptimiser(horizon_gameweeks=5, observation_version='v2'),
+            observation_version='v2',
+        )
+        episode.step(hold_action_index())
+        observation = episode.observation()
+        self.assertEqual(len(OBSERVATION_NAMES_V2), len(observation))
+        self.assertIn(1, episode.squad.player_ids)
+        self.assertFalse(episode.pool[1].selectable)
+        self.assertEqual(0.0, episode.pool[1].points(2))
+        # The solver still plans around him; here it buys the better midfielder instead.
+        episode.step(ACTIONS.index(TRANSFER_1))
+        self.assertIn(100, episode.squad.player_ids)
 
     def test_season_log_prints_each_gameweek_and_the_cache_totals(self):
         from fpl_manager.optimiser import GreedyOptimiser
@@ -656,6 +698,259 @@ class CheckpointTests(unittest.TestCase):
             self.assertEqual(2, len(env.step([0, 0])[0]))
         finally:
             env.close()
+
+
+class ObservationV2Tests(unittest.TestCase):
+    def test_v2_columns_are_a_separate_config_from_v1(self):
+        self.assertEqual('v1', version_for_features(OBSERVATION_NAMES))
+        self.assertEqual('v2', version_for_features(OBSERVATION_NAMES_V2))
+        self.assertEqual('', version_for_features(['not-a-real-field']))
+        self.assertEqual(33, len(OBSERVATION_NAMES_V2))
+        self.assertNotIn('best_5_transfer_gain_6gw', OBSERVATION_NAMES_V2)
+        self.assertIn('wildcard_in_5_gain_10', OBSERVATION_NAMES_V2)
+
+    def test_v2_observation_scales_the_plan_gains(self):
+        pool, squad = _pool_and_squad()
+        observed = build_observation_v2(
+            25, 1, squad, ChipCalendar(), pool,
+            {'roll_gain_5': 50.0, 'wildcard_in_5_gain_10': -25.0},
+        )
+        self.assertEqual(len(OBSERVATION_NAMES_V2), len(observed))
+        names = list(OBSERVATION_NAMES_V2)
+        self.assertAlmostEqual(0.5, observed[names.index('roll_gain_5')])
+        self.assertAlmostEqual(-0.25, observed[names.index('wildcard_in_5_gain_10')])
+        self.assertEqual(0.0, observed[names.index('free_hit_gain_5')])
+
+    def test_v2_masks_a_transfer_that_would_take_a_hit(self):
+        pool, squad = _pool_and_squad()
+        episode = SeasonEpisode(
+            pool, squad, lambda _player_id, _gw: 1.0, observation_version='v2',
+        )
+        mask = episode.mask()
+        self.assertTrue(mask[ACTIONS.index(TRANSFER_1)])
+        self.assertFalse(mask[ACTIONS.index(TRANSFER_2)])
+        self.assertTrue(mask[ACTIONS.index(HOLD)])
+
+    def test_v2_cache_key_does_not_match_a_v1_squad(self):
+        pool, squad = _pool_and_squad()
+        codes = squad_codes(pool, squad.player_ids)
+        purchases = purchase_pairs(squad, pool)
+        v1_exact = exact_key(1, 1, 5, 1, 50, 1, 25, TRANSFER_1, codes, purchases, False)
+        v2_exact = exact_key(
+            1, 1, 5, 1, 50, 1, 25, TRANSFER_1, codes, purchases, False,
+            rules_version=RULES_VERSION_V2,
+        )
+        self.assertNotEqual(v1_exact, v2_exact)
+        v1_approx = approximate_key(1, 1, 5, 1, TRANSFER_1, codes)
+        v2_approx = approximate_key(
+            1, 1, 5, 1, TRANSFER_1, codes, rules_version=RULES_VERSION_V2,
+        )
+        self.assertNotEqual(v1_approx, v2_approx)
+        self.assertEqual(v1_approx, approximate_key(1, 1, 5, 1, TRANSFER_1, codes))
+
+    def test_roll_ladder_stops_at_four_and_at_the_2023_bank(self):
+        from squadtools.simulation_strategy import FreeTransferRules
+        from fpl_manager.plan_v2 import roll_steps
+
+        modern = FreeTransferRules(25)
+        steps = roll_steps(modern, 10, 1, (10, 11, 12, 13, 14))
+        self.assertEqual((10, 11, 12, 13), tuple(step[0] for step in steps))
+        self.assertEqual((1, 2, 3, 4), tuple(step[1] for step in steps))
+
+        early = FreeTransferRules(23)
+        early_steps = roll_steps(early, 10, 1, (10, 11, 12, 13, 14))
+        self.assertEqual((1, 2), tuple(step[1] for step in early_steps))
+
+        banked = roll_steps(modern, 16, 1, (16, 17, 18, 19, 20))
+        self.assertEqual(((16, 5),), tuple((step[0], step[1]) for step in banked))
+
+    def test_v2_plans_do_not_charge_hits_and_the_ten_week_wildcard_is_separate(self):
+        from fpl_manager.mip import MipOptimiser, _plan_from_selected
+
+        class _Recording(MipOptimiser):
+            def __init__(self):
+                super().__init__(observation_version='v2', season_start_year=25)
+                self.calls = []
+
+            def _solve(
+                self, action, state, pool, gameweek, max_transfers, horizon,
+                charge_hits, chip, gameweeks=None, rules_version=None, value_band=False,
+            ):
+                weeks = tuple(gameweeks or ())
+                self.calls.append({
+                    'action': action,
+                    'gameweek': int(gameweek),
+                    'weeks': weeks,
+                    'hits': bool(charge_hits),
+                    'rules': rules_version,
+                })
+                return _plan_from_selected(
+                    state, pool, gameweek, len(weeks) or 1, state.player_ids, chip,
+                )
+
+        pool, squad = _pool_and_squad()
+        optimiser = _Recording()
+        short = optimiser.transfer_gains(squad, pool, 34, ChipCalendar())
+        self.assertEqual(0.0, short['wildcard_in_5_gain_10'])
+        self.assertFalse(any(call['gameweek'] >= 39 for call in optimiser.calls))
+        self.assertTrue(optimiser.calls)
+        self.assertTrue(all(call['rules'] == RULES_VERSION_V2 for call in optimiser.calls))
+        self.assertTrue(all(call['hits'] is False for call in optimiser.calls))
+
+        optimiser.calls.clear()
+        long = optimiser.transfer_gains(squad, pool, 30, ChipCalendar())
+        self.assertIn('roll_gain_5', long)
+        self.assertIn('wildcard_gain_5', long)
+        self.assertIn('free_hit_gain_5', long)
+        long_wildcards = [
+            call for call in optimiser.calls
+            if call['action'] == 'WILDCARD'
+            and call['gameweek'] == 35
+            and call['weeks'] == (35, 36, 37, 38)
+        ]
+        self.assertEqual(1, len(long_wildcards))
+
+    def test_a_v1_checkpoint_refuses_a_v2_launch(self):
+        from fpl_manager.__main__ import _observation_version
+        from fpl_manager.train import CheckpointMismatch
+
+        directory = tempfile.mkdtemp()
+        (Path(directory) / 'manifest.json').write_text(json.dumps({
+            'features': list(OBSERVATION_NAMES),
+        }))
+        self.assertEqual('v1', _observation_version(directory, None))
+        self.assertEqual('v1', _observation_version(directory, 'v1'))
+        with self.assertRaises(CheckpointMismatch):
+            _observation_version(directory, 'v2')
+        self.assertEqual('v2', _observation_version(tempfile.mkdtemp(), 'v2'))
+
+    def test_a_roll_scores_the_new_squad_from_the_spend_week(self):
+        from fpl_manager.plan_v2 import _ids_with_chip, _rolled_points
+
+        pool, squad = _pool_and_squad()
+        base = squad.player_ids
+        better = tuple(100 if player_id == 8 else player_id for player_id in base)
+        self.assertGreater(
+            _rolled_points(base, better, pool, (1, 2), 2),
+            _rolled_points(base, base, pool, (1, 2), 2),
+        )
+        chosen = _ids_with_chip(
+            (1, 2, 3), base, 2, better, None, None, 3, (100,),
+        )
+        self.assertEqual(base, chosen[1])
+        self.assertEqual(better, chosen[2])
+        self.assertEqual((100,), chosen[3])
+
+
+class ObservationFastTests(unittest.TestCase):
+    def test_fast_columns_keep_the_v2_context_and_two_gains(self):
+        self.assertEqual('fast', version_for_features(OBSERVATION_NAMES_FAST))
+        self.assertEqual(OBSERVATION_NAMES_V2[:29], OBSERVATION_NAMES_FAST[:-2])
+        self.assertEqual(
+            ('roll_1_gain_5', 'wildcard_now_gain_5'),
+            OBSERVATION_NAMES_FAST[-2:],
+        )
+        pool, squad = _pool_and_squad()
+        observed = build_observation_fast(
+            25, 1, squad, ChipCalendar(), pool,
+            {'roll_1_gain_5': 50.0, 'wildcard_now_gain_5': -25.0},
+        )
+        names = list(OBSERVATION_NAMES_FAST)
+        self.assertEqual(len(names), len(observed))
+        self.assertAlmostEqual(0.5, observed[names.index('roll_1_gain_5')])
+        self.assertAlmostEqual(-0.25, observed[names.index('wildcard_now_gain_5')])
+
+    def test_fast_masks_a_transfer_that_would_take_a_hit(self):
+        pool, squad = _pool_and_squad()
+        episode = SeasonEpisode(
+            pool, squad, lambda _player_id, _gw: 1.0, observation_version='fast',
+        )
+        mask = episode.mask()
+        self.assertTrue(mask[ACTIONS.index(TRANSFER_1)])
+        self.assertFalse(mask[ACTIONS.index(TRANSFER_2)])
+
+    def test_a_saved_v2_config_refuses_the_fast_launch(self):
+        from fpl_manager.__main__ import _observation_version
+        from fpl_manager.train import CheckpointMismatch
+
+        directory = tempfile.mkdtemp()
+        (Path(directory) / 'manifest.json').write_text(json.dumps({
+            'features': list(OBSERVATION_NAMES_V2),
+        }))
+        with self.assertRaises(CheckpointMismatch):
+            _observation_version(directory, 'fast')
+        self.assertEqual('fast', _observation_version(tempfile.mkdtemp(), 'fast'))
+
+    def test_half_a_million_is_close_enough_to_reuse_a_squad(self):
+        owned = OwnedPlayer(1, 50)
+        state = SquadState(owned={1: owned}, bank=10, free_transfers=1)
+        pool = PredictionPool({1: _player(1, 3, 60, 2.0)})
+        self.assertEqual(65, team_value(state, pool))
+        self.assertTrue(team_values_close(team_value(state, pool), 70))
+        self.assertFalse(team_values_close(team_value(state, pool), 71))
+        self.assertFalse(team_values_close(team_value(state, pool), None))
+
+    def test_fast_prices_one_roll_and_a_wildcard_played_now(self):
+        from fpl_manager.mip import MipOptimiser, _plan_from_selected
+
+        class _Recording(MipOptimiser):
+            def __init__(self):
+                super().__init__(observation_version='fast', season_start_year=25)
+                self.calls = []
+
+            def _solve(
+                self, action, state, pool, gameweek, max_transfers, horizon,
+                charge_hits, chip, gameweeks=None, rules_version=None, value_band=False,
+            ):
+                weeks = tuple(gameweeks or ())
+                self.calls.append({
+                    'action': action,
+                    'gameweek': int(gameweek),
+                    'weeks': weeks,
+                    'transfers': int(max_transfers),
+                    'hits': bool(charge_hits),
+                    'rules': rules_version,
+                    'band': bool(value_band),
+                })
+                return _plan_from_selected(
+                    state, pool, gameweek, len(weeks) or 1, state.player_ids, chip,
+                )
+
+        pool, squad = _pool_and_squad()
+        optimiser = _Recording()
+        gains = optimiser.transfer_gains(squad, pool, 10, ChipCalendar())
+        self.assertEqual({'roll_1_gain_5', 'wildcard_now_gain_5'}, set(gains))
+        rolls = [call for call in optimiser.calls if call['action'].startswith('TRANSFER')]
+        wildcards = [call for call in optimiser.calls if call['action'] == 'WILDCARD']
+        self.assertEqual(1, len(rolls))
+        self.assertEqual(1, len(wildcards))
+        self.assertEqual(11, rolls[0]['gameweek'])
+        self.assertEqual(2, rolls[0]['transfers'])
+        self.assertEqual((11, 12, 13, 14), rolls[0]['weeks'])
+        self.assertEqual(10, wildcards[0]['gameweek'])
+        self.assertEqual((10, 11, 12, 13, 14), wildcards[0]['weeks'])
+        self.assertTrue(all(call['rules'] == RULES_VERSION_FAST for call in optimiser.calls))
+        self.assertTrue(all(call['hits'] is False for call in optimiser.calls))
+        self.assertTrue(all(call['band'] is True for call in optimiser.calls))
+
+        optimiser.calls.clear()
+        final = optimiser.transfer_gains(squad, pool, 38, ChipCalendar())
+        self.assertEqual(0.0, final['roll_1_gain_5'])
+        self.assertFalse(any(call['action'].startswith('TRANSFER') for call in optimiser.calls))
+        self.assertFalse(any(call['gameweek'] > 38 for call in optimiser.calls))
+
+    def test_execute_holds_when_the_solver_fails(self):
+        class _Failing(MipOptimiser):
+            def _solve(self, *args, **kwargs):
+                raise ValueError('CBC failed')
+
+        pool, squad = _pool_and_squad()
+        plan, chip = _Failing(observation_version='fast').execute(
+            TRANSFER_1, squad, pool, 1,
+        )
+        self.assertEqual((), plan.transfers)
+        self.assertEqual(squad.player_ids, plan.selected_player_ids)
+        self.assertIsNone(chip)
 
 
 def _memory_cache():

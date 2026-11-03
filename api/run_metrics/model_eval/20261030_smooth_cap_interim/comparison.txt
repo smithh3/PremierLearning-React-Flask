@@ -1,0 +1,98 @@
+Model evaluation against v1, seasons 25, 38 origins
+Scores are in noise units: 1.0 = one bootstrap standard deviation of that metric for v1.
+Positive is better than v1; v1 scores 0 by definition.
+Each metric is capped at +-3 before weighting; "uncapped" is the old total.
+
+model               total       95% interval   P(>0)  overall   future    calib  ranking  uncapped
+v1_h5_cal           +1.78       [1.58, 1.98]    1.00    +3.00    +1.58    +3.00    +0.54     +4.37
+v2_huber_cal        +1.56       [0.89, 1.93]    1.00    +2.92    +1.21    +3.00    +0.22     +4.28
+v2_smooth_cap_cal    +1.52       [0.88, 1.96]    1.00    +2.90    +1.05    +3.00    +0.23     +4.23
+v1_cal              +1.45       [1.32, 1.57]    1.00    +2.66    +1.29    +3.00    +0.03     +3.68
+v2_smooth_cap       +1.37       [0.69, 1.92]    1.00    +2.40    +0.75    +3.00    +0.37     +2.89
+v2_tier_cal         +1.35       [0.78, 1.72]    1.00    +2.32    +0.91    +3.00    +0.26     +3.80
+v2_smooth_cal       +1.16       [0.57, 1.61]    1.00    +2.30    +0.50    +3.00    +0.03     +3.65
+v2_tier             +1.08       [0.49, 1.69]    1.00    +1.82    +0.03    +3.00    +0.49     +2.52
+v1_h5               +1.02       [0.84, 1.27]    1.00    +1.14    +0.40    +3.00    +0.52     +1.70
+v2_smooth           +0.95       [0.34, 1.56]    1.00    +1.82    -0.23    +3.00    +0.29     +2.32
+v2_huber            +0.85       [0.17, 1.31]    1.00    +1.13    -0.09    +3.00    +0.40     +0.99
+
+What drove each score:
+  v1_h5_cal: helped most by overall +0.75, calibration +0.45
+    v1_h5 plus the same rolling linear calibration.
+  v2_huber_cal: helped most by overall +0.73, calibration +0.45
+    v2_huber plus the same rolling linear calibration (unflagged players only).
+  v2_smooth_cap_cal: helped most by overall +0.73, calibration +0.45
+    v2_smooth_cap plus the same rolling linear calibration.
+  v1_cal: helped most by overall +0.66, calibration +0.45
+    v1 plus the same rolling linear calibration.
+  v2_smooth_cap: helped most by overall +0.60, calibration +0.45
+    v2, smooth weights capped at 2.4: the tier bands without steps.
+  v2_tier_cal: helped most by overall +0.58, calibration +0.45; regressed on 2B_predicted (-1.72 sd)
+    v2_tier plus the same rolling linear calibration (unflagged players only).
+  v2_smooth_cal: helped most by overall +0.57, calibration +0.45; regressed on 2B_predicted (-1.96 sd)
+    v2_smooth plus a rolling linear calibration fitted before each deadline.
+  v2_tier: helped most by overall +0.45, calibration +0.45; regressed on 2A_predicted (-2.02 sd), 2B_predicted (-3.00 sd)
+    v2, the current blended score-band weights.
+  v1_h5: helped most by calibration +0.45, overall +0.29; regressed on 2B_predicted (-2.36 sd)
+    v1 as used live: a 5-GW total model, split across fixtures by the single-GW points.
+  v2_smooth: helped most by overall +0.45, calibration +0.45; regressed on 2A_predicted (-3.00 sd), 2B_predicted (-3.00 sd)
+    v2, smooth weights 1 + 1.4 (points / 10)^1.5.
+  v2_huber: helped most by calibration +0.45, overall +0.28; regressed on 2A_actual (-1.66 sd)
+    v2, Huber on raw points, every fixture weighted equally.
+
+By season (total):
+  v1_h5_cal        25 +1.78
+  v2_huber_cal     25 +1.56
+  v2_smooth_cap_cal 25 +1.52
+  v1_cal           25 +1.45
+  v2_smooth_cap    25 +1.37
+  v2_tier_cal      25 +1.35
+  v2_smooth_cal    25 +1.16
+  v2_tier          25 +1.08
+  v1_h5            25 +1.02
+  v2_smooth        25 +0.95
+  v2_huber         25 +0.85
+
+Non-overlapping 5-GW origins only (sensitivity check, same sigmas):
+  v1_h5_cal        total +1.87, future +2.03, ranking +0.48
+  v2_huber_cal     total +1.78, future +1.84, ranking +0.35
+  v2_smooth_cap_cal total +1.77, future +1.90, ranking +0.28
+  v1_cal           total +1.51, future +1.34, ranking +0.03
+  v2_smooth_cap    total +1.78, future +1.71, ranking +0.42
+  v2_tier_cal      total +1.82, future +2.15, ranking +0.23
+  v2_smooth_cal    total +1.65, future +1.64, ranking +0.10
+  v2_tier          total +1.64, future +1.66, ranking +0.44
+  v1_h5            total +1.21, future +1.25, ranking +0.45
+  v2_smooth        total +1.50, future +1.08, ranking +0.32
+  v2_huber         total +1.23, future +0.34, ranking +0.51
+
+Guardrail flags:
+  v1_h5_cal: overall_mae is 6.6% worse than v1
+  v2_huber_cal: overall_mae is 5.9% worse than v1
+  v2_smooth_cap_cal: overall_mae is 7.0% worse than v1
+  v1_cal: overall_mae is 6.5% worse than v1
+  v2_smooth_cap: overpredicts its own top_5 picks by 3.47 points over 5 GWs
+  v2_tier_cal: overall_mae is 7.6% worse than v1
+  v2_smooth_cal: overall_mae is 8.2% worse than v1
+  v2_tier: overpredicts its own top_5pct picks by 4.97 points over 5 GWs
+  v2_tier: overpredicts its own top_5 picks by 6.91 points over 5 GWs
+  v1_h5: overpredicts its own top_5pct picks by 3.76 points over 5 GWs
+  v1_h5: overpredicts its own top_5 picks by 6.42 points over 5 GWs
+  v2_smooth: overall_mae is 5.5% worse than v1
+  v2_smooth: overpredicts its own top_5pct picks by 5.80 points over 5 GWs
+  v2_smooth: overpredicts its own top_5 picks by 9.82 points over 5 GWs
+
+Raw metrics (pooled):
+  model             overall_mse  overall_mae overall_bias    2A_actual 2A_predicted    2B_actual 2B_predicted calibration_ calibration_ spearman_sin spearman_fiv
+  v1                      7.615        1.653       -0.712       17.742        8.369        4.306        2.770        0.712        0.848        0.552        0.554
+  v1_h5_cal               7.068        1.762       -0.123       16.242        7.812        4.154        2.759        0.225        0.986        0.563        0.560
+  v2_huber_cal            7.103        1.751       -0.164       16.376        8.137        4.149        2.799        0.193        0.984        0.555        0.558
+  v2_smooth_cap_cal        7.106        1.769       -0.114       16.339        8.445        4.132        2.788        0.197        0.989        0.551        0.562
+  v1_cal                  7.149        1.760       -0.170       16.955        8.014        4.216        2.696        0.265        1.018        0.559        0.550
+  v2_smooth_cap           7.194        1.676       -0.384       16.784        8.685        4.151        2.780        0.384        0.939        0.550        0.567
+  v2_tier_cal             7.208        1.778       -0.129       16.531        8.138        4.190        2.869        0.233        0.970        0.548        0.565
+  v2_smooth_cal           7.212        1.788       -0.120       16.416        8.635        4.188        2.883        0.230        0.980        0.546        0.561
+  v2_tier                 7.297        1.727       -0.218       15.348        9.203        4.089        3.054        0.426        0.774        0.550        0.570
+  v1_h5                   7.415        1.691       -0.497       15.788        8.774        4.136        2.906        0.552        0.753        0.557        0.564
+  v2_smooth               7.297        1.743       -0.182       14.994       10.170        4.073        3.177        0.413        0.767        0.547        0.567
+  v2_huber                7.417        1.627       -0.613       18.360        8.009        4.328        2.717        0.613        1.109        0.554        0.564

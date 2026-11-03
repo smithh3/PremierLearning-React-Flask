@@ -15,6 +15,7 @@ from squadtools.simulation_strategy import (
     CHIP_WILDCARD,
     ChipCalendar,
     FreeTransferRules,
+    PlayerProjection,
     SquadState,
     apply_transfer_plan,
     copy_squad_state,
@@ -36,11 +37,22 @@ from fpl_manager.actions import (
     WILDCARD,
     legal_mask,
 )
-from fpl_manager.lineup import greedy_lineup, hit_penalty, score_lineup
-from fpl_manager.observation import LAST_GAMEWEEK, build_observation
+from fpl_manager.lineup import greedy_lineup, hit_penalty, score_lineup, score_with_autosubs
+from fpl_manager.observation import (
+    LAST_GAMEWEEK,
+    build_observation,
+    build_observation_fast,
+    build_observation_v2,
+    build_observation_v3,
+)
 from fpl_manager.optimiser import GreedyOptimiser
-from fpl_manager.percentiles import describe_season
-from fpl_manager.reward import terminal_reward, weekly_reward
+from fpl_manager.percentiles import describe_season, season_beaten_percent
+from fpl_manager.reward import (
+    season_end_reward,
+    terminal_reward,
+    weekly_points_reward,
+    weekly_reward,
+)
 
 
 class SeasonEpisode:
@@ -55,8 +67,14 @@ class SeasonEpisode:
         optimiser=None,
         reference_scores=None,
         forecast_at=None,
+        observation_version: str = 'v1',
+        appearances=None,
     ):
+        """`appearances(player_id, gameweek)` says whether a player played.
+        v3 uses it for autosubs; without it, no autosubs are made.
+        """
         self.pool = pool
+        self.appearances = appearances
         self.forecast_at = forecast_at
         self._forecast_gameweek = None
         self.squad = copy_squad_state(squad)
@@ -65,6 +83,7 @@ class SeasonEpisode:
         self.gameweek = int(first_gameweek)
         self.last_gameweek = int(last_gameweek)
         self.optimiser = optimiser or GreedyOptimiser()
+        self.observation_version = str(observation_version or 'v1')
         self.reference_scores = reference_scores or (lambda _gameweek: ())
         self._cache_at_start = _cache_counts(self.optimiser)
         self._season_started = time.perf_counter()
@@ -80,12 +99,19 @@ class SeasonEpisode:
         self.rules = FreeTransferRules(self.season_start_year)
 
     def mask(self) -> tuple:
-        return legal_mask(self.season_start_year, self.gameweek, self.played, self.squad)
+        return legal_mask(
+            self.season_start_year,
+            self.gameweek,
+            self.played,
+            self.squad,
+            allow_hits=self.observation_version == 'v1',
+        )
 
     def _sync_forecast(self):
         if self.forecast_at is None or self._forecast_gameweek == self.gameweek:
             return
         pool, snapshot_id = self.forecast_at(self.gameweek)
+        _keep_departed(pool, self.pool, self.squad.player_ids)
         self.pool = pool
         self._forecast_gameweek = self.gameweek
         if snapshot_id is not None:
@@ -95,9 +121,16 @@ class SeasonEpisode:
         self._sync_forecast()
         gains = {}
         reporter = getattr(self.optimiser, 'transfer_gains', None)
-        if reporter is not None:
+        if reporter is not None and self.observation_version in ('v2', 'fast', 'v3'):
+            gains = reporter(self.squad, self.pool, self.gameweek, self.played)
+        elif reporter is not None:
             gains = reporter(self.squad, self.pool, self.gameweek)
-        return build_observation(
+        builder = {
+            'v2': build_observation_v2,
+            'fast': build_observation_fast,
+            'v3': build_observation_v3,
+        }.get(self.observation_version, build_observation)
+        return builder(
             self.season_start_year,
             self.gameweek,
             self.squad,
@@ -156,15 +189,27 @@ class SeasonEpisode:
         played_points = self._score(scoring.player_ids, gameweek, chip)
         net = played_points - hits
         self.points_total += net
-        week_reward = weekly_reward(net, self.reference_scores(gameweek))
+        if self.observation_version == 'v3':
+            week_reward = weekly_points_reward(net)
+        else:
+            week_reward = weekly_reward(net, self.reference_scores(gameweek))
         self.weekly_reward_total += week_reward
         self._advance(before, scoring, plan, chip, gameweek)
         done = self.gameweek > self.last_gameweek
         self.done = done
         reward = week_reward
         if done:
-            self.terminal = terminal_reward(self.points_total)
+            if self.observation_version == 'v3':
+                beaten = season_beaten_percent(self.season_start_year, self.points_total)
+                self.terminal = season_end_reward(
+                    self.points_total, 0.0 if beaten is None else float(beaten),
+                )
+            else:
+                self.terminal = terminal_reward(self.points_total)
             reward += self.terminal
+            flush = getattr(getattr(self.optimiser, 'cache', None), 'flush', None)
+            if flush is not None:
+                flush()
             solved, cached = _cache_counts(self.optimiser)
             self.solved_count = solved - self._cache_at_start[0]
             self.cached_count = cached - self._cache_at_start[1]
@@ -201,9 +246,21 @@ class SeasonEpisode:
         predicted = lambda player_id: float(self.pool[player_id].points(gameweek))
         actual = lambda player_id: float(self.outcomes(player_id, gameweek))
         position_of = lambda player_id: self.pool[player_id].position
-        starters, bench, captain_id, _vice = greedy_lineup(
+        starters, bench, captain_id, vice_id = greedy_lineup(
             player_ids, predicted, position_of,
         )
+        if self.observation_version == 'v3' and self.appearances is not None:
+            return score_with_autosubs(
+                actual,
+                lambda player_id: bool(self.appearances(player_id, gameweek)),
+                position_of,
+                starters,
+                bench,
+                captain_id,
+                vice_id,
+                bench_boost=chip == 'bench_boost',
+                triple_captain=chip == 'triple_captain',
+            )
         return score_lineup(
             actual,
             starters,
@@ -233,6 +290,29 @@ class SeasonEpisode:
                 free_transfers=next_transfers,
             )
         self.gameweek = int(gameweek) + 1
+
+
+def _keep_departed(pool, previous, owned_ids):
+    """Keep owned players who are missing from this week's snapshot.
+
+    A snapshot leaves out players who have left the league. In the game they
+    stay in the squad, score nothing and can still be sold, so they stay in the
+    pool at their last price, with no predicted points and closed to buying.
+    """
+    for player_id in owned_ids:
+        player_id = int(player_id)
+        if player_id in pool or previous is None or player_id not in previous:
+            continue
+        old = previous[player_id]
+        pool.players[player_id] = PlayerProjection(
+            player_id=player_id,
+            player_code=int(old.player_code),
+            name=str(old.name),
+            position=int(old.position),
+            team_id=int(old.team_id),
+            price=int(old.price),
+            selectable=False,
+        )
 
 
 def _with_chip(played: ChipCalendar, chip: str, gameweek: int) -> ChipCalendar:

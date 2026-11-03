@@ -20,14 +20,47 @@ SIMPLE_ROOTS = (
     'current_opposition',
     'match_facts',
     'context',
+    # External data (external_hook.py): the player's all-competition minutes load.
+    'player_load',
 )
 
 
+TEAM_HISTORY_NODES = ('current_team.fixture_history', 'current_opposition.fixture_history')
+POINTS_DIRECT = 'direct'
+POINTS_SCORELINE = 'scoreline'
+# Three stages in one network: player minutes bands, a team-level scoreline in
+# goal bands (one shared reader for both sides), and points built from both.
+POINTS_STAGED = 'staged'
+POINTS_STRUCTURES = (POINTS_DIRECT, POINTS_SCORELINE, POINTS_STAGED)
+POOL_MEAN = 'mean'
+POOL_RECENCY = 'recency'
+HISTORY_POOLS = (POOL_MEAN, POOL_RECENCY)
+# The leaf a history's recency pooling reads as each item's age.
+AGE_FIELDS = ('days_before_current', 'seasons_before')
+
+
+def age_leaf(node: 'Node'):
+    """The age leaf inside a transformer history, or None."""
+    for leaf in _leaves(node.item if node.item is not None else node):
+        if leaf.name in AGE_FIELDS:
+            return leaf
+    return None
+
+
 def sequence_length(config: PlanConfig, node: Node) -> int:
-    """Fixture history and season history are different padded lengths."""
+    """Fixture history, season history and team history are different padded lengths."""
     if node.path == 'last_season' or node.name == 'last_season':
         return int(config.season_len)
+    if node.path in TEAM_HISTORY_NODES:
+        return int(config.team_history_len)
     return int(config.history_len)
+
+
+def set_length(config: PlanConfig, node: Node) -> int:
+    """Slots in an attention set: squads are max_squad, a team history its match count."""
+    if node.path in TEAM_HISTORY_NODES:
+        return int(config.team_history_len)
+    return int(config.max_squad)
 
 
 def tensor_key(path: str) -> str:
@@ -60,6 +93,31 @@ class PlanConfig:
     d_model: int = 32
     n_heads: int = 4
     n_layers: int = 1
+    # Team and opponent match histories (current_team/current_opposition.fixture_history):
+    # matches per side, across seasons. 114 is three seasons.
+    team_history_len: int = 114
+    # Fading averages over that history halve their weight every this many days.
+    team_decay_half_life: int = 180
+    # Identity embeddings split by time. 1 keeps one vector per team or player.
+    # Otherwise block 0 is the last block_first gameweeks before the training
+    # cutoff, then block_size-gameweek blocks back from there; the oldest
+    # block takes everything older. Each vector is a shared base plus a block
+    # part held near zero by block_l2.
+    team_blocks: int = 1
+    player_blocks: int = 1
+    block_first: int = 38
+    block_size: int = 76
+    block_l2: float = 1e-4
+    # Scoreline: above 0, a small net on the team, opponent and match encodings
+    # predicts the team's goals for and against (Poisson loss, at this weight).
+    score_head_weight: float = 0.0
+    # 'direct': one dense output for points. 'scoreline': points are assembled
+    # from the minutes-band chances and those expected goals (see model.py).
+    points_structure: str = 'direct'
+    # How a transformer history is summed up: 'mean' averages every match;
+    # 'recency' pools with learned queries whose weights fade with each match's
+    # age (one learned rate per head) and adds a match count.
+    history_pool: str = 'mean'
 
     @classmethod
     def from_dict(cls, raw) -> 'PlanConfig':
@@ -69,17 +127,38 @@ class PlanConfig:
             'history_len', 'season_len', 'team_form_n', 'max_squad',
             'player_emb_dim', 'team_emb_dim', 'position_emb_dim',
             'd_model', 'n_heads', 'n_layers',
+            'team_history_len', 'team_decay_half_life',
+            'team_blocks', 'player_blocks', 'block_first', 'block_size',
         ):
             if raw.get(key) is None:
                 continue
             setattr(config, key, int(raw[key]))
+        if raw.get('block_l2') is not None:
+            config.block_l2 = float(raw['block_l2'])
+        if raw.get('score_head_weight') is not None:
+            config.score_head_weight = float(raw['score_head_weight'])
+        if raw.get('points_structure') is not None:
+            config.points_structure = str(raw['points_structure']).strip().lower()
+        if config.points_structure not in POINTS_STRUCTURES:
+            raise ValueError('points_structure must be one of %s' % ', '.join(POINTS_STRUCTURES))
+        if raw.get('history_pool') is not None:
+            config.history_pool = str(raw['history_pool']).strip().lower()
+        if config.history_pool not in HISTORY_POOLS:
+            raise ValueError('history_pool must be one of %s' % ', '.join(HISTORY_POOLS))
+        if config.score_head_weight < 0:
+            raise ValueError('score_head_weight must not be negative')
         if (
             config.history_len < 1 or config.max_squad < 1
             or config.team_form_n < 1 or config.season_len < 1
+            or config.team_history_len < 1
         ):
-            raise ValueError('history_len, season_len, max_squad and team_form_n must be positive')
+            raise ValueError(
+                'history_len, season_len, team_history_len, max_squad and team_form_n must be positive'
+            )
         if config.n_heads < 1 or config.d_model < 1 or config.n_layers < 1:
             raise ValueError('d_model, n_heads and n_layers must be positive')
+        if config.team_blocks < 1 or config.player_blocks < 1 or config.block_first < 1 or config.block_size < 1:
+            raise ValueError('team_blocks, player_blocks, block_first and block_size must be positive')
         return config
 
 
@@ -217,7 +296,7 @@ def iter_input_specs(plan: Plan):
             yield from visit(node.item, length)
             return
         if node.kind == 'attention':
-            length = config.max_squad
+            length = set_length(config, node)
             mask_path = node.path + '.mask'
             yield InputSpec(tensor_key(mask_path), mask_path, (length,), 'float32', 'mask')
             yield from visit(node.item, length)

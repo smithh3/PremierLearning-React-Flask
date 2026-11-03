@@ -15,6 +15,7 @@ from squadtools.simulation_strategy import (
     CHIP_TRIPLE_CAPTAIN,
     CHIP_WILDCARD,
     FIRST_HALF_LAST_GAMEWEEK,
+    OPTIMISER_MIN_AVG_POINTS,
     ChipCalendar,
     FreeTransferRules,
     SimulationStrategy,
@@ -133,15 +134,24 @@ def low_minute_owned_count(
     as_of_gameweek: int,
     cutoff=None,
 ) -> int:
-    """Owned players predicted under `cutoff` minutes in the next match."""
+    """Owned players predicted under `cutoff` minutes in the next match.
+
+    A pool with no predicted minutes counts those under the optimiser's points
+    floor instead.
+    """
     limit = LOW_MINUTE_CUTOFF if cutoff is None else float(cutoff)
+    use_minutes = pool.predicts_minutes
     as_of = int(as_of_gameweek)
     count = 0
     for player_id in state.player_ids:
         player = pool.players.get(int(player_id))
         if player is None:
             continue
-        if player.minutes(as_of) < limit:
+        if use_minutes:
+            low = player.minutes(as_of) < limit
+        else:
+            low = player.points(as_of) < OPTIMISER_MIN_AVG_POINTS
+        if low:
             count += 1
     return count
 

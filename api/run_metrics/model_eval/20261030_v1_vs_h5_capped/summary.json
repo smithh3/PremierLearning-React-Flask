@@ -1,0 +1,130 @@
+{
+  "baseline": "v1",
+  "categories": {
+    "v1": {
+      "calibration": 0.0,
+      "future": 0.0,
+      "overall": 0.0,
+      "ranking": 0.0
+    },
+    "v1_cal": {
+      "calibration": 3.0,
+      "future": 1.057208432943936,
+      "overall": 2.3304997676215438,
+      "ranking": -0.08829197078164956
+    },
+    "v1_h5": {
+      "calibration": 3.0,
+      "future": 0.4003394378189333,
+      "overall": 1.1407651121584765,
+      "ranking": 0.5166712654243643
+    },
+    "v1_h5_cal": {
+      "calibration": 3.0,
+      "future": 1.3859413013016422,
+      "overall": 2.8488371113974864,
+      "ranking": 0.4139847845524318
+    }
+  },
+  "dropped_origins": [],
+  "flags": {
+    "v1": [],
+    "v1_cal": [
+      "overall_mae is 11.5% worse than v1"
+    ],
+    "v1_h5": [
+      "overpredicts its own top_5pct picks by 3.76 points over 5 GWs",
+      "overpredicts its own top_5 picks by 6.42 points over 5 GWs"
+    ],
+    "v1_h5_cal": [
+      "overall_mae is 11.7% worse than v1"
+    ]
+  },
+  "intervals": {
+    "v1": {
+      "hi": 0.0,
+      "lo": 0.0,
+      "p_above_zero": 0.0
+    },
+    "v1_cal": {
+      "hi": 1.4367262172358057,
+      "lo": 1.0641252808987824,
+      "p_above_zero": 1.0
+    },
+    "v1_h5": {
+      "hi": 1.265690717097906,
+      "lo": 0.8389162158936039,
+      "p_above_zero": 1.0
+    },
+    "v1_h5_cal": {
+      "hi": 1.8886481501651935,
+      "lo": 1.4054263990937856,
+      "p_above_zero": 1.0
+    }
+  },
+  "missing_predictions": {
+    "v1": 0,
+    "v1_cal": 0,
+    "v1_h5": 0,
+    "v1_h5_cal": 0
+  },
+  "models": [
+    "v1",
+    "v1_h5",
+    "v1_cal",
+    "v1_h5_cal"
+  ],
+  "prediction_sets": {
+    "v1": 7,
+    "v1_h5": 8
+  },
+  "ranking": [
+    "v1_h5_cal",
+    "v1_cal",
+    "v1_h5"
+  ],
+  "scorers": {
+    "v1": "optimiser",
+    "v1_h5": "optimiser"
+  },
+  "season_scores": {
+    "v1": {
+      "25": 0.0
+    },
+    "v1_cal": {
+      "25": 1.2660248603677926
+    },
+    "v1_h5": {
+      "25": 1.01611108039288
+    },
+    "v1_h5_cal": {
+      "25": 1.6535892777681331
+    }
+  },
+  "seasons": [
+    25
+  ],
+  "sigmas": {
+    "2A_actual": 0.3724400743524714,
+    "2A_predicted": 0.4126431931911874,
+    "2B_actual": 0.12725942013619782,
+    "2B_predicted": 0.057791125731654736,
+    "calibration_gap": 0.02492237929876642,
+    "overall_mse": 0.17536366730084282,
+    "spearman_five_gw": 0.013747545991275445,
+    "spearman_single_gw": 0.015577193322179042
+  },
+  "totals": {
+    "v1": 0.0,
+    "v1_cal": 1.2660248603677926,
+    "v1_h5": 1.01611108039288,
+    "v1_h5_cal": 1.6535892777681331
+  },
+  "totals_uncapped": {
+    "v1": 0.0,
+    "v1_cal": 3.4002564850279398,
+    "v1_h5": 1.6977289928215782,
+    "v1_h5_cal": 4.3361393411925535
+  },
+  "units": 38
+}

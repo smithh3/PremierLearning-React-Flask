@@ -1,0 +1,2773 @@
+========================================================================
+explain_player (captured from previous terminal run)
+args: haaland watkins fernandes "igor jesus" dorgu "bruno g" "gibbs white"
+note: Terminal buffer was truncated; this is the surviving tail (Bruno G. last-season fixtures through Igor Jesus).
+========================================================================
+  GW23 H vs AVL                   0.0 pts      0 mins
+  GW24 A vs LIV                   0.0 pts      0 mins
+  GW25 H vs BRE                  11.0 pts     90 mins
+  GW26 A vs TOT                   3.0 pts     90 mins
+  GW27 A vs MCI                   0.0 pts      0 mins
+  GW28 H vs EVE                   0.0 pts      0 mins
+  GW29 H vs MUN                   0.0 pts      0 mins
+  GW30 A vs CHE                   0.0 pts      0 mins
+  GW31 H vs SUN                   0.0 pts      0 mins
+  GW32 A vs CRY                   0.0 pts      0 mins
+  GW33 H vs BOU                   1.0 pts     28 mins
+  GW34 A vs ARS                   2.0 pts     74 mins
+  GW35 H vs BHA                   6.0 pts     90 mins
+  GW36 A vs NFO                   6.0 pts     90 mins
+  GW37 H vs WHU                   4.0 pts     90 mins
+  GW38 A vs FUL                   1.0 pts     65 mins
+  totals: 154.0 pts, 2456 mins, 29/38 appearances
+
+=== Sample horizon model columns (validation) ===
+
+Bruno Guimarães Rodriguez Moura (ARS) — PREDICT (exact model input row)
+  form appearances available: 7
+  last_5 (should = total_points_last_5_avg): GW34:2pts/74m, GW35:6pts/90m, GW36:6pts/90m, GW37:4pts/90m, GW38:1pts/65m -> pp90=4.1809
+  last_7 (should = total_points_avg): GW26:3pts/90m, GW33:1pts/28m, GW34:2pts/74m, GW35:6pts/90m, GW36:6pts/90m, GW37:4pts/90m, GW38:1pts/65m -> pp90=3.9279
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 5.643322
+  last_season_xgi_per_90: 0.386604
+  new_stats_included: 1
+  team_xg_over_n: 9.442331
+  team_xc_over_n: 4.506892
+  team_xg_last_5: 5.682494
+  team_xc_last_5: 7.034821
+  defcon_avg_x_new_stats_x_non_att: 10.759013
+  team_xg_over_n_x_outfield: 9.442331
+  total_points_last_5_avg: 4.180929
+  total_points_avg: 3.927894
+  xgi_last_5_avg: 0.385086
+  xgi_avg: 0.428653
+  expected_goals_conceded_last_5_avg: 1.133252
+  expected_goals_conceded_avg: 1.263757
+  defensive_contribution_last_5_avg: 10.342298
+  defensive_contribution_avg: 10.759013
+
+Bruno Guimarães Rodriguez Moura — TRAIN (25, 26) GW34 vs ARS (A) (exact model input row; target window 5/5 played)
+  form appearances available: 31
+  last_5 (should = total_points_last_5_avg): GW21:11pts/90m, GW22:3pts/90m, GW25:11pts/90m, GW26:3pts/90m, GW33:1pts/28m -> pp90=6.7268
+  last_7 (should = total_points_avg): GW19:10pts/90m, GW20:10pts/90m, GW21:11pts/90m, GW22:3pts/90m, GW25:11pts/90m, GW26:3pts/90m, GW33:1pts/28m -> pp90=7.7641
+  target (points/90 over window): 4.180929
+  --- model input features (exact) ---
+  matches_played: 24
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 3.712191
+  last_season_xgi_per_90: 0.265628
+  new_stats_included: 1
+  team_xg_over_n: 5.682494
+  team_xc_over_n: 7.034821
+  team_xg_last_5: 6.452351
+  team_xc_last_5: 5.800940
+  defcon_avg_x_new_stats_x_non_att: 9.348592
+  team_xg_over_n_x_outfield: 5.682494
+  total_points_last_5_avg: 6.726804
+  total_points_avg: 7.764085
+  xgi_last_5_avg: 0.825773
+  xgi_avg: 0.752641
+  expected_goals_conceded_last_5_avg: 1.442784
+  expected_goals_conceded_avg: 1.269190
+  defensive_contribution_last_5_avg: 8.814433
+  defensive_contribution_avg: 9.348592
+=== End sample columns ===
+
+
+=== Sample minutes model columns (validation) ===
+
+Bruno Guimarães Rodriguez Moura (ARS) — PREDICT next match
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  early_x_last_season_mins: 0.718129
+  last_season_h2_mins_per_match: 68.230769
+  last_two_seasons_mins_per_match: 84.947368
+  last_season_h2_fixture_frac: 1.000000
+  ls_mpm_x_new_club: -39.655150
+  mins_last_1: 68.230769
+  mins_last_2_avg: 68.230769
+  mins_last_5_avg: 68.230769
+  last_7_pts_per_appearance: 3.285714
+
+Bruno Guimarães Rodriguez Moura — TRAIN (25, 26) GW38 vs FUL (A)
+  target (minutes): 65.000000
+  --- model input features (exact) ---
+  matches_played: 28
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  early_x_last_season_mins: 0.008999
+  last_season_h2_mins_per_match: 85.157895
+  last_two_seasons_mins_per_match: 86.298246
+  last_season_h2_fixture_frac: 1.000000
+  ls_mpm_x_new_club: 85.157895
+  mins_last_1: 90.000000
+  mins_last_2_avg: 90.000000
+  mins_last_5_avg: 74.400000
+  last_7_pts_per_appearance: 4.714286
+=== End sample minutes columns ===
+
+
+========================================================================
+Igor Jesus Maciel da Cruz (NFO)
+========================================================================
+
+Played matches — current season 26/27
+  (none)
+
+Played matches — last season 25/26
+  GW 1 H vs BRE                   1.0 pts     11 mins
+  GW 2 A vs CRY                   1.0 pts      2 mins
+  GW 3 H vs WHU                   1.0 pts     17 mins
+  GW 4 A vs ARS                   0.0 pts      0 mins
+  GW 5 A vs BUR                   1.0 pts     15 mins
+  GW 6 H vs SUN                   1.0 pts     30 mins
+  GW 7 A vs NEW                   1.0 pts     26 mins
+  GW 8 H vs CHE                   1.0 pts     45 mins
+  GW 9 A vs BOU                   1.0 pts     45 mins
+  GW10 H vs MUN                   5.0 pts     77 mins
+  GW11 H vs LEE                   1.0 pts     58 mins
+  GW12 A vs LIV                   2.0 pts     85 mins
+  GW13 H vs BHA                   2.0 pts     74 mins
+  GW14 A vs WOL                   9.0 pts     90 mins
+  GW15 A vs EVE                   2.0 pts     90 mins
+  GW16 H vs TOT                   2.0 pts     84 mins
+  GW17 A vs FUL                   2.0 pts     71 mins
+  GW18 H vs MCI                   5.0 pts     90 mins
+  GW19 H vs EVE                   2.0 pts     61 mins
+  GW20 A vs AVL                   2.0 pts     82 mins
+  GW21 A vs WHU                   2.0 pts     90 mins
+  GW22 H vs ARS                   2.0 pts     75 mins
+  GW23 A vs BRE                   9.0 pts     67 mins
+  GW24 H vs CRY                   2.0 pts     69 mins
+  GW25 A vs LEE                   1.0 pts     53 mins
+  GW26 H vs WOL                   1.0 pts     19 mins
+  GW27 H vs LIV                   2.0 pts     76 mins
+  GW28 A vs BHA                   5.0 pts     82 mins
+  GW29 A vs MCI                   5.0 pts     78 mins
+  GW30 H vs FUL                   2.0 pts     62 mins
+  GW31 A vs TOT                   8.0 pts     70 mins
+  GW32 H vs AVL                   2.0 pts     88 mins
+  GW33 H vs BUR                   7.0 pts     45 mins
+  GW34 A vs SUN                  14.0 pts     66 mins
+  GW35 A vs CHE                   5.0 pts     45 mins
+  GW36 H vs NEW                   1.0 pts     82 mins
+  GW37 A vs MUN                   2.0 pts     83 mins
+  GW38 H vs BOU                   2.0 pts     90 mins
+  totals: 114.0 pts, 2293 mins, 37/38 appearances
+
+=== Sample horizon model columns (validation) ===
+
+Igor Jesus Maciel da Cruz (NFO) — PREDICT (exact model input row)
+  form appearances available: 7
+  last_5 (should = total_points_last_5_avg): GW34:14pts/66m, GW35:5pts/45m, GW36:1pts/82m, GW37:2pts/83m, GW38:2pts/90m -> pp90=5.9016
+  last_7 (should = total_points_avg): GW32:2pts/88m, GW33:7pts/45m, GW34:14pts/66m, GW35:5pts/45m, GW36:1pts/82m, GW37:2pts/83m, GW38:2pts/90m -> pp90=5.9519
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  last_season_points_per_90: 4.474488
+  last_season_xgi_per_90: 0.303794
+  new_stats_included: 1
+  team_xg_over_n: 6.443201
+  team_xc_over_n: 5.995523
+  team_xg_last_5: 6.452817
+  team_xc_last_5: 6.130019
+  defcon_avg_x_new_stats_x_non_att: 0.000000
+  team_xg_over_n_x_outfield: 6.443201
+  total_points_last_5_avg: 5.901639
+  total_points_avg: 5.951904
+  xgi_last_5_avg: 0.383607
+  xgi_avg: 0.393186
+  expected_goals_conceded_last_5_avg: 1.886066
+  expected_goals_conceded_avg: 1.592585
+  defensive_contribution_last_5_avg: 6.393443
+  defensive_contribution_avg: 6.132265
+
+Igor Jesus Maciel da Cruz — TRAIN (25, 26) GW34 vs SUN (A) (exact model input row; target window 5/5 played)
+  form appearances available: 32
+  last_5 (should = total_points_last_5_avg): GW29:5pts/78m, GW30:2pts/62m, GW31:8pts/70m, GW32:2pts/88m, GW33:7pts/45m -> pp90=6.2974
+  last_7 (should = total_points_avg): GW27:2pts/76m, GW28:5pts/82m, GW29:5pts/78m, GW30:2pts/62m, GW31:8pts/70m, GW32:2pts/88m, GW33:7pts/45m -> pp90=5.5689
+  target (points/90 over window): 5.901639
+  --- model input features (exact) ---
+  matches_played: 32
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  last_season_points_per_90: 0.000000
+  last_season_xgi_per_90: 0.000000
+  new_stats_included: 1
+  team_xg_over_n: 6.452817
+  team_xc_over_n: 6.130019
+  team_xg_last_5: 6.234878
+  team_xc_last_5: 6.321883
+  defcon_avg_x_new_stats_x_non_att: 0.000000
+  team_xg_over_n_x_outfield: 6.452817
+  total_points_last_5_avg: 6.297376
+  total_points_avg: 5.568862
+  xgi_last_5_avg: 0.270262
+  xgi_avg: 0.220958
+  expected_goals_conceded_last_5_avg: 0.978717
+  expected_goals_conceded_avg: 1.000599
+  defensive_contribution_last_5_avg: 4.985423
+  defensive_contribution_avg: 4.850299
+=== End sample columns ===
+
+
+=== Sample minutes model columns (validation) ===
+
+Igor Jesus Maciel da Cruz (NFO) — PREDICT next match
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  early_x_last_season_mins: 0.670468
+  last_season_h2_mins_per_match: 69.578947
+  last_two_seasons_mins_per_match: 51.105263
+  last_season_h2_fixture_frac: 1.000000
+  ls_mpm_x_new_club: 69.578947
+  mins_last_1: 69.578947
+  mins_last_2_avg: 69.578947
+  mins_last_5_avg: 69.578947
+  last_7_pts_per_appearance: 4.714286
+
+Igor Jesus Maciel da Cruz — TRAIN (25, 26) GW38 vs BOU (H)
+  target (minutes): 90.000000
+  --- model input features (exact) ---
+  matches_played: 36
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  early_x_last_season_mins: 0.000000
+  last_season_h2_mins_per_match: 0.000000
+  last_two_seasons_mins_per_match: 0.000000
+  last_season_h2_fixture_frac: 0.000000
+  ls_mpm_x_new_club: 0.000000
+  mins_last_1: 83.000000
+  mins_last_2_avg: 82.500000
+  mins_last_5_avg: 64.200000
+  last_7_pts_per_appearance: 5.571429
+=== End sample minutes columns ===
+
+========================================================================
+explain_player (captured from previous terminal run)
+args: joao pedro "dominic calvert lewin" gabriel szoboszlai wirtz
+note: Terminal buffer was truncated; this is the surviving tail (Szoboszlai minutes TRAIN through Gabriel).
+========================================================================
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 4.455446
+  last_season_xgi_per_90: 0.322741
+  new_stats_included: 1
+  team_xg_over_n: 7.960440
+  team_xc_over_n: 4.582389
+  team_xg_last_5: 6.996808
+  team_xc_last_5: 6.000203
+  defcon_avg_x_new_stats_x_non_att: 7.571429
+  team_xg_over_n_x_outfield: 7.960440
+  total_points_last_5_avg: 5.400000
+  total_points_avg: 5.285714
+  xgi_last_5_avg: 0.446000
+  xgi_avg: 0.370000
+  expected_goals_conceded_last_5_avg: 1.702000
+  expected_goals_conceded_avg: 1.477143
+  defensive_contribution_last_5_avg: 6.400000
+  defensive_contribution_avg: 7.571429
+
+Dominik Szoboszlai — TRAIN (25, 26) GW34 vs CRY (H) (exact model input row; target window 5/5 played)
+  form appearances available: 38
+  last_5 (should = total_points_last_5_avg): GW29:5pts/90m, GW30:11pts/90m, GW31:3pts/90m, GW32:5pts/90m, GW33:5pts/90m -> pp90=5.8000
+  last_7 (should = total_points_avg): GW27:3pts/90m, GW28:4pts/90m, GW29:5pts/90m, GW30:11pts/90m, GW31:3pts/90m, GW32:5pts/90m, GW33:5pts/90m -> pp90=5.1429
+  target (points/90 over window): 5.400000
+  --- model input features (exact) ---
+  matches_played: 31
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 5.179074
+  last_season_xgi_per_90: 0.470825
+  new_stats_included: 1
+  team_xg_over_n: 6.996808
+  team_xc_over_n: 6.000203
+  team_xg_last_5: 6.938261
+  team_xc_last_5: 5.508204
+  defcon_avg_x_new_stats_x_non_att: 12.000000
+  team_xg_over_n_x_outfield: 6.996808
+  total_points_last_5_avg: 5.800000
+  total_points_avg: 5.142857
+  xgi_last_5_avg: 0.278000
+  xgi_avg: 0.294286
+  expected_goals_conceded_last_5_avg: 1.124000
+  expected_goals_conceded_avg: 1.238571
+  defensive_contribution_last_5_avg: 13.600000
+  defensive_contribution_avg: 12.000000
+=== End sample columns ===
+
+
+=== Sample minutes model columns (validation) ===
+
+Dominik Szoboszlai (LIV) — PREDICT next match
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  early_x_last_season_mins: 0.945029
+  last_season_h2_mins_per_match: 85.263158
+  last_two_seasons_mins_per_match: 71.877193
+  last_season_h2_fixture_frac: 1.000000
+  ls_mpm_x_new_club: 85.263158
+  mins_last_1: 85.263158
+  mins_last_2_avg: 85.263158
+  mins_last_5_avg: 85.263158
+  last_7_pts_per_appearance: 5.285714
+
+Dominik Szoboszlai — TRAIN (25, 26) GW38 vs BRE (H)
+  target (minutes): 90.000000
+  --- model input features (exact) ---
+  matches_played: 35
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  early_x_last_season_mins: 0.002128
+  last_season_h2_mins_per_match: 71.473684
+  last_two_seasons_mins_per_match: 56.649123
+  last_season_h2_fixture_frac: 1.000000
+  ls_mpm_x_new_club: 71.473684
+  mins_last_1: 90.000000
+  mins_last_2_avg: 90.000000
+  mins_last_5_avg: 90.000000
+  last_7_pts_per_appearance: 5.428571
+=== End sample minutes columns ===
+
+
+========================================================================
+Gabriel dos Santos Magalhães (ARS)
+========================================================================
+
+Played matches — current season 26/27
+  (none)
+
+Played matches — last season 25/26
+  GW 1 A vs MUN                   6.0 pts     90 mins
+  GW 2 H vs LEE                   6.0 pts     90 mins
+  GW 3 A vs LIV                   2.0 pts     90 mins
+  GW 4 H vs NFO                   9.0 pts     90 mins
+  GW 5 H vs MCI                   2.0 pts     90 mins
+  GW 6 A vs NEW                  13.0 pts     90 mins
+  GW 7 H vs WHU                   9.0 pts     90 mins
+  GW 8 A vs FUL                  12.0 pts     90 mins
+  GW 9 H vs CRY                   9.0 pts     90 mins
+  GW10 A vs BUR                  12.0 pts     90 mins
+  GW11 A vs SUN                   1.0 pts     90 mins
+  GW12 H vs TOT                   0.0 pts      0 mins
+  GW13 A vs CHE                   0.0 pts      0 mins
+  GW14 H vs BRE                   0.0 pts      0 mins
+  GW15 A vs AVL                   0.0 pts      0 mins
+  GW16 H vs WOL                   0.0 pts      0 mins
+  GW17 A vs EVE                   0.0 pts      0 mins
+  GW18 H vs BHA                   1.0 pts     19 mins
+  GW19 H vs AVL                  15.0 pts     76 mins
+  GW20 A vs BOU                   9.0 pts     90 mins
+  GW21 H vs LIV                   6.0 pts     90 mins
+  GW22 A vs NFO                   8.0 pts     90 mins
+  GW23 H vs MUN                   1.0 pts     90 mins
+  GW24 A vs LEE                   8.0 pts     90 mins
+  GW25 H vs SUN                   6.0 pts     90 mins
+  GW26 A vs BRE                   3.0 pts     90 mins
+  GW26 A vs WOL                   4.0 pts     90 mins
+  GW27 A vs TOT                   2.0 pts     90 mins
+  GW28 H vs CHE                   9.0 pts     90 mins
+  GW29 A vs BHA                  11.0 pts     90 mins
+  GW30 H vs EVE                   9.0 pts     90 mins
+  GW32 H vs BOU                   4.0 pts     90 mins
+  GW33 A vs MCI                   0.0 pts     90 mins
+  GW34 H vs NEW                   8.0 pts     90 mins
+  GW35 H vs FUL                   6.0 pts     90 mins
+  GW36 A vs WHU                  11.0 pts     90 mins
+  GW37 H vs BUR                   6.0 pts     90 mins
+  GW38 A vs CRY                   1.0 pts     45 mins
+  totals: 209.0 pts, 2750 mins, 32/38 appearances
+
+=== Sample horizon model columns (validation) ===
+
+Gabriel dos Santos Magalhães (ARS) — PREDICT (exact model input row)
+  form appearances available: 7
+  last_5 (should = total_points_last_5_avg): GW34:8pts/90m, GW35:6pts/90m, GW36:11pts/90m, GW37:6pts/90m, GW38:1pts/45m -> pp90=7.1111
+  last_7 (should = total_points_avg): GW32:4pts/90m, GW33:0pts/90m, GW34:8pts/90m, GW35:6pts/90m, GW36:11pts/90m, GW37:6pts/90m, GW38:1pts/45m -> pp90=5.5385
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 1
+  is_mid: 0
+  is_att: 0
+  last_season_points_per_90: 6.840000
+  last_season_xgi_per_90: 0.153491
+  new_stats_included: 1
+  team_xg_over_n: 9.128051
+  team_xc_over_n: 5.374932
+  team_xg_last_5: 11.324106
+  team_xc_last_5: 4.006111
+  defcon_avg_x_new_stats_x_non_att: 8.153846
+  team_xg_over_n_x_outfield: 9.128051
+  total_points_last_5_avg: 7.111111
+  total_points_avg: 5.538462
+  xgi_last_5_avg: 0.226667
+  xgi_avg: 0.175385
+  expected_goals_conceded_last_5_avg: 0.808889
+  expected_goals_conceded_avg: 0.952308
+  defensive_contribution_last_5_avg: 8.444444
+  defensive_contribution_avg: 8.153846
+
+Gabriel dos Santos Magalhães — TRAIN (25, 26) GW34 vs NEW (H) (exact model input row; target window 5/5 played)
+  form appearances available: 34
+  last_5 (should = total_points_last_5_avg): GW28:9pts/90m, GW29:11pts/90m, GW30:9pts/90m, GW32:4pts/90m, GW33:0pts/90m -> pp90=6.6000
+  last_7 (should = total_points_avg): GW26:4pts/90m, GW27:2pts/90m, GW28:9pts/90m, GW29:11pts/90m, GW30:9pts/90m, GW32:4pts/90m, GW33:0pts/90m -> pp90=5.5714
+  target (points/90 over window): 7.111111
+  --- model input features (exact) ---
+  matches_played: 27
+  is_gkp: 0
+  is_def: 1
+  is_mid: 0
+  is_att: 0
+  last_season_points_per_90: 4.456200
+  last_season_xgi_per_90: 0.148921
+  new_stats_included: 1
+  team_xg_over_n: 11.324106
+  team_xc_over_n: 4.006111
+  team_xg_last_5: 9.273067
+  team_xc_last_5: 5.654024
+  defcon_avg_x_new_stats_x_non_att: 9.285714
+  team_xg_over_n_x_outfield: 11.324106
+  total_points_last_5_avg: 6.600000
+  total_points_avg: 5.571429
+  xgi_last_5_avg: 0.162000
+  xgi_avg: 0.137143
+  expected_goals_conceded_last_5_avg: 1.094000
+  expected_goals_conceded_avg: 0.931429
+  defensive_contribution_last_5_avg: 10.600000
+  defensive_contribution_avg: 9.285714
+=== End sample columns ===
+
+
+=== Sample minutes model columns (validation) ===
+
+Gabriel dos Santos Magalhães (ARS) — PREDICT next match
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 1
+  is_mid: 0
+  is_att: 0
+  early_x_last_season_mins: 0.804094
+  last_season_h2_mins_per_match: 87.631579
+  last_two_seasons_mins_per_match: 80.186047
+  last_season_h2_fixture_frac: 1.000000
+  ls_mpm_x_new_club: 87.631579
+  mins_last_1: 87.631579
+  mins_last_2_avg: 87.631579
+  mins_last_5_avg: 87.631579
+  last_7_pts_per_appearance: 5.142857
+
+Gabriel dos Santos Magalhães — TRAIN (25, 26) GW38 vs CRY (A)
+  target (minutes): 45.000000
+  --- model input features (exact) ---
+  matches_played: 31
+  is_gkp: 0
+  is_def: 1
+  is_mid: 0
+  is_att: 0
+  early_x_last_season_mins: 0.003941
+  last_season_h2_mins_per_match: 48.157895
+  last_two_seasons_mins_per_match: 78.771930
+  last_season_h2_fixture_frac: 1.000000
+  ls_mpm_x_new_club: 48.157895
+  mins_last_1: 90.000000
+  mins_last_2_avg: 90.000000
+  mins_last_5_avg: 90.000000
+  last_7_pts_per_appearance: 6.285714
+=== End sample minutes columns ===
+
+
+========================================================================
+explain_player 2026-08-19 13:08:07  args: pedro dcl gabriel szoboszlai wirtz
+========================================================================
+
+Resolving players:
+  'pedro' -> João Pedro Junqueira de Jesus (João Pedro)  [also matched: Pedro Porro Sauceda (Pedro Porro)]
+  'dcl' -> Dominic Calvert-Lewin (Calvert-Lewin)
+  'gabriel' -> Gabriel dos Santos Magalhães (Gabriel)
+  'szoboszlai' -> Dominik Szoboszlai (Szoboszlai)
+  'wirtz' -> Florian Wirtz (Wirtz)
+
+Loading stored predictions from the database...
+
+======== Ranked by predicted points over next 5 GWs (from DB) ========
+Next gameweek: 1
+  #  Player                                   Pts  query/web
+  1  João Pedro Junqueira de Jesus           30.3  (João Pedro, DB)
+  2  Florian Wirtz                           28.9  (Wirtz, DB)
+  3  Dominic Calvert-Lewin                   28.6  (Calvert-Lewin, DB)
+  4  Dominik Szoboszlai                      28.3  (Szoboszlai, DB)
+  5  Gabriel dos Santos Magalhães            25.4  (Gabriel, DB)
+
+======== Predictions (same columns as the Fargate email / top_players.csv) ========
+Player                         Team  Pos  Price  Pred  Pred mins  Prev pp90  Err   M1 opp  M1 pp90  M1 mins  M1 adj  M2 opp  M2 pp90  M2 mins  M2 adj  M3 opp  M3 pp90  M3 mins  M3 adj  M4 opp  M4 pp90  M4 mins  M4 adj  M5 opp  M5 pp90  M5 mins  M5 adj
+-----------------------------  ----  ---  -----  ----  ---------  ---------  ----  ------  -------  -------  ------  ------  -------  -------  ------  ------  -------  -------  ------  ------  -------  -------  ------  ------  -------  -------  ------
+João Pedro Junqueira de Jesus  CHE   FWD  75.0   5.1   72         0.0        3.33  FUL     5.6      72       5.1     BHA     5.9      72       5.4     ARS     4.6      72       4.2     HUL     6.0      72       5.6     BRE     5.6      72       5.2   
+Florian Wirtz                  LIV   MID  75.0   4.9   76         3.2        2.39  NEW     4.7      76       4.7     NFO     4.8      76       4.8     IPS     5.1      76       5.1     FUL     5.2      76       5.2     BOU     4.6      76       4.6   
+Dominic Calvert-Lewin          LEE   FWD  60.0   5.0   84         0.0        2.78  NFO     4.7      84       4.7     BRE     5.1      84       5.1     BHA     4.7      84       4.7     NEW     5.3      84       5.3     CRY     5.1      84       5.1   
+Dominik Szoboszlai             LIV   MID  70.0   4.9   87         0.0        2.38  NEW     4.6      87       4.6     NFO     4.7      87       4.7     IPS     5.1      87       5.1     FUL     5.3      87       5.3     BOU     4.6      87       4.6   
+Gabriel dos Santos Magalhães   ARS   DEF  80.0   4.2   90         2.0        2.83  COV     5.0      90       5.0     AVL     3.8      90       3.8     CHE     4.1      90       4.1     SUN     4.2      90       4.2     BHA     4.2      90       4.2   
+
+Pred and Pred mins are per-GW averages over the horizon. Adj is the minutes-scaled score used by the optimiser. Prev pp90 is pooled points/90 over the last appearances in the DB.
+
+Team xG is refit locally (player nets are not). Feature values can
+differ slightly from the Fargate run that wrote the DB scores.
+
+========================================================================
+João Pedro Junqueira de Jesus (CHE)
+========================================================================
+
+Played matches — current season 26/27
+  (none)
+
+Played matches — last season 25/26
+  GW 1 H vs CRY                   2.0 pts     72 mins
+  GW 2 A vs WHU                  15.0 pts     90 mins
+  GW 3 H vs FUL                   9.0 pts     90 mins
+  GW 4 A vs BRE                   7.0 pts     78 mins
+  GW 5 A vs MUN                   2.0 pts     90 mins
+  GW 6 H vs BHA                   2.0 pts     90 mins
+  GW 7 H vs LIV                   2.0 pts     73 mins
+  GW 8 A vs NFO                   2.0 pts     90 mins
+  GW 9 H vs SUN                   2.0 pts     84 mins
+  GW10 A vs TOT                   9.0 pts     90 mins
+  GW11 H vs WOL                   7.0 pts     82 mins
+  GW12 A vs BUR                   1.0 pts     75 mins
+  GW13 H vs ARS                   1.0 pts     54 mins
+  GW14 A vs LEE                   2.0 pts     90 mins
+  GW15 A vs BOU                   1.0 pts     32 mins
+  GW16 H vs EVE                   2.0 pts     80 mins
+  GW17 A vs NEW                   6.0 pts     90 mins
+  GW18 H vs AVL                   8.0 pts     68 mins
+  GW19 H vs BOU                   1.0 pts     27 mins
+  GW20 A vs MCI                   2.0 pts     61 mins
+  GW21 A vs FUL                   1.0 pts     15 mins
+  GW22 H vs BRE                   8.0 pts     73 mins
+  GW23 A vs CRY                  12.0 pts     84 mins
+  GW24 H vs WHU                  10.0 pts     45 mins
+  GW25 A vs WOL                   8.0 pts     74 mins
+  GW26 H vs LEE                  10.0 pts     90 mins
+  GW27 H vs BUR                   7.0 pts     79 mins
+  GW28 A vs ARS                   2.0 pts     90 mins
+  GW29 A vs AVL                  19.0 pts     84 mins
+  GW30 H vs NEW                   2.0 pts     90 mins
+  GW31 A vs EVE                   2.0 pts     77 mins
+  GW32 H vs MCI                   2.0 pts     81 mins
+  GW33 H vs MUN                   0.0 pts      0 mins
+  GW33 A vs BHA                   0.0 pts      0 mins
+  GW35 H vs NFO                   8.0 pts     90 mins
+  GW36 A vs LIV                   2.0 pts     90 mins
+  GW37 H vs TOT                   0.0 pts      0 mins
+  GW38 A vs SUN                   1.0 pts     90 mins
+  totals: 177.0 pts, 2658 mins, 35/38 appearances
+
+=== Sample horizon model columns (validation) ===
+
+João Pedro Junqueira de Jesus (CHE) — PREDICT (exact model input row)
+  form appearances available: 7
+  last_5 (should = total_points_last_5_avg): GW31:2pts/77m, GW32:2pts/81m, GW35:8pts/90m, GW36:2pts/90m, GW38:1pts/90m -> pp90=3.1542
+  last_7 (should = total_points_avg): GW29:19pts/84m, GW30:2pts/90m, GW31:2pts/77m, GW32:2pts/81m, GW35:8pts/90m, GW36:2pts/90m, GW38:1pts/90m -> pp90=5.3821
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  last_season_points_per_90: 5.993228
+  last_season_xgi_per_90: 0.571219
+  new_stats_included: 1
+  team_xg_over_n: 7.632224
+  team_xc_over_n: 6.184440
+  team_xg_last_5: 5.619687
+  team_xc_last_5: 7.952956
+  defcon_avg_x_new_stats_x_non_att: 0.000000
+  team_xg_over_n_x_outfield: 7.632224
+  total_points_last_5_avg: 3.154206
+  total_points_avg: 5.382060
+  xgi_last_5_avg: 0.361682
+  xgi_avg: 0.684718
+  expected_goals_conceded_last_5_avg: 1.551869
+  expected_goals_conceded_avg: 1.393355
+  defensive_contribution_last_5_avg: 2.733645
+  defensive_contribution_avg: 3.438538
+
+João Pedro Junqueira de Jesus — TRAIN (25, 26) GW32 vs MCI (H) (exact model input row; target window 3/5 played)
+  form appearances available: 38
+  last_5 (should = total_points_last_5_avg): GW27:7pts/79m, GW28:2pts/90m, GW29:19pts/84m, GW30:2pts/90m, GW31:2pts/77m -> pp90=6.8571
+  last_7 (should = total_points_avg): GW25:8pts/74m, GW26:10pts/90m, GW27:7pts/79m, GW28:2pts/90m, GW29:19pts/84m, GW30:2pts/90m, GW31:2pts/77m -> pp90=7.7055
+  target (points/90 over window): 4.137931
+  --- model input features (exact) ---
+  matches_played: 31
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  last_season_points_per_90: 5.827338
+  last_season_xgi_per_90: 0.557760
+  new_stats_included: 1
+  team_xg_over_n: 5.619806
+  team_xc_over_n: 8.431563
+  team_xg_last_5: 6.208477
+  team_xc_last_5: 7.356595
+  defcon_avg_x_new_stats_x_non_att: 0.000000
+  team_xg_over_n_x_outfield: 5.619806
+  total_points_last_5_avg: 6.857143
+  total_points_avg: 7.705479
+  xgi_last_5_avg: 1.062857
+  xgi_avg: 0.955479
+  expected_goals_conceded_last_5_avg: 0.936429
+  expected_goals_conceded_avg: 1.015582
+  defensive_contribution_last_5_avg: 3.857143
+  defensive_contribution_avg: 3.852740
+=== End sample columns ===
+
+
+=== Sample minutes model columns (validation) ===
+
+João Pedro Junqueira de Jesus (CHE) — PREDICT next match
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  early_x_last_season_mins: 0.777193
+  last_season_h2_mins_per_match: 63.842105
+  last_two_seasons_mins_per_match: 59.491228
+  last_season_h2_fixture_frac: 1.000000
+  ls_mpm_x_new_club: 63.842105
+  mins_last_1: 63.842105
+  mins_last_2_avg: 63.842105
+  mins_last_5_avg: 63.842105
+  last_7_pts_per_appearance: 5.142857
+
+João Pedro Junqueira de Jesus — TRAIN (25, 26) GW38 vs SUN (A)
+  target (minutes): 90.000000
+  --- model input features (exact) ---
+  matches_played: 34
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  early_x_last_season_mins: 0.001968
+  last_season_h2_mins_per_match: 52.526316
+  last_two_seasons_mins_per_match: 52.368421
+  last_season_h2_fixture_frac: 1.000000
+  ls_mpm_x_new_club: 69.922337
+  mins_last_1: 0.000000
+  mins_last_2_avg: 45.000000
+  mins_last_5_avg: 36.000000
+  last_7_pts_per_appearance: 5.285714
+=== End sample minutes columns ===
+
+
+========================================================================
+Florian Wirtz (LIV)
+========================================================================
+
+Played matches — current season 26/27
+  (none)
+
+Played matches — last season 25/26
+  GW 1 H vs BOU                   2.0 pts     81 mins
+  GW 2 A vs NEW                   2.0 pts     79 mins
+  GW 3 H vs ARS                   3.0 pts     88 mins
+  GW 4 A vs BUR                   3.0 pts     86 mins
+  GW 5 H vs EVE                   0.0 pts     29 mins
+  GW 6 A vs CRY                   2.0 pts     73 mins
+  GW 7 A vs CHE                   1.0 pts     45 mins
+  GW 8 H vs MUN                   1.0 pts     28 mins
+  GW 9 A vs BRE                   2.0 pts     82 mins
+  GW10 H vs AVL                   1.0 pts     13 mins
+  GW11 A vs MCI                   2.0 pts     82 mins
+  GW12 H vs NFO                   0.0 pts      0 mins
+  GW13 A vs WHU                   3.0 pts     74 mins
+  GW14 H vs SUN                   7.0 pts     90 mins
+  GW15 A vs LEE                   3.0 pts     67 mins
+  GW16 H vs BHA                   5.0 pts     77 mins
+  GW17 A vs TOT                   8.0 pts     90 mins
+  GW18 H vs WOL                  10.0 pts     90 mins
+  GW19 H vs LEE                   3.0 pts     65 mins
+  GW20 A vs FUL                  10.0 pts     75 mins
+  GW21 A vs ARS                   3.0 pts     90 mins
+  GW22 H vs BUR                  10.0 pts     90 mins
+  GW23 A vs BOU                   2.0 pts     90 mins
+  GW24 H vs NEW                  12.0 pts     86 mins
+  GW25 H vs MCI                   2.0 pts     90 mins
+  GW26 A vs SUN                   3.0 pts     90 mins
+  GW27 A vs NFO                   0.0 pts      0 mins
+  GW28 H vs WHU                   0.0 pts      0 mins
+  GW29 A vs WOL                   0.0 pts      0 mins
+  GW30 H vs TOT                   3.0 pts     63 mins
+  GW31 A vs BHA                   2.0 pts     90 mins
+  GW32 H vs FUL                   6.0 pts     67 mins
+  GW33 A vs EVE                   2.0 pts     83 mins
+  GW34 H vs CRY                   8.0 pts     90 mins
+  GW35 A vs MUN                   2.0 pts     90 mins
+  GW36 H vs CHE                   0.0 pts      0 mins
+  GW37 A vs AVL                   1.0 pts     24 mins
+  GW38 H vs BRE                   1.0 pts     17 mins
+  totals: 125.0 pts, 2374 mins, 33/38 appearances
+
+=== Sample horizon model columns (validation) ===
+
+Florian Wirtz (LIV) — PREDICT (exact model input row)
+  form appearances available: 7
+  last_5 (should = total_points_last_5_avg): GW33:2pts/83m, GW34:8pts/90m, GW35:2pts/90m, GW37:1pts/24m, GW38:1pts/17m -> pp90=4.1447
+  last_7 (should = total_points_avg): GW31:2pts/90m, GW32:6pts/67m, GW33:2pts/83m, GW34:8pts/90m, GW35:2pts/90m, GW37:1pts/24m, GW38:1pts/17m -> pp90=4.2950
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 4.738837
+  last_season_xgi_per_90: 0.453412
+  new_stats_included: 1
+  team_xg_over_n: 8.240978
+  team_xc_over_n: 4.779195
+  team_xg_last_5: 6.486228
+  team_xc_last_5: 6.652736
+  defcon_avg_x_new_stats_x_non_att: 7.809111
+  team_xg_over_n_x_outfield: 8.240978
+  total_points_last_5_avg: 4.144737
+  total_points_avg: 4.295011
+  xgi_last_5_avg: 0.411513
+  xgi_avg: 0.394360
+  expected_goals_conceded_last_5_avg: 2.033882
+  expected_goals_conceded_avg: 1.878091
+  defensive_contribution_last_5_avg: 6.809211
+  defensive_contribution_avg: 7.809111
+
+Florian Wirtz — TRAIN (25, 26) GW34 vs CRY (H) (exact model input row; target window 4/5 played)
+  form appearances available: 29
+  last_5 (should = total_points_last_5_avg): GW26:3pts/90m, GW30:3pts/63m, GW31:2pts/90m, GW32:6pts/67m, GW33:2pts/83m -> pp90=3.6641
+  last_7 (should = total_points_avg): GW24:12pts/86m, GW25:2pts/90m, GW26:3pts/90m, GW30:3pts/63m, GW31:2pts/90m, GW32:6pts/67m, GW33:2pts/83m -> pp90=4.7452
+  target (points/90 over window): 4.886878
+  --- model input features (exact) ---
+  matches_played: 29
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 0.000000
+  last_season_xgi_per_90: 0.000000
+  new_stats_included: 1
+  team_xg_over_n: 7.146893
+  team_xc_over_n: 6.474450
+  team_xg_last_5: 6.926082
+  team_xc_last_5: 5.545045
+  defcon_avg_x_new_stats_x_non_att: 7.275923
+  team_xg_over_n_x_outfield: 7.146893
+  total_points_last_5_avg: 3.664122
+  total_points_avg: 4.745167
+  xgi_last_5_avg: 0.414504
+  xgi_avg: 0.422320
+  expected_goals_conceded_last_5_avg: 1.092366
+  expected_goals_conceded_avg: 1.271705
+  defensive_contribution_last_5_avg: 7.328244
+  defensive_contribution_avg: 7.275923
+=== End sample columns ===
+
+
+=== Sample minutes model columns (validation) ===
+
+Florian Wirtz (LIV) — PREDICT next match
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  early_x_last_season_mins: 0.694152
+  last_season_h2_mins_per_match: 70.937500
+  last_two_seasons_mins_per_match: 65.210526
+  last_season_h2_fixture_frac: 1.000000
+  ls_mpm_x_new_club: 70.937500
+  mins_last_1: 70.937500
+  mins_last_2_avg: 70.937500
+  mins_last_5_avg: 70.937500
+  last_7_pts_per_appearance: 3.142857
+
+Florian Wirtz — TRAIN (25, 26) GW38 vs BRE (H)
+  target (minutes): 17.000000
+  --- model input features (exact) ---
+  matches_played: 32
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  early_x_last_season_mins: 0.000000
+  last_season_h2_mins_per_match: 0.000000
+  last_two_seasons_mins_per_match: 0.000000
+  last_season_h2_fixture_frac: 0.000000
+  ls_mpm_x_new_club: 0.000000
+  mins_last_1: 24.000000
+  mins_last_2_avg: 12.000000
+  mins_last_5_avg: 57.400000
+  last_7_pts_per_appearance: 3.428571
+=== End sample minutes columns ===
+
+
+========================================================================
+Dominic Calvert-Lewin (LEE)
+========================================================================
+
+Played matches — current season 26/27
+  (none)
+
+Played matches — last season 25/26
+  GW 2 A vs ARS                   0.0 pts      0 mins
+  GW 3 H vs NEW                   1.0 pts     20 mins
+  GW 4 A vs FUL                   2.0 pts     68 mins
+  GW 5 A vs WOL                  11.0 pts     90 mins
+  GW 6 H vs BOU                   2.0 pts     90 mins
+  GW 7 H vs TOT                   2.0 pts     90 mins
+  GW 8 A vs BUR                   2.0 pts     90 mins
+  GW 9 H vs WHU                   2.0 pts     86 mins
+  GW10 A vs BHA                   2.0 pts     64 mins
+  GW11 A vs NFO                   1.0 pts     16 mins
+  GW12 H vs AVL                   1.0 pts     19 mins
+  GW13 A vs MCI                   7.0 pts     45 mins
+  GW14 H vs CHE                   9.0 pts     85 mins
+  GW15 H vs LIV                   6.0 pts     90 mins
+  GW16 A vs BRE                   9.0 pts     90 mins
+  GW17 H vs CRY                  13.0 pts     86 mins
+  GW18 A vs SUN                   8.0 pts     84 mins
+  GW19 A vs LIV                   1.0 pts     20 mins
+  GW20 H vs MUN                   2.0 pts     90 mins
+  GW21 A vs NEW                   8.0 pts     86 mins
+  GW22 H vs FUL                   2.0 pts     90 mins
+  GW23 A vs EVE                   2.0 pts     90 mins
+  GW24 H vs ARS                   2.0 pts     84 mins
+  GW25 H vs NFO                   7.0 pts     90 mins
+  GW26 A vs CHE                   0.0 pts      0 mins
+  GW27 A vs AVL                   2.0 pts     90 mins
+  GW28 H vs MCI                   2.0 pts     90 mins
+  GW29 H vs SUN                   2.0 pts     90 mins
+  GW30 A vs CRY                   0.0 pts     90 mins
+  GW31 H vs BRE                   2.0 pts     90 mins
+  GW32 A vs MUN                   2.0 pts     90 mins
+  GW33 H vs WOL                   6.0 pts     90 mins
+  GW33 A vs BOU                   2.0 pts     90 mins
+  GW35 H vs BUR                   6.0 pts     90 mins
+  GW36 A vs TOT                   7.0 pts     90 mins
+  GW37 H vs BHA                   7.0 pts     90 mins
+  GW38 A vs WHU                   2.0 pts     68 mins
+  totals: 142.0 pts, 2721 mins, 35/37 appearances
+
+=== Sample horizon model columns (validation) ===
+
+Dominic Calvert-Lewin (LEE) — PREDICT (exact model input row)
+  form appearances available: 7
+  last_5 (should = total_points_last_5_avg): GW33:2pts/90m, GW35:6pts/90m, GW36:7pts/90m, GW37:7pts/90m, GW38:2pts/68m -> pp90=5.0467
+  last_7 (should = total_points_avg): GW32:2pts/90m, GW33:6pts/90m, GW33:2pts/90m, GW35:6pts/90m, GW36:7pts/90m, GW37:7pts/90m, GW38:2pts/68m -> pp90=4.7368
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  last_season_points_per_90: 4.696803
+  last_season_xgi_per_90: 0.549724
+  new_stats_included: 1
+  team_xg_over_n: 5.960948
+  team_xc_over_n: 6.305855
+  team_xg_last_5: 6.633788
+  team_xc_last_5: 7.111279
+  defcon_avg_x_new_stats_x_non_att: 0.000000
+  team_xg_over_n_x_outfield: 5.960948
+  total_points_last_5_avg: 5.046729
+  total_points_avg: 4.736842
+  xgi_last_5_avg: 0.395327
+  xgi_avg: 0.636513
+  expected_goals_conceded_last_5_avg: 1.703271
+  expected_goals_conceded_avg: 1.477303
+  defensive_contribution_last_5_avg: 3.995327
+  defensive_contribution_avg: 3.848684
+
+Dominic Calvert-Lewin — TRAIN (25, 26) GW33 vs BOU (A) (exact model input row; target window 5/5 played)
+  form appearances available: 37
+  last_5 (should = total_points_last_5_avg): GW29:2pts/90m, GW30:0pts/90m, GW31:2pts/90m, GW32:2pts/90m, GW33:6pts/90m -> pp90=2.4000
+  last_7 (should = total_points_avg): GW27:2pts/90m, GW28:2pts/90m, GW29:2pts/90m, GW30:0pts/90m, GW31:2pts/90m, GW32:2pts/90m, GW33:6pts/90m -> pp90=2.2857
+  target (points/90 over window): 5.046729
+  --- model input features (exact) ---
+  matches_played: 30
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  last_season_points_per_90: 3.539326
+  last_season_xgi_per_90: 0.402247
+  new_stats_included: 1
+  team_xg_over_n: 6.633788
+  team_xc_over_n: 7.111279
+  team_xg_last_5: 6.465574
+  team_xc_last_5: 6.956509
+  defcon_avg_x_new_stats_x_non_att: 0.000000
+  team_xg_over_n_x_outfield: 6.633788
+  total_points_last_5_avg: 2.400000
+  total_points_avg: 2.285714
+  xgi_last_5_avg: 0.716000
+  xgi_avg: 0.685714
+  expected_goals_conceded_last_5_avg: 0.774000
+  expected_goals_conceded_avg: 1.047143
+  defensive_contribution_last_5_avg: 5.000000
+  defensive_contribution_avg: 4.714286
+=== End sample columns ===
+
+
+=== Sample minutes model columns (validation) ===
+
+Dominic Calvert-Lewin (LEE) — PREDICT next match
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  early_x_last_season_mins: 0.795614
+  last_season_h2_mins_per_match: 83.578947
+  last_two_seasons_mins_per_match: 62.159091
+  last_season_h2_fixture_frac: 1.000000
+  ls_mpm_x_new_club: 83.578947
+  mins_last_1: 83.578947
+  mins_last_2_avg: 83.578947
+  mins_last_5_avg: 83.578947
+  last_7_pts_per_appearance: 4.571429
+
+Dominic Calvert-Lewin — TRAIN (25, 26) GW38 vs WHU (A)
+  target (minutes): 68.000000
+  --- model input features (exact) ---
+  matches_played: 34
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  early_x_last_season_mins: 0.001620
+  last_season_h2_mins_per_match: 11.736842
+  last_two_seasons_mins_per_match: 62.192982
+  last_season_h2_fixture_frac: 1.000000
+  ls_mpm_x_new_club: 15.696616
+  mins_last_1: 90.000000
+  mins_last_2_avg: 90.000000
+  mins_last_5_avg: 90.000000
+  last_7_pts_per_appearance: 4.571429
+=== End sample minutes columns ===
+
+
+========================================================================
+Dominik Szoboszlai (LIV)
+========================================================================
+
+Played matches — current season 26/27
+  (none)
+
+Played matches — last season 25/26
+  GW 1 H vs BOU                   2.0 pts     90 mins
+  GW 2 A vs NEW                   2.0 pts     90 mins
+  GW 3 H vs ARS                  13.0 pts     90 mins
+  GW 4 A vs BUR                   3.0 pts     90 mins
+  GW 5 H vs EVE                   1.0 pts     90 mins
+  GW 6 A vs CRY                   5.0 pts     90 mins
+  GW 7 A vs CHE                   1.0 pts     90 mins
+  GW 8 H vs MUN                   4.0 pts     90 mins
+  GW 9 A vs BRE                  10.0 pts     90 mins
+  GW10 H vs AVL                   2.0 pts     90 mins
+  GW11 A vs MCI                   1.0 pts     90 mins
+  GW12 H vs NFO                   2.0 pts     90 mins
+  GW13 A vs WHU                   3.0 pts     90 mins
+  GW14 H vs SUN                   2.0 pts     90 mins
+  GW15 A vs LEE                   8.0 pts     90 mins
+  GW16 H vs BHA                   3.0 pts     82 mins
+  GW17 A vs TOT                   1.0 pts     90 mins
+  GW18 H vs WOL                   0.0 pts      0 mins
+  GW19 H vs LEE                   3.0 pts     90 mins
+  GW20 A vs FUL                   2.0 pts     90 mins
+  GW21 A vs ARS                   3.0 pts     90 mins
+  GW22 H vs BUR                   0.0 pts     90 mins
+  GW23 A vs BOU                  13.0 pts     90 mins
+  GW24 H vs NEW                   5.0 pts     90 mins
+  GW25 H vs MCI                   8.0 pts     90 mins
+  GW26 A vs SUN                   0.0 pts      0 mins
+  GW27 A vs NFO                   3.0 pts     90 mins
+  GW28 H vs WHU                   4.0 pts     90 mins
+  GW29 A vs WOL                   5.0 pts     90 mins
+  GW30 H vs TOT                  11.0 pts     90 mins
+  GW31 A vs BHA                   3.0 pts     90 mins
+  GW32 H vs FUL                   5.0 pts     90 mins
+  GW33 A vs EVE                   5.0 pts     90 mins
+  GW34 H vs CRY                   1.0 pts     90 mins
+  GW35 A vs MUN                  13.0 pts     90 mins
+  GW36 H vs CHE                   2.0 pts     90 mins
+  GW37 A vs AVL                   9.0 pts     90 mins
+  GW38 H vs BRE                   2.0 pts     90 mins
+  totals: 160.0 pts, 3232 mins, 36/38 appearances
+
+=== Sample horizon model columns (validation) ===
+
+Dominik Szoboszlai (LIV) — PREDICT (exact model input row)
+  form appearances available: 7
+  last_5 (should = total_points_last_5_avg): GW34:1pts/90m, GW35:13pts/90m, GW36:2pts/90m, GW37:9pts/90m, GW38:2pts/90m -> pp90=5.4000
+  last_7 (should = total_points_avg): GW32:5pts/90m, GW33:5pts/90m, GW34:1pts/90m, GW35:13pts/90m, GW36:2pts/90m, GW37:9pts/90m, GW38:2pts/90m -> pp90=5.2857
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 4.455446
+  last_season_xgi_per_90: 0.322741
+  new_stats_included: 1
+  team_xg_over_n: 8.240978
+  team_xc_over_n: 4.779195
+  team_xg_last_5: 7.146893
+  team_xc_last_5: 6.474450
+  defcon_avg_x_new_stats_x_non_att: 7.571429
+  team_xg_over_n_x_outfield: 8.240978
+  total_points_last_5_avg: 5.400000
+  total_points_avg: 5.285714
+  xgi_last_5_avg: 0.446000
+  xgi_avg: 0.370000
+  expected_goals_conceded_last_5_avg: 1.702000
+  expected_goals_conceded_avg: 1.477143
+  defensive_contribution_last_5_avg: 6.400000
+  defensive_contribution_avg: 7.571429
+
+Dominik Szoboszlai — TRAIN (25, 26) GW34 vs CRY (H) (exact model input row; target window 5/5 played)
+  form appearances available: 38
+  last_5 (should = total_points_last_5_avg): GW29:5pts/90m, GW30:11pts/90m, GW31:3pts/90m, GW32:5pts/90m, GW33:5pts/90m -> pp90=5.8000
+  last_7 (should = total_points_avg): GW27:3pts/90m, GW28:4pts/90m, GW29:5pts/90m, GW30:11pts/90m, GW31:3pts/90m, GW32:5pts/90m, GW33:5pts/90m -> pp90=5.1429
+  target (points/90 over window): 5.400000
+  --- model input features (exact) ---
+  matches_played: 31
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 5.179074
+  last_season_xgi_per_90: 0.470825
+  new_stats_included: 1
+  team_xg_over_n: 7.146893
+  team_xc_over_n: 6.474450
+  team_xg_last_5: 6.926082
+  team_xc_last_5: 5.545045
+  defcon_avg_x_new_stats_x_non_att: 12.000000
+  team_xg_over_n_x_outfield: 7.146893
+  total_points_last_5_avg: 5.800000
+  total_points_avg: 5.142857
+  xgi_last_5_avg: 0.278000
+  xgi_avg: 0.294286
+  expected_goals_conceded_last_5_avg: 1.124000
+  expected_goals_conceded_avg: 1.238571
+  defensive_contribution_last_5_avg: 13.600000
+  defensive_contribution_avg: 12.000000
+=== End sample columns ===
+
+
+=== Sample minutes model columns (validation) ===
+
+Dominik Szoboszlai (LIV) — PREDICT next match
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  early_x_last_season_mins: 0.945029
+  last_season_h2_mins_per_match: 85.263158
+  last_two_seasons_mins_per_match: 71.877193
+  last_season_h2_fixture_frac: 1.000000
+  ls_mpm_x_new_club: 85.263158
+  mins_last_1: 85.263158
+  mins_last_2_avg: 85.263158
+  mins_last_5_avg: 85.263158
+  last_7_pts_per_appearance: 5.285714
+
+Dominik Szoboszlai — TRAIN (25, 26) GW38 vs BRE (H)
+  target (minutes): 90.000000
+  --- model input features (exact) ---
+  matches_played: 35
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  early_x_last_season_mins: 0.002128
+  last_season_h2_mins_per_match: 71.473684
+  last_two_seasons_mins_per_match: 56.649123
+  last_season_h2_fixture_frac: 1.000000
+  ls_mpm_x_new_club: 71.473684
+  mins_last_1: 90.000000
+  mins_last_2_avg: 90.000000
+  mins_last_5_avg: 90.000000
+  last_7_pts_per_appearance: 5.428571
+=== End sample minutes columns ===
+
+
+========================================================================
+Gabriel dos Santos Magalhães (ARS)
+========================================================================
+
+Played matches — current season 26/27
+  (none)
+
+Played matches — last season 25/26
+  GW 1 A vs MUN                   6.0 pts     90 mins
+  GW 2 H vs LEE                   6.0 pts     90 mins
+  GW 3 A vs LIV                   2.0 pts     90 mins
+  GW 4 H vs NFO                   9.0 pts     90 mins
+  GW 5 H vs MCI                   2.0 pts     90 mins
+  GW 6 A vs NEW                  13.0 pts     90 mins
+  GW 7 H vs WHU                   9.0 pts     90 mins
+  GW 8 A vs FUL                  12.0 pts     90 mins
+  GW 9 H vs CRY                   9.0 pts     90 mins
+  GW10 A vs BUR                  12.0 pts     90 mins
+  GW11 A vs SUN                   1.0 pts     90 mins
+  GW12 H vs TOT                   0.0 pts      0 mins
+  GW13 A vs CHE                   0.0 pts      0 mins
+  GW14 H vs BRE                   0.0 pts      0 mins
+  GW15 A vs AVL                   0.0 pts      0 mins
+  GW16 H vs WOL                   0.0 pts      0 mins
+  GW17 A vs EVE                   0.0 pts      0 mins
+  GW18 H vs BHA                   1.0 pts     19 mins
+  GW19 H vs AVL                  15.0 pts     76 mins
+  GW20 A vs BOU                   9.0 pts     90 mins
+  GW21 H vs LIV                   6.0 pts     90 mins
+  GW22 A vs NFO                   8.0 pts     90 mins
+  GW23 H vs MUN                   1.0 pts     90 mins
+  GW24 A vs LEE                   8.0 pts     90 mins
+  GW25 H vs SUN                   6.0 pts     90 mins
+  GW26 A vs BRE                   3.0 pts     90 mins
+  GW26 A vs WOL                   4.0 pts     90 mins
+  GW27 A vs TOT                   2.0 pts     90 mins
+  GW28 H vs CHE                   9.0 pts     90 mins
+  GW29 A vs BHA                  11.0 pts     90 mins
+  GW30 H vs EVE                   9.0 pts     90 mins
+  GW32 H vs BOU                   4.0 pts     90 mins
+  GW33 A vs MCI                   0.0 pts     90 mins
+  GW34 H vs NEW                   8.0 pts     90 mins
+  GW35 H vs FUL                   6.0 pts     90 mins
+  GW36 A vs WHU                  11.0 pts     90 mins
+  GW37 H vs BUR                   6.0 pts     90 mins
+  GW38 A vs CRY                   1.0 pts     45 mins
+  totals: 209.0 pts, 2750 mins, 32/38 appearances
+
+=== Sample horizon model columns (validation) ===
+
+Gabriel dos Santos Magalhães (ARS) — PREDICT (exact model input row)
+  form appearances available: 7
+  last_5 (should = total_points_last_5_avg): GW34:8pts/90m, GW35:6pts/90m, GW36:11pts/90m, GW37:6pts/90m, GW38:1pts/45m -> pp90=7.1111
+  last_7 (should = total_points_avg): GW32:4pts/90m, GW33:0pts/90m, GW34:8pts/90m, GW35:6pts/90m, GW36:11pts/90m, GW37:6pts/90m, GW38:1pts/45m -> pp90=5.5385
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 1
+  is_mid: 0
+  is_att: 0
+  last_season_points_per_90: 6.840000
+  last_season_xgi_per_90: 0.153491
+  new_stats_included: 1
+  team_xg_over_n: 9.227446
+  team_xc_over_n: 4.648131
+  team_xg_last_5: 10.508221
+  team_xc_last_5: 3.912359
+  defcon_avg_x_new_stats_x_non_att: 8.153846
+  team_xg_over_n_x_outfield: 9.227446
+  total_points_last_5_avg: 7.111111
+  total_points_avg: 5.538462
+  xgi_last_5_avg: 0.226667
+  xgi_avg: 0.175385
+  expected_goals_conceded_last_5_avg: 0.808889
+  expected_goals_conceded_avg: 0.952308
+  defensive_contribution_last_5_avg: 8.444444
+  defensive_contribution_avg: 8.153846
+
+Gabriel dos Santos Magalhães — TRAIN (25, 26) GW34 vs NEW (H) (exact model input row; target window 5/5 played)
+  form appearances available: 34
+  last_5 (should = total_points_last_5_avg): GW28:9pts/90m, GW29:11pts/90m, GW30:9pts/90m, GW32:4pts/90m, GW33:0pts/90m -> pp90=6.6000
+  last_7 (should = total_points_avg): GW26:4pts/90m, GW27:2pts/90m, GW28:9pts/90m, GW29:11pts/90m, GW30:9pts/90m, GW32:4pts/90m, GW33:0pts/90m -> pp90=5.5714
+  target (points/90 over window): 7.111111
+  --- model input features (exact) ---
+  matches_played: 27
+  is_gkp: 0
+  is_def: 1
+  is_mid: 0
+  is_att: 0
+  last_season_points_per_90: 4.456200
+  last_season_xgi_per_90: 0.148921
+  new_stats_included: 1
+  team_xg_over_n: 10.508221
+  team_xc_over_n: 3.912359
+  team_xg_last_5: 8.453534
+  team_xc_last_5: 5.222950
+  defcon_avg_x_new_stats_x_non_att: 9.285714
+  team_xg_over_n_x_outfield: 10.508221
+  total_points_last_5_avg: 6.600000
+  total_points_avg: 5.571429
+  xgi_last_5_avg: 0.162000
+  xgi_avg: 0.137143
+  expected_goals_conceded_last_5_avg: 1.094000
+  expected_goals_conceded_avg: 0.931429
+  defensive_contribution_last_5_avg: 10.600000
+  defensive_contribution_avg: 9.285714
+=== End sample columns ===
+
+
+=== Sample minutes model columns (validation) ===
+
+Gabriel dos Santos Magalhães (ARS) — PREDICT next match
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 1
+  is_mid: 0
+  is_att: 0
+  early_x_last_season_mins: 0.804094
+  last_season_h2_mins_per_match: 87.631579
+  last_two_seasons_mins_per_match: 80.186047
+  last_season_h2_fixture_frac: 1.000000
+  ls_mpm_x_new_club: 87.631579
+  mins_last_1: 87.631579
+  mins_last_2_avg: 87.631579
+  mins_last_5_avg: 87.631579
+  last_7_pts_per_appearance: 5.142857
+
+Gabriel dos Santos Magalhães — TRAIN (25, 26) GW38 vs CRY (A)
+  target (minutes): 45.000000
+  --- model input features (exact) ---
+  matches_played: 31
+  is_gkp: 0
+  is_def: 1
+  is_mid: 0
+  is_att: 0
+  early_x_last_season_mins: 0.003941
+  last_season_h2_mins_per_match: 48.157895
+  last_two_seasons_mins_per_match: 78.771930
+  last_season_h2_fixture_frac: 1.000000
+  ls_mpm_x_new_club: 48.157895
+  mins_last_1: 90.000000
+  mins_last_2_avg: 90.000000
+  mins_last_5_avg: 90.000000
+  last_7_pts_per_appearance: 6.285714
+=== End sample minutes columns ===
+
+
+
+========================================================================
+explain_player 2026-08-20 18:10:22  args: anderson dcl gabriel szoboszlai wirtz
+========================================================================
+
+Resolving players:
+  'anderson' -> Elliot Anderson (Anderson)
+  'dcl' -> Dominic Calvert-Lewin (Calvert-Lewin)
+  'gabriel' -> Gabriel dos Santos Magalhães (Gabriel)
+  'szoboszlai' -> Dominik Szoboszlai (Szoboszlai)
+  'wirtz' -> Florian Wirtz (Wirtz)
+
+Loading stored predictions from the database...
+
+======== Ranked by predicted points over next 5 GWs (from DB) ========
+Next gameweek: 1
+  #  Player                                   Pts  query/web
+  1  Elliot Anderson                         32.6  (Anderson, DB)
+  2  Florian Wirtz                           28.9  (Wirtz, DB)
+  3  Dominic Calvert-Lewin                   28.6  (Calvert-Lewin, DB)
+  4  Dominik Szoboszlai                      28.3  (Szoboszlai, DB)
+  5  Gabriel dos Santos Magalhães            25.4  (Gabriel, DB)
+
+======== Predictions (same columns as the Fargate email / top_players.csv) ========
+Player                        Team  Pos  Price  Pred  Pred mins  Prev pp90  Err   M1 opp  M1 pp90  M1 mins  M1 adj  M2 opp  M2 pp90  M2 mins  M2 adj  M3 opp  M3 pp90  M3 mins  M3 adj  M4 opp  M4 pp90  M4 mins  M4 adj  M5 opp  M5 pp90  M5 mins  M5 adj
+----------------------------  ----  ---  -----  ----  ---------  ---------  ----  ------  -------  -------  ------  ------  -------  -------  ------  ------  -------  -------  ------  ------  -------  -------  ------  ------  -------  -------  ------
+Elliot Anderson               MCI   MID  65.0   5.7   87         25.7       2.49  BOU     5.6      87       5.6     CRY     5.5      87       5.5     COV     6.1      87       6.1     MUN     4.8      87       4.8     SUN     6.1      87       6.1   
+Florian Wirtz                 LIV   MID  75.0   4.9   76         3.2        2.39  NEW     4.7      76       4.7     NFO     4.8      76       4.8     IPS     5.1      76       5.1     FUL     5.2      76       5.2     BOU     4.6      76       4.6   
+Dominic Calvert-Lewin         LEE   FWD  60.0   5.0   84         0.0        2.78  NFO     4.7      84       4.7     BRE     5.1      84       5.1     BHA     4.7      84       4.7     NEW     5.3      84       5.3     CRY     5.1      84       5.1   
+Dominik Szoboszlai            LIV   MID  70.0   4.9   87         0.0        2.38  NEW     4.6      87       4.6     NFO     4.7      87       4.7     IPS     5.1      87       5.1     FUL     5.3      87       5.3     BOU     4.6      87       4.6   
+Gabriel dos Santos Magalhães  ARS   DEF  80.0   4.2   90         2.0        2.83  COV     5.0      90       5.0     AVL     3.8      90       3.8     CHE     4.1      90       4.1     SUN     4.2      90       4.2     BHA     4.2      90       4.2   
+
+Pred and Pred mins are per-GW averages over the horizon. Adj is the minutes-scaled score used by the optimiser. Prev pp90 is pooled points/90 over the last appearances in the DB.
+
+Team xG is refit locally (player nets are not). Feature values can
+differ slightly from the Fargate run that wrote the DB scores.
+
+========================================================================
+Elliot Anderson (MCI)
+========================================================================
+
+Played matches — current season 26/27
+  (none)
+
+Played matches — last season 25/26
+  GW 1 H vs BRE                   6.0 pts     90 mins
+  GW 2 A vs CRY                   2.0 pts     90 mins
+  GW 3 H vs WHU                   2.0 pts     90 mins
+  GW 4 A vs ARS                   4.0 pts     90 mins
+  GW 5 A vs BUR                   4.0 pts     90 mins
+  GW 6 H vs SUN                   3.0 pts     90 mins
+  GW 7 A vs NEW                   1.0 pts     90 mins
+  GW 8 H vs CHE                   4.0 pts     90 mins
+  GW 9 A vs BOU                   2.0 pts     90 mins
+  GW10 H vs MUN                   4.0 pts     90 mins
+  GW11 H vs LEE                   9.0 pts     90 mins
+  GW12 A vs LIV                   9.0 pts     90 mins
+  GW13 H vs BHA                   6.0 pts     90 mins
+  GW14 A vs WOL                   2.0 pts     90 mins
+  GW15 A vs EVE                   4.0 pts     90 mins
+  GW16 H vs TOT                   3.0 pts     90 mins
+  GW17 A vs FUL                   4.0 pts     90 mins
+  GW18 H vs MCI                   3.0 pts     90 mins
+  GW19 H vs EVE                   4.0 pts     90 mins
+  GW20 A vs AVL                   4.0 pts     90 mins
+  GW21 A vs WHU                   7.0 pts     90 mins
+  GW22 H vs ARS                   5.0 pts     90 mins
+  GW23 A vs BRE                   5.0 pts     90 mins
+  GW24 H vs CRY                   7.0 pts     90 mins
+  GW25 A vs LEE                   4.0 pts     90 mins
+  GW26 H vs WOL                   5.0 pts     90 mins
+  GW27 H vs LIV                   5.0 pts     76 mins
+  GW28 A vs BHA                   1.0 pts     90 mins
+  GW29 A vs MCI                  12.0 pts     90 mins
+  GW30 H vs FUL                   2.0 pts     87 mins
+  GW31 A vs TOT                   5.0 pts     90 mins
+  GW32 H vs AVL                   4.0 pts     90 mins
+  GW33 H vs BUR                   2.0 pts     90 mins
+  GW34 A vs SUN                   9.0 pts     90 mins
+  GW35 A vs CHE                   1.0 pts     45 mins
+  GW36 H vs NEW                  12.0 pts     90 mins
+  GW37 A vs MUN                  12.0 pts     90 mins
+  GW38 H vs BOU                   2.0 pts     64 mins
+  totals: 180.0 pts, 3332 mins, 38/38 appearances
+
+=== Sample horizon model columns (Haaland / Fernandes) ===
+
+Elliot Anderson (MCI) - PREDICT (exact model input row; predicted 5/5 pp90=0.00)
+  form appearances available: 7
+  last_7 minutes played: 90,90,90,45,90,90,64
+  last_5 (should = total_points_last_5_avg): GW34:9pts/90m, GW35:1pts/45m, GW36:12pts/90m, GW37:12pts/90m, GW38:2pts/64m -> pp90=8.5488
+  last_7 (should = total_points_avg): GW32:4pts/90m, GW33:2pts/90m, GW34:9pts/90m, GW35:1pts/45m, GW36:12pts/90m, GW37:12pts/90m, GW38:2pts/64m -> pp90=6.7621
+  target: (future - not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 4.861945
+  last_season_xgi_per_90: 0.208794
+  new_stats_included: 1
+  team_xg_over_n: 9.918859
+  team_xc_over_n: 3.832337
+  team_xg_last_5: 6.047389
+  team_xc_last_5: 5.676365
+  defcon_avg_x_new_stats_x_non_att: 13.685152
+  team_xg_over_n_x_outfield: 9.918859
+  total_points_last_5_avg: 8.548813
+  total_points_avg: 6.762075
+  xgi_last_5_avg: 0.351451
+  xgi_avg: 0.272093
+  expected_goals_conceded_last_5_avg: 2.039842
+  expected_goals_conceded_avg: 1.605188
+  defensive_contribution_last_5_avg: 14.010554
+  defensive_contribution_avg: 13.685152
+
+Elliot Anderson - TRAIN (25, 26) GW34 vs SUN (A) (exact model input row; target window 5/5 played)
+  form appearances available: 40
+  last_7 minutes played: 76,90,90,87,90,90,90
+  last_5 (should = total_points_last_5_avg): GW29:12pts/90m, GW30:2pts/87m, GW31:5pts/90m, GW32:4pts/90m, GW33:2pts/90m -> pp90=5.0336
+  last_7 (should = total_points_avg): GW27:5pts/76m, GW28:1pts/90m, GW29:12pts/90m, GW30:2pts/87m, GW31:5pts/90m, GW32:4pts/90m, GW33:2pts/90m -> pp90=4.5514
+  target (points/90 over window): 8.548813
+  --- model input features (exact) ---
+  matches_played: 33
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 3.532649
+  last_season_xgi_per_90: 0.183236
+  new_stats_included: 1
+  team_xg_over_n: 6.047389
+  team_xc_over_n: 5.676365
+  team_xg_last_5: 5.849444
+  team_xc_last_5: 6.736128
+  defcon_avg_x_new_stats_x_non_att: 13.800979
+  team_xg_over_n_x_outfield: 6.047389
+  total_points_last_5_avg: 5.033557
+  total_points_avg: 4.551387
+  xgi_last_5_avg: 0.163087
+  xgi_avg: 0.174715
+  expected_goals_conceded_last_5_avg: 1.141611
+  expected_goals_conceded_avg: 1.102610
+  defensive_contribution_last_5_avg: 13.087248
+  defensive_contribution_avg: 13.800979
+=== End sample columns ===
+
+
+=== Sample minutes model columns (validation) ===
+
+Elliot Anderson (MCI) — PREDICT next match
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  early_x_last_season_mins: 0.974269
+  last_season_h2_mins_per_match: 85.368421
+  last_two_seasons_mins_per_match: 77.824561
+  last_season_h2_fixture_frac: 1.000000
+  ls_mpm_x_new_club: 4.063140
+  mins_last_1: 85.368421
+  mins_last_2_avg: 85.368421
+  mins_last_5_avg: 85.368421
+  last_7_pts_per_appearance: 6.000000
+
+Elliot Anderson — TRAIN (25, 26) GW38 vs BOU (H)
+  target (minutes): 64.000000
+  --- model input features (exact) ---
+  matches_played: 37
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  early_x_last_season_mins: 0.001672
+  last_season_h2_mins_per_match: 84.052632
+  last_two_seasons_mins_per_match: 37.666667
+  last_season_h2_fixture_frac: 1.000000
+  ls_mpm_x_new_club: 84.052632
+  mins_last_1: 90.000000
+  mins_last_2_avg: 90.000000
+  mins_last_5_avg: 81.000000
+  last_7_pts_per_appearance: 6.428571
+=== End sample minutes columns ===
+
+
+========================================================================
+Florian Wirtz (LIV)
+========================================================================
+
+Played matches — current season 26/27
+  (none)
+
+Played matches — last season 25/26
+  GW 1 H vs BOU                   2.0 pts     81 mins
+  GW 2 A vs NEW                   2.0 pts     79 mins
+  GW 3 H vs ARS                   3.0 pts     88 mins
+  GW 4 A vs BUR                   3.0 pts     86 mins
+  GW 5 H vs EVE                   0.0 pts     29 mins
+  GW 6 A vs CRY                   2.0 pts     73 mins
+  GW 7 A vs CHE                   1.0 pts     45 mins
+  GW 8 H vs MUN                   1.0 pts     28 mins
+  GW 9 A vs BRE                   2.0 pts     82 mins
+  GW10 H vs AVL                   1.0 pts     13 mins
+  GW11 A vs MCI                   2.0 pts     82 mins
+  GW12 H vs NFO                   0.0 pts      0 mins
+  GW13 A vs WHU                   3.0 pts     74 mins
+  GW14 H vs SUN                   7.0 pts     90 mins
+  GW15 A vs LEE                   3.0 pts     67 mins
+  GW16 H vs BHA                   5.0 pts     77 mins
+  GW17 A vs TOT                   8.0 pts     90 mins
+  GW18 H vs WOL                  10.0 pts     90 mins
+  GW19 H vs LEE                   3.0 pts     65 mins
+  GW20 A vs FUL                  10.0 pts     75 mins
+  GW21 A vs ARS                   3.0 pts     90 mins
+  GW22 H vs BUR                  10.0 pts     90 mins
+  GW23 A vs BOU                   2.0 pts     90 mins
+  GW24 H vs NEW                  12.0 pts     86 mins
+  GW25 H vs MCI                   2.0 pts     90 mins
+  GW26 A vs SUN                   3.0 pts     90 mins
+  GW27 A vs NFO                   0.0 pts      0 mins
+  GW28 H vs WHU                   0.0 pts      0 mins
+  GW29 A vs WOL                   0.0 pts      0 mins
+  GW30 H vs TOT                   3.0 pts     63 mins
+  GW31 A vs BHA                   2.0 pts     90 mins
+  GW32 H vs FUL                   6.0 pts     67 mins
+  GW33 A vs EVE                   2.0 pts     83 mins
+  GW34 H vs CRY                   8.0 pts     90 mins
+  GW35 A vs MUN                   2.0 pts     90 mins
+  GW36 H vs CHE                   0.0 pts      0 mins
+  GW37 A vs AVL                   1.0 pts     24 mins
+  GW38 H vs BRE                   1.0 pts     17 mins
+  totals: 125.0 pts, 2374 mins, 33/38 appearances
+
+=== Sample horizon model columns (Haaland / Fernandes) ===
+
+Florian Wirtz (LIV) - PREDICT (exact model input row; predicted 5/5 pp90=0.00)
+  form appearances available: 7
+  last_7 minutes played: 90,67,83,90,90,24,17
+  last_5 (should = total_points_last_5_avg): GW33:2pts/83m, GW34:8pts/90m, GW35:2pts/90m, GW37:1pts/24m, GW38:1pts/17m -> pp90=4.1447
+  last_7 (should = total_points_avg): GW31:2pts/90m, GW32:6pts/67m, GW33:2pts/83m, GW34:8pts/90m, GW35:2pts/90m, GW37:1pts/24m, GW38:1pts/17m -> pp90=4.2950
+  target: (future - not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 4.738837
+  last_season_xgi_per_90: 0.453412
+  new_stats_included: 1
+  team_xg_over_n: 7.880619
+  team_xc_over_n: 4.861707
+  team_xg_last_5: 6.519364
+  team_xc_last_5: 6.072399
+  defcon_avg_x_new_stats_x_non_att: 7.809111
+  team_xg_over_n_x_outfield: 7.880619
+  total_points_last_5_avg: 4.144737
+  total_points_avg: 4.295011
+  xgi_last_5_avg: 0.411513
+  xgi_avg: 0.394360
+  expected_goals_conceded_last_5_avg: 2.033882
+  expected_goals_conceded_avg: 1.878091
+  defensive_contribution_last_5_avg: 6.809211
+  defensive_contribution_avg: 7.809111
+
+Florian Wirtz - TRAIN (25, 26) GW34 vs CRY (H) (exact model input row; target window 4/5 played)
+  form appearances available: 29
+  last_7 minutes played: 86,90,90,63,90,67,83
+  last_5 (should = total_points_last_5_avg): GW26:3pts/90m, GW30:3pts/63m, GW31:2pts/90m, GW32:6pts/67m, GW33:2pts/83m -> pp90=3.6641
+  last_7 (should = total_points_avg): GW24:12pts/86m, GW25:2pts/90m, GW26:3pts/90m, GW30:3pts/63m, GW31:2pts/90m, GW32:6pts/67m, GW33:2pts/83m -> pp90=4.7452
+  target (points/90 over window): 4.886878
+  --- model input features (exact) ---
+  matches_played: 29
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 0.000000
+  last_season_xgi_per_90: 0.000000
+  new_stats_included: 1
+  team_xg_over_n: 6.735239
+  team_xc_over_n: 6.036922
+  team_xg_last_5: 6.679298
+  team_xc_last_5: 5.360659
+  defcon_avg_x_new_stats_x_non_att: 7.275923
+  team_xg_over_n_x_outfield: 6.735239
+  total_points_last_5_avg: 3.664122
+  total_points_avg: 4.745167
+  xgi_last_5_avg: 0.414504
+  xgi_avg: 0.422320
+  expected_goals_conceded_last_5_avg: 1.092366
+  expected_goals_conceded_avg: 1.271705
+  defensive_contribution_last_5_avg: 7.328244
+  defensive_contribution_avg: 7.275923
+=== End sample columns ===
+
+
+=== Sample minutes model columns (validation) ===
+
+Florian Wirtz (LIV) — PREDICT next match
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  early_x_last_season_mins: 0.694152
+  last_season_h2_mins_per_match: 70.937500
+  last_two_seasons_mins_per_match: 65.210526
+  last_season_h2_fixture_frac: 1.000000
+  ls_mpm_x_new_club: 70.937500
+  mins_last_1: 70.937500
+  mins_last_2_avg: 70.937500
+  mins_last_5_avg: 70.937500
+  last_7_pts_per_appearance: 3.142857
+
+Florian Wirtz — TRAIN (25, 26) GW38 vs BRE (H)
+  target (minutes): 17.000000
+  --- model input features (exact) ---
+  matches_played: 32
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  early_x_last_season_mins: 0.000000
+  last_season_h2_mins_per_match: 0.000000
+  last_two_seasons_mins_per_match: 0.000000
+  last_season_h2_fixture_frac: 0.000000
+  ls_mpm_x_new_club: 0.000000
+  mins_last_1: 24.000000
+  mins_last_2_avg: 12.000000
+  mins_last_5_avg: 57.400000
+  last_7_pts_per_appearance: 3.428571
+=== End sample minutes columns ===
+
+
+========================================================================
+Dominic Calvert-Lewin (LEE)
+========================================================================
+
+Played matches — current season 26/27
+  (none)
+
+Played matches — last season 25/26
+  GW 2 A vs ARS                   0.0 pts      0 mins
+  GW 3 H vs NEW                   1.0 pts     20 mins
+  GW 4 A vs FUL                   2.0 pts     68 mins
+  GW 5 A vs WOL                  11.0 pts     90 mins
+  GW 6 H vs BOU                   2.0 pts     90 mins
+  GW 7 H vs TOT                   2.0 pts     90 mins
+  GW 8 A vs BUR                   2.0 pts     90 mins
+  GW 9 H vs WHU                   2.0 pts     86 mins
+  GW10 A vs BHA                   2.0 pts     64 mins
+  GW11 A vs NFO                   1.0 pts     16 mins
+  GW12 H vs AVL                   1.0 pts     19 mins
+  GW13 A vs MCI                   7.0 pts     45 mins
+  GW14 H vs CHE                   9.0 pts     85 mins
+  GW15 H vs LIV                   6.0 pts     90 mins
+  GW16 A vs BRE                   9.0 pts     90 mins
+  GW17 H vs CRY                  13.0 pts     86 mins
+  GW18 A vs SUN                   8.0 pts     84 mins
+  GW19 A vs LIV                   1.0 pts     20 mins
+  GW20 H vs MUN                   2.0 pts     90 mins
+  GW21 A vs NEW                   8.0 pts     86 mins
+  GW22 H vs FUL                   2.0 pts     90 mins
+  GW23 A vs EVE                   2.0 pts     90 mins
+  GW24 H vs ARS                   2.0 pts     84 mins
+  GW25 H vs NFO                   7.0 pts     90 mins
+  GW26 A vs CHE                   0.0 pts      0 mins
+  GW27 A vs AVL                   2.0 pts     90 mins
+  GW28 H vs MCI                   2.0 pts     90 mins
+  GW29 H vs SUN                   2.0 pts     90 mins
+  GW30 A vs CRY                   0.0 pts     90 mins
+  GW31 H vs BRE                   2.0 pts     90 mins
+  GW32 A vs MUN                   2.0 pts     90 mins
+  GW33 H vs WOL                   6.0 pts     90 mins
+  GW33 A vs BOU                   2.0 pts     90 mins
+  GW35 H vs BUR                   6.0 pts     90 mins
+  GW36 A vs TOT                   7.0 pts     90 mins
+  GW37 H vs BHA                   7.0 pts     90 mins
+  GW38 A vs WHU                   2.0 pts     68 mins
+  totals: 142.0 pts, 2721 mins, 35/37 appearances
+
+=== Sample horizon model columns (Haaland / Fernandes) ===
+
+Dominic Calvert-Lewin (LEE) - PREDICT (exact model input row; predicted 5/5 pp90=0.00)
+  form appearances available: 7
+  last_7 minutes played: 90,90,90,90,90,90,68
+  last_5 (should = total_points_last_5_avg): GW33:2pts/90m, GW35:6pts/90m, GW36:7pts/90m, GW37:7pts/90m, GW38:2pts/68m -> pp90=5.0467
+  last_7 (should = total_points_avg): GW32:2pts/90m, GW33:6pts/90m, GW33:2pts/90m, GW35:6pts/90m, GW36:7pts/90m, GW37:7pts/90m, GW38:2pts/68m -> pp90=4.7368
+  target: (future - not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  last_season_points_per_90: 4.696803
+  last_season_xgi_per_90: 0.549724
+  new_stats_included: 1
+  team_xg_over_n: 5.467222
+  team_xc_over_n: 6.537108
+  team_xg_last_5: 5.397060
+  team_xc_last_5: 7.321205
+  defcon_avg_x_new_stats_x_non_att: 0.000000
+  team_xg_over_n_x_outfield: 5.467222
+  total_points_last_5_avg: 5.046729
+  total_points_avg: 4.736842
+  xgi_last_5_avg: 0.395327
+  xgi_avg: 0.636513
+  expected_goals_conceded_last_5_avg: 1.703271
+  expected_goals_conceded_avg: 1.477303
+  defensive_contribution_last_5_avg: 3.995327
+  defensive_contribution_avg: 3.848684
+
+Dominic Calvert-Lewin - TRAIN (25, 26) GW33 vs BOU (A) (exact model input row; target window 5/5 played)
+  form appearances available: 37
+  last_7 minutes played: 90,90,90,90,90,90,90
+  last_5 (should = total_points_last_5_avg): GW29:2pts/90m, GW30:0pts/90m, GW31:2pts/90m, GW32:2pts/90m, GW33:6pts/90m -> pp90=2.4000
+  last_7 (should = total_points_avg): GW27:2pts/90m, GW28:2pts/90m, GW29:2pts/90m, GW30:0pts/90m, GW31:2pts/90m, GW32:2pts/90m, GW33:6pts/90m -> pp90=2.2857
+  target (points/90 over window): 5.046729
+  --- model input features (exact) ---
+  matches_played: 30
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  last_season_points_per_90: 3.539326
+  last_season_xgi_per_90: 0.402247
+  new_stats_included: 1
+  team_xg_over_n: 5.397060
+  team_xc_over_n: 7.321205
+  team_xg_last_5: 6.454016
+  team_xc_last_5: 6.510512
+  defcon_avg_x_new_stats_x_non_att: 0.000000
+  team_xg_over_n_x_outfield: 5.397060
+  total_points_last_5_avg: 2.400000
+  total_points_avg: 2.285714
+  xgi_last_5_avg: 0.716000
+  xgi_avg: 0.685714
+  expected_goals_conceded_last_5_avg: 0.774000
+  expected_goals_conceded_avg: 1.047143
+  defensive_contribution_last_5_avg: 5.000000
+  defensive_contribution_avg: 4.714286
+=== End sample columns ===
+
+
+=== Sample minutes model columns (validation) ===
+
+Dominic Calvert-Lewin (LEE) — PREDICT next match
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  early_x_last_season_mins: 0.795614
+  last_season_h2_mins_per_match: 83.578947
+  last_two_seasons_mins_per_match: 62.159091
+  last_season_h2_fixture_frac: 1.000000
+  ls_mpm_x_new_club: 83.578947
+  mins_last_1: 83.578947
+  mins_last_2_avg: 83.578947
+  mins_last_5_avg: 83.578947
+  last_7_pts_per_appearance: 4.571429
+
+Dominic Calvert-Lewin — TRAIN (25, 26) GW38 vs WHU (A)
+  target (minutes): 68.000000
+  --- model input features (exact) ---
+  matches_played: 34
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  early_x_last_season_mins: 0.001620
+  last_season_h2_mins_per_match: 11.736842
+  last_two_seasons_mins_per_match: 62.192982
+  last_season_h2_fixture_frac: 1.000000
+  ls_mpm_x_new_club: 17.068975
+  mins_last_1: 90.000000
+  mins_last_2_avg: 90.000000
+  mins_last_5_avg: 90.000000
+  last_7_pts_per_appearance: 4.571429
+=== End sample minutes columns ===
+
+
+========================================================================
+Dominik Szoboszlai (LIV)
+========================================================================
+
+Played matches — current season 26/27
+  (none)
+
+Played matches — last season 25/26
+  GW 1 H vs BOU                   2.0 pts     90 mins
+  GW 2 A vs NEW                   2.0 pts     90 mins
+  GW 3 H vs ARS                  13.0 pts     90 mins
+  GW 4 A vs BUR                   3.0 pts     90 mins
+  GW 5 H vs EVE                   1.0 pts     90 mins
+  GW 6 A vs CRY                   5.0 pts     90 mins
+  GW 7 A vs CHE                   1.0 pts     90 mins
+  GW 8 H vs MUN                   4.0 pts     90 mins
+  GW 9 A vs BRE                  10.0 pts     90 mins
+  GW10 H vs AVL                   2.0 pts     90 mins
+  GW11 A vs MCI                   1.0 pts     90 mins
+  GW12 H vs NFO                   2.0 pts     90 mins
+  GW13 A vs WHU                   3.0 pts     90 mins
+  GW14 H vs SUN                   2.0 pts     90 mins
+  GW15 A vs LEE                   8.0 pts     90 mins
+  GW16 H vs BHA                   3.0 pts     82 mins
+  GW17 A vs TOT                   1.0 pts     90 mins
+  GW18 H vs WOL                   0.0 pts      0 mins
+  GW19 H vs LEE                   3.0 pts     90 mins
+  GW20 A vs FUL                   2.0 pts     90 mins
+  GW21 A vs ARS                   3.0 pts     90 mins
+  GW22 H vs BUR                   0.0 pts     90 mins
+  GW23 A vs BOU                  13.0 pts     90 mins
+  GW24 H vs NEW                   5.0 pts     90 mins
+  GW25 H vs MCI                   8.0 pts     90 mins
+  GW26 A vs SUN                   0.0 pts      0 mins
+  GW27 A vs NFO                   3.0 pts     90 mins
+  GW28 H vs WHU                   4.0 pts     90 mins
+  GW29 A vs WOL                   5.0 pts     90 mins
+  GW30 H vs TOT                  11.0 pts     90 mins
+  GW31 A vs BHA                   3.0 pts     90 mins
+  GW32 H vs FUL                   5.0 pts     90 mins
+  GW33 A vs EVE                   5.0 pts     90 mins
+  GW34 H vs CRY                   1.0 pts     90 mins
+  GW35 A vs MUN                  13.0 pts     90 mins
+  GW36 H vs CHE                   2.0 pts     90 mins
+  GW37 A vs AVL                   9.0 pts     90 mins
+  GW38 H vs BRE                   2.0 pts     90 mins
+  totals: 160.0 pts, 3232 mins, 36/38 appearances
+
+=== Sample horizon model columns (Haaland / Fernandes) ===
+
+Dominik Szoboszlai (LIV) - PREDICT (exact model input row; predicted 5/5 pp90=0.00)
+  form appearances available: 7
+  last_7 minutes played: 90,90,90,90,90,90,90
+  last_5 (should = total_points_last_5_avg): GW34:1pts/90m, GW35:13pts/90m, GW36:2pts/90m, GW37:9pts/90m, GW38:2pts/90m -> pp90=5.4000
+  last_7 (should = total_points_avg): GW32:5pts/90m, GW33:5pts/90m, GW34:1pts/90m, GW35:13pts/90m, GW36:2pts/90m, GW37:9pts/90m, GW38:2pts/90m -> pp90=5.2857
+  target: (future - not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 4.455446
+  last_season_xgi_per_90: 0.322741
+  new_stats_included: 1
+  team_xg_over_n: 7.880619
+  team_xc_over_n: 4.861707
+  team_xg_last_5: 6.735239
+  team_xc_last_5: 6.036922
+  defcon_avg_x_new_stats_x_non_att: 7.571429
+  team_xg_over_n_x_outfield: 7.880619
+  total_points_last_5_avg: 5.400000
+  total_points_avg: 5.285714
+  xgi_last_5_avg: 0.446000
+  xgi_avg: 0.370000
+  expected_goals_conceded_last_5_avg: 1.702000
+  expected_goals_conceded_avg: 1.477143
+  defensive_contribution_last_5_avg: 6.400000
+  defensive_contribution_avg: 7.571429
+
+Dominik Szoboszlai - TRAIN (25, 26) GW34 vs CRY (H) (exact model input row; target window 5/5 played)
+  form appearances available: 38
+  last_7 minutes played: 90,90,90,90,90,90,90
+  last_5 (should = total_points_last_5_avg): GW29:5pts/90m, GW30:11pts/90m, GW31:3pts/90m, GW32:5pts/90m, GW33:5pts/90m -> pp90=5.8000
+  last_7 (should = total_points_avg): GW27:3pts/90m, GW28:4pts/90m, GW29:5pts/90m, GW30:11pts/90m, GW31:3pts/90m, GW32:5pts/90m, GW33:5pts/90m -> pp90=5.1429
+  target (points/90 over window): 5.400000
+  --- model input features (exact) ---
+  matches_played: 31
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 5.179074
+  last_season_xgi_per_90: 0.470825
+  new_stats_included: 1
+  team_xg_over_n: 6.735239
+  team_xc_over_n: 6.036922
+  team_xg_last_5: 6.679298
+  team_xc_last_5: 5.360659
+  defcon_avg_x_new_stats_x_non_att: 12.000000
+  team_xg_over_n_x_outfield: 6.735239
+  total_points_last_5_avg: 5.800000
+  total_points_avg: 5.142857
+  xgi_last_5_avg: 0.278000
+  xgi_avg: 0.294286
+  expected_goals_conceded_last_5_avg: 1.124000
+  expected_goals_conceded_avg: 1.238571
+  defensive_contribution_last_5_avg: 13.600000
+  defensive_contribution_avg: 12.000000
+=== End sample columns ===
+
+
+=== Sample minutes model columns (validation) ===
+
+Dominik Szoboszlai (LIV) — PREDICT next match
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  early_x_last_season_mins: 0.945029
+  last_season_h2_mins_per_match: 85.263158
+  last_two_seasons_mins_per_match: 71.877193
+  last_season_h2_fixture_frac: 1.000000
+  ls_mpm_x_new_club: 85.263158
+  mins_last_1: 85.263158
+  mins_last_2_avg: 85.263158
+  mins_last_5_avg: 85.263158
+  last_7_pts_per_appearance: 5.285714
+
+Dominik Szoboszlai — TRAIN (25, 26) GW38 vs BRE (H)
+  target (minutes): 90.000000
+  --- model input features (exact) ---
+  matches_played: 35
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  early_x_last_season_mins: 0.002128
+  last_season_h2_mins_per_match: 71.473684
+  last_two_seasons_mins_per_match: 56.649123
+  last_season_h2_fixture_frac: 1.000000
+  ls_mpm_x_new_club: 71.473684
+  mins_last_1: 90.000000
+  mins_last_2_avg: 90.000000
+  mins_last_5_avg: 90.000000
+  last_7_pts_per_appearance: 5.428571
+=== End sample minutes columns ===
+
+
+========================================================================
+Gabriel dos Santos Magalhães (ARS)
+========================================================================
+
+Played matches — current season 26/27
+  (none)
+
+Played matches — last season 25/26
+  GW 1 A vs MUN                   6.0 pts     90 mins
+  GW 2 H vs LEE                   6.0 pts     90 mins
+  GW 3 A vs LIV                   2.0 pts     90 mins
+  GW 4 H vs NFO                   9.0 pts     90 mins
+  GW 5 H vs MCI                   2.0 pts     90 mins
+  GW 6 A vs NEW                  13.0 pts     90 mins
+  GW 7 H vs WHU                   9.0 pts     90 mins
+  GW 8 A vs FUL                  12.0 pts     90 mins
+  GW 9 H vs CRY                   9.0 pts     90 mins
+  GW10 A vs BUR                  12.0 pts     90 mins
+  GW11 A vs SUN                   1.0 pts     90 mins
+  GW12 H vs TOT                   0.0 pts      0 mins
+  GW13 A vs CHE                   0.0 pts      0 mins
+  GW14 H vs BRE                   0.0 pts      0 mins
+  GW15 A vs AVL                   0.0 pts      0 mins
+  GW16 H vs WOL                   0.0 pts      0 mins
+  GW17 A vs EVE                   0.0 pts      0 mins
+  GW18 H vs BHA                   1.0 pts     19 mins
+  GW19 H vs AVL                  15.0 pts     76 mins
+  GW20 A vs BOU                   9.0 pts     90 mins
+  GW21 H vs LIV                   6.0 pts     90 mins
+  GW22 A vs NFO                   8.0 pts     90 mins
+  GW23 H vs MUN                   1.0 pts     90 mins
+  GW24 A vs LEE                   8.0 pts     90 mins
+  GW25 H vs SUN                   6.0 pts     90 mins
+  GW26 A vs BRE                   3.0 pts     90 mins
+  GW26 A vs WOL                   4.0 pts     90 mins
+  GW27 A vs TOT                   2.0 pts     90 mins
+  GW28 H vs CHE                   9.0 pts     90 mins
+  GW29 A vs BHA                  11.0 pts     90 mins
+  GW30 H vs EVE                   9.0 pts     90 mins
+  GW32 H vs BOU                   4.0 pts     90 mins
+  GW33 A vs MCI                   0.0 pts     90 mins
+  GW34 H vs NEW                   8.0 pts     90 mins
+  GW35 H vs FUL                   6.0 pts     90 mins
+  GW36 A vs WHU                  11.0 pts     90 mins
+  GW37 H vs BUR                   6.0 pts     90 mins
+  GW38 A vs CRY                   1.0 pts     45 mins
+  totals: 209.0 pts, 2750 mins, 32/38 appearances
+
+=== Sample horizon model columns (Haaland / Fernandes) ===
+
+Gabriel dos Santos Magalhães (ARS) - PREDICT (exact model input row; predicted 5/5 pp90=0.00)
+  form appearances available: 7
+  last_7 minutes played: 90,90,90,90,90,90,45
+  last_5 (should = total_points_last_5_avg): GW34:8pts/90m, GW35:6pts/90m, GW36:11pts/90m, GW37:6pts/90m, GW38:1pts/45m -> pp90=7.1111
+  last_7 (should = total_points_avg): GW32:4pts/90m, GW33:0pts/90m, GW34:8pts/90m, GW35:6pts/90m, GW36:11pts/90m, GW37:6pts/90m, GW38:1pts/45m -> pp90=5.5385
+  target: (future - not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 1
+  is_mid: 0
+  is_att: 0
+  last_season_points_per_90: 6.840000
+  last_season_xgi_per_90: 0.153491
+  new_stats_included: 1
+  team_xg_over_n: 9.249738
+  team_xc_over_n: 4.351080
+  team_xg_last_5: 10.760318
+  team_xc_last_5: 3.838071
+  defcon_avg_x_new_stats_x_non_att: 8.153846
+  team_xg_over_n_x_outfield: 9.249738
+  total_points_last_5_avg: 7.111111
+  total_points_avg: 5.538462
+  xgi_last_5_avg: 0.226667
+  xgi_avg: 0.175385
+  expected_goals_conceded_last_5_avg: 0.808889
+  expected_goals_conceded_avg: 0.952308
+  defensive_contribution_last_5_avg: 8.444444
+  defensive_contribution_avg: 8.153846
+
+Gabriel dos Santos Magalhães - TRAIN (25, 26) GW34 vs NEW (H) (exact model input row; target window 5/5 played)
+  form appearances available: 34
+  last_7 minutes played: 90,90,90,90,90,90,90
+  last_5 (should = total_points_last_5_avg): GW28:9pts/90m, GW29:11pts/90m, GW30:9pts/90m, GW32:4pts/90m, GW33:0pts/90m -> pp90=6.6000
+  last_7 (should = total_points_avg): GW26:4pts/90m, GW27:2pts/90m, GW28:9pts/90m, GW29:11pts/90m, GW30:9pts/90m, GW32:4pts/90m, GW33:0pts/90m -> pp90=5.5714
+  target (points/90 over window): 7.111111
+  --- model input features (exact) ---
+  matches_played: 27
+  is_gkp: 0
+  is_def: 1
+  is_mid: 0
+  is_att: 0
+  last_season_points_per_90: 4.456200
+  last_season_xgi_per_90: 0.148921
+  new_stats_included: 1
+  team_xg_over_n: 10.760318
+  team_xc_over_n: 3.838071
+  team_xg_last_5: 9.093704
+  team_xc_last_5: 4.843082
+  defcon_avg_x_new_stats_x_non_att: 9.285714
+  team_xg_over_n_x_outfield: 10.760318
+  total_points_last_5_avg: 6.600000
+  total_points_avg: 5.571429
+  xgi_last_5_avg: 0.162000
+  xgi_avg: 0.137143
+  expected_goals_conceded_last_5_avg: 1.094000
+  expected_goals_conceded_avg: 0.931429
+  defensive_contribution_last_5_avg: 10.600000
+  defensive_contribution_avg: 9.285714
+=== End sample columns ===
+
+
+=== Sample minutes model columns (validation) ===
+
+Gabriel dos Santos Magalhães (ARS) — PREDICT next match
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 1
+  is_mid: 0
+  is_att: 0
+  early_x_last_season_mins: 0.804094
+  last_season_h2_mins_per_match: 87.631579
+  last_two_seasons_mins_per_match: 80.186047
+  last_season_h2_fixture_frac: 1.000000
+  ls_mpm_x_new_club: 87.631579
+  mins_last_1: 87.631579
+  mins_last_2_avg: 87.631579
+  mins_last_5_avg: 87.631579
+  last_7_pts_per_appearance: 5.142857
+
+Gabriel dos Santos Magalhães — TRAIN (25, 26) GW38 vs CRY (A)
+  target (minutes): 45.000000
+  --- model input features (exact) ---
+  matches_played: 31
+  is_gkp: 0
+  is_def: 1
+  is_mid: 0
+  is_att: 0
+  early_x_last_season_mins: 0.003941
+  last_season_h2_mins_per_match: 48.157895
+  last_two_seasons_mins_per_match: 78.771930
+  last_season_h2_fixture_frac: 1.000000
+  ls_mpm_x_new_club: 48.157895
+  mins_last_1: 90.000000
+  mins_last_2_avg: 90.000000
+  mins_last_5_avg: 90.000000
+  last_7_pts_per_appearance: 6.285714
+=== End sample minutes columns ===
+
+
+
+========================================================================
+explain_player 2026-08-21 01:46:22  args: anderson watkins dorgu
+========================================================================
+
+Resolving players:
+  'anderson' -> Elliot Anderson (Anderson)
+  'watkins' -> Ollie Watkins (Watkins)
+  'dorgu' -> Patrick Dorgu (Dorgu)
+
+Loading stored predictions from the database...
+
+======== Ranked by predicted points over next 5 GWs (from DB) ========
+Next gameweek: 1
+  #  Player                                   Pts  query/web
+  1  Ollie Watkins                           34.6  (Watkins, DB)
+  2  Elliot Anderson                         32.6  (Anderson, DB)
+  3  Patrick Dorgu                           30.2  (Dorgu, DB)
+
+======== Predictions (same columns as the Fargate email / top_players.csv) ========
+Player           Team  Pos  Price  Pred  Pred mins  Prev pp90  Err   M1 opp  M1 pp90  M1 mins  M1 adj  M2 opp  M2 pp90  M2 mins  M2 adj  M3 opp  M3 pp90  M3 mins  M3 adj  M4 opp  M4 pp90  M4 mins  M4 adj  M5 opp  M5 pp90  M5 mins  M5 adj
+---------------  ----  ---  -----  ----  ---------  ---------  ----  ------  -------  -------  ------  ------  -------  -------  ------  ------  -------  -------  ------  ------  -------  -------  ------  ------  -------  -------  ------
+Ollie Watkins    AVL   FWD  80.0   6.0   81         5.0        3.33  BHA     5.9      81       5.9     ARS     5.9      81       5.9     HUL     6.0      81       6.0     NFO     6.1      81       6.1     TOT     5.9      81       5.9   
+Elliot Anderson  MCI   MID  65.0   5.7   87         25.7       2.49  BOU     5.6      87       5.6     CRY     5.5      87       5.5     COV     6.1      87       6.1     MUN     4.8      87       4.8     SUN     6.1      87       6.1   
+Patrick Dorgu    MUN   MID  60.0   5.3   68         5.2        2.88  HUL     6.1      68       5.5     IPS     6.3      68       5.6     EVE     5.9      68       5.3     MCI     5.3      68       4.8     FUL     5.8      68       5.2   
+
+Pred and Pred mins are per-GW averages over the horizon. Adj is the minutes-scaled score used by the optimiser. Prev pp90 is pooled points/90 over the last appearances in the DB.
+
+Team xG is refit locally (player nets are not). Feature values can
+differ slightly from the Fargate run that wrote the DB scores.
+
+========================================================================
+Ollie Watkins (AVL)
+========================================================================
+
+Played matches — current season 26/27
+  (none)
+
+Played matches — last season 25/26
+  GW 1 H vs NEW                   2.0 pts     90 mins
+  GW 2 A vs BRE                   2.0 pts     90 mins
+  GW 3 H vs CRY                   2.0 pts     90 mins
+  GW 4 A vs EVE                   2.0 pts     82 mins
+  GW 5 A vs SUN                   2.0 pts     90 mins
+  GW 6 H vs FUL                   8.0 pts     90 mins
+  GW 7 H vs BUR                   2.0 pts     66 mins
+  GW 8 A vs TOT                   1.0 pts     29 mins
+  GW 9 H vs MCI                   2.0 pts     85 mins
+  GW10 A vs LIV                   2.0 pts     74 mins
+  GW11 H vs BOU                   2.0 pts     80 mins
+  GW12 A vs LEE                   2.0 pts     67 mins
+  GW13 H vs WOL                   1.0 pts     36 mins
+  GW14 A vs BHA                  13.0 pts     85 mins
+  GW15 H vs ARS                   2.0 pts     65 mins
+  GW16 A vs WHU                   5.0 pts     74 mins
+  GW17 H vs MUN                   5.0 pts     74 mins
+  GW18 A vs CHE                  12.0 pts     32 mins
+  GW19 A vs ARS                   5.0 pts     90 mins
+  GW20 H vs NFO                   7.0 pts     82 mins
+  GW21 A vs CRY                   2.0 pts     90 mins
+  GW22 H vs EVE                   2.0 pts     90 mins
+  GW23 A vs NEW                   8.0 pts     90 mins
+  GW24 H vs BRE                   0.0 pts      0 mins
+  GW25 A vs BOU                   2.0 pts     85 mins
+  GW26 H vs BHA                   2.0 pts     73 mins
+  GW27 H vs LEE                   2.0 pts     90 mins
+  GW28 A vs WOL                   2.0 pts     85 mins
+  GW29 H vs CHE                   1.0 pts     70 mins
+  GW30 A vs MUN                   0.0 pts     59 mins
+  GW31 H vs WHU                   9.0 pts     86 mins
+  GW32 A vs NFO                   2.0 pts     86 mins
+  GW33 H vs SUN                  16.0 pts     79 mins
+  GW34 A vs FUL                   2.0 pts     79 mins
+  GW35 H vs TOT                   1.0 pts     30 mins
+  GW36 A vs BUR                   9.0 pts     90 mins
+  GW37 H vs LIV                  15.0 pts     90 mins
+  GW38 A vs MCI                  13.0 pts     90 mins
+  totals: 167.0 pts, 2833 mins, 37/38 appearances
+
+=== Sample horizon model columns (Haaland / Fernandes) ===
+
+Ollie Watkins (AVL) - PREDICT (exact model input row; predicted 5/5 pp90=0.00)
+  form appearances available: 7
+  last_7 minutes played: 86,79,79,30,90,90,90
+  last_5 (should = total_points_last_5_avg): GW34:2pts/79m, GW35:1pts/30m, GW36:9pts/90m, GW37:15pts/90m, GW38:13pts/90m -> pp90=9.4987
+  last_7 (should = total_points_avg): GW32:2pts/86m, GW33:16pts/79m, GW34:2pts/79m, GW35:1pts/30m, GW36:9pts/90m, GW37:15pts/90m, GW38:13pts/90m -> pp90=9.5956
+  target: (future - not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  last_season_points_per_90: 5.305330
+  last_season_xgi_per_90: 0.526721
+  new_stats_included: 1
+  team_xg_over_n: 6.471906
+  team_xc_over_n: 5.309130
+  team_xg_last_5: 6.392342
+  team_xc_last_5: 5.910374
+  defcon_avg_x_new_stats_x_non_att: 0.000000
+  team_xg_over_n_x_outfield: 6.471906
+  total_points_last_5_avg: 9.498681
+  total_points_avg: 9.595588
+  xgi_last_5_avg: 0.800264
+  xgi_avg: 0.812316
+  expected_goals_conceded_last_5_avg: 1.329815
+  expected_goals_conceded_avg: 1.171324
+  defensive_contribution_last_5_avg: 1.662269
+  defensive_contribution_avg: 2.481618
+
+Ollie Watkins - TRAIN (25, 26) GW34 vs FUL (A) (exact model input row; target window 5/5 played)
+  form appearances available: 39
+  last_7 minutes played: 90,85,70,59,86,86,79
+  last_5 (should = total_points_last_5_avg): GW29:1pts/70m, GW30:0pts/59m, GW31:9pts/86m, GW32:2pts/86m, GW33:16pts/79m -> pp90=6.6316
+  last_7 (should = total_points_avg): GW27:2pts/90m, GW28:2pts/85m, GW29:1pts/70m, GW30:0pts/59m, GW31:9pts/86m, GW32:2pts/86m, GW33:16pts/79m -> pp90=5.1892
+  target (points/90 over window): 9.498681
+  --- model input features (exact) ---
+  matches_played: 32
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  last_season_points_per_90: 6.455843
+  last_season_xgi_per_90: 0.596645
+  new_stats_included: 1
+  team_xg_over_n: 6.392342
+  team_xc_over_n: 5.910374
+  team_xg_last_5: 7.698782
+  team_xc_last_5: 5.840806
+  defcon_avg_x_new_stats_x_non_att: 0.000000
+  team_xg_over_n_x_outfield: 6.392342
+  total_points_last_5_avg: 6.631579
+  total_points_avg: 5.189189
+  xgi_last_5_avg: 0.568421
+  xgi_avg: 0.450811
+  expected_goals_conceded_last_5_avg: 1.449474
+  expected_goals_conceded_avg: 1.282703
+  defensive_contribution_last_5_avg: 3.789474
+  defensive_contribution_avg: 3.567568
+=== End sample columns ===
+
+
+=== Sample minutes model columns (validation) ===
+
+Ollie Watkins (AVL) — PREDICT next match
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  early_x_last_season_mins: 0.828363
+  last_season_h2_mins_per_match: 76.000000
+  last_two_seasons_mins_per_match: 69.859649
+  last_season_h2_fixture_frac: 1.000000
+  ls_mpm_x_new_club: 76.000000
+  mins_last_1: 76.000000
+  mins_last_2_avg: 76.000000
+  mins_last_5_avg: 76.000000
+  last_7_pts_per_appearance: 8.285714
+
+Ollie Watkins — TRAIN (25, 26) GW38 vs MCI (A)
+  target (minutes): 90.000000
+  --- model input features (exact) ---
+  matches_played: 36
+  is_gkp: 0
+  is_def: 0
+  is_mid: 0
+  is_att: 1
+  early_x_last_season_mins: 0.001879
+  last_season_h2_mins_per_match: 69.631579
+  last_two_seasons_mins_per_match: 78.807018
+  last_season_h2_fixture_frac: 1.000000
+  ls_mpm_x_new_club: 69.631579
+  mins_last_1: 90.000000
+  mins_last_2_avg: 90.000000
+  mins_last_5_avg: 73.600000
+  last_7_pts_per_appearance: 7.714286
+=== End sample minutes columns ===
+
+
+========================================================================
+Elliot Anderson (MCI)
+========================================================================
+
+Played matches — current season 26/27
+  (none)
+
+Played matches — last season 25/26
+  GW 1 H vs BRE                   6.0 pts     90 mins
+  GW 2 A vs CRY                   2.0 pts     90 mins
+  GW 3 H vs WHU                   2.0 pts     90 mins
+  GW 4 A vs ARS                   4.0 pts     90 mins
+  GW 5 A vs BUR                   4.0 pts     90 mins
+  GW 6 H vs SUN                   3.0 pts     90 mins
+  GW 7 A vs NEW                   1.0 pts     90 mins
+  GW 8 H vs CHE                   4.0 pts     90 mins
+  GW 9 A vs BOU                   2.0 pts     90 mins
+  GW10 H vs MUN                   4.0 pts     90 mins
+  GW11 H vs LEE                   9.0 pts     90 mins
+  GW12 A vs LIV                   9.0 pts     90 mins
+  GW13 H vs BHA                   6.0 pts     90 mins
+  GW14 A vs WOL                   2.0 pts     90 mins
+  GW15 A vs EVE                   4.0 pts     90 mins
+  GW16 H vs TOT                   3.0 pts     90 mins
+  GW17 A vs FUL                   4.0 pts     90 mins
+  GW18 H vs MCI                   3.0 pts     90 mins
+  GW19 H vs EVE                   4.0 pts     90 mins
+  GW20 A vs AVL                   4.0 pts     90 mins
+  GW21 A vs WHU                   7.0 pts     90 mins
+  GW22 H vs ARS                   5.0 pts     90 mins
+  GW23 A vs BRE                   5.0 pts     90 mins
+  GW24 H vs CRY                   7.0 pts     90 mins
+  GW25 A vs LEE                   4.0 pts     90 mins
+  GW26 H vs WOL                   5.0 pts     90 mins
+  GW27 H vs LIV                   5.0 pts     76 mins
+  GW28 A vs BHA                   1.0 pts     90 mins
+  GW29 A vs MCI                  12.0 pts     90 mins
+  GW30 H vs FUL                   2.0 pts     87 mins
+  GW31 A vs TOT                   5.0 pts     90 mins
+  GW32 H vs AVL                   4.0 pts     90 mins
+  GW33 H vs BUR                   2.0 pts     90 mins
+  GW34 A vs SUN                   9.0 pts     90 mins
+  GW35 A vs CHE                   1.0 pts     45 mins
+  GW36 H vs NEW                  12.0 pts     90 mins
+  GW37 A vs MUN                  12.0 pts     90 mins
+  GW38 H vs BOU                   2.0 pts     64 mins
+  totals: 180.0 pts, 3332 mins, 38/38 appearances
+
+=== Sample horizon model columns (Haaland / Fernandes) ===
+
+Elliot Anderson (MCI) - PREDICT (exact model input row; predicted 5/5 pp90=0.00)
+  form appearances available: 7
+  last_7 minutes played: 90,90,90,45,90,90,64
+  last_5 (should = total_points_last_5_avg): GW34:9pts/90m, GW35:1pts/45m, GW36:12pts/90m, GW37:12pts/90m, GW38:2pts/64m -> pp90=8.5488
+  last_7 (should = total_points_avg): GW32:4pts/90m, GW33:2pts/90m, GW34:9pts/90m, GW35:1pts/45m, GW36:12pts/90m, GW37:12pts/90m, GW38:2pts/64m -> pp90=6.7621
+  target: (future - not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 4.861945
+  last_season_xgi_per_90: 0.208794
+  new_stats_included: 1
+  team_xg_over_n: 9.673569
+  team_xc_over_n: 3.851075
+  team_xg_last_5: 6.280181
+  team_xc_last_5: 7.588164
+  defcon_avg_x_new_stats_x_non_att: 13.685152
+  team_xg_over_n_x_outfield: 9.673569
+  total_points_last_5_avg: 8.548813
+  total_points_avg: 6.762075
+  xgi_last_5_avg: 0.351451
+  xgi_avg: 0.272093
+  expected_goals_conceded_last_5_avg: 2.039842
+  expected_goals_conceded_avg: 1.605188
+  defensive_contribution_last_5_avg: 14.010554
+  defensive_contribution_avg: 13.685152
+
+Elliot Anderson - TRAIN (25, 26) GW34 vs SUN (A) (exact model input row; target window 5/5 played)
+  form appearances available: 40
+  last_7 minutes played: 76,90,90,87,90,90,90
+  last_5 (should = total_points_last_5_avg): GW29:12pts/90m, GW30:2pts/87m, GW31:5pts/90m, GW32:4pts/90m, GW33:2pts/90m -> pp90=5.0336
+  last_7 (should = total_points_avg): GW27:5pts/76m, GW28:1pts/90m, GW29:12pts/90m, GW30:2pts/87m, GW31:5pts/90m, GW32:4pts/90m, GW33:2pts/90m -> pp90=4.5514
+  target (points/90 over window): 8.548813
+  --- model input features (exact) ---
+  matches_played: 33
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 3.532649
+  last_season_xgi_per_90: 0.183236
+  new_stats_included: 1
+  team_xg_over_n: 6.280181
+  team_xc_over_n: 7.588164
+  team_xg_last_5: 6.041948
+  team_xc_last_5: 6.231749
+  defcon_avg_x_new_stats_x_non_att: 13.800979
+  team_xg_over_n_x_outfield: 6.280181
+  total_points_last_5_avg: 5.033557
+  total_points_avg: 4.551387
+  xgi_last_5_avg: 0.163087
+  xgi_avg: 0.174715
+  expected_goals_conceded_last_5_avg: 1.141611
+  expected_goals_conceded_avg: 1.102610
+  defensive_contribution_last_5_avg: 13.087248
+  defensive_contribution_avg: 13.800979
+=== End sample columns ===
+
+
+=== Sample minutes model columns (validation) ===
+
+Elliot Anderson (MCI) — PREDICT next match
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  early_x_last_season_mins: 0.974269
+  last_season_h2_mins_per_match: 85.368421
+  last_two_seasons_mins_per_match: 77.824561
+  last_season_h2_fixture_frac: 1.000000
+  ls_mpm_x_new_club: -11.647716
+  mins_last_1: 85.368421
+  mins_last_2_avg: 85.368421
+  mins_last_5_avg: 85.368421
+  last_7_pts_per_appearance: 6.000000
+
+Elliot Anderson — TRAIN (25, 26) GW38 vs BOU (H)
+  target (minutes): 64.000000
+  --- model input features (exact) ---
+  matches_played: 37
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  early_x_last_season_mins: 0.001672
+  last_season_h2_mins_per_match: 84.052632
+  last_two_seasons_mins_per_match: 37.666667
+  last_season_h2_fixture_frac: 1.000000
+  ls_mpm_x_new_club: 84.052632
+  mins_last_1: 90.000000
+  mins_last_2_avg: 90.000000
+  mins_last_5_avg: 81.000000
+  last_7_pts_per_appearance: 6.428571
+=== End sample minutes columns ===
+
+
+========================================================================
+Patrick Dorgu (MUN)
+========================================================================
+
+Played matches — current season 26/27
+  (none)
+
+Played matches — last season 25/26
+  GW 1 H vs ARS                   1.0 pts     90 mins
+  GW 2 A vs FUL                   2.0 pts     90 mins
+  GW 3 H vs BUR                   0.0 pts      0 mins
+  GW 4 A vs MCI                   1.0 pts     90 mins
+  GW 5 H vs CHE                   5.0 pts     90 mins
+  GW 6 A vs BRE                   0.0 pts     84 mins
+  GW 7 H vs SUN                   1.0 pts     26 mins
+  GW 8 A vs LIV                   1.0 pts     31 mins
+  GW 9 H vs BHA                  -1.0 pts     20 mins
+  GW10 A vs NFO                   1.0 pts     22 mins
+  GW11 A vs TOT                   5.0 pts     79 mins
+  GW12 H vs EVE                   1.0 pts     57 mins
+  GW13 A vs CRY                   1.0 pts      1 mins
+  GW14 H vs WHU                   1.0 pts     22 mins
+  GW15 A vs WOL                   1.0 pts      6 mins
+  GW16 H vs BOU                   1.0 pts      1 mins
+  GW17 A vs AVL                   5.0 pts     90 mins
+  GW18 H vs NEW                  17.0 pts     90 mins
+  GW19 H vs WOL                   2.0 pts     90 mins
+  GW20 A vs LEE                   1.0 pts     90 mins
+  GW21 A vs BUR                   5.0 pts     90 mins
+  GW22 H vs MCI                  15.0 pts     90 mins
+  GW23 A vs ARS                   8.0 pts     80 mins
+  GW24 H vs FUL                   0.0 pts      0 mins
+  GW25 H vs TOT                   0.0 pts      0 mins
+  GW26 A vs WHU                   0.0 pts      0 mins
+  GW27 A vs EVE                   0.0 pts      0 mins
+  GW28 H vs CRY                   0.0 pts      0 mins
+  GW29 A vs NEW                   0.0 pts      0 mins
+  GW30 H vs AVL                   0.0 pts      0 mins
+  GW31 A vs BOU                   0.0 pts      0 mins
+  GW32 H vs LEE                   0.0 pts      0 mins
+  GW33 A vs CHE                   0.0 pts      0 mins
+  GW34 H vs BRE                   0.0 pts      0 mins
+  GW35 H vs LIV                   1.0 pts     15 mins
+  GW36 A vs SUN                   1.0 pts     25 mins
+  GW37 H vs NFO                   1.0 pts     10 mins
+  GW38 A vs BHA                  18.0 pts     61 mins
+  totals: 95.0 pts, 1440 mins, 26/38 appearances
+
+=== Sample horizon model columns (Haaland / Fernandes) ===
+
+Patrick Dorgu (MUN) - PREDICT (exact model input row; predicted 5/5 pp90=0.00)
+  form appearances available: 7
+  last_7 minutes played: 90,90,80,15,25,10,61
+  last_5 (should = total_points_last_5_avg): GW23:8pts/80m, GW35:1pts/15m, GW36:1pts/25m, GW37:1pts/10m, GW38:18pts/61m -> pp90=13.6649
+  last_7 (should = total_points_avg): GW21:5pts/90m, GW22:15pts/90m, GW23:8pts/80m, GW35:1pts/15m, GW36:1pts/25m, GW37:1pts/10m, GW38:18pts/61m -> pp90=11.8868
+  target: (future - not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  last_season_points_per_90: 5.937500
+  last_season_xgi_per_90: 0.264375
+  new_stats_included: 1
+  team_xg_over_n: 8.011134
+  team_xc_over_n: 4.415726
+  team_xg_last_5: 6.097059
+  team_xc_last_5: 6.589578
+  defcon_avg_x_new_stats_x_non_att: 4.609164
+  team_xg_over_n_x_outfield: 8.011134
+  total_points_last_5_avg: 13.664921
+  total_points_avg: 11.886792
+  xgi_last_5_avg: 0.504188
+  xgi_avg: 0.475472
+  expected_goals_conceded_last_5_avg: 0.768063
+  expected_goals_conceded_avg: 0.562803
+  defensive_contribution_last_5_avg: 3.298429
+  defensive_contribution_avg: 4.609164
+
+Patrick Dorgu - TRAIN (25, 26) GW21 vs BUR (A) (exact model input row; target window 3/5 played)
+  form appearances available: 26
+  last_7 minutes played: 22,6,1,90,90,90,90
+  last_5 (should = total_points_last_5_avg): GW16:1pts/1m, GW17:5pts/90m, GW18:17pts/90m, GW19:2pts/90m, GW20:1pts/90m -> pp90=6.4820
+  last_7 (should = total_points_avg): GW14:1pts/22m, GW15:1pts/6m, GW16:1pts/1m, GW17:5pts/90m, GW18:17pts/90m, GW19:2pts/90m, GW20:1pts/90m -> pp90=6.4781
+  target (points/90 over window): 9.692308
+  --- model input features (exact) ---
+  matches_played: 19
+  is_gkp: 0
+  is_def: 1
+  is_mid: 0
+  is_att: 0
+  last_season_points_per_90: 1.928571
+  last_season_xgi_per_90: 0.182143
+  new_stats_included: 1
+  team_xg_over_n: 6.566241
+  team_xc_over_n: 5.999701
+  team_xg_last_5: 7.595311
+  team_xc_last_5: 5.311834
+  defcon_avg_x_new_stats_x_non_att: 6.709512
+  team_xg_over_n_x_outfield: 6.566241
+  total_points_last_5_avg: 6.481994
+  total_points_avg: 6.478149
+  xgi_last_5_avg: 0.191967
+  xgi_avg: 0.185090
+  expected_goals_conceded_last_5_avg: 1.266482
+  expected_goals_conceded_avg: 1.286375
+  defensive_contribution_last_5_avg: 6.731302
+  defensive_contribution_avg: 6.709512
+=== End sample columns ===
+
+
+=== Sample minutes model columns (validation) ===
+
+Patrick Dorgu (MUN) — PREDICT next match
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 0
+  is_mid: 1
+  is_att: 0
+  early_x_last_season_mins: 0.421053
+  last_season_h2_mins_per_match: 57.625000
+  last_two_seasons_mins_per_match: 55.121212
+  last_season_h2_fixture_frac: 1.000000
+  ls_mpm_x_new_club: 57.625000
+  mins_last_1: 57.625000
+  mins_last_2_avg: 57.625000
+  mins_last_5_avg: 57.625000
+  last_7_pts_per_appearance: 7.000000
+
+Patrick Dorgu — TRAIN (25, 26) GW38 vs BHA (A)
+  target (minutes): 61.000000
+  --- model input features (exact) ---
+  matches_played: 25
+  is_gkp: 0
+  is_def: 1
+  is_mid: 0
+  is_att: 0
+  early_x_last_season_mins: 0.003808
+  last_season_h2_mins_per_match: 60.000000
+  last_two_seasons_mins_per_match: 0.000000
+  last_season_h2_fixture_frac: 0.736842
+  ls_mpm_x_new_club: 60.000000
+  mins_last_1: 10.000000
+  mins_last_2_avg: 17.500000
+  mins_last_5_avg: 10.000000
+  last_7_pts_per_appearance: 4.571429
+=== End sample minutes columns ===
+
+
+
+========================================================================
+explain_player 2026-08-21 14:53:52  args: gvardiol
+========================================================================
+
+Resolving players:
+  'gvardiol' -> Joško Gvardiol (Gvardiol)
+
+Loading stored predictions from the database...
+
+======== Ranked by predicted points over next 5 GWs (from DB) ========
+Next gameweek: 1
+  #  Player                                   Pts  query/web
+  1  Joško Gvardiol                           0.1  (Gvardiol, DB)
+
+======== Predictions (same columns as the Fargate email / top_players.csv) ========
+Player          Team  Pos  Price  Pred  Pred mins  Prev pp90  Err   M1 opp  M1 pp90  M1 mins  M1 adj  M2 opp  M2 pp90  M2 mins  M2 adj  M3 opp  M3 pp90  M3 mins  M3 adj  M4 opp  M4 pp90  M4 mins  M4 adj  M5 opp  M5 pp90  M5 mins  M5 adj
+--------------  ----  ---  -----  ----  ---------  ---------  ----  ------  -------  -------  ------  ------  -------  -------  ------  ------  -------  -------  ------  ------  -------  -------  ------  ------  -------  -------  ------
+Joško Gvardiol  MCI   DEF  55.0   0.0   0          7.3        3.11  BOU     4.5      0        0.0     CRY     4.3      0        0.0     COV     4.9      0        0.0     MUN     3.8      0        0.0     SUN     4.9      0        0.0   
+
+Pred and Pred mins are per-GW averages over the horizon. Adj is the minutes-scaled score used by the optimiser. Prev pp90 is pooled points/90 over the last appearances in the DB.
+
+Team xG is refit locally (player nets are not). Feature values can
+differ slightly from the Fargate run that wrote the DB scores.
+
+========================================================================
+Joško Gvardiol (MCI)
+========================================================================
+
+Played matches — current season 26/27
+  (none)
+
+Played matches — last season 25/26
+  GW 1 A vs WOL                   0.0 pts      0 mins
+  GW 2 H vs TOT                   0.0 pts      0 mins
+  GW 3 A vs BHA                   0.0 pts      0 mins
+  GW 4 H vs MUN                   6.0 pts     90 mins
+  GW 5 A vs ARS                   4.0 pts     90 mins
+  GW 6 H vs BUR                   2.0 pts     69 mins
+  GW 7 A vs BRE                  12.0 pts     90 mins
+  GW 8 H vs EVE                   0.0 pts      0 mins
+  GW 9 A vs AVL                   2.0 pts     90 mins
+  GW10 H vs BOU                   2.0 pts     90 mins
+  GW11 H vs LIV                   6.0 pts     90 mins
+  GW12 A vs NEW                   1.0 pts     90 mins
+  GW13 H vs LEE                   6.0 pts     90 mins
+  GW14 A vs FUL                   0.0 pts     90 mins
+  GW15 H vs SUN                  12.0 pts     69 mins
+  GW16 A vs CRY                   8.0 pts     90 mins
+  GW17 H vs WHU                   6.0 pts     90 mins
+  GW18 A vs NFO                   8.0 pts     90 mins
+  GW19 A vs SUN                   1.0 pts     33 mins
+  GW20 H vs CHE                   1.0 pts     50 mins
+  GW21 H vs BHA                   0.0 pts      0 mins
+  GW22 A vs MUN                   0.0 pts      0 mins
+  GW23 H vs WOL                   0.0 pts      0 mins
+  GW24 A vs TOT                   0.0 pts      0 mins
+  GW25 A vs LIV                   0.0 pts      0 mins
+  GW26 H vs FUL                   0.0 pts      0 mins
+  GW27 H vs NEW                   0.0 pts      0 mins
+  GW28 A vs LEE                   0.0 pts      0 mins
+  GW29 H vs NFO                   0.0 pts      0 mins
+  GW30 A vs WHU                   0.0 pts      0 mins
+  GW32 A vs CHE                   0.0 pts      0 mins
+  GW33 H vs ARS                   0.0 pts      0 mins
+  GW33 A vs BUR                   0.0 pts      0 mins
+  GW35 A vs EVE                   0.0 pts      0 mins
+  GW36 H vs BRE                   0.0 pts      0 mins
+  GW36 H vs CRY                   1.0 pts     57 mins
+  GW37 A vs BOU                   0.0 pts      0 mins
+  GW38 H vs AVL                   1.0 pts     12 mins
+  totals: 79.0 pts, 1370 mins, 18/38 appearances
+
+=== Sample horizon model columns (Haaland / Fernandes) ===
+
+Joško Gvardiol (MCI) - PREDICT (exact model input row; predicted 5/5 pp90=0.00)
+  form appearances available: 7
+  last_7 minutes played: 90,90,90,33,50,57,12
+  last_5 (should = points_last_5_per_90_excl_null): GW18:8pts/90m, GW19:1pts/33m, GW20:1pts/50m, GW36:1pts/57m, GW38:1pts/12m -> pp90=4.4628
+  last_7 (should = total_points_avg): GW16:8pts/90m, GW17:6pts/90m, GW18:8pts/90m, GW19:1pts/33m, GW20:1pts/50m, GW36:1pts/57m, GW38:1pts/12m -> pp90=5.5450
+  target: (future - not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 1
+  is_mid: 0
+  is_att: 0
+  last_season_points_per_90: 5.189781
+  last_season_xgi_per_90: 0.193796
+  two_season_prior_points_per_90: 4.200732
+  two_season_prior_xgi_per_90: 0.206467
+  new_stats_included: 1
+  team_xg_next_5: 8.991486
+  team_xc_next_5: 3.725492
+  team_xg_last_5: 9.821236
+  team_xc_last_5: 3.691675
+  defcon_last_7_per_90_excl_null_x_non_att: 8.104265
+  team_xg_next_5_x_outfield: 8.991486
+  last_season_points_per_90_x_early: 5.189781
+  two_season_prior_points_per_90_x_early: 4.200732
+  points_last_5_per_90_excl_null: 4.462810
+  points_last_7_per_90_excl_null: 5.545024
+  xgi_last_5_per_90_excl_null: 0.327273
+  xgi_last_7_per_90_excl_null: 0.279384
+  xgc_last_5_per_90_excl_null: 0.702893
+  xgc_last_7_per_90_excl_null: 1.013033
+  defcon_last_5_per_90_excl_null: 8.553719
+  defcon_last_7_per_90_excl_null: 8.104265
+
+Joško Gvardiol - TRAIN (25, 26) GW18 vs NFO (A) (exact model input row; target window 3/5 played)
+  form appearances available: 20
+  last_7 minutes played: 90,90,90,90,69,90,90
+  last_5 (should = points_last_5_per_90_excl_null): GW13:6pts/90m, GW14:0pts/90m, GW15:12pts/69m, GW16:8pts/90m, GW17:6pts/90m -> pp90=6.7133
+  last_7 (should = total_points_avg): GW11:6pts/90m, GW12:1pts/90m, GW13:6pts/90m, GW14:0pts/90m, GW15:12pts/69m, GW16:8pts/90m, GW17:6pts/90m -> pp90=5.7635
+  target (points/90 over window): 5.202312
+  --- model input features (exact) ---
+  matches_played: 13
+  is_gkp: 0
+  is_def: 1
+  is_mid: 0
+  is_att: 0
+  last_season_points_per_90: 4.200732
+  last_season_xgi_per_90: 0.206467
+  two_season_prior_points_per_90: 4.757198
+  two_season_prior_xgi_per_90: 0.202278
+  new_stats_included: 1
+  team_xg_next_5: 9.484175
+  team_xc_next_5: 3.786920
+  team_xg_last_5: 10.043670
+  team_xc_last_5: 4.014711
+  defcon_last_7_per_90_excl_null_x_non_att: 6.206897
+  team_xg_next_5_x_outfield: 9.484175
+  last_season_points_per_90_x_early: 0.481231
+  two_season_prior_points_per_90_x_early: 0.544979
+  points_last_5_per_90_excl_null: 6.713287
+  points_last_7_per_90_excl_null: 5.763547
+  xgi_last_5_per_90_excl_null: 0.329371
+  xgi_last_7_per_90_excl_null: 0.239409
+  xgc_last_5_per_90_excl_null: 1.252448
+  xgc_last_7_per_90_excl_null: 1.318227
+  defcon_last_5_per_90_excl_null: 6.503497
+  defcon_last_7_per_90_excl_null: 6.206897
+=== End sample columns ===
+
+
+=== Sample minutes model columns (validation) ===
+
+Joško Gvardiol (MCI) — PREDICT next match
+  target: (future — not known)
+  --- model input features (exact) ---
+  matches_played: 0
+  is_gkp: 0
+  is_def: 1
+  is_mid: 0
+  is_att: 0
+  early_x_last_season_mins: 0.400585
+  last_season_mins_per_match: 36.052632
+  two_season_prior_mins_per_match: 86.263158
+  last_season_fixture_frac: 1.000000
+  ls_mpm_x_new_club: 36.052632
+  mins_last_1: 6.263158
+  mins_last_2: 6.263158
+  mins_last_5: 6.263158
+  last_7_pts_per_appearance: 3.714286
+
+Joško Gvardiol — TRAIN (25, 26) GW38 vs AVL (H)
+  target (minutes): 12.000000
+  --- model input features (exact) ---
+  matches_played: 17
+  is_gkp: 0
+  is_def: 1
+  is_mid: 0
+  is_att: 0
+  early_x_last_season_mins: 0.056374
+  last_season_mins_per_match: 86.263158
+  two_season_prior_mins_per_match: 61.236842
+  last_season_fixture_frac: 1.000000
+  ls_mpm_x_new_club: 86.263158
+  mins_last_1: 0.000000
+  mins_last_2: 28.500000
+  mins_last_5: 11.400000
+  last_7_pts_per_appearance: 5.285714
+=== End sample minutes columns ===
+

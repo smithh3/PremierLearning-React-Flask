@@ -63,9 +63,14 @@ def _float(value: object, default: float = 0.0) -> float:
 
 
 # Historical predict only: still train on everyone. Skip rest-of-season
-# inference for players who barely featured that season.
+# inference for players who had barely featured by the deadline: no minutes in
+# the last HIST_PREDICT_RECENT_GWS gameweeks and, over last season plus this
+# season so far, <=3 appearances or <=20 points. Players with no last-season
+# record are kept until HIST_PREDICT_RECENT_GWS gameweeks have been played,
+# since nothing yet says they will not play.
 HIST_PREDICT_SKIP_MAX_APPS = 3
 HIST_PREDICT_SKIP_MAX_POINTS = 20.0
+HIST_PREDICT_RECENT_GWS = 5
 
 
 def season_usage_from_rows(player_rows):
@@ -87,6 +92,17 @@ def skip_historical_predict_for_season_usage(appearances, points) -> bool:
         int(appearances or 0) <= HIST_PREDICT_SKIP_MAX_APPS
         or float(points or 0) <= HIST_PREDICT_SKIP_MAX_POINTS
     )
+
+
+def skip_historical_predict_at_deadline(
+    gameweek, played_recently, has_last_season, appearances, points,
+) -> bool:
+    """Same thresholds as above, from usage known at the deadline only."""
+    if played_recently:
+        return False
+    if not has_last_season and int(gameweek) - 1 < HIST_PREDICT_RECENT_GWS:
+        return False
+    return skip_historical_predict_for_season_usage(appearances, points)
 
 
 @dataclass(frozen=True)
@@ -142,6 +158,8 @@ class VaastavSeasonData:
         self.player_rows = self._load_player_rows()
         self.gw_updates = self._load_gw_updates()
         self._season_usage_totals = None
+        self._previous_usage_by_code = None
+        self._predict_skips = {}
 
     def _load_player_rows(self) -> Dict[int, List[dict]]:
         result: Dict[int, List[dict]] = {}
@@ -169,6 +187,57 @@ class VaastavSeasonData:
         if self._season_usage_totals is None:
             self._season_usage_totals = season_usage_from_rows(self.player_rows)
         return self._season_usage_totals
+
+    def previous_season_usage_by_code(self):
+        """Last season's appearances and points per player code; {} if no data."""
+        if self._previous_usage_by_code is None:
+            usage = {}
+            try:
+                previous = VaastavSeasonData(self.season_start_year - 1, self.data_root)
+            except (FileNotFoundError, ValueError):
+                previous = None
+            if previous is not None:
+                for player_id, (apps, points) in previous.season_usage_totals().items():
+                    raw = previous.players_raw.get(player_id)
+                    if raw is None or raw.get('code') in (None, ''):
+                        continue
+                    code = int(float(raw['code']))
+                    old_apps, old_points = usage.get(code, (0, 0.0))
+                    usage[code] = (old_apps + apps, old_points + points)
+            self._previous_usage_by_code = usage
+        return self._previous_usage_by_code
+
+    def predict_skips_at(self, gameweek: int):
+        """Player ids skipped for prediction at this deadline (see HIST_PREDICT_*)."""
+        gameweek = int(gameweek)
+        if gameweek not in self._predict_skips:
+            previous = self.previous_season_usage_by_code()
+            first_recent = gameweek - HIST_PREDICT_RECENT_GWS
+            skipped = set()
+            for player_id, raw in self.players_raw.items():
+                apps = 0
+                points = 0.0
+                played_recently = False
+                for row in self.player_rows.get(player_id, ()):
+                    gw = coerce_optional_int(row.get('round'))
+                    if gw is None or gw >= gameweek:
+                        continue
+                    minutes = _float(row.get('minutes'))
+                    if minutes > 0:
+                        apps += 1
+                        played_recently = played_recently or gw >= first_recent
+                    points += _float(row.get('total_points'))
+                code = coerce_optional_int(raw.get('code'))
+                last = previous.get(code) if code is not None else None
+                if last is not None:
+                    apps += last[0]
+                    points += last[1]
+                if skip_historical_predict_at_deadline(
+                    gameweek, played_recently, last is not None, apps, points,
+                ):
+                    skipped.add(int(player_id))
+            self._predict_skips[gameweek] = skipped
+        return self._predict_skips[gameweek]
 
     def _load_gw_updates(self) -> Dict[int, Dict[int, dict]]:
         updates: Dict[int, Dict[int, dict]] = {}
@@ -449,9 +518,8 @@ class HistoricalCurrentSeason(Season):
             )
             player.historical_selectable = bool(element['can_select'])
             player.availability_mode = self.availability_mode
-            apps, points = self.source.season_usage_totals().get(player_id, (0, 0))
-            player.skip_historical_predict = skip_historical_predict_for_season_usage(
-                apps, points
+            player.skip_historical_predict = (
+                player_id in self.source.predict_skips_at(self.as_of_gameweek)
             )
             self.players.append(player)
         mark_most_expensive_in_position(self.players)

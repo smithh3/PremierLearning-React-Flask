@@ -51,8 +51,14 @@ class FixedSeasonModels:
         points_minutes_weight=False,
         use_horizon_model=True,
         points_reps=1,
+        points_tier_weight=False,
     ):
-        """Train on pre-season data only; the supplied runner must be at GW1."""
+        """Train on pre-season data only; the supplied runner must be at GW1.
+
+        points_tier_weight weights h1 points rows by the blended score bands of
+        the fixture's actual points (the v2 tier weighting), and horizon rows by
+        the same bands applied to the window's points per 90.
+        """
         if int(runner.as_of_gameweek) != 1:
             raise ValueError('Fixed season models must be fitted from the GW1 cutoff')
         print('Training one fixed model bundle for the simulated season...')
@@ -96,6 +102,14 @@ class FixedSeasonModels:
                 'h1 points: minutes/90 sample weights on %s rows'
                 % len(valid_clean_matches)
             )
+        if points_tier_weight:
+            from premierlearning.learning_v2.score import blended_tier_weights
+            tiers = blended_tier_weights([
+                float(match.get('game_stats', {}).get('total_points', 0) or 0)
+                for match in valid_clean_matches
+            ]).astype(float)
+            sample_weight = tiers if sample_weight is None else sample_weight * tiers
+            print('h1 points: blended score-band weights on %s rows' % len(valid_clean_matches))
         points_reps = max(1, int(points_reps))
         if poisson:
             print(
@@ -143,6 +157,13 @@ class FixedSeasonModels:
                     'h1 points stay 1 fit'
                     % (runner.horizon_gameweeks, horizon_reps, HORIZON_REPS_FLAG)
                 )
+            horizon_weight = None
+            if points_tier_weight:
+                from premierlearning.learning_v2.score import blended_tier_weights
+                horizon_weight = blended_tier_weights(
+                    horizon_training['labels'].reshape(-1)
+                ).astype(float)
+                print('horizon: blended score-band weights on window points per 90')
             horizon_model = fit_reusable_predictor(
                 horizon_training['player_clean'],
                 get_input_keys('total_points'),
@@ -151,6 +172,7 @@ class FixedSeasonModels:
                 output_learn=horizon_training['labels'],
                 log_targets=True,
                 reps=horizon_reps,
+                sample_weight=horizon_weight,
             )
         else:
             print(

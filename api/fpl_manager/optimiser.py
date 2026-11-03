@@ -63,7 +63,7 @@ class GreedyOptimiser:
             return self._rebuild(state, pool, gameweek), chip
         return self._transfers(state, pool, gameweek, transfer_count(action)), None
 
-    def transfer_gains(self, state: SquadState, pool: PredictionPool, gameweek: int) -> dict:
+    def transfer_gains(self, state: SquadState, pool: PredictionPool, gameweek: int, played=None) -> dict:
         """Gain over holding, minus a hit once, summed across the horizon."""
         gains = {}
         for count in (1, 2, 3, 4, 5):

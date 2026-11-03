@@ -1,0 +1,61 @@
+Model evaluation against v1, seasons 25, 38 origins
+Scores are in noise units: 1.0 = one bootstrap standard deviation of that metric for v1.
+Positive is better than v1; v1 scores 0 by definition.
+
+model               total       95% interval   P(>0)  overall   future    calib  ranking
+v1_cal              +2.59       [1.66, 2.99]    1.00    +2.16    +1.33   +11.71    -0.10
+v2_smooth_cal       +1.92       [0.80, 2.60]    1.00    +1.76    +0.49   +10.75    -0.72
+v2_smooth           -0.16      [-1.00, 0.30]    0.14    +0.19    -0.52    +1.13    -0.71
+v2_tier             -0.41      [-1.22, 0.03]    0.04    -0.11    -0.30    -0.97    -0.46
+v2_huber            -2.59     [-3.43, -2.08]    0.00    -2.57    -2.45    -8.70    -0.09
+v2_huber_seed2      -2.76     [-3.64, -2.22]    0.00    -2.81    -2.22    -8.38    -0.69
+
+Training-noise floor: v2_huber and v2_huber_seed2 differ only by seed and are 0.17 apart.
+Treat smaller differences between models as noise.
+
+What drove each score:
+  v1_cal: helped most by calibration +1.76, overall +0.54; regressed on 2A_actual (-1.80 sd)
+    v1 plus the same rolling linear calibration.
+  v2_smooth_cal: helped most by calibration +1.61, overall +0.44; regressed on 2A_actual (-2.65 sd), single_gw_rank (-1.49 sd)
+    v2_smooth plus a rolling linear calibration fitted before each deadline.
+  v2_smooth: helped most by calibration +0.17, 2A_predicted +0.12; regressed on 2A_actual (-4.08 sd), single_gw_rank (-1.49 sd)
+    v2, smooth weights 1 + 1.4 (points / 10)^1.5.
+  v2_tier: helped most by 2A_predicted +0.22, 2B_predicted +0.17; regressed on 2A_actual (-5.52 sd), 2B_actual (-1.18 sd), single_gw_rank (-1.16 sd)
+    v2, the current blended score-band weights.
+  v2_huber: helped most by 2B_predicted +0.24, 2A_predicted +0.16; regressed on overall (-2.57 sd), 2A_actual (-11.54 sd), 2B_actual (-2.94 sd), calibration (-8.70 sd)
+    v2, Huber on raw points, every fixture weighted equally.
+  v2_huber_seed2: helped most by 2B_predicted +0.27, 2A_predicted +0.18; regressed on overall (-2.81 sd), 2A_actual (-11.39 sd), 2B_actual (-3.01 sd), calibration (-8.38 sd)
+    v2_huber with another seed: the training-noise reference.
+
+By season (total):
+  v1_cal           25 +2.59
+  v2_smooth_cal    25 +1.92
+  v2_smooth        25 -0.16
+  v2_tier          25 -0.41
+  v2_huber         25 -2.59
+  v2_huber_seed2   25 -2.76
+
+Non-overlapping 5-GW origins only (sensitivity check, same sigmas):
+  v1_cal           total +2.66, future +1.67, ranking -0.05
+  v2_smooth_cal    total +2.07, future +1.01, ranking -0.33
+  v2_smooth        total +0.17, future -0.00, ranking -0.36
+  v2_tier          total -0.17, future +0.03, ranking -0.10
+  v2_huber         total -2.59, future -2.68, ranking +0.35
+  v2_huber_seed2   total -2.35, future -1.53, ranking -0.10
+
+Guardrail flags:
+  v1_cal: overall_mae is 8.3% worse than v1
+  v2_smooth_cal: overall_mae is 8.2% worse than v1
+  v2_smooth: overpredicts its own top_5 picks by 5.74 points over 5 GWs
+  v2_huber: overall_mse is 5.7% worse than v1
+  v2_huber_seed2: overall_mse is 6.3% worse than v1
+
+Raw metrics (pooled):
+  model             overall_mse  overall_mae overall_bias    2A_actual 2A_predicted    2B_actual 2B_predicted calibration_ calibration_ spearman_sin spearman_fiv
+  v1                      7.528        1.712       -0.467       15.408        9.457        4.130        3.057        0.618        0.709        0.553        0.560
+  v1_cal                  7.166        1.855       -0.009       16.166        7.847        4.180        2.841        0.216        1.152        0.553        0.558
+  v2_smooth_cal           7.233        1.852       -0.051       16.520        8.440        4.195        2.865        0.249        1.202        0.531        0.561
+  v2_smooth               7.496        1.674       -0.579       17.125        8.863        4.237        2.927        0.579        0.887        0.531        0.561
+  v2_tier                 7.547        1.657       -0.651       17.728        8.385        4.290        2.810        0.651        0.936        0.535        0.564
+  v2_huber                7.959        1.618       -0.916       20.258        8.685        4.531        2.716        0.916        1.239        0.544        0.565
+  v2_huber_seed2          8.000        1.620       -0.905       20.198        8.589        4.540        2.673        0.905        1.226        0.540        0.553

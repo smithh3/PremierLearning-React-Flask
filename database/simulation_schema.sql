@@ -179,3 +179,21 @@ create index if not exists idx_manager_exact_lookup
     on manager_exact_cache (
         prediction_snapshot_id, gameweek, transfer_count, bank
     );
+
+-- One stored answer covers a range of money. A wildcard or free-hit squad
+-- solved with budget `upper_bound` that costs `lower_bound` is also the best
+-- squad for any budget in between. A transfer plan solved with bank
+-- `upper_bound` that needs `lower_bound` is the best plan for any bank in
+-- between. The key holds everything else that changes the answer.
+create table if not exists manager_range_cache (
+    id integer primary key autoincrement not null,
+    cache_key varchar(64) not null,
+    lower_bound integer not null,
+    upper_bound integer not null,
+    result_json text not null,
+    solve_ms real not null default 0,
+    created_at varchar(64) not null default current_timestamp
+);
+
+create index if not exists idx_manager_range_lookup
+    on manager_range_cache (cache_key, lower_bound, upper_bound);

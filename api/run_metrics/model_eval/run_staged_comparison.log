@@ -1,0 +1,461 @@
+ 
+Queued 03/11/2026 10:46:39.91, waiting for process 9660 
+Testing 03/11/2026 19:06:35.66 
+.......<frozen importlib._bootstrap>:219: RuntimeWarning: numpy.ufunc size changed, may indicate binary incompatibility. Expected 216 from C header, got 232 from PyObject
+C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\venv\lib\site-packages\sklearn\utils\fixes.py:28: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  from pkg_resources import parse_version  # type: ignore
+C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\venv\lib\site-packages\pkg_resources\__init__.py:3154: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('mpl_toolkits')`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+<frozen importlib._bootstrap>:219: RuntimeWarning: numpy.ufunc size changed, may indicate binary incompatibility. Expected 216 from C header, got 232 from PyObject
+2026-11-03 19:06:40.572515: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: SSE SSE2 SSE3 SSE4.1 SSE4.2 AVX AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+learning_v2 b1_test: loss=huber, every fixture weighted equally, optimizer=AdamW, epochs=1, train=8, early stop on unweighted val RMSE, patience=20% of epochs run (at least 15, at most 40)
+learning_v2 minutes head: bands, training only, loss weight 0.1
+2/2 - 10s - loss: 1.7981 - points_loss: 0.9318 - minutes_loss: 1.3908 - points_orig_rmse: 3.3434 - points_orig_mae: 2.4448 - 10s/epoch - 5s/step
+........learning_v2 simple_h1: loss=huber, every fixture weighted equally, optimizer=AdamW, epochs=1, train=12, early stop on unweighted val RMSE, patience=20% of epochs run (at least 15, at most 40)
+1/1 - 7s - loss: 0.9515 - orig_rmse: 2.4232 - orig_mae: 2.0096 - val_loss: 1.0452 - val_orig_rmse: 2.6977 - val_orig_mae: 2.2561 - lr: 5.0000e-04 - 7s/epoch - 7s/step
+{'test_loss': 0.8219987154006958, 'test_metrics': [2.096365451812744, 1.6310651302337646]}
+learning_v2 smearing (global, 8 held-out rows): S=2.641; by level -0.0->2.64
+Held-out points by actual score (weights: low 0-2 x1, medium 3-5 x2, high 6-9 x4, very high 10+ x8)
+  weighted MAE 1.275    unweighted MAE 1.125    (lower is better, bias = predicted - actual)
+  tier             n     MAE   actual  predicted     bias
+  low              6   0.875     1.00       1.63    +0.63
+  medium           2   1.875     3.50       1.63    -1.87
+  high             0       -        -          -        -
+  very_high        0       -        -          -        -
+
+...learning_v2 simple_h1: loss=huber, every fixture weighted equally, optimizer=AdamW, epochs=1, train=12, early stop on unweighted val RMSE, patience=20% of epochs run (at least 15, at most 40)
+learning_v2 minutes head: bands, training only, loss weight 0.1
+1/1 - 7s - loss: 1.0515 - points_loss: 0.6082 - minutes_loss: 1.0950 - points_orig_rmse: 2.4079 - points_orig_mae: 1.9941 - val_loss: 1.1448 - val_points_loss: 0.7018 - val_minutes_loss: 1.1054 - val_points_orig_rmse: 2.6818 - val_points_orig_mae: 2.2435 - lr: 5.0000e-04 - 7s/epoch - 7s/step
+{'test_loss': 0.9259417653083801, 'test_metrics': [0.4824448525905609, 1.1104387044906616, 2.0816171169281006, 1.618532657623291]}
+learning_v2 smearing (global, 8 held-out rows): S=2.591; by level 0.0->2.63, 0.0->2.47
+Held-out points by actual score (weights: low 0-2 x1, medium 3-5 x2, high 6-9 x4, very high 10+ x8)
+  weighted MAE 1.275    unweighted MAE 1.125    (lower is better, bias = predicted - actual)
+  tier             n     MAE   actual  predicted     bias
+  low              6   0.875     1.00       1.63    +0.63
+  medium           2   1.875     3.50       1.63    -1.87
+  high             0       -        -          -        -
+  very_high        0       -        -          -        -
+
+learning_v2 simple_h1: loss=huber, every fixture weighted equally, optimizer=AdamW, epochs=1, train=12, early stop on unweighted val RMSE, patience=20% of epochs run (at least 15, at most 40)
+learning_v2 minutes head: log, training only, loss weight 1.0
+1/1 - 7s - loss: 1.0646 - points_loss: 0.6232 - minutes_loss: 0.0897 - points_orig_rmse: 2.4207 - points_orig_mae: 2.0066 - val_loss: 1.1437 - val_points_loss: 0.7176 - val_minutes_loss: 0.0758 - val_points_orig_rmse: 2.6948 - val_points_orig_mae: 2.2526 - lr: 5.0000e-04 - 7s/epoch - 7s/step
+{'test_loss': 0.8722052574157715, 'test_metrics': [0.49510738253593445, 0.02682701125741005, 2.0937001705169678, 1.6276378631591797]}
+WARNING:tensorflow:5 out of the last 7 calls to <function Model.make_predict_function.<locals>.predict_function at 0x000001797F06A310> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+learning_v2 smearing (global, 8 held-out rows): S=2.632; by level -0.0->2.67, -0.0->2.51
+Held-out points by actual score (weights: low 0-2 x1, medium 3-5 x2, high 6-9 x4, very high 10+ x8)
+  weighted MAE 1.275    unweighted MAE 1.125    (lower is better, bias = predicted - actual)
+  tier             n     MAE   actual  predicted     bias
+  low              6   0.875     1.00       1.63    +0.63
+  medium           2   1.875     3.50       1.63    -1.87
+  high             0       -        -          -        -
+  very_high        0       -        -          -        -
+
+....learning_v2 simple_h1: loss=poisson, every fixture weighted equally, optimizer=AdamW, epochs=1, train=6, early stop on unweighted val RMSE, patience=20% of epochs run (at least 15, at most 40)
+WARNING:tensorflow:5 out of the last 6 calls to <function Model.make_train_function.<locals>.train_function at 0x000001790B178310> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+1/1 - 6s - loss: 2.3229 - root_mean_squared_error: 5.1454 - mean_absolute_error: 3.2697 - 6s/epoch - 6s/step
+.....learning_v2 simple_h1_teams_recency: loss=huber, every fixture weighted equally, optimizer=AdamW, epochs=1, train=8, early stop on unweighted val RMSE, patience=20% of epochs run (at least 15, at most 40)
+learning_v2 minutes head: bands, training only, loss weight 0.1
+WARNING:tensorflow:6 out of the last 7 calls to <function Model.make_train_function.<locals>.train_function at 0x000001797F288040> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+2/2 - 13s - loss: 1.3932 - points_loss: 0.6247 - minutes_loss: 1.2318 - points_orig_rmse: 3.1589 - points_orig_mae: 2.2120 - 13s/epoch - 6s/step
+WARNING:tensorflow:6 out of the last 9 calls to <function Model.make_predict_function.<locals>.predict_function at 0x000001797CA61310> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+learning_v2 simple_h1_teams_recency_nodecay: loss=huber, every fixture weighted equally, optimizer=AdamW, epochs=1, train=8, early stop on unweighted val RMSE, patience=20% of epochs run (at least 15, at most 40)
+learning_v2 minutes head: bands, training only, loss weight 0.1
+2/2 - 13s - loss: 1.8880 - points_loss: 1.1708 - minutes_loss: 0.9223 - points_orig_rmse: 3.3215 - points_orig_mae: 2.6508 - 13s/epoch - 6s/step
+...............learning_v2 simple_h1_teams_score: loss=huber, every fixture weighted equally, optimizer=AdamW, epochs=1, train=8, early stop on unweighted val RMSE, patience=20% of epochs run (at least 15, at most 40)
+learning_v2 minutes head: bands, training only, loss weight 0.1
+learning_v2 score head: team goals for and against, Poisson, loss weight 0.1
+2/2 - 11s - loss: 1.6621 - points_loss: 0.7894 - minutes_loss: 0.8815 - score_loss: 0.9680 - points_orig_rmse: 3.3452 - points_orig_mae: 2.3395 - 11s/epoch - 6s/step
+learning_v2 simple_h1_teams_scoreline: loss=huber, every fixture weighted equally, optimizer=AdamW, epochs=1, train=8, early stop on unweighted val RMSE, patience=20% of epochs run (at least 15, at most 40)
+learning_v2 minutes head: bands, training only, loss weight 0.1
+learning_v2 score head: team goals for and against, Poisson, loss weight 0.1
+learning_v2 points structure: scoreline
+2/2 - 12s - loss: 1.0982 - points_loss: 0.2136 - minutes_loss: 1.2151 - score_loss: 0.8667 - points_orig_rmse: 2.3083 - points_orig_mae: 1.5788 - 12s/epoch - 6s/step
+learning_v2 simple_h1_teams_scoreline: loss=huber, every fixture weighted equally, optimizer=AdamW, epochs=1, train=8, early stop on unweighted val RMSE, patience=20% of epochs run (at least 15, at most 40)
+learning_v2 score head: team goals for and against, Poisson, loss weight 0.1
+learning_v2 points structure: scoreline
+2/2 - 12s - loss: 0.8990 - points_loss: 0.1600 - score_loss: 0.6650 - points_orig_rmse: 2.0804 - points_orig_mae: 1.2574 - 12s/epoch - 6s/step
+........learning_v2 simple_h1_teams_staged: loss=huber, every fixture weighted equally, optimizer=AdamW, epochs=1, train=8, early stop on unweighted val RMSE, patience=20% of epochs run (at least 15, at most 40)
+learning_v2 minutes head: bands, training only, loss weight 0.1
+learning_v2 score head: team goals for and against, goal bands 0-4+, one weight per team fixture, loss weight 0.1
+learning_v2 points structure: staged
+2/2 - 12s - loss: 1.0644 - points_loss: 0.1633 - minutes_loss: 0.9092 - score_loss: 1.7730 - points_orig_rmse: 2.2724 - points_orig_mae: 1.4830 - 12s/epoch - 6s/step
+..learning_v2 simple_h1_teams_attn: loss=huber, every fixture weighted equally, optimizer=AdamW, epochs=1, train=8, early stop on unweighted val RMSE, patience=20% of epochs run (at least 15, at most 40)
+2/2 - 10s - loss: 0.9385 - orig_rmse: 2.9310 - orig_mae: 2.0091 - 10s/epoch - 5s/step
+........learning_v2 simple_h1_teams: loss=huber, every fixture weighted equally, optimizer=AdamW, epochs=2, train=24, early stop on unweighted val RMSE, patience=20% of epochs run (at least 15, at most 40)
+Epoch 1/2
+3/3 - 13s - loss: 1.0831 - orig_rmse: 1.5569 - orig_mae: 1.1587 - val_loss: 1.4000 - val_orig_rmse: 2.4423 - val_orig_mae: 2.4005 - lr: 5.0000e-04 - 13s/epoch - 4s/step
+Epoch 2/2
+3/3 - 0s - loss: 0.9909 - orig_rmse: 1.4726 - orig_mae: 1.0920 - val_loss: 1.2349 - val_orig_rmse: 2.2989 - val_orig_mae: 2.2596 - lr: 5.0000e-04 - 155ms/epoch - 52ms/step
+WARNING:tensorflow:5 out of the last 9 calls to <function Model.make_test_function.<locals>.test_function at 0x00000179041403A0> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+{'test_loss': 1.1882085800170898, 'test_metrics': [2.187150239944458, 1.8360391855239868]}
+learning_v2 smearing (global, 6 held-out rows): S=2.821; by level -0.1->2.50, 0.1->3.14
+Held-out points by actual score (weights: low 0-2 x1, medium 3-5 x2, high 6-9 x4, very high 10+ x8)
+  weighted MAE 1.114    unweighted MAE 1.107    (lower is better, bias = predicted - actual)
+  tier             n     MAE   actual  predicted     bias
+  low              3   1.086     0.67       1.75    +1.09
+  medium           3   1.127     3.00       1.87    -1.13
+  high             0       -        -          -        -
+  very_high        0       -        -          -        -
+
+learning_v2 simple_h1_teams: loss=huber, every fixture weighted equally, optimizer=AdamW, epochs=2, train=18, early stop on unweighted val RMSE, patience=20% of epochs run (at least 15, at most 40)
+Epoch 1/2
+WARNING:tensorflow:6 out of the last 10 calls to <function Model.make_test_function.<locals>.test_function at 0x0000017919EE1F70> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+3/3 - 13s - loss: 1.0739 - orig_rmse: 1.7645 - orig_mae: 1.4477 - val_loss: 1.2781 - val_orig_rmse: 2.1913 - val_orig_mae: 1.8939 - lr: 5.0000e-04 - 13s/epoch - 4s/step
+Epoch 2/2
+3/3 - 0s - loss: 0.9722 - orig_rmse: 1.6655 - orig_mae: 1.3413 - val_loss: 1.2186 - val_orig_rmse: 2.1538 - val_orig_mae: 1.9319 - lr: 5.0000e-04 - 138ms/epoch - 46ms/step
+{'test_loss': 0.8445479869842529, 'test_metrics': [1.3860384225845337, 0.9439799189567566]}
+learning_v2 smearing (global, 6 held-out rows): S=1.819; by level -0.1->1.64, 0.0->2.39, 0.8->1.42
+Held-out points by actual score (weights: low 0-2 x1, medium 3-5 x2, high 6-9 x4, very high 10+ x8)
+  weighted MAE 1.069    unweighted MAE 0.897    (lower is better, bias = predicted - actual)
+  tier             n     MAE   actual  predicted     bias
+  low              5   0.657     0.80       1.32    +0.52
+  medium           1   2.097     3.00       0.90    -2.10
+  high             0       -        -          -        -
+  very_high        0       -        -          -        -
+
+..learning_v2 simple_h1_teams: loss=huber, every fixture weighted equally, optimizer=AdamW, epochs=1, train=8, early stop on unweighted val RMSE, patience=20% of epochs run (at least 15, at most 40)
+learning_v2 minutes head: bands, training only, loss weight 0.1
+2/2 - 11s - loss: 2.2469 - points_loss: 1.5237 - minutes_loss: 1.6737 - points_orig_rmse: 3.6340 - points_orig_mae: 2.8164 - 11s/epoch - 6s/step
+.........................................
+----------------------------------------------------------------------
+Ran 103 tests in 230.830s
+
+OK
+Started 03/11/2026 19:10:28.41, 2025/26 only 
+
+=== v2_log_minbands_teams_staged ===
+C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\venv\Scripts\python.exe -m simulation.model_eval build v2_log_minbands_teams_staged --seasons 25
+Building v2_log_minbands_teams_staged: --learning-v2 --train-once-per-season --points-reps 1 --v2-weighting none --v2-loss huber --v2-smear global --v2-minutes-head 0.1 --v2-minutes-target bands --model-plan simple_h1_teams_staged --seasons 25 --name eval-v2_log_minbands_teams_staged
+Using prediction set 50; existing season snapshots are kept
+Training one fixed learning_v2 simple_h1_teams_staged model for the simulated season...
+  167327 train rows, 2119 players, 30 teams (vocab frozen)
+learning_v2 simple_h1_teams_staged: loss=huber, every fixture weighted equally, optimizer=AdamW, epochs=500, train=133861, early stop on unweighted val RMSE, patience=20% of epochs run (at least 15, at most 40)
+learning_v2 minutes head: bands, training only, loss weight 0.1
+learning_v2 score head: team goals for and against, goal bands 0-4+, one weight per team fixture, loss weight 0.1
+learning_v2 points structure: staged
+Epoch 1/500
+3347/3347 - 277s - loss: 0.5392 - points_loss: 0.1484 - minutes_loss: 0.6389 - score_loss: 1.4215 - points_orig_rmse: 2.1696 - points_orig_mae: 1.0459 - val_loss: 0.3679 - val_points_loss: 0.1477 - val_minutes_loss: 0.5929 - val_score_loss: 1.4147 - val_points_orig_rmse: 2.0507 - val_points_orig_mae: 1.0673 - lr: 5.0000e-04 - 277s/epoch - 83ms/step
+Epoch 2/500
+3347/3347 - 254s - loss: 0.3466 - points_loss: 0.1321 - minutes_loss: 0.5720 - score_loss: 1.4144 - points_orig_rmse: 2.1090 - points_orig_mae: 0.9909 - val_loss: 0.3399 - val_points_loss: 0.1290 - val_minutes_loss: 0.5566 - val_score_loss: 1.4167 - val_points_orig_rmse: 2.0732 - val_points_orig_mae: 0.9583 - lr: 5.0000e-04 - 254s/epoch - 76ms/step
+Epoch 3/500
+3347/3347 - 254s - loss: 0.3372 - points_loss: 0.1277 - minutes_loss: 0.5511 - score_loss: 1.4133 - points_orig_rmse: 2.0911 - points_orig_mae: 0.9752 - val_loss: 0.3384 - val_points_loss: 0.1273 - val_minutes_loss: 0.5776 - val_score_loss: 1.4137 - val_points_orig_rmse: 2.0883 - val_points_orig_mae: 0.9425 - lr: 5.0000e-04 - 254s/epoch - 76ms/step
+Epoch 4/500
+3347/3347 - 253s - loss: 0.3330 - points_loss: 0.1259 - minutes_loss: 0.5426 - score_loss: 1.4118 - points_orig_rmse: 2.0817 - points_orig_mae: 0.9691 - val_loss: 0.3443 - val_points_loss: 0.1316 - val_minutes_loss: 0.5976 - val_score_loss: 1.4162 - val_points_orig_rmse: 2.1529 - val_points_orig_mae: 0.9355 - lr: 5.0000e-04 - 253s/epoch - 75ms/step
+Epoch 5/500
+3347/3347 - 251s - loss: 0.3305 - points_loss: 0.1248 - minutes_loss: 0.5377 - score_loss: 1.4101 - points_orig_rmse: 2.0763 - points_orig_mae: 0.9651 - val_loss: 0.3323 - val_points_loss: 0.1267 - val_minutes_loss: 0.5355 - val_score_loss: 1.4146 - val_points_orig_rmse: 2.0313 - val_points_orig_mae: 0.9590 - lr: 5.0000e-04 - 251s/epoch - 75ms/step
+Epoch 6/500
+3347/3347 - 250s - loss: 0.3290 - points_loss: 0.1243 - minutes_loss: 0.5357 - score_loss: 1.4077 - points_orig_rmse: 2.0725 - points_orig_mae: 0.9625 - val_loss: 0.3311 - val_points_loss: 0.1260 - val_minutes_loss: 0.5451 - val_score_loss: 1.4061 - val_points_orig_rmse: 2.0580 - val_points_orig_mae: 0.9410 - lr: 5.0000e-04 - 250s/epoch - 75ms/step
+Epoch 7/500
+3347/3347 - 258s - loss: 0.3277 - points_loss: 0.1238 - minutes_loss: 0.5335 - score_loss: 1.4055 - points_orig_rmse: 2.0713 - points_orig_mae: 0.9605 - val_loss: 0.3302 - val_points_loss: 0.1263 - val_minutes_loss: 0.5372 - val_score_loss: 1.4061 - val_points_orig_rmse: 2.0575 - val_points_orig_mae: 0.9641 - lr: 5.0000e-04 - 258s/epoch - 77ms/step
+Epoch 8/500
+3347/3347 - 252s - loss: 0.3263 - points_loss: 0.1231 - minutes_loss: 0.5319 - score_loss: 1.4023 - points_orig_rmse: 2.0651 - points_orig_mae: 0.9574 - val_loss: 0.3281 - val_points_loss: 0.1251 - val_minutes_loss: 0.5328 - val_score_loss: 1.3998 - val_points_orig_rmse: 2.0240 - val_points_orig_mae: 0.9539 - lr: 5.0000e-04 - 252s/epoch - 75ms/step
+Epoch 9/500
+3347/3347 - 254s - loss: 0.3257 - points_loss: 0.1229 - minutes_loss: 0.5309 - score_loss: 1.3994 - points_orig_rmse: 2.0648 - points_orig_mae: 0.9568 - val_loss: 0.3398 - val_points_loss: 0.1304 - val_minutes_loss: 0.5961 - val_score_loss: 1.3979 - val_points_orig_rmse: 2.0376 - val_points_orig_mae: 0.9454 - lr: 5.0000e-04 - 254s/epoch - 76ms/step
+Epoch 10/500
+3347/3347 - 255s - loss: 0.3252 - points_loss: 0.1229 - minutes_loss: 0.5301 - score_loss: 1.3970 - points_orig_rmse: 2.0638 - points_orig_mae: 0.9561 - val_loss: 0.3283 - val_points_loss: 0.1241 - val_minutes_loss: 0.5472 - val_score_loss: 1.3978 - val_points_orig_rmse: 2.0450 - val_points_orig_mae: 0.9465 - lr: 5.0000e-04 - 255s/epoch - 76ms/step
+Epoch 11/500
+3347/3347 - 254s - loss: 0.3246 - points_loss: 0.1227 - minutes_loss: 0.5288 - score_loss: 1.3953 - points_orig_rmse: 2.0639 - points_orig_mae: 0.9548 - val_loss: 0.3270 - val_points_loss: 0.1252 - val_minutes_loss: 0.5320 - val_score_loss: 1.3935 - val_points_orig_rmse: 2.0138 - val_points_orig_mae: 0.9667 - lr: 5.0000e-04 - 254s/epoch - 76ms/step
+Epoch 12/500
+3347/3347 - 251s - loss: 0.3240 - points_loss: 0.1224 - minutes_loss: 0.5288 - score_loss: 1.3933 - points_orig_rmse: 2.0605 - points_orig_mae: 0.9536 - val_loss: 0.3264 - val_points_loss: 0.1249 - val_minutes_loss: 0.5295 - val_score_loss: 1.3934 - val_points_orig_rmse: 2.0251 - val_points_orig_mae: 0.9665 - lr: 5.0000e-04 - 251s/epoch - 75ms/step
+Epoch 13/500
+3347/3347 - 254s - loss: 0.3232 - points_loss: 0.1219 - minutes_loss: 0.5276 - score_loss: 1.3921 - points_orig_rmse: 2.0599 - points_orig_mae: 0.9527 - val_loss: 0.3267 - val_points_loss: 0.1249 - val_minutes_loss: 0.5318 - val_score_loss: 1.3955 - val_points_orig_rmse: 2.0177 - val_points_orig_mae: 0.9638 - lr: 5.0000e-04 - 254s/epoch - 76ms/step
+Epoch 14/500
+3347/3347 - 272s - loss: 0.3228 - points_loss: 0.1218 - minutes_loss: 0.5273 - score_loss: 1.3908 - points_orig_rmse: 2.0575 - points_orig_mae: 0.9522 - val_loss: 0.3275 - val_points_loss: 0.1266 - val_minutes_loss: 0.5301 - val_score_loss: 1.3897 - val_points_orig_rmse: 2.0213 - val_points_orig_mae: 0.9652 - lr: 5.0000e-04 - 272s/epoch - 81ms/step
+Epoch 15/500
+3347/3347 - 310s - loss: 0.3223 - points_loss: 0.1216 - minutes_loss: 0.5266 - score_loss: 1.3896 - points_orig_rmse: 2.0572 - points_orig_mae: 0.9519 - val_loss: 0.3274 - val_points_loss: 0.1271 - val_minutes_loss: 0.5255 - val_score_loss: 1.3889 - val_points_orig_rmse: 2.0010 - val_points_orig_mae: 0.9714 - lr: 5.0000e-04 - 310s/epoch - 93ms/step
+Epoch 16/500
+3347/3347 - 292s - loss: 0.3222 - points_loss: 0.1217 - minutes_loss: 0.5258 - score_loss: 1.3885 - points_orig_rmse: 2.0570 - points_orig_mae: 0.9508 - val_loss: 0.3259 - val_points_loss: 0.1240 - val_minutes_loss: 0.5361 - val_score_loss: 1.3927 - val_points_orig_rmse: 2.0596 - val_points_orig_mae: 0.9352 - lr: 5.0000e-04 - 292s/epoch - 87ms/step
+Epoch 17/500
+3347/3347 - 257s - loss: 0.3218 - points_loss: 0.1215 - minutes_loss: 0.5251 - score_loss: 1.3872 - points_orig_rmse: 2.0563 - points_orig_mae: 0.9505 - val_loss: 0.3273 - val_points_loss: 0.1271 - val_minutes_loss: 0.5241 - val_score_loss: 1.3870 - val_points_orig_rmse: 2.0259 - val_points_orig_mae: 0.9655 - lr: 5.0000e-04 - 257s/epoch - 77ms/step
+Epoch 18/500
+3347/3347 - 249s - loss: 0.3216 - points_loss: 0.1215 - minutes_loss: 0.5252 - score_loss: 1.3848 - points_orig_rmse: 2.0572 - points_orig_mae: 0.9503 - val_loss: 0.3253 - val_points_loss: 0.1240 - val_minutes_loss: 0.5407 - val_score_loss: 1.3854 - val_points_orig_rmse: 2.0815 - val_points_orig_mae: 0.9408 - lr: 5.0000e-04 - 249s/epoch - 74ms/step
+Epoch 19/500
+3347/3347 - 250s - loss: 0.3210 - points_loss: 0.1211 - minutes_loss: 0.5241 - score_loss: 1.3821 - points_orig_rmse: 2.0534 - points_orig_mae: 0.9489 - val_loss: 0.3250 - val_points_loss: 0.1242 - val_minutes_loss: 0.5381 - val_score_loss: 1.3809 - val_points_orig_rmse: 2.0188 - val_points_orig_mae: 0.9505 - lr: 5.0000e-04 - 250s/epoch - 75ms/step
+Epoch 20/500
+3347/3347 - 251s - loss: 0.3205 - points_loss: 0.1209 - minutes_loss: 0.5236 - score_loss: 1.3801 - points_orig_rmse: 2.0524 - points_orig_mae: 0.9483 - val_loss: 0.3264 - val_points_loss: 0.1232 - val_minutes_loss: 0.5519 - val_score_loss: 1.3870 - val_points_orig_rmse: 2.0531 - val_points_orig_mae: 0.9217 - lr: 5.0000e-04 - 251s/epoch - 75ms/step
+Epoch 21/500
+3347/3347 - 253s - loss: 0.3204 - points_loss: 0.1208 - minutes_loss: 0.5238 - score_loss: 1.3782 - points_orig_rmse: 2.0517 - points_orig_mae: 0.9480 - val_loss: 0.3225 - val_points_loss: 0.1229 - val_minutes_loss: 0.5257 - val_score_loss: 1.3769 - val_points_orig_rmse: 2.0266 - val_points_orig_mae: 0.9379 - lr: 5.0000e-04 - 253s/epoch - 76ms/step
+Epoch 22/500
+3347/3347 - 251s - loss: 0.3199 - points_loss: 0.1207 - minutes_loss: 0.5228 - score_loss: 1.3765 - points_orig_rmse: 2.0510 - points_orig_mae: 0.9474 - val_loss: 0.3243 - val_points_loss: 0.1233 - val_minutes_loss: 0.5432 - val_score_loss: 1.3760 - val_points_orig_rmse: 2.0706 - val_points_orig_mae: 0.9384 - lr: 5.0000e-04 - 251s/epoch - 75ms/step
+Epoch 23/500
+3347/3347 - 252s - loss: 0.3194 - points_loss: 0.1203 - minutes_loss: 0.5204 - score_loss: 1.3761 - points_orig_rmse: 2.0508 - points_orig_mae: 0.9454 - val_loss: 0.3249 - val_points_loss: 0.1238 - val_minutes_loss: 0.5391 - val_score_loss: 1.3769 - val_points_orig_rmse: 2.0275 - val_points_orig_mae: 0.9518 - lr: 5.0000e-04 - 252s/epoch - 75ms/step
+Epoch 24/500
+3347/3347 - 250s - loss: 0.3154 - points_loss: 0.1176 - minutes_loss: 0.5126 - score_loss: 1.3727 - points_orig_rmse: 2.0341 - points_orig_mae: 0.9383 - val_loss: 0.3212 - val_points_loss: 0.1214 - val_minutes_loss: 0.5320 - val_score_loss: 1.3761 - val_points_orig_rmse: 2.0324 - val_points_orig_mae: 0.9286 - lr: 1.5000e-04 - 250s/epoch - 75ms/step
+Epoch 25/500
+3347/3347 - 249s - loss: 0.3147 - points_loss: 0.1174 - minutes_loss: 0.5111 - score_loss: 1.3722 - points_orig_rmse: 2.0342 - points_orig_mae: 0.9370 - val_loss: 0.3214 - val_points_loss: 0.1226 - val_minutes_loss: 0.5253 - val_score_loss: 1.3736 - val_points_orig_rmse: 2.0085 - val_points_orig_mae: 0.9444 - lr: 1.5000e-04 - 249s/epoch - 74ms/step
+Epoch 26/500
+3347/3347 - 250s - loss: 0.3144 - points_loss: 0.1173 - minutes_loss: 0.5105 - score_loss: 1.3717 - points_orig_rmse: 2.0320 - points_orig_mae: 0.9370 - val_loss: 0.3204 - val_points_loss: 0.1222 - val_minutes_loss: 0.5223 - val_score_loss: 1.3723 - val_points_orig_rmse: 2.0208 - val_points_orig_mae: 0.9425 - lr: 1.5000e-04 - 250s/epoch - 75ms/step
+Epoch 27/500
+3347/3347 - 251s - loss: 0.3142 - points_loss: 0.1172 - minutes_loss: 0.5096 - score_loss: 1.3715 - points_orig_rmse: 2.0331 - points_orig_mae: 0.9369 - val_loss: 0.3220 - val_points_loss: 0.1240 - val_minutes_loss: 0.5217 - val_score_loss: 1.3715 - val_points_orig_rmse: 2.0019 - val_points_orig_mae: 0.9512 - lr: 1.5000e-04 - 251s/epoch - 75ms/step
+Epoch 28/500
+3347/3347 - 258s - loss: 0.3140 - points_loss: 0.1172 - minutes_loss: 0.5097 - score_loss: 1.3713 - points_orig_rmse: 2.0314 - points_orig_mae: 0.9367 - val_loss: 0.3206 - val_points_loss: 0.1224 - val_minutes_loss: 0.5238 - val_score_loss: 1.3719 - val_points_orig_rmse: 2.0358 - val_points_orig_mae: 0.9418 - lr: 1.5000e-04 - 258s/epoch - 77ms/step
+Epoch 29/500
+3347/3347 - 254s - loss: 0.3135 - points_loss: 0.1169 - minutes_loss: 0.5079 - score_loss: 1.3712 - points_orig_rmse: 2.0302 - points_orig_mae: 0.9349 - val_loss: 0.3210 - val_points_loss: 0.1227 - val_minutes_loss: 0.5238 - val_score_loss: 1.3711 - val_points_orig_rmse: 2.0072 - val_points_orig_mae: 0.9431 - lr: 1.5000e-04 - 254s/epoch - 76ms/step
+Epoch 30/500
+learning_v2 early stop at epoch 30: best validation at epoch 15 (patience is 20% of epochs run, at least 15 and at most 40)
+3347/3347 - 254s - loss: 0.3135 - points_loss: 0.1169 - minutes_loss: 0.5079 - score_loss: 1.3709 - points_orig_rmse: 2.0308 - points_orig_mae: 0.9357 - val_loss: 0.3208 - val_points_loss: 0.1227 - val_minutes_loss: 0.5229 - val_score_loss: 1.3720 - val_points_orig_rmse: 2.0118 - val_points_orig_mae: 0.9460 - lr: 1.5000e-04 - 254s/epoch - 76ms/step
+{'test_loss': 0.32820266485214233, 'test_metrics': [0.12834522128105164, 0.5203388929367065, 1.3894500732421875, 2.0541534423828125, 0.9875221848487854]}
+learning_v2 smearing (global, 33466 held-out rows): S=1.080; by level 0.0->1.00, 0.1->1.02, 0.5->1.10, 1.6->1.13, 2.9->1.14
+Held-out points by actual score (weights: low 0-2 x1, medium 3-5 x2, high 6-9 x4, very high 10+ x8)
+  weighted MAE 2.323    unweighted MAE 1.065    (lower is better, bias = predicted - actual)
+  tier             n     MAE   actual  predicted     bias
+  low          28928   0.627     0.44       0.97    +0.53
+  medium        1792   1.454     3.74       2.55    -1.20
+  high          2123   4.217     6.98       2.76    -4.22
+  very_high      623   9.560    12.48       2.92    -9.56
+Held-out points by recent player level (mean points per gameweek over the previous 5, at least 3 gameweeks)
+  same bands: low under 3, medium 3-5, high 6-9, very high 10+
+  rows 31777, skipped 1689 with too little history    unweighted MAE 1.076
+  tier             n     MAE   actual  predicted     bias     form
+  low          25961   0.806     0.85       0.86    +0.01     0.69
+  medium        4946   2.175     2.99       2.75    -0.24     4.04
+  high           826   2.832     4.03       3.47    -0.56     7.05
+  very_high       44   3.715     5.34       3.95    -1.39    11.11
+
+Building prediction set 50: 25/26 GW1
+Persisted 18316 player-fixture predictions
+
+Building prediction set 50: 25/26 GW2
+Persisted 19573 player-fixture predictions
+
+Building prediction set 50: 25/26 GW3
+Persisted 19620 player-fixture predictions
+
+Building prediction set 50: 25/26 GW4
+Persisted 20230 player-fixture predictions
+
+Building prediction set 50: 25/26 GW5
+Persisted 19856 player-fixture predictions
+
+Building prediction set 50: 25/26 GW6
+Persisted 15411 player-fixture predictions
+
+Building prediction set 50: 25/26 GW7
+Persisted 15008 player-fixture predictions
+
+Building prediction set 50: 25/26 GW8
+Persisted 14384 player-fixture predictions
+
+Building prediction set 50: 25/26 GW9
+Persisted 13800 player-fixture predictions
+
+Building prediction set 50: 25/26 GW10
+Persisted 13485 player-fixture predictions
+
+Building prediction set 50: 25/26 GW11
+Persisted 13132 player-fixture predictions
+
+Building prediction set 50: 25/26 GW12
+Persisted 12609 player-fixture predictions
+
+Building prediction set 50: 25/26 GW13
+Persisted 12116 player-fixture predictions
+
+Building prediction set 50: 25/26 GW14
+Persisted 11500 player-fixture predictions
+
+Building prediction set 50: 25/26 GW15
+Persisted 11088 player-fixture predictions
+
+Building prediction set 50: 25/26 GW16
+Persisted 10580 player-fixture predictions
+
+Building prediction set 50: 25/26 GW17
+Persisted 10164 player-fixture predictions
+
+Building prediction set 50: 25/26 GW18
+Persisted 9891 player-fixture predictions
+
+Building prediction set 50: 25/26 GW19
+Persisted 9520 player-fixture predictions
+
+Building prediction set 50: 25/26 GW20
+Persisted 9120 player-fixture predictions
+
+Building prediction set 50: 25/26 GW21
+Persisted 8748 player-fixture predictions
+
+Building prediction set 50: 25/26 GW22
+Persisted 8381 player-fixture predictions
+
+Building prediction set 50: 25/26 GW23
+Persisted 7888 player-fixture predictions
+
+Building prediction set 50: 25/26 GW24
+Persisted 7350 player-fixture predictions
+
+Building prediction set 50: 25/26 GW25
+Persisted 6860 player-fixture predictions
+
+Building prediction set 50: 25/26 GW26
+Persisted 6383 player-fixture predictions
+
+Building prediction set 50: 25/26 GW27
+Persisted 5794 player-fixture predictions
+
+Building prediction set 50: 25/26 GW28
+Persisted 5307 player-fixture predictions
+
+Building prediction set 50: 25/26 GW29
+Persisted 4840 player-fixture predictions
+
+Building prediction set 50: 25/26 GW30
+Persisted 4342 player-fixture predictions
+
+Building prediction set 50: 25/26 GW31
+Persisted 3878 player-fixture predictions
+
+Building prediction set 50: 25/26 GW32
+Persisted 3487 player-fixture predictions
+
+Building prediction set 50: 25/26 GW33
+Persisted 3015 player-fixture predictions
+
+Building prediction set 50: 25/26 GW34
+Persisted 2361 player-fixture predictions
+
+Building prediction set 50: 25/26 GW35
+Persisted 1997 player-fixture predictions
+
+Building prediction set 50: 25/26 GW36
+Persisted 1516 player-fixture predictions
+
+Building prediction set 50: 25/26 GW37
+Persisted 984 player-fixture predictions
+
+Building prediction set 50: 25/26 GW38
+Persisted 493 player-fixture predictions
+Prediction set ID: 50
+{
+  "prediction_set_id": 50,
+  "expected_snapshots": 38,
+  "complete_snapshots": 38,
+  "missing": [],
+  "failed_or_empty": []
+}
+Recorded v2_log_minbands_teams_staged -> prediction set 50 in C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\run_metrics\model_eval\experiments.json
+v2_log_minbands_teams_staged_blend25: set 51 {"25": {"snapshots": 38, "rows": 363027, "minutes_share": 0.0}}
+Evaluating seasons 25
+  v2_log_minbands_blend25: set eval-v2_log_minbands_blend25 is 35
+  v2_log_minbands_teams_blend25: set eval-v2_log_minbands_teams_blend25 is 37
+  v2_log_minbands_teams_staged_blend25: set eval-v2_log_minbands_teams_staged_blend25 is 51
+  v1: prediction set 7, scored as optimiser
+  v1_h5: prediction set 29, scored as optimiser
+  v2_log_minbands: prediction set 32, scored as raw_points
+  v2_log_minbands_teams: prediction set 36, scored as raw_points
+  v2_log_minbands_teams_staged: prediction set 50, scored as raw_points
+  v2_log_minbands_blend25: prediction set 35, scored as raw_points
+  v2_log_minbands_teams_blend25: prediction set 37, scored as raw_points
+  v2_log_minbands_teams_staged_blend25: prediction set 51, scored as raw_points
+  season 25: 38 origins, 401.3 eligible players on average
+Deriving v1_cal from v1 (rolling linear calibration)
+Deriving v1_h5_cal from v1_h5 (rolling linear calibration)
+Scoring 38 units for 10 models...
+Bootstrapping 200 resamples (blocks of 5 origins)...
+Model evaluation against v1, seasons 25, 38 origins
+Scores are in noise units: 1.0 = one bootstrap standard deviation of that metric for v1.
+Positive is better than v1; v1 scores 0 by definition.
+Each metric is capped at +-3 before weighting; "uncapped" is the old total.
+
+model               total       95% interval   P(>0)  overall   future    calib  ranking fixtures  uncapped
+v2_log_minbands_teams_blend25    +1.82       [1.30, 2.11]    1.00    +3.00    +1.44    +3.00    +1.70    -0.17     +3.48
+v2_log_minbands_teams    +1.79       [1.21, 2.13]    1.00    +3.00    +1.56    +3.00    +1.56    -0.29     +3.35
+v2_log_minbands_teams_staged_blend25    +1.74       [1.06, 2.07]    1.00    +3.00    +1.43    +3.00    +1.65    -0.55     +3.36
+v2_log_minbands_teams_staged    +1.65       [0.85, 1.98]    1.00    +3.00    +1.42    +3.00    +1.46    -0.78     +3.15
+v2_log_minbands_blend25    +1.60       [1.00, 1.99]    1.00    +3.00    +1.21    +3.00    +1.55    -0.97     +3.21
+v2_log_minbands     +1.53       [0.91, 1.96]    1.00    +2.99    +1.20    +3.00    +1.38    -1.13     +3.03
+v1_h5_cal           +1.48       [1.34, 1.64]    1.00    +3.00    +1.58    +3.00    +0.54    -0.46     +3.73
+v1_cal              +1.19       [1.08, 1.33]    1.00    +2.66    +1.29    +3.00    +0.03    -0.54     +3.12
+v1_h5               +0.87       [0.70, 1.09]    1.00    +1.14    +0.40    +3.00    +0.52    -0.02     +1.46
+
+What drove each score:
+  v2_log_minbands_teams_blend25: helped most by overall +0.66, calibration +0.39
+  v2_log_minbands_teams: helped most by overall +0.66, calibration +0.39
+    v2_log_minbands plus 3-season team/opponent history transformers, fading xG averages, team time blocks.
+  v2_log_minbands_teams_staged_blend25: helped most by overall +0.66, calibration +0.39
+  v2_log_minbands_teams_staged: helped most by overall +0.66, calibration +0.39
+    v2_log_minbands_teams as three stages: minutes bands, team-level goal bands, points built from both.
+  v2_log_minbands_blend25: helped most by overall +0.66, calibration +0.39
+  v2_log_minbands: helped most by overall +0.66, calibration +0.39; regressed on fixture_swing (-1.13 sd)
+    v2_log plus a training-only cross-entropy head on minutes bands (0, 1-59, 60+).
+  v1_h5_cal: helped most by overall +0.66, calibration +0.39
+    v1_h5 plus the same rolling linear calibration.
+  v1_cal: helped most by overall +0.58, calibration +0.39
+    v1 plus the same rolling linear calibration.
+  v1_h5: helped most by calibration +0.39, overall +0.25; regressed on 2B_predicted (-2.36 sd)
+    v1 as used live: a 5-GW total model, split across fixtures by the single-GW points.
+
+By season (total):
+  v2_log_minbands_teams_blend25 25 +1.82
+  v2_log_minbands_teams 25 +1.79
+  v2_log_minbands_teams_staged_blend25 25 +1.74
+  v2_log_minbands_teams_staged 25 +1.65
+  v2_log_minbands_blend25 25 +1.60
+  v2_log_minbands  25 +1.53
+  v1_h5_cal        25 +1.48
+  v1_cal           25 +1.19
+  v1_h5            25 +0.87
+
+Non-overlapping 5-GW origins only (sensitivity check, same sigmas):
+  v2_log_minbands_teams_blend25 total +1.89, future +2.08, ranking +1.46
+  v2_log_minbands_teams total +1.82, future +2.12, ranking +1.22
+  v2_log_minbands_teams_staged_blend25 total +1.73, future +1.49, ranking +1.49
+  v2_log_minbands_teams_staged total +1.73, future +1.93, ranking +1.22
+  v2_log_minbands_blend25 total +1.78, future +1.97, ranking +1.58
+  v2_log_minbands  total +1.64, future +1.65, ranking +1.40
+  v1_h5_cal        total +1.56, future +2.03, ranking +0.48
+  v1_cal           total +1.23, future +1.34, ranking +0.03
+  v1_h5            total +1.06, future +1.25, ranking +0.45
+
+Guardrail flags:
+  v1_h5_cal: overall_mae is 6.6% worse than v1
+  v1_cal: overall_mae is 6.5% worse than v1
+  v1_h5: overpredicts its own top_5pct picks by 3.76 points over 5 GWs
+  v1_h5: overpredicts its own top_5 picks by 6.42 points over 5 GWs
+
+Raw metrics (pooled):
+  model             overall_mse  overall_mae overall_bias    2A_actual 2A_predicted    2B_actual 2B_predicted calibration_ calibration_ spearman_sin spearman_fiv
+  v1                      7.615        1.653       -0.712       17.742        8.369        4.306        2.770        0.712        0.848        0.552        0.554
+  v2_log_minbands_teams_blend25        7.046        1.683       -0.329       16.915        7.873        4.192        2.702        0.329        1.081        0.566        0.589
+  v2_log_minbands_teams        7.058        1.672       -0.345       16.900        7.795        4.192        2.687        0.345        1.031        0.569        0.583
+  v2_log_minbands_teams_staged_blend25        7.066        1.685       -0.333       17.305        7.394        4.226        2.700        0.333        1.139        0.563        0.590
+  v2_log_minbands_teams_staged        7.086        1.673       -0.351       17.421        7.291        4.236        2.693        0.351        1.096        0.565        0.583
+  v2_log_minbands_blend25        7.076        1.690       -0.331       17.112        7.894        4.211        2.709        0.331        1.095        0.563        0.587
+  v2_log_minbands         7.091        1.681       -0.348       17.161        7.768        4.218        2.724        0.348        1.050        0.565        0.581
+  v1_h5_cal               7.068        1.762       -0.123       16.242        7.812        4.154        2.759        0.225        0.986        0.563        0.560
+  v1_cal                  7.149        1.760       -0.170       16.955        8.014        4.216        2.696        0.265        1.018        0.559        0.550
+  v1_h5                   7.415        1.691       -0.497       15.788        8.774        4.136        2.906        0.552        0.753        0.557        0.564
+
+Fixture swings: players who played 60+ minutes in each of the next five gameweeks,
+one fixture each. corr: predicted rises and falls vs real ones (higher is better).
+slope: real swing per point of predicted swing (1 is right; above 1, the model's
+swings are too small). mse: error on the swings.
+  model                    corr        slope          mse            n
+  v1                      0.150        1.246        7.996        14885
+  v2_log_minbands_teams_blend25        0.146        1.767        8.031        14885
+  v2_log_minbands_teams        0.144        1.640        8.029        14885
+  v2_log_minbands_teams_staged_blend25        0.138        1.210        8.022        14885
+  v2_log_minbands_teams_staged        0.133        1.012        8.029        14885
+  v2_log_minbands_blend25        0.128        1.793        8.064        14885
+  v2_log_minbands         0.125        1.791        8.070        14885
+  v1_h5_cal               0.140        1.723        8.041        14885
+  v1_cal                  0.138        1.906        8.052        14885
+  v1_h5                   0.150        1.068        7.990        14885
+
+Slices (next gameweek only; bias = predicted minus actual points, plain units):
+  slice                                      n  actual                     v1                  v1_h5        v2_log_minbands  v2_log_minbands_teams v2_log_minbands_teams_ v2_log_minbands_blend2 v2_log_minbands_teams_ v2_log_minbands_teams_                 v1_cal              v1_h5_cal
+                                                                   bias / MAE             bias / MAE             bias / MAE             bias / MAE             bias / MAE             bias / MAE             bias / MAE             bias / MAE             bias / MAE             bias / MAE
+  all_rows                               15052    2.21           -0.71 / 1.65           -0.50 / 1.69           -0.35 / 1.68           -0.35 / 1.67           -0.35 / 1.67           -0.33 / 1.69           -0.33 / 1.68           -0.33 / 1.68           -0.17 / 1.76           -0.12 / 1.76
+  slice_club_match_3_4d_before             251    2.46           -1.09 / 2.08           -1.11 / 2.08           -0.83 / 1.89           -0.79 / 1.87           -0.75 / 1.86           -0.79 / 1.89           -0.76 / 1.88           -0.73 / 1.87           -0.50 / 2.07           -0.52 / 2.06
+  slice_club_match_le4d                    251    2.46           -1.09 / 2.08           -1.11 / 2.08           -0.83 / 1.89           -0.79 / 1.87           -0.75 / 1.86           -0.79 / 1.89           -0.76 / 1.88           -0.73 / 1.87           -0.50 / 2.07           -0.52 / 2.06
+  slice_nonpl_match_le4d                   251    2.46           -1.09 / 2.08           -1.11 / 2.08           -0.83 / 1.89           -0.79 / 1.87           -0.75 / 1.86           -0.79 / 1.89           -0.76 / 1.88           -0.73 / 1.87           -0.50 / 2.07           -0.52 / 2.06
+  slice_dgw_leg                            198    4.66           -1.38 / 2.91           -0.80 / 2.91           -0.76 / 2.66           -0.70 / 2.67           -0.72 / 2.72           -0.73 / 2.68           -0.69 / 2.69           -0.70 / 2.73           -0.26 / 2.92           -0.17 / 2.89
+  slice_gw_before_blank                    197    3.75           -1.08 / 2.40           -0.61 / 2.41           -0.54 / 2.32           -0.52 / 2.30           -0.53 / 2.33           -0.53 / 2.34           -0.51 / 2.32           -0.52 / 2.35           -0.16 / 2.44           -0.08 / 2.44
+  slice_new_manager_first10               2831    2.00           -0.74 / 1.55           -0.58 / 1.58           -0.35 / 1.57           -0.35 / 1.55           -0.35 / 1.56           -0.34 / 1.57           -0.34 / 1.56           -0.34 / 1.56           -0.18 / 1.67           -0.14 / 1.67
+  slice_after_intl_break_played              0
+
+Wrote C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\run_metrics\model_eval\staged_1
+Done 1/1 v2_log_minbands_teams_staged 03/11/2026 21:53:58.88 
+Finished 03/11/2026 21:53:58.89 

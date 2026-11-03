@@ -34,7 +34,7 @@ locals {
     { name = "NOTIFY_EMAIL", value = var.notify_email },
     { name = "SES_FROM_EMAIL", value = var.ses_from_email != "" ? var.ses_from_email : var.notify_email },
     { name = "PIPELINE_SCHEDULE_NAME", value = var.enable_schedule ? "${var.name_prefix}-daily" : "" },
-    { name = "SCHEDULE_HOURS_BEFORE_DEADLINE", value = "2" },
+    { name = "SCHEDULE_HOURS_BEFORE_DEADLINE", value = tostring(var.schedule_hours_before_deadline) },
   ]
 }
 

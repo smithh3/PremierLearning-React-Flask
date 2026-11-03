@@ -10,14 +10,37 @@ Season history is a separate padded list, one token per earlier season.
 from __future__ import annotations
 
 from collections import defaultdict
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import bisect
 
 import numpy
 
 from premierlearning.helper_functions import coerce_bool
+from premierlearning.learning_v2.external_hook import (
+    can_fill_external,
+    external_key,
+    external_value,
+    load_external,
+    plan_uses_external,
+)
 from premierlearning.learning_v2.kickoff import days_between, kickoff_from_match
 from premierlearning.learning_v2.plan import input_specs, tensor_key
+from premierlearning.learning_v2.teams import (
+    TEAM_DECAY_FIELDS,
+    TEAM_HISTORY_FIELDS,
+    TEAM_HISTORY_PATHS,
+    TEAM_HISTORY_TABLE,
+    TeamTables,
+    TeamTimelines,
+    block_of,
+    block_reference,
+    encode_block,
+    gameweek_index,
+    is_team_history_path,
+    ref_key,
+    team_history_side,
+    time_key,
+)
 
 PLAYER_LAST_N = {
     'minutes_last_n': 'minutes',
@@ -72,9 +95,19 @@ _SORT_KEYS = {}
 
 @dataclass
 class ExampleBatch:
+    """Row arrays, labels and the matches they came from.
+
+    tables holds inputs shared by many rows, stored once ({table: {field:
+    array}}); table_inputs maps a model input key to (table, field, row array
+    of indexes into that table). Plans without team histories have neither.
+    """
     arrays: dict
     labels: numpy.ndarray
     matches: list
+    owners: list = field(default_factory=list)
+    years: list = field(default_factory=list)
+    tables: dict = field(default_factory=dict)
+    table_inputs: dict = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -104,12 +137,23 @@ class Vocab:
     def __init__(self):
         self._player = {}
         self._team = {}
+        self.frozen = False
+        # Gameweek index the time blocks count back from (teams.block_reference).
+        # Set by the fit and kept when frozen, so later snapshots use the same blocks.
+        self.block_reference = None
+
+    def freeze(self):
+        """Stop growing, so fitted embeddings keep their rows. New codes read as unknown."""
+        self.frozen = True
+        return self
 
     def add_player(self, code):
-        self._index(self._player, code)
+        if not self.frozen:
+            self._index(self._player, code)
 
     def add_team(self, code):
-        self._index(self._team, code)
+        if not self.frozen:
+            self._index(self._team, code)
 
     def player_index(self, code) -> int:
         return self._lookup(self._player, code)
@@ -149,12 +193,16 @@ class Vocab:
 
 def can_fill(path: str) -> bool:
     """True when the simple dataset knows how to produce this leaf."""
+    if external_key(path) is not None:
+        return can_fill_external(path)
     if path.startswith('current_player_features.'):
         return path.split('.')[-1] in PLAYER_LAST_N
-    if path.startswith('current_team.team_features.'):
-        return path.split('.')[-1] in TEAM_LAST_N
-    if path.startswith('current_opposition.team_features.'):
-        return path.split('.')[-1] in TEAM_LAST_N
+    if path.startswith('current_team.team_features.') or path.startswith('current_opposition.team_features.'):
+        name = path.split('.')[-1]
+        return name in TEAM_LAST_N or name in TEAM_DECAY_FIELDS
+    if is_team_history_path(path):
+        _side, name = team_history_side(path)
+        return name in TEAM_HISTORY_FIELDS
     if path.startswith('current_team.teammates.'):
         return path.split('.')[-1] in SQUAD_FIELDS
     if path.startswith('current_opposition.players.'):
@@ -173,6 +221,8 @@ def can_fill(path: str) -> bool:
         'context.new_stats_included',
         'context.changed_club',
         'context.chance_of_playing',
+        'context.chance_known',
+        ORACLE_MINUTES_PATH,
         'last_season.seasons_before',
         'last_season.played',
         'last_season.points_per_90',
@@ -204,6 +254,70 @@ def game_stat(match, key: str) -> float:
         return float(stats.get(key) or 0)
     except (TypeError, ValueError):
         return 0.0
+
+
+# Cheats on purpose: the fixture's real minutes, to measure what perfect minutes
+# knowledge would be worth. Only the *_oracle_* plans have this leaf.
+ORACLE_MINUTES_PATH = 'context.actual_minutes_oracle'
+
+# What the training-only minutes head predicts.
+MINUTES_TARGET_BANDS = 'bands'
+MINUTES_TARGET_LOG = 'log'
+MINUTES_TARGETS = (MINUTES_TARGET_BANDS, MINUTES_TARGET_LOG)
+# 0, 1-59 and 60+ minutes: the bands FPL's appearance points use.
+MINUTES_BAND_EDGES = (1.0, 60.0)
+FULL_MATCH_MINUTES = 90.0
+
+
+def minutes_targets(matches, target=MINUTES_TARGET_BANDS) -> numpy.ndarray:
+    """One row per match: its minutes band, or log1p minutes scaled so 90 is 1."""
+    minutes = numpy.array([game_stat(match, 'minutes') for match in matches], dtype=numpy.float32)
+    if target == MINUTES_TARGET_LOG:
+        scaled = numpy.log1p(numpy.minimum(minutes, FULL_MATCH_MINUTES)) / numpy.log1p(FULL_MATCH_MINUTES)
+        return scaled.astype(numpy.float32).reshape(-1, 1)
+    bands = numpy.searchsorted(MINUTES_BAND_EDGES, minutes, side='right')
+    return numpy.asarray(bands, dtype=numpy.int32).reshape(-1, 1)
+
+
+def score_targets(matches, weighted=False) -> numpy.ndarray:
+    """One row per match: [team goals for, team goals against], or -1s when unknown.
+
+    The score head's loss skips negative targets. weighted adds a third column
+    so each team's fixture counts once however many player rows it has: the
+    rows of one team fixture share 1 / their count, scaled so known rows
+    average 1.
+    """
+    out = numpy.full((len(matches), 2), -1.0, dtype=numpy.float32)
+    out = _fill_scores(matches, out)
+    if not weighted:
+        return out
+    weights = numpy.zeros((len(matches), 1), dtype=numpy.float32)
+    groups = defaultdict(list)
+    for index, match in enumerate(matches):
+        if out[index, 0] >= 0:
+            groups[id(getattr(match, 'team_match', None))].append(index)
+    known = sum(len(rows) for rows in groups.values())
+    if groups:
+        scale = known / float(len(groups))
+        for rows in groups.values():
+            weights[rows, 0] = scale / len(rows)
+    return numpy.concatenate([out, weights], axis=1)
+
+
+def _fill_scores(matches, out):
+    for index, match in enumerate(matches):
+        team_match = getattr(match, 'team_match', None)
+        if team_match is None:
+            continue
+        scored = getattr(team_match, 'scored', None)
+        conceded = getattr(team_match, 'conceded', None)
+        if scored is None or conceded is None:
+            continue
+        try:
+            out[index] = (float(scored), float(conceded))
+        except (TypeError, ValueError):
+            continue
+    return out
 
 
 def _team_code(match):
@@ -537,10 +651,25 @@ def _changed_club(player, match) -> float:
         return 0.0
 
 
-def _chance(row: _Row) -> float:
-    if not row.is_future:
-        return 1.0
-    raw = getattr(row.match, 'chance_of_playing', None)
+# (season start year, gameweek) -> {player_id: chance} from the cached fplcache
+# files, or {} when that deadline has none (seasons before 2021/22, live season).
+_DEADLINE_CHANCES = {}
+
+
+def _deadline_chances(year, gameweek) -> dict:
+    key = (int(year), int(gameweek))
+    if key not in _DEADLINE_CHANCES:
+        from squadtools.chance_to_play import ensure_gameweek_chances
+        try:
+            _DEADLINE_CHANCES[key] = ensure_gameweek_chances(
+                key[0], key[1], allow_download=False,
+            )
+        except (OSError, ValueError):
+            _DEADLINE_CHANCES[key] = {}
+    return _DEADLINE_CHANCES[key]
+
+
+def _scale_chance(raw) -> float:
     if raw is None or raw == '':
         return 1.0
     try:
@@ -550,6 +679,55 @@ def _chance(row: _Row) -> float:
     if value > 1.0:
         value = value / 100.0
     return min(1.0, max(0.0, value))
+
+
+# season start year -> {(player_id, fixture_id): minutes}
+_ACTUAL_MINUTES = {}
+
+
+def _actual_minutes(year) -> dict:
+    key = int(year)
+    if key not in _ACTUAL_MINUTES:
+        from simulation.historical_data import VaastavSeasonData
+        minutes = {}
+        for player_id, rows in VaastavSeasonData(key).player_rows.items():
+            for game in rows:
+                if game.get('fixture') not in (None, ''):
+                    fixture_id = int(float(game['fixture']))
+                    minutes[(int(player_id), fixture_id)] = float(game.get('minutes') or 0)
+        _ACTUAL_MINUTES[key] = minutes
+    return _ACTUAL_MINUTES[key]
+
+
+def _oracle_minutes(row: _Row) -> float:
+    """The fixture's real minutes. Upcoming fixtures carry none, so read the results."""
+    if not row.is_future:
+        return game_stat(row.match, 'minutes')
+    key = (int(row.player.id), int(row.match.fixture_id))
+    return _actual_minutes(row.year).get(key, 0.0)
+
+
+def _chance_and_known(row: _Row):
+    """(chance, 1) from the FPL flag known at the deadline, or (1.0, 0) if unknown.
+
+    Upcoming fixtures carry the flag on the match. A finished fixture uses the
+    flag published before its own gameweek's deadline, so training sees the
+    same signal prediction does. No flag for a listed player means no doubt.
+    """
+    if row.is_future:
+        return _scale_chance(getattr(row.match, 'chance_of_playing', None)), 1.0
+    gameweek = getattr(row.match, 'gameweek', None)
+    player_id = getattr(row.player, 'id', None)
+    if gameweek is None or player_id is None:
+        return 1.0, 0.0
+    chances = _deadline_chances(row.year, gameweek)
+    if not chances:
+        return 1.0, 0.0
+    return _scale_chance(chances.get(int(player_id))), 1.0
+
+
+def _chance(row: _Row) -> float:
+    return _chance_and_known(row)[0]
 
 
 def _prior_block(priors, team_match) -> dict:
@@ -563,12 +741,62 @@ def _this_xg(match, attr) -> float:
     return float(getattr(team_match, attr, 0) or 0)
 
 
+def _plan_uses_teams(plan) -> bool:
+    """True when a leaf needs the cross-season team timelines."""
+    for leaf in plan.leaves():
+        if is_team_history_path(leaf.path):
+            return True
+        if '.team_features.' in leaf.path and leaf.path.split('.')[-1] in TEAM_DECAY_FIELDS:
+            return True
+    return False
+
+
+def _last_played_gameweek(season) -> int:
+    weeks = [
+        int(getattr(match, 'gameweek', 0) or 0)
+        for player in getattr(season, 'players', []) or []
+        for match in getattr(player, 'matches', []) or []
+        if not getattr(match, 'is_last_season_carry', False)
+    ]
+    return max(weeks, default=0)
+
+
+def _block_reference(vocab, predict_season, cutoff_gameweek) -> int:
+    """The gameweek blocks count back from: the fit's, once its vocab is frozen."""
+    if vocab.frozen and getattr(vocab, 'block_reference', None) is not None:
+        return int(vocab.block_reference)
+    if predict_season is None:
+        return 0
+    if cutoff_gameweek is None:
+        cutoff_gameweek = _last_played_gameweek(predict_season)
+    reference = block_reference(_season_year(predict_season), cutoff_gameweek)
+    if not vocab.frozen:
+        vocab.block_reference = reference
+    return reference
+
+
 class _Catalog:
-    def __init__(self, seasons, plan, vocab):
+    def __init__(self, seasons, plan, vocab, block_ref=0):
         self.plan = plan
         self.vocab = vocab
+        self.block_ref = int(block_ref or 0)
         self.chrono, self.squads, self.seasons = _build_indexes(seasons, vocab)
+        self.match_years = {}
+        for season in seasons:
+            year = _season_year(season)
+            for player in getattr(season, 'players', []) or []:
+                for match in list(getattr(player, 'matches', []) or []) + list(
+                    getattr(player, 'future_matches', []) or []
+                ):
+                    self.match_years.setdefault(id(match), year)
         self.priors = team_priors(seasons, plan.config.team_form_n)
+        self.external = load_external() if plan_uses_external(plan) else None
+        self.team_timelines = TeamTimelines(seasons) if _plan_uses_teams(plan) else None
+        self.team_tables = None
+        if self.team_timelines is not None:
+            self.team_tables = TeamTables(
+                self.team_timelines, plan.config.team_history_len, self._record_team_id,
+            )
         self._ranked = {}
         self.static = {}
         self._history_ready = False
@@ -579,6 +807,51 @@ class _Catalog:
                 if identity not in self.static:
                     self.static[identity] = _history_static(self, match, kick, previous)
                 previous = kick
+
+    def block(self, year, gameweek, blocks) -> int:
+        """Time block of a match in (year, gameweek), counted back from the fit's cutoff."""
+        if blocks <= 1 or not gameweek or year is None:
+            return 0
+        age = self.block_ref - gameweek_index(year, gameweek)
+        return block_of(age, blocks, self.plan.config.block_first, self.plan.config.block_size)
+
+    def match_block(self, match, blocks, year=None) -> int:
+        if blocks <= 1:
+            return 0
+        if year is None:
+            year = self.match_years.get(id(match))
+        return self.block(year, getattr(match, 'gameweek', None), blocks)
+
+    def team_id(self, code, block=0) -> int:
+        blocks = self.plan.config.team_blocks
+        return encode_block(self.vocab.team_index(code), block, blocks)
+
+    def player_id(self, player, block=0) -> int:
+        blocks = self.plan.config.player_blocks
+        return encode_block(self.vocab.player_index(getattr(player, 'code', None)), block, blocks)
+
+    def _record_team_id(self, code, record) -> int:
+        """Embedding index of the opponent in one team-history token."""
+        block = self.block(record.year, record.gameweek, self.plan.config.team_blocks)
+        return self.team_id(code, block)
+
+    def row_time(self, row):
+        kick = _cached_kickoff(row.match)
+        return time_key(kick, row.year, getattr(row.match, 'gameweek', None))
+
+    def team_ref(self, code, row) -> int:
+        if self.team_tables is None or code is None:
+            return 0
+        return self.team_tables.ref(code, self.row_time(row))
+
+    def team_decay(self, code, row, field) -> float:
+        timelines = self.team_timelines
+        time = self.row_time(row)
+        cut = timelines.cut(code, time) if code is not None else 0
+        values = timelines.decay(
+            code, cut, time, self.plan.config.team_history_len, self.plan.config.team_decay_half_life,
+        )
+        return float(values[field])
 
     def timeline(self, player) -> _Timeline:
         return self.chrono.get(id(player), _EMPTY_TIMELINE)
@@ -643,9 +916,10 @@ def _history_static(catalog: _Catalog, match, kick, previous_kick) -> dict:
     """Fields of one history token that do not depend on the row being scored."""
     team_block = _prior_block(catalog.priors, getattr(match, 'team_match', None))
     opp_block = _prior_block(catalog.priors, getattr(match, 'opponent_team_match', None))
+    time_block = catalog.match_block(match, catalog.plan.config.team_blocks)
     static = {
-        'team_id_embedding': catalog.vocab.team_index(_team_code(match)),
-        'opposition_team_id_embedding': catalog.vocab.team_index(_opp_code(match)),
+        'team_id_embedding': catalog.team_id(_team_code(match), time_block),
+        'opposition_team_id_embedding': catalog.team_id(_opp_code(match), time_block),
         'match_facts.home_away': _home(match),
         'match_facts.days_since_previous_match': days_between(kick, previous_kick),
     }
@@ -660,14 +934,15 @@ def _history_static(catalog: _Catalog, match, kick, previous_kick) -> dict:
 def _scalar(catalog: _Catalog, row: _Row, path: str):
     player = row.player
     match = row.match
+    config = catalog.plan.config
     if path == 'player_id_embedding':
-        return catalog.vocab.player_index(getattr(player, 'code', None))
+        return catalog.player_id(player, catalog.match_block(match, config.player_blocks, row.year))
     if path == 'position':
         return _position(player)
     if path == 'current_team.team_id_embedding':
-        return catalog.vocab.team_index(_team_code(match))
+        return catalog.team_id(_team_code(match), catalog.match_block(match, config.team_blocks, row.year))
     if path == 'current_opposition.opposition_team_id_embedding':
-        return catalog.vocab.team_index(_opp_code(match))
+        return catalog.team_id(_opp_code(match), catalog.match_block(match, config.team_blocks, row.year))
     if path == 'match_facts.home_away':
         return _home(match)
     if path == 'match_facts.days_since_previous_match':
@@ -683,15 +958,31 @@ def _scalar(catalog: _Catalog, row: _Row, path: str):
         return _changed_club(player, match)
     if path == 'context.chance_of_playing':
         return _chance(row)
+    if path == 'context.chance_known':
+        return _chance_and_known(row)[1]
+    if path == ORACLE_MINUTES_PATH:
+        return _oracle_minutes(row)
     if path.startswith('current_player_features.'):
         field = path.split('.')[-1]
         return row.timeline.form(match, catalog.plan.config.team_form_n)[field]
     if path.startswith('current_team.team_features.'):
+        name = path.split('.')[-1]
+        if name in TEAM_DECAY_FIELDS:
+            return catalog.team_decay(_team_code(match), row, name)
         block = _prior_block(catalog.priors, getattr(match, 'team_match', None))
-        return float(block[TEAM_LAST_N[path.split('.')[-1]]])
+        return float(block[TEAM_LAST_N[name]])
     if path.startswith('current_opposition.team_features.'):
+        name = path.split('.')[-1]
+        if name in TEAM_DECAY_FIELDS:
+            return catalog.team_decay(_opp_code(match), row, name)
         block = _prior_block(catalog.priors, getattr(match, 'opponent_team_match', None))
-        return float(block[TEAM_LAST_N[path.split('.')[-1]]])
+        return float(block[TEAM_LAST_N[name]])
+    if catalog.external is not None and external_key(path) is not None:
+        fixture_id = getattr(match, 'fixture_id', None)
+        return external_value(
+            catalog.external, path, row.year, None if fixture_id is None else int(fixture_id),
+            _team_code(match), _opp_code(match), _player_code(player),
+        )
     raise KeyError(path)
 
 
@@ -811,12 +1102,13 @@ def _write_squad(arrays, index, row: _Row, players, columns, mask, catalog: _Cat
         return
     window = catalog.plan.config.team_form_n
     limit = columns[0][0].shape[0]
+    block = catalog.match_block(row.match, catalog.plan.config.player_blocks, row.year)
     for slot, player in enumerate(players[:limit]):
         timeline = catalog.timeline(player)
         form = timeline.form(row.match, window)
         for spec, field in columns:
             if field == 'player_id_embedding':
-                value = catalog.vocab.player_index(getattr(player, 'code', None))
+                value = catalog.player_id(player, block)
             elif field == 'position':
                 value = _position(player)
             else:
@@ -824,8 +1116,17 @@ def _write_squad(arrays, index, row: _Row, players, columns, mask, catalog: _Cat
             arrays[spec.key][index, slot] = value
 
 
+def _team_history_sides(specs) -> list:
+    """The team-history nodes a plan uses: their leaves live in a shared table."""
+    return sorted({team_history_side(spec.path)[0] for spec in specs if is_team_history_path(spec.path)})
+
+
 def _write_rows(catalog: _Catalog, rows: list, specs) -> ExampleBatch:
+    sides = _team_history_sides(specs)
+    specs = [spec for spec in specs if not is_team_history_path(spec.path)]
     arrays = _empty(specs, len(rows))
+    for side in sides:
+        arrays[ref_key(side)] = numpy.zeros(len(rows), dtype=numpy.int64)
     (
         history, history_mask, seasons, season_mask,
         team_squad, team_mask, opp_squad, opp_mask, scalars,
@@ -833,8 +1134,12 @@ def _write_rows(catalog: _Catalog, rows: list, specs) -> ExampleBatch:
     catalog.prepare_history([spec for spec, _rest in history])
     labels = numpy.zeros((len(rows), 1), dtype=numpy.float32)
     matches = []
+    owners = []
+    years = []
     for index, row in enumerate(rows):
         matches.append(row.match)
+        owners.append(row.player)
+        years.append(row.year)
         labels[index, 0] = _label(row.match)
         for spec in scalars:
             arrays[spec.key][index, 0] = _scalar(catalog, row, spec.path)
@@ -842,7 +1147,75 @@ def _write_rows(catalog: _Catalog, rows: list, specs) -> ExampleBatch:
         _write_seasons(arrays, index, row, seasons, season_mask, catalog)
         _write_squad(arrays, index, row, row.teammates, team_squad, team_mask, catalog)
         _write_squad(arrays, index, row, row.opponents, opp_squad, opp_mask, catalog)
-    return ExampleBatch(arrays, labels, matches)
+        for side in sides:
+            code = _team_code(row.match) if side == TEAM_HISTORY_PATHS[0] else _opp_code(row.match)
+            arrays[ref_key(side)][index] = catalog.team_ref(code, row)
+    return ExampleBatch(arrays, labels, matches, owners, years)
+
+
+def _attach_team_tables(catalog: _Catalog, specs, batches):
+    """Build the shared team-history table once, after every batch has its refs."""
+    table_specs = [spec for spec in specs if is_team_history_path(spec.path)]
+    if not table_specs or catalog.team_tables is None:
+        return
+    fields = sorted({team_history_side(spec.path)[1] for spec in table_specs} - {'mask'})
+    table = catalog.team_tables.finalize(fields)
+    tables = {TEAM_HISTORY_TABLE: table}
+    table_inputs = {}
+    for spec in table_specs:
+        side, name = team_history_side(spec.path)
+        table_inputs[spec.key] = (TEAM_HISTORY_TABLE, name, ref_key(side))
+    for batch in batches:
+        batch.tables = tables
+        batch.table_inputs = table_inputs
+
+
+def window_rate_batch(batch: ExampleBatch, horizon: int):
+    """One row per player-GW, labelled with points per fixture over `horizon` GWs.
+
+    The v2 counterpart of v1's window pp90, except that did-not-plays count, so
+    the rate carries minutes risk the way v2's fixture points do. Only windows
+    complete in the batch are kept. Returns the batch and each row's player-season
+    group: overlapping windows share labels, so splits must keep a group together.
+    """
+    by_gameweek = defaultdict(lambda: defaultdict(list))
+    last_gameweek = {}
+    for owner, year, match, points in zip(batch.owners, batch.years, batch.matches, batch.labels.reshape(-1)):
+        gameweek = getattr(match, 'gameweek', None)
+        if gameweek is None:
+            continue
+        by_gameweek[id(owner)][int(gameweek)].append(float(points))
+        last_gameweek[year] = max(last_gameweek.get(year, 0), int(gameweek))
+    keep, rates, groups = [], [], []
+    seen = set()
+    group_ids = {}
+    for index, (owner, year, match) in enumerate(zip(batch.owners, batch.years, batch.matches)):
+        gameweek = getattr(match, 'gameweek', None)
+        if gameweek is None:
+            continue
+        gameweek = int(gameweek)
+        key = (id(owner), gameweek)
+        if key in seen or gameweek + horizon - 1 > last_gameweek[year]:
+            continue
+        seen.add(key)
+        window = [
+            points
+            for week in range(gameweek, gameweek + horizon)
+            for points in by_gameweek[id(owner)].get(week, ())
+        ]
+        keep.append(index)
+        rates.append(sum(window) / len(window))
+        groups.append(group_ids.setdefault(id(owner), len(group_ids)))
+    keep = numpy.asarray(keep, dtype=numpy.int64)
+    return ExampleBatch(
+        {key: values[keep] for key, values in batch.arrays.items()},
+        numpy.asarray(rates, dtype=numpy.float32).reshape(-1, 1),
+        [batch.matches[index] for index in keep],
+        [batch.owners[index] for index in keep],
+        [batch.years[index] for index in keep],
+        tables=getattr(batch, 'tables', None) or {},
+        table_inputs=getattr(batch, 'table_inputs', None) or {},
+    ), numpy.asarray(groups)
 
 
 def _label_rows(season, cutoff, catalog: _Catalog):
@@ -891,8 +1264,13 @@ def _played_rows(season, gameweeks, catalog: _Catalog):
     return rows
 
 
-def build_dataset(seasons, plan, predict_season=None, cutoff_gameweek=None, report_gameweeks=None):
-    """Return train batch, predict batch, and the vocab fit on every season."""
+def build_dataset(seasons, plan, predict_season=None, cutoff_gameweek=None, report_gameweeks=None,
+                  vocab=None, include_train=True):
+    """Return train batch, predict batch, and the vocab fit on every season.
+
+    Pass a frozen vocab from an earlier fit to predict with that fit's weights;
+    include_train=False then skips writing the training rows.
+    """
     missing = unsupported_leaves(plan)
     if missing:
         raise SystemExit(
@@ -902,21 +1280,26 @@ def build_dataset(seasons, plan, predict_season=None, cutoff_gameweek=None, repo
     if predict_season is None:
         predict_season = seasons[-1]
     _clear_match_caches()
-    vocab = Vocab()
-    catalog = _Catalog(seasons, plan, vocab)
+    vocab = Vocab() if vocab is None else vocab
+    block_ref = 0
+    if plan.config.team_blocks > 1 or plan.config.player_blocks > 1:
+        block_ref = _block_reference(vocab, predict_season, cutoff_gameweek)
+    catalog = _Catalog(seasons, plan, vocab, block_ref=block_ref)
     specs = input_specs(plan)
     train_rows = []
-    for season in seasons:
+    for season in seasons if include_train else ():
         cutoff = cutoff_gameweek if season is predict_season else None
         train_rows.extend(_label_rows(season, cutoff, catalog))
     predict_rows = _predict_rows(predict_season, catalog)
     train_batch = _write_rows(catalog, train_rows, specs)
     predict_batch = _write_rows(catalog, predict_rows, specs)
     if report_gameweeks is None:
+        _attach_team_tables(catalog, specs, (train_batch, predict_batch))
         return train_batch, predict_batch, vocab
     report_batch = _write_rows(
         catalog, _played_rows(predict_season, report_gameweeks, catalog), specs,
     )
+    _attach_team_tables(catalog, specs, (train_batch, predict_batch, report_batch))
     return train_batch, predict_batch, vocab, report_batch
 
 

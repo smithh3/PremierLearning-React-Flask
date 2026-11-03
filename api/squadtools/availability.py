@@ -117,11 +117,19 @@ def optimiser_points(pp90, minutes, chance=None, minutes_scale=None) -> float:
     return unadjusted_points(pp90, minutes, minutes_scale) * chance_multiplier(chance)
 
 
+POINTS_BASIS_RAW = 'raw'
+
+
 def match_optimiser_points(match, minutes_scale=None) -> float:
     """Score one fixture the way the linear optimiser should see it.
 
     Live/Fargate defaults to ``step_75``. Pass ``raw`` to skip the mapping.
+    A fixture whose points_basis is 'raw' (learning_v2) already holds expected
+    points with minutes and chance-to-play risk inside them, so it is used as
+    it is, as the historical manager uses stored v2 points.
     """
+    if getattr(match, 'points_basis', None) == POINTS_BASIS_RAW:
+        return max(0.0, float(getattr(match, 'points', 0.0) or 0.0))
     stats = getattr(match, 'game_stats', None) or {}
     try:
         stats_mins = float(stats.get('minutes', 0) or 0)

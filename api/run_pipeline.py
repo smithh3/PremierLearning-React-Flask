@@ -5,13 +5,17 @@ Environment:
   APPLY_TRANSFERS=true    Submit transfers + starting XI to FPL.
   APPLY_TEAM_SELECTION=true  Submit captain/starters only.
   SUGGEST_TRANSFERS=true  Print suggestions without submitting (default if no apply flag).
-  PREMIERLEARNING_ARGS    Extra argv for learning, e.g. "--horizon-reps 5"
-                          (horizon-N and minutes average 5 fits; h1 points stay 1).
-                          Add --horizon-only to skip minutes. Add --h1-poisson for
-                          Poisson h1 + minutes/90 weights and no horizon net
-                          (5 h1 fits). Pipeline/Fargate always prepends --update
-                          so injury news is pulled live; pass --no-update to keep
-                          the files copied into the image.
+  PREMIERLEARNING_ARGS    Extra argv for learning. The model is the learning_v2
+                          blend the fantasy manager evaluation scored best
+                          (--learning-v2 --v2-blend: 75% v2_log with a
+                          minutes-bands head, 25% v2_log with a 5-GW net)
+                          unless these args pick another: --v1 for the old
+                          model (e.g. "--v1 --horizon-reps 5"), or a v1 recipe
+                          such as --h1-poisson or --horizon-only. v1-only flags
+                          like --horizon-reps are ignored by the blend.
+                          Pipeline/Fargate always prepends --update so injury
+                          news is pulled live; pass --no-update to keep the
+                          files copied into the image.
   APPLY_WITHIN_HOURS      If set, refuse apply unless the next GW deadline is within this many hours.
   LOGIN_ONLY=1            Skip learning and squadtools; only verify FPL login.
   FPL_STATUS_CHECK=1      Print HTTP/Playwright status for FPL URLs, then exit.
@@ -165,16 +169,29 @@ def _publish_learning_done():
         raise SystemExit('Learning finished but SQS publish failed: %s' % exc)
 
 
+V1_FLAG = '--v1'
+BLEND_ARGS = ['--learning-v2', '--v2-blend']
+# Args that choose a model themselves; the blend is only added without them.
+_MODEL_CHOICES = {
+    V1_FLAG, '--learning-v2', '--h1-poisson', '--horizon-only', '--minutes-only',
+    '--team-only', '--linear',
+}
+
+
 def _learning_argv(extra=None):
     """Fargate always refreshes FPL bootstrap unless --no-update is set.
 
     Injury / chance-of-playing news changes without a finished gameweek, so the
     image's copied season JSON is not a safe cache on a live pipeline run.
+    The model is the learning_v2 blend unless the args choose another.
     """
     extra = list(
         extra if extra is not None
         else shlex.split(os.environ.get('PREMIERLEARNING_ARGS', ''))
     )
+    if not _MODEL_CHOICES.intersection(extra):
+        extra = BLEND_ARGS + extra
+    extra = [arg for arg in extra if arg != V1_FLAG]
     skip = {'--no-update', '-no-update'}
     if skip.intersection(extra):
         return [arg for arg in extra if arg not in skip]

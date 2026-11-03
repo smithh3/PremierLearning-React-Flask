@@ -1,0 +1,180 @@
+{
+  "baseline": "v1",
+  "categories": {
+    "v1": {
+      "calibration": 0.0,
+      "future": 0.0,
+      "overall": 0.0,
+      "ranking": 0.0
+    },
+    "v2_huber": {
+      "calibration": -4.083113334514072,
+      "future": -2.222124891703587,
+      "overall": -2.436127910253408,
+      "ranking": -3.6613521431183877
+    },
+    "v2_huber_seed2": {
+      "calibration": -3.861110650269297,
+      "future": -2.4901415041496877,
+      "overall": -2.726416051696622,
+      "ranking": -3.918820342985013
+    },
+    "v2_smooth": {
+      "calibration": 7.015977953512795,
+      "future": -0.9892968417391474,
+      "overall": -0.39774440629697605,
+      "ranking": -4.812492449601839
+    },
+    "v2_smooth_cal": {
+      "calibration": 13.118844067390702,
+      "future": -0.2287826539641381,
+      "overall": 0.3946599196110174,
+      "ranking": -4.828474229505253
+    },
+    "v2_tier": {
+      "calibration": 4.503394721971047,
+      "future": -0.4992971270601696,
+      "overall": -0.4198570225122899,
+      "ranking": -4.107119124411749
+    }
+  },
+  "dropped_origins": [],
+  "flags": {
+    "v1": [],
+    "v2_huber": [
+      "overall_mse is 5.4% worse than v1"
+    ],
+    "v2_huber_seed2": [
+      "overall_mse is 6.1% worse than v1"
+    ],
+    "v2_smooth": [
+      "overpredicts its own top_5pct picks by 3.19 points over 5 GWs",
+      "overpredicts its own top_5 picks by 7.24 points over 5 GWs"
+    ],
+    "v2_smooth_cal": [
+      "overall_mae is 9.4% worse than v1",
+      "overpredicts its own top_5 picks by 3.98 points over 5 GWs"
+    ],
+    "v2_tier": [
+      "overpredicts its own top_5 picks by 4.03 points over 5 GWs"
+    ]
+  },
+  "intervals": {
+    "v1": {
+      "hi": 0.0,
+      "lo": 0.0,
+      "p_above_zero": 0.0
+    },
+    "v2_huber": {
+      "hi": -1.8918230740548958,
+      "lo": -4.403241465534086,
+      "p_above_zero": 0.0
+    },
+    "v2_huber_seed2": {
+      "hi": -2.0334235320050347,
+      "lo": -4.686863943252676,
+      "p_above_zero": 0.0
+    },
+    "v2_smooth": {
+      "hi": 0.30455352974526795,
+      "lo": -2.509550120551204,
+      "p_above_zero": 0.04
+    },
+    "v2_smooth_cal": {
+      "hi": 1.2880368713996824,
+      "lo": -1.1378744209372678,
+      "p_above_zero": 0.44
+    },
+    "v2_tier": {
+      "hi": 0.26881925243759225,
+      "lo": -2.4231367755583366,
+      "p_above_zero": 0.06
+    }
+  },
+  "missing_predictions": {
+    "v1": 0,
+    "v2_huber": 0,
+    "v2_huber_seed2": 0,
+    "v2_smooth": 0,
+    "v2_smooth_cal": 0,
+    "v2_tier": 0
+  },
+  "models": [
+    "v1",
+    "v2_huber",
+    "v2_tier",
+    "v2_smooth",
+    "v2_huber_seed2",
+    "v2_smooth_cal"
+  ],
+  "noise_floor": {
+    "pair": [
+      "v2_huber",
+      "v2_huber_seed2"
+    ],
+    "total_gap": 0.19638965578893153
+  },
+  "prediction_sets": {
+    "v1": 1,
+    "v2_huber": 2,
+    "v2_huber_seed2": 5,
+    "v2_smooth": 4,
+    "v2_tier": 3
+  },
+  "ranking": [
+    "v2_smooth_cal",
+    "v2_smooth",
+    "v2_tier",
+    "v2_huber",
+    "v2_huber_seed2"
+  ],
+  "scorers": {
+    "v1": "optimiser",
+    "v2_huber": "raw_points",
+    "v2_huber_seed2": "raw_points",
+    "v2_smooth": "raw_points",
+    "v2_tier": "raw_points"
+  },
+  "season_scores": {
+    "v1": {
+      "25": 0.0
+    },
+    "v2_huber": {
+      "25": -3.0585034507577955
+    },
+    "v2_huber_seed2": {
+      "25": -3.254893106546727
+    },
+    "v2_smooth": {
+      "25": -0.9787359763427551
+    },
+    "v2_smooth_cal": {
+      "25": 0.31932994619348665
+    },
+    "v2_tier": {
+      "25": -0.9917710226415701
+    }
+  },
+  "seasons": [
+    25
+  ],
+  "sigmas": {
+    "2A_actual": 0.4204067049747608,
+    "2A_predicted": 0.3611575976588904,
+    "2B_actual": 0.1361844938037829,
+    "2B_predicted": 0.07096890261578842,
+    "calibration_gap": 0.03432302058321348,
+    "overall_mse": 0.16778203423348453,
+    "spearman_five_gw": 0.013660345936264678,
+    "spearman_single_gw": 0.014690055240555073
+  },
+  "totals": {
+    "v1": 0.0,
+    "v2_huber": -3.0585034507577955,
+    "v2_huber_seed2": -3.254893106546727,
+    "v2_smooth": -0.9787359763427551,
+    "v2_smooth_cal": 0.31932994619348665,
+    "v2_tier": -0.9917710226415701
+  },
+  "units": 38
+}

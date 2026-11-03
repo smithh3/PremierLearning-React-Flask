@@ -1,0 +1,16 @@
+# Optional fantasy-manager policy. Do not merge these into requirements.txt
+# or requirements-pipeline.txt. Those files pin the TensorFlow training
+# environment. Python 3.8 needs these versions; newer torch drops that
+# interpreter.
+#
+# TensorFlow 2.13 wants typing-extensions below 4.6. Torch 2.2 declares
+# 4.8 or newer. 4.5.0 is the overlap that still imports both.
+gymnasium==0.29.1
+torch==2.2.2
+stable-baselines3==2.3.2
+sb3-contrib==2.3.0
+typing-extensions==4.5.0
+# In-process squad solver (fpl_manager/highs_solver.py). 1.14 crashes on
+# import with the older Visual C++ runtime on the laptop; 1.7.2 does not.
+# Without it the manager falls back to CBC.
+highspy==1.7.2

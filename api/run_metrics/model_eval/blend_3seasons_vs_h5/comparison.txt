@@ -1,0 +1,85 @@
+Model evaluation against v1, seasons 23, 24, 25, 114 origins
+Scores are in noise units: 1.0 = one bootstrap standard deviation of that metric for v1.
+Positive is better than v1; v1 scores 0 by definition.
+Each metric is capped at +-3 before weighting; "uncapped" is the old total.
+
+model               total       95% interval   P(>0)  overall   future    calib  ranking  uncapped
+v2_log_blend25      +1.31       [0.60, 1.65]    1.00    +2.07    +0.21    +3.00    +0.82     +2.27
+v2_log_blend25_cal    +1.28       [0.61, 1.57]    1.00    +2.19    +0.23    +3.00    +0.65     +2.63
+v1_cal              +1.05       [0.82, 1.16]    1.00    +1.91    +0.43    +3.00    +0.05     +2.03
+v1_h5_cal           +1.05       [0.82, 1.16]    1.00    +1.91    +0.43    +3.00    +0.05     +2.03
+v2_log              +1.01       [0.27, 1.30]    1.00    +1.70    +0.14    +3.00    +0.27     +1.78
+v2_log_cal          +0.96       [0.24, 1.23]    1.00    +1.84    +0.15    +3.00    +0.05     +2.17
+v2_log_h5_cal       +0.20      [-0.34, 0.46]    0.68    +1.13    +0.25    +3.00    -1.71     +1.44
+v2_log_h5           +0.18      [-0.36, 0.44]    0.65    +1.11    +0.21    +3.00    -1.71     +1.35
+v1_h5               +0.00       [0.00, 0.00]    0.00    +0.00    +0.00    +0.00    +0.00     +0.00
+
+What drove each score:
+  v2_log_blend25: helped most by overall +0.52, calibration +0.45; regressed on 2A_actual (-3.00 sd)
+  v2_log_blend25_cal: helped most by overall +0.55, calibration +0.45; regressed on 2A_actual (-3.00 sd)
+    v2_log_blend25 plus the same rolling linear calibration (unflagged players only).
+  v1_cal: helped most by overall +0.48, calibration +0.45; regressed on 2A_actual (-3.00 sd)
+    v1 plus the same rolling linear calibration.
+  v1_h5_cal: helped most by overall +0.48, calibration +0.45; regressed on 2A_actual (-3.00 sd)
+    v1_h5 plus the same rolling linear calibration.
+  v2_log: helped most by calibration +0.45, overall +0.43; regressed on 2A_actual (-3.00 sd)
+    v2, no weights, trained on log1p points, one smearing factor (level only).
+  v2_log_cal: helped most by overall +0.46, calibration +0.45; regressed on 2A_actual (-3.00 sd)
+    v2_log plus the same rolling linear calibration.
+  v2_log_h5_cal: helped most by calibration +0.45, overall +0.28; regressed on 2A_actual (-3.00 sd), single_gw_rank (-3.00 sd)
+    v2_log_h5 plus the same rolling linear calibration.
+  v2_log_h5: helped most by calibration +0.45, overall +0.28; regressed on 2A_actual (-2.98 sd), single_gw_rank (-3.00 sd)
+    v2_log plus a 5-GW net on points per fixture; window totals split by h1 shares.
+  v1_h5: helped most by nothing
+    v1 as used live: a 5-GW total model, split across fixtures by the single-GW points.
+
+By season (total):
+  v2_log_blend25   23 +1.23  24 +1.29  25 +1.42
+  v2_log_blend25_cal 23 +1.29  24 +1.17  25 +1.42
+  v1_cal           23 +1.05  24 +0.77  25 +1.27
+  v1_h5_cal        23 +1.05  24 +0.77  25 +1.27
+  v2_log           23 +1.00  24 +0.87  25 +1.19
+  v2_log_cal       23 +1.00  24 +0.73  25 +1.16
+  v2_log_h5_cal    23 -0.02  24 +0.57  25 +0.06
+  v2_log_h5        23 +0.02  24 +0.60  25 -0.02
+  v1_h5            23 +0.00  24 +0.00  25 +0.00
+
+Non-overlapping 5-GW origins only (sensitivity check, same sigmas):
+  v2_log_blend25   total +1.31, future +0.40, ranking +0.52
+  v2_log_blend25_cal total +1.30, future +0.51, ranking +0.36
+  v1_cal           total +0.94, future +0.53, ranking -0.21
+  v1_h5_cal        total +0.94, future +0.53, ranking -0.21
+  v2_log           total +0.98, future +0.34, ranking -0.10
+  v2_log_cal       total +0.94, future +0.38, ranking -0.29
+  v2_log_h5_cal    total +0.16, future +0.24, ranking -2.02
+  v2_log_h5        total +0.17, future +0.30, ranking -2.01
+  v1_h5            total +0.00, future +0.00, ranking +0.00
+
+Guardrail flags:
+  v1_h5: overpredicts its own top_5pct picks by 3.09 points over 5 GWs
+  v1_h5: overpredicts its own top_5 picks by 4.49 points over 5 GWs
+
+Raw metrics (pooled):
+  model             overall_mse  overall_mae overall_bias    2A_actual 2A_predicted    2B_actual 2B_predicted calibration_ calibration_ spearman_sin spearman_fiv
+  v1                      7.161        1.650       -0.408       15.723        9.213        4.197        3.050        0.474        0.752        0.557        0.567
+  v2_log_blend25          6.869        1.644       -0.259       16.805        8.312        4.258        2.953        0.259        1.034        0.554        0.583
+  v2_log_blend25_cal        6.853        1.664       -0.199       16.802        8.287        4.259        2.949        0.199        1.059        0.554        0.580
+  v1_cal                  6.891        1.640       -0.226       17.205        8.435        4.288        2.850        0.239        1.015        0.563        0.563
+  v1_h5_cal               6.891        1.640       -0.226       17.205        8.435        4.288        2.850        0.239        1.015        0.563        0.563
+  v2_log                  6.920        1.638       -0.288       16.850        8.315        4.267        2.969        0.288        0.976        0.554        0.575
+  v2_log_cal              6.902        1.664       -0.211       17.096        8.321        4.289        2.955        0.211        1.042        0.554        0.571
+  v2_log_h5_cal           7.001        1.711       -0.160       16.901        8.316        4.267        2.938        0.160        1.065        0.513        0.564
+  v2_log_h5               7.005        1.708       -0.171       16.767        8.325        4.258        2.955        0.171        1.035        0.511        0.564
+  v1_h5                   7.161        1.650       -0.408       15.723        9.213        4.197        3.050        0.474        0.752        0.557        0.567
+
+Eligible player-fixtures with no stored prediction (scored as 0):
+  v1: 1
+  v1_cal: 1
+  v1_h5: 1
+  v1_h5_cal: 1
+  v2_log: 1
+  v2_log_blend25: 1
+  v2_log_blend25_cal: 1
+  v2_log_cal: 1
+  v2_log_h5: 1
+  v2_log_h5_cal: 1

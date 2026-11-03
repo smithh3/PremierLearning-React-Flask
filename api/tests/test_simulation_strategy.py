@@ -1,4 +1,5 @@
 import os
+import tempfile
 import unittest
 
 from simulation.actual_scoring import score_lineup
@@ -816,6 +817,27 @@ class OptimiserCandidateFilterTests(unittest.TestCase):
         kept = self._ids(pool)
         self.assertEqual({1, 20, 21}, kept)
 
+    def test_a_pool_without_predicted_minutes_is_gated_on_points_alone(self):
+        pool = PredictionPool({
+            1: _projection(1, 3, 1, 80, 5.0, 0.0),
+            2: _projection(2, 3, 2, 80, 2.0, 0.0),
+            3: _projection(3, 3, 3, 80, 1.5, 0.0),
+            20: _projection(20, 3, 10, 40, 0.0, 0.0),
+            21: _projection(21, 3, 11, 41, 0.0, 0.0),
+        })
+        self.assertFalse(pool.predicts_minutes)
+        self.assertEqual({1, 2, 20, 21}, self._ids(pool))
+
+    def test_one_predicted_minute_keeps_the_minutes_gate_on(self):
+        pool = PredictionPool({
+            1: _projection(1, 3, 1, 80, 5.0, 0.0),
+            2: _projection(2, 3, 2, 80, 5.0, 90.0),
+            20: _projection(20, 3, 10, 40, 0.0, 0.0),
+            21: _projection(21, 3, 11, 41, 0.0, 0.0),
+        })
+        self.assertTrue(pool.predicts_minutes)
+        self.assertEqual({2, 20, 21}, self._ids(pool))
+
     def test_keeps_owned_players_who_fail_the_floor(self):
         pool = PredictionPool({
             1: _projection(1, 3, 1, 80, 0.0, 0.0),
@@ -924,6 +946,115 @@ class QuietCbcTests(unittest.TestCase):
             self.assertNotIn(
                 'threads', ' '.join(solver.options + solver.getOptions())
             )
+
+    def test_waiting_on_cbc_releases_its_slot(self):
+        from unittest import mock
+
+        from squadtools.simulation_strategy import _ReleasingPopen
+
+        slot = mock.Mock()
+        process = mock.Mock()
+        process.wait.return_value = 0
+        wrapped = _ReleasingPopen(process, slot)
+        self.assertEqual(0, wrapped.wait())
+        slot.release.assert_called_once()
+
+    def test_a_hung_cbc_is_killed_and_its_files_removed(self):
+        import subprocess
+        import sys
+        from unittest import mock
+
+        from squadtools import simulation_strategy as strategy
+
+        directory = tempfile.mkdtemp()
+        leftover = os.path.join(directory, 'abc-pulp.mps')
+        with open(leftover, 'w') as handle:
+            handle.write('model')
+        process = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(60)'])
+        process.args = [sys.executable, leftover]
+        slot = mock.Mock()
+        wrapped = strategy._ReleasingPopen(process, slot)
+        with mock.patch.object(strategy, '_CBC_WALL_SECONDS', 0.5):
+            with self.assertRaises(strategy.CbcTimedOut):
+                wrapped.wait()
+        self.assertIsNotNone(process.poll())
+        self.assertFalse(os.path.exists(leftover))
+        slot.release.assert_called_once()
+
+    def test_solve_model_does_not_retry_a_hung_cbc(self):
+        from unittest import mock
+
+        from squadtools.simulation_strategy import CbcTimedOut, _solve_model
+
+        model = mock.Mock()
+        model.name = 'simulation_squad_gw_10'
+        model.solve.side_effect = CbcTimedOut('still running')
+        with mock.patch('squadtools.simulation_strategy._cbc_solver', return_value='solver'):
+            with self.assertRaises(ValueError):
+                _solve_model(model)
+        self.assertEqual(1, model.solve.call_count)
+
+    def test_a_paging_file_failure_is_retried_before_cbc_starts(self):
+        from unittest import mock
+
+        from squadtools.simulation_strategy import _cbc_aware_popen
+
+        paging = OSError('paging file')
+        paging.winerror = 1455
+        launched = mock.Mock()
+        opener = mock.Mock(side_effect=[paging, launched])
+        with mock.patch('squadtools.simulation_strategy._popen_for_cbc', return_value=opener):
+            with mock.patch('squadtools.simulation_strategy._CbcSlot'):
+                with mock.patch('squadtools.simulation_strategy.time.sleep'):
+                    process = _cbc_aware_popen(['cbc.exe', 'model.mps'])
+        self.assertIs(launched, process._process)
+        self.assertEqual(2, opener.call_count)
+
+    def test_only_one_cbc_slot_is_given_out_when_the_cap_is_one(self):
+        from unittest import mock
+
+        from squadtools import simulation_strategy as strategy
+
+        directory = tempfile.mkdtemp()
+        first = strategy._CbcSlot()
+        second = strategy._CbcSlot()
+        with mock.patch('squadtools.simulation_strategy.tempfile.gettempdir', return_value=directory):
+            with mock.patch.object(strategy, '_CBC_SLOTS', 1):
+                first.acquire()
+                with mock.patch.object(strategy.time, 'time', side_effect=[0, 1000]):
+                    with mock.patch.object(strategy.time, 'sleep'):
+                        with self.assertRaises(OSError):
+                            second.acquire()
+                first.release()
+
+    def test_solve_model_retries_a_cbc_crash_then_raises_valueerror(self):
+        from unittest import mock
+
+        from pulp import PulpSolverError
+        from squadtools.simulation_strategy import _CBC_ATTEMPTS, _solve_model
+
+        model = mock.Mock()
+        model.name = 'simulation_squad_gw_10'
+        model.solve.side_effect = PulpSolverError('cbc failed')
+        with mock.patch('squadtools.simulation_strategy._cbc_solver', return_value='solver'):
+            with mock.patch('squadtools.simulation_strategy.time.sleep'):
+                with self.assertRaises(ValueError):
+                    _solve_model(model)
+        self.assertEqual(_CBC_ATTEMPTS, model.solve.call_count)
+
+    def test_solve_model_keeps_the_later_attempt(self):
+        from unittest import mock
+
+        from pulp import PulpSolverError
+        from squadtools.simulation_strategy import _solve_model
+
+        model = mock.Mock()
+        model.name = 'simulation_squad_gw_10'
+        model.solve.side_effect = [PulpSolverError('cbc failed'), 1]
+        with mock.patch('squadtools.simulation_strategy._cbc_solver', return_value='solver'):
+            with mock.patch('squadtools.simulation_strategy.time.sleep'):
+                self.assertEqual(1, _solve_model(model))
+        self.assertEqual(2, model.solve.call_count)
 
     def test_restore_unpatched_createprocess_puts_back_the_original(self):
         from squadtools.simulation_strategy import _restore_unpatched_createprocess

@@ -61,6 +61,7 @@ class RawMatch(ABC):
         chance = getattr(self, 'chance_of_playing', None)
         h1_points = getattr(self, 'h1_points', None)
         horizon_scale = getattr(self, 'horizon_scale', None)
+        bands = getattr(self, 'minutes_bands', None) or (None, None, None)
         return (
             self.player_id,
             float(self.minutes),
@@ -72,6 +73,10 @@ class RawMatch(ABC):
             None if chance is None or chance == '' else int(chance),
             None if h1_points is None or h1_points == '' else float(h1_points),
             None if horizon_scale is None or horizon_scale == '' else float(horizon_scale),
+            getattr(self, 'points_basis', None),
+            None if bands[0] is None else float(bands[0]),
+            None if bands[1] is None else float(bands[1]),
+            None if bands[2] is None else float(bands[2]),
         )
     
     def within_n_gameweeks(self, current_gameweek, n):

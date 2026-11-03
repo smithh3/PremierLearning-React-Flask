@@ -1,0 +1,157 @@
+{
+  "_config": {
+    "history_len": 50,
+    "season_len": 8,
+    "team_form_n": 5,
+    "max_squad": 20,
+    "player_emb_dim": 16,
+    "team_emb_dim": 8,
+    "position_emb_dim": 4,
+    "d_model": 32,
+    "n_heads": 4,
+    "n_layers": 1,
+    "team_history_len": 114,
+    "team_decay_half_life": 180,
+    "team_blocks": 5,
+    "player_blocks": 1,
+    "block_first": 38,
+    "block_size": 76,
+    "block_l2": 0.0001
+  },
+  "player_id_embedding": "embedding",
+  "position": "embedding",
+  "last_season": {
+    "transformer": [
+      {
+        "seasons_before": "int",
+        "played": "int",
+        "points_per_90": "float",
+        "xgi_per_90": "float",
+        "minutes": "float"
+      }
+    ]
+  },
+  "current_team": {
+    "team_id_embedding": "embedding",
+    "team_features": {
+      "goals_last_n": "float",
+      "goals_conceded_last_n": "float",
+      "goals_for_decay": "float",
+      "goals_against_decay": "float",
+      "xg_for_decay": "float",
+      "xg_against_decay": "float",
+      "xg_weight": "float"
+    },
+    "fixture_history": {
+      "transformer": [
+        {
+          "opposition_team_id_embedding": "embedding",
+          "home_away": "int",
+          "days_before_current": "float",
+          "goals_for": "float",
+          "goals_against": "float",
+          "xg_for": "float",
+          "xg_against": "float",
+          "xg_known": "int"
+        }
+      ]
+    },
+    "teammates": {
+      "attention": [
+        {
+          "player_id_embedding": "embedding",
+          "position": "embedding",
+          "xG_last_n": "float",
+          "xA_last_n": "float",
+          "goals_last_n": "float",
+          "assists_last_n": "float",
+          "defcon_last_n": "float",
+          "xGC_last_n": "float",
+          "minutes_last_n": "float"
+        }
+      ]
+    }
+  },
+  "current_opposition": {
+    "opposition_team_id_embedding": "embedding",
+    "team_features": {
+      "goals_last_n": "float",
+      "goals_conceded_last_n": "float",
+      "goals_for_decay": "float",
+      "goals_against_decay": "float",
+      "xg_for_decay": "float",
+      "xg_against_decay": "float",
+      "xg_weight": "float"
+    },
+    "fixture_history": {
+      "transformer": [
+        {
+          "opposition_team_id_embedding": "embedding",
+          "home_away": "int",
+          "days_before_current": "float",
+          "goals_for": "float",
+          "goals_against": "float",
+          "xg_for": "float",
+          "xg_against": "float",
+          "xg_known": "int"
+        }
+      ]
+    },
+    "players": {
+      "attention": [
+        {
+          "player_id_embedding": "embedding",
+          "position": "embedding",
+          "xG_last_n": "float",
+          "xA_last_n": "float",
+          "goals_last_n": "float",
+          "assists_last_n": "float",
+          "defcon_last_n": "float",
+          "xGC_last_n": "float",
+          "minutes_last_n": "float"
+        }
+      ]
+    }
+  },
+  "match_facts": {
+    "home_away": "int",
+    "days_since_previous_match": "float"
+  },
+  "context": {
+    "new_stats_included": "int",
+    "changed_club": "int",
+    "chance_of_playing": "float",
+    "chance_known": "int"
+  },
+  "player_fixture_history": {
+    "transformer": [
+      {
+        "team_id_embedding": "embedding",
+        "opposition_team_id_embedding": "embedding",
+        "match_facts": {
+          "home_away": "int",
+          "days_since_previous_match": "float",
+          "days_before_current": "float"
+        },
+        "team_features_pre_match": {
+          "goals": "float",
+          "goals_conceded": "float"
+        },
+        "opposition_features_pre_match": {
+          "goals": "float",
+          "goals_conceded": "float"
+        },
+        "player_performance": {
+          "points_scored": "float",
+          "minutes_played": "float",
+          "xG": "float",
+          "xA": "float",
+          "xGC": "float",
+          "goals": "float",
+          "assists": "float",
+          "defcon": "float"
+        }
+      }
+    ]
+  }
+}

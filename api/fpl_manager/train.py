@@ -25,12 +25,50 @@ from pathlib import Path
 import numpy as np
 
 from fpl_manager.actions import ACTIONS
-from fpl_manager.observation import MONEY_SCALE, OBSERVATION_NAMES, POINT_SCALE
-from fpl_manager.reward import TERMINAL_DIVISOR, WEEKLY_COEFFICIENT
+from fpl_manager.observation import (
+    MONEY_SCALE,
+    OBSERVATION_NAMES,
+    POINT_SCALE,
+    version_for_features,
+)
+from fpl_manager.reward import (
+    PERCENTILE_DIVISOR,
+    TERMINAL_DIVISOR,
+    WEEKLY_COEFFICIENT,
+    WEEKLY_POINTS_WEIGHT,
+)
+
+# Safety stop for an evaluation run that never reports its end.
+_EVALUATION_STEP_LIMIT = 10000
 
 
 class CheckpointMismatch(RuntimeError):
     """The saved policy was trained against a different observation or reward."""
+
+
+def reward_settings(features=None) -> dict:
+    """What the manifest records about the reward. v3 adds its own fields."""
+    settings = {
+        'terminal_divisor': TERMINAL_DIVISOR,
+        'weekly_coefficient': WEEKLY_COEFFICIENT,
+    }
+    if features is not None and version_for_features(features) == 'v3':
+        settings.update({
+            'version': 'v3',
+            'weekly_points_weight': WEEKLY_POINTS_WEIGHT,
+            'percentile_divisor': PERCENTILE_DIVISOR,
+            'per_season_episodes': True,
+        })
+    return settings
+
+
+def _same(stored, expected) -> bool:
+    if isinstance(expected, bool) or not isinstance(expected, (int, float)):
+        return stored == expected
+    try:
+        return float(stored) == float(expected)
+    except (TypeError, ValueError):
+        return False
 
 
 def require_ppo():
@@ -47,31 +85,27 @@ def require_ppo():
         ) from exc
 
 
-def _manifest(model, gamma: float) -> dict:
+def _manifest(model, gamma: float, features=None) -> dict:
     return {
-        'features': list(OBSERVATION_NAMES),
+        'features': list(OBSERVATION_NAMES if features is None else features),
         'actions': list(ACTIONS),
-        'reward': {
-            'terminal_divisor': TERMINAL_DIVISOR,
-            'weekly_coefficient': WEEKLY_COEFFICIENT,
-        },
+        'reward': reward_settings(features),
         'scales': {'point': POINT_SCALE, 'money': MONEY_SCALE},
         'gamma': float(gamma),
         'num_timesteps': int(model.num_timesteps),
     }
 
 
-def _check_manifest(manifest: dict):
-    if list(manifest.get('features') or ()) != list(OBSERVATION_NAMES):
+def _check_manifest(manifest: dict, features=None):
+    expected = list(OBSERVATION_NAMES if features is None else features)
+    if list(manifest.get('features') or ()) != expected:
         raise CheckpointMismatch('Observation fields do not match this code')
     if list(manifest.get('actions') or ()) != list(ACTIONS):
         raise CheckpointMismatch('Action order does not match this code')
     reward = manifest.get('reward') or {}
-    if (
-        float(reward.get('terminal_divisor', -1)) != float(TERMINAL_DIVISOR)
-        or float(reward.get('weekly_coefficient', -1)) != float(WEEKLY_COEFFICIENT)
-    ):
-        raise CheckpointMismatch('Reward settings do not match this code')
+    for key, value in reward_settings(features).items():
+        if not _same(reward.get(key), value):
+            raise CheckpointMismatch('Reward settings do not match this code')
     scales = manifest.get('scales') or {}
     if (
         float(scales.get('point', -1)) != float(POINT_SCALE)
@@ -80,11 +114,13 @@ def _check_manifest(manifest: dict):
         raise CheckpointMismatch('Feature scales do not match this code')
 
 
-def save_checkpoint(model, directory, gamma: float):
+def save_checkpoint(model, directory, gamma: float, features=None):
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=True)
     model.save(str(directory / 'policy'))
-    manifest = _manifest(model, gamma)
+    if features is None:
+        features = getattr(model, 'checkpoint_features', None)
+    manifest = _manifest(model, gamma, features)
     (directory / 'manifest.json').write_text(json.dumps(manifest, indent=2, sort_keys=True))
     import torch
     with (directory / 'rng.pkl').open('wb') as handle:
@@ -96,7 +132,7 @@ def save_checkpoint(model, directory, gamma: float):
     return manifest
 
 
-def load_checkpoint(directory, env=None):
+def load_checkpoint(directory, env=None, features=None):
     require_ppo()
     import torch
 
@@ -105,7 +141,7 @@ def load_checkpoint(directory, env=None):
     if not manifest_path.is_file():
         raise FileNotFoundError('No checkpoint manifest at %s' % directory)
     manifest = json.loads(manifest_path.read_text())
-    _check_manifest(manifest)
+    _check_manifest(manifest, features)
     model = _checkpoint_class().load(str(directory / 'policy'), env=env, device='cpu')
     if int(model.num_timesteps) != int(manifest['num_timesteps']):
         raise CheckpointMismatch(
@@ -137,6 +173,10 @@ def _checkpoint_class():
     class CheckpointPPO(MaskablePPO):
         def train(self):
             super().train()
+            every = int(getattr(self, 'evaluate_every', 0) or 0)
+            updates = int(self._n_updates) // max(1, int(self.n_epochs))
+            if every and updates % every == 0:
+                evaluate_once(self)
             directory = getattr(self, 'checkpoint_dir', None)
             if directory:
                 save_checkpoint(self, directory, float(getattr(self, 'checkpoint_gamma', 0.99)))
@@ -144,6 +184,44 @@ def _checkpoint_class():
     globals()['CheckpointPPO'] = CheckpointPPO
     _PPO_CLASS = CheckpointPPO
     return CheckpointPPO
+
+
+def evaluate_once(model) -> bool:
+    """Play one whole run in the first worker with the policy's top choice.
+
+    Training runs sample their actions, so their scores include exploration.
+    This run does not: it shows what the policy itself would score. It goes
+    to eval.csv and is not used for learning. It only starts when the first
+    worker is at the very start of a run, which it is after each update when
+    every update covers whole runs. Returns whether it ran.
+    """
+    env = model.get_env()
+    try:
+        started = env.env_method('mark_evaluation', indices=[0])[0]
+    except (AttributeError, BrokenPipeError, EOFError, OSError) as error:
+        print('Evaluation skipped: %s' % error, flush=True)
+        return False
+    if not started:
+        print('Evaluation skipped: the first worker is part-way through a run.', flush=True)
+        return False
+    observation = np.asarray(model._last_obs[0])
+    mask = np.asarray(env.env_method('action_masks', indices=[0])[0], dtype=bool)
+    finished = False
+    steps = 0
+    while not finished and steps < _EVALUATION_STEP_LIMIT:
+        action, _state = model.predict(
+            observation[None], deterministic=True, action_masks=mask[None],
+        )
+        observation, mask, finished = env.env_method(
+            'evaluation_step', int(np.asarray(action).reshape(-1)[0]), indices=[0],
+        )[0]
+        observation = np.asarray(observation)
+        if mask is not None:
+            mask = np.asarray(mask, dtype=bool)
+        steps += 1
+    model._last_obs[0] = np.asarray(env.env_method('restart', indices=[0])[0])
+    model._last_episode_starts[0] = True
+    return finished
 
 
 def _process_envs(env_fns):
@@ -173,27 +251,25 @@ def _process_envs(env_fns):
                 for process in self.processes:
                     if process.is_alive():
                         process.terminate()
-                    process.join()
+                    process.join(timeout=5)
 
     return _VecEnv(fns, start_method='spawn')
 
 
-def _training_env(episode_factory):
+def _training_env(episode_factory, features=None):
     """Vector env whose monitor owns action_masks.
 
     Stable-Baselines looks the mask up on the monitor wrapper. Defining it
     there keeps Gymnasium from warning about the wrapper attribute lookup.
     """
-    from stable_baselines3.common.monitor import Monitor
     from stable_baselines3.common.vec_env import DummyVecEnv
 
-    from fpl_manager.env import ManagerEnv
+    from fpl_manager.env import ManagerEnv, masked_monitor
 
-    class _MaskedMonitor(Monitor):
-        def action_masks(self):
-            return self.env.action_masks()
-
-    return DummyVecEnv([lambda: _MaskedMonitor(ManagerEnv(episode_factory))])
+    names = features
+    return DummyVecEnv([
+        lambda: masked_monitor(ManagerEnv(episode_factory, names)),
+    ])
 
 
 def train_policy(
@@ -207,21 +283,30 @@ def train_policy(
     batch_size: int = 38,
     n_epochs: int = 10,
     env_fns=None,
+    features=None,
+    gae_lambda: float = 0.95,
+    evaluate_every: int = 0,
 ):
     """Train or continue a MaskablePPO. gamma 0.995 and 1.0 are the later comparisons.
 
     env_fns runs each environment in its own process. They sample the one
     policy, and the weight update uses every process's finished run.
+    `gae_lambda` applies to a new policy; a resumed one keeps its own.
+    `evaluate_every` plays one top-choice run after every that many updates.
     """
     require_ppo()
 
     directory = Path(directory)
     manifest_path = directory / 'manifest.json'
-    env = _process_envs(env_fns) if env_fns else _training_env(episode_factory)
+    feature_names = tuple(OBSERVATION_NAMES if features is None else features)
+    env = (
+        _process_envs(env_fns)
+        if env_fns else _training_env(episode_factory, feature_names)
+    )
     if resume:
         if not manifest_path.is_file():
             raise FileNotFoundError('No checkpoint to resume at %s' % directory)
-        model, _manifest = load_checkpoint(directory, env=env)
+        model, _manifest = load_checkpoint(directory, env=env, features=feature_names)
         gamma = float(_manifest['gamma'])
     else:
         if manifest_path.is_file():
@@ -237,7 +322,7 @@ def train_policy(
             batch_size=int(batch_size),
             n_epochs=int(n_epochs),
             gamma=float(gamma),
-            gae_lambda=0.95,
+            gae_lambda=float(gae_lambda),
             clip_range=0.2,
             ent_coef=0.01,
             seed=int(seed),
@@ -247,16 +332,28 @@ def train_policy(
         )
     model.checkpoint_dir = str(directory)
     model.checkpoint_gamma = float(gamma)
+    model.checkpoint_features = feature_names
+    model.evaluate_every = int(evaluate_every)
     processes = len(env_fns) if env_fns else 1
     try:
         model.learn(
             total_timesteps=int(total_timesteps),
             reset_num_timesteps=not resume,
         )
+    except (BrokenPipeError, EOFError, OSError) as error:
+        print(
+            'A worker process died (%s). The last finished weight update is '
+            'saved at %s. Resume that checkpoint.'
+            % (error, directory),
+            flush=True,
+        )
     finally:
         save_checkpoint(model, directory, gamma)
         if processes > 1:
-            env.close()
+            try:
+                env.close()
+            except (BrokenPipeError, EOFError, OSError):
+                pass
     return model
 
 

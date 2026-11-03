@@ -1,7 +1,6 @@
 """Player-prediction table for CSV and the Fargate results email."""
 import csv
 import html
-import json
 import os
 
 from premierlearning.config_constants import POINTS_HORIZON
@@ -10,7 +9,6 @@ from premierlearning.player import LAST_5_WINDOW, is_form_appearance
 
 POS_SHORT = {1: 'GKP', 2: 'DEF', 3: 'MID', 4: 'FWD'}
 CSV_PATH = 'top_players.csv'
-SCORELINES_PATH = 'predicted_scorelines.json'
 
 
 def _match_minutes(match) -> float:
@@ -325,82 +323,6 @@ def _esc(value) -> str:
     return html.escape('' if value is None else str(value))
 
 
-def _load_scorelines(path=SCORELINES_PATH):
-    if not os.path.isfile(path):
-        return []
-    try:
-        with open(path, encoding='utf-8') as file:
-            rows = json.load(file)
-        return rows if isinstance(rows, list) else []
-    except Exception as exc:
-        print('Could not read predicted scorelines: %s' % exc)
-        return []
-
-
-def _html_scorelines(rows):
-    if not rows:
-        return (
-            '<p style="margin:24px 0 0;color:#444">No predicted scorelines '
-            '(team expectancies did not write predicted_scorelines.json).</p>'
-        )
-    parts = [
-        '<h2 style="margin:24px 0 8px">Predicted scorelines</h2>',
-        '<p style="margin:0 0 10px;color:#444">Expected goals for remaining fixtures this season.</p>',
-    ]
-    gameweek = None
-    for idx, row in enumerate(rows):
-        gw = row.get('gameweek')
-        if gw != gameweek:
-            if gameweek is not None:
-                parts.append('</tbody></table>')
-            gameweek = gw
-            parts.append(
-                '<h3 style="margin:16px 0 6px">Gameweek %s</h3>'
-                '<table cellpadding="4" cellspacing="0" border="1" '
-                'style="border-collapse:collapse;font-size:12px;margin:0 0 8px">'
-                '<thead><tr style="background:#1f2937;color:#fff">'
-                '<th>Home</th><th>xG</th><th></th><th>xG</th><th>Away</th>'
-                '</tr></thead><tbody>' % _esc(gw)
-            )
-        bg = '#f3f4f6' if idx % 2 else '#ffffff'
-        parts.append(
-            '<tr style="background:%s">'
-            '<td>%s</td><td>%.2f</td><td>-</td><td>%.2f</td><td>%s</td>'
-            '</tr>' % (
-                bg,
-                _esc(row.get('home')),
-                float(row.get('home_xg') or 0),
-                float(row.get('away_xg') or 0),
-                _esc(row.get('away')),
-            )
-        )
-    if gameweek is not None:
-        parts.append('</tbody></table>')
-    return ''.join(parts)
-
-
-def _text_scorelines(rows):
-    if not rows:
-        return ['No predicted scorelines file.']
-    lines = ['Predicted scorelines', '']
-    gameweek = None
-    for row in rows:
-        gw = row.get('gameweek')
-        if gw != gameweek:
-            gameweek = gw
-            lines.append('Gameweek %s' % gw)
-        lines.append(
-            '%s %.2f - %.2f %s'
-            % (
-                row.get('home'),
-                float(row.get('home_xg') or 0),
-                float(row.get('away_xg') or 0),
-                row.get('away'),
-            )
-        )
-    return lines
-
-
 def _chip_rows(opt):
     calendar = getattr(opt, 'chip_calendar', None)
     if calendar is None:
@@ -645,23 +567,26 @@ def build_html_report(opt, applied=False, n=POINTS_HORIZON) -> str:
     else:
         parts.append('<p>No transfers for this gameweek.</p>')
 
+    shown = relevant_players(opt, players, n)
+    bands = uses_minutes_bands(shown)
     parts.append(
-        '<h2 style="margin:24px 0 8px">All player predictions (%d)</h2>'
-        '<p style="margin:0 0 10px;color:#444">Each player gets two rows. '
-        '<b>final</b> is what the optimiser actually uses: the single-gameweek prediction '
-        'after the %dGW model has rescaled it. <b>raw 1GW</b> is the single-gameweek '
-        'prediction on its own, before that rescale. <b>Scale</b> is the factor between them, '
-        'so final = raw × Scale on every fixture. It is one number per player: the %dGW model '
-        'sets the total for the window and the 1GW model only decides how that total splits '
-        'across fixtures. Above 1 means the %dGW view is more optimistic than the '
-        'fixture-by-fixture one.</p>'
-        '<p style="margin:0 0 10px;color:#444">Adj is the score used by the linear optimiser: '
-        'predicted pp90 × effective minutes / 90, then × chance-to-play on every remaining fixture when known. '
-        'pp90 is the stored points-model output. '
-        'Prev pp90 is the model form window: pooled points/90 over the last %d appearances '
-        '(minutes &gt; 0), including last-season carry when present. DNPs are excluded. '
-        'The model also has a separate 7-appearance <code>avg</code> feature.</p>'
-        % (len(players), n, n, n, LAST_5_WINDOW)
+        '<h2 style="margin:24px 0 8px">Player predictions (%d of %d)</h2>'
+        '<p style="margin:0 0 10px;color:#444">Your squad, this week\'s and planned '
+        'transfer players, and the top players in each position over the next %d gameweeks. '
+        'Anyone else predicted under %.0f point%s over that window is left out.</p>'
+        '<p style="margin:0 0 10px;color:#444">%s %s Prev pp90 is recent form: points per 90 '
+        'over the last %d appearances.</p>'
+        % (
+            len(shown), len(players), n, EMAIL_MIN_POINTS,
+            '' if EMAIL_MIN_POINTS == 1 else 's',
+            _points_note(shown),
+            (
+                '<b>Mins</b> is the minutes-bands head: the chance, in %, of 0 / 1-59 / '
+                '60+ minutes in that match.'
+                if bands else '<b>Mins</b> is the predicted minutes.'
+            ),
+            LAST_5_WINDOW,
+        )
     )
     parts.append(
         '<table cellpadding="4" cellspacing="0" border="1" '
@@ -669,30 +594,153 @@ def build_html_report(opt, applied=False, n=POINTS_HORIZON) -> str:
         '<thead>'
         '<tr style="background:#1f2937;color:#fff">'
         '<th rowspan="2">Player</th><th rowspan="2">Team</th><th rowspan="2">Pos</th>'
-        '<th rowspan="2">Price</th><th rowspan="2">Basis</th><th rowspan="2">Pred</th>'
-        '<th rowspan="2">Pred mins</th><th rowspan="2">Prev pp90</th>'
-        '<th rowspan="2">Err</th><th rowspan="2">Scale</th>'
+        '<th rowspan="2">Price</th><th rowspan="2">Yours</th>'
+        '<th rowspan="2">%dGW pts</th><th rowspan="2">Prev pp90</th>' % n
     )
     for i in range(1, n + 1):
-        parts.append('<th colspan="4">Match %d</th>' % i)
+        parts.append('<th colspan="3">Match %d</th>' % i)
     parts.append('</tr><tr style="background:#374151;color:#fff">')
     for _ in range(n):
-        parts.append('<th>Opp</th><th>pp90</th><th>Mins</th><th>Adj</th>')
+        parts.append('<th>Opp</th><th>Pts</th><th>%s</th>' % ('Mins 0/1-59/60+' if bands else 'Mins'))
     parts.append('</tr></thead><tbody>')
-
-    for idx, player in enumerate(players):
-        bg = '#f3f4f6' if idx % 2 else '#ffffff'
-        for basis, cells in enumerate(player_rows(player, n)):
-            # Grey the raw row so each player reads as one block, not two players.
-            style = 'background:%s' % bg
-            if basis:
-                style += ';color:#6b7280;font-style:italic'
-            tds = ''.join('<td>%s</td>' % _esc(c) for c in cells)
-            parts.append('<tr style="%s">%s</tr>' % (style, tds))
+    tags = player_tags(opt)
+    last_position = None
+    for idx, player in enumerate(shown):
+        position = _player_pos(player)
+        if position != last_position:
+            parts.append(
+                '<tr style="background:#e5e7eb"><td colspan="%d"><b>%s</b></td></tr>'
+                % (7 + 3 * n, _esc(POSITION_TITLES.get(position, position)))
+            )
+            last_position = position
+        tag = tags.get(_player_id(player), '')
+        style = 'background:%s' % ('#fef9c3' if tag else ('#f3f4f6' if idx % 2 else '#ffffff'))
+        cells = email_player_row(player, n, tag)
+        tds = ''.join('<td>%s</td>' % _esc(c) for c in cells)
+        parts.append('<tr style="%s">%s</tr>' % (style, tds))
     parts.append('</tbody></table>')
-    parts.append(_html_scorelines(_load_scorelines()))
     parts.append('</body></html>')
     return ''.join(parts)
+
+
+# Players shown in the email besides your squad and transfer players.
+EMAIL_TOP_PER_POSITION = {1: 4, 2: 8, 3: 10, 4: 6}
+# Points over the window below which an unowned player is left out.
+EMAIL_MIN_POINTS = 1.0
+POSITION_TITLES = {'GKP': 'Goalkeepers', 'DEF': 'Defenders', 'MID': 'Midfielders', 'FWD': 'Forwards'}
+_POSITION_ORDER = {'GKP': 1, 'DEF': 2, 'MID': 3, 'FWD': 4}
+
+
+def _player_id(player):
+    try:
+        return int(getattr(player, 'id', 0) or 0)
+    except (TypeError, ValueError):
+        return 0
+
+
+def player_tags(opt) -> dict:
+    """player id -> 'Yours', 'Buy', 'Sell' or 'Plan' (a later planned transfer)."""
+    tags = {}
+    squad = getattr(getattr(opt, 'squad', None), 'squad', None) or []
+    for player in squad:
+        tags[_player_id(player)] = 'Yours'
+    for entry in getattr(opt, 'horizon_plan', None) or []:
+        for transfer in entry.get('transfers') or []:
+            for side in ('player_in', 'player_out'):
+                player = getattr(transfer, side, None)
+                if player is not None and _player_id(player) not in tags:
+                    tags[_player_id(player)] = 'Plan'
+    this_week = opt.get_this_week_transfers() if getattr(opt, 'transfers', None) else []
+    for transfer in this_week or []:
+        if getattr(transfer, 'player_in', None) is not None:
+            tags[_player_id(transfer.player_in)] = 'Buy'
+        if getattr(transfer, 'player_out', None) is not None:
+            tags[_player_id(transfer.player_out)] = 'Sell'
+    tags.pop(0, None)
+    return tags
+
+
+def relevant_players(opt, players, n: int):
+    """Squad and transfer players, plus the top few per position, by position then points."""
+    tags = player_tags(opt)
+    points = {id(player): _horizon_adj(player, n) for player in players}
+    kept = []
+    taken = {}
+    for player in sorted(players, key=lambda p: points[id(p)], reverse=True):
+        position = _player_pos(player)
+        limit = EMAIL_TOP_PER_POSITION.get(_POSITION_ORDER.get(position, 0), 0)
+        if _player_id(player) in tags:
+            kept.append(player)
+            continue
+        if points[id(player)] < EMAIL_MIN_POINTS or taken.get(position, 0) >= limit:
+            continue
+        taken[position] = taken.get(position, 0) + 1
+        kept.append(player)
+    kept.sort(key=lambda p: (_POSITION_ORDER.get(_player_pos(p), 9), -points[id(p)]))
+    return kept
+
+
+def _match_bands(match):
+    bands = getattr(match, 'minutes_bands', None)
+    if not bands or bands[0] is None:
+        return None
+    return tuple(float(value) for value in bands)
+
+
+def uses_minutes_bands(players) -> bool:
+    return any(
+        _match_bands(match) is not None
+        for player in players or []
+        for match in (getattr(player, 'future_matches', None) or [])
+    )
+
+
+def _points_note(players) -> str:
+    raw = any(
+        getattr(match, 'points_basis', None) == 'raw'
+        for player in players or []
+        for match in (getattr(player, 'future_matches', None) or [])
+    )
+    if raw:
+        return (
+            '<b>Pts</b> is the blend model\'s expected points for the match (75% v2_log '
+            'with the minutes-bands head, 25% v2_log with its 5-gameweek net). It already '
+            'includes the risk of not playing, so the optimiser uses it as it is.'
+        )
+    return (
+        '<b>Pts</b> is the score the optimiser uses: predicted points per 90 times '
+        'effective minutes, times chance of playing when known.'
+    )
+
+
+def email_player_row(player, n: int, tag=''):
+    """One row per player: who, then opponent, points and minutes for each match."""
+    futs = _future_matches(player, n)
+    row = [
+        _player_name(player),
+        _player_team(player),
+        _player_pos(player),
+        '%.1f' % _player_price(player),
+        tag,
+        '%.1f' % _horizon_adj(player, n),
+        '%.1f' % _last_n_appearance_pp90(player, LAST_5_WINDOW),
+    ]
+    for i in range(n):
+        if i >= len(futs):
+            row.extend(['', '', ''])
+            continue
+        match = futs[i]
+        bands = _match_bands(match)
+        if bands is None:
+            minutes = '%.0f' % _match_minutes(match)
+        else:
+            minutes = '/'.join('%.0f' % (100.0 * value) for value in bands)
+        row.extend([
+            str(getattr(match, 'opponent', '') or ''),
+            '%.1f' % _match_adj(match),
+            minutes,
+        ])
+    return row
 
 
 def build_text_report(opt, applied=False, n=POINTS_HORIZON) -> str:
@@ -720,8 +768,6 @@ def build_text_report(opt, applied=False, n=POINTS_HORIZON) -> str:
             )
     else:
         lines.append('No transfers for this gameweek.')
-    lines.append('')
-    lines.extend(_text_scorelines(_load_scorelines()))
     return '\n'.join(lines)
 
 

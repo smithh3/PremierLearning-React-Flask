@@ -8,6 +8,7 @@ from squadtools.simulation_strategy import (
     CHIP_TRIPLE_CAPTAIN,
     CHIP_WILDCARD,
     ChipCalendar,
+    FreeTransferRules,
     SquadState,
 )
 
@@ -62,12 +63,19 @@ def chip_for(action: str):
     return _CHIP_BY_ACTION.get(action)
 
 
-def legal_mask(season_start_year: int, gameweek: int, played: ChipCalendar, squad: SquadState) -> tuple:
+def legal_mask(
+    season_start_year: int,
+    gameweek: int,
+    played: ChipCalendar,
+    squad: SquadState,
+    allow_hits: bool = True,
+) -> tuple:
     """HOLD is always legal. Chips follow the season's real windows, not the planner's GW5 habit.
 
-    Transfer counts stay available when they would cost a hit. A count is masked
-    only when the squad has fewer players than that count, which cannot happen
-    for a 15-man squad and the five actions above.
+    v1 leaves a transfer count available when it would cost a hit. v2 masks any
+    count above the free transfers already in hand. A count is also masked when
+    the squad has fewer players than that count, which cannot happen for a
+    15-man squad and the five actions above.
     """
     inventory = inventory_for(season_start_year, gameweek, played)
     held = {
@@ -77,12 +85,18 @@ def legal_mask(season_start_year: int, gameweek: int, played: ChipCalendar, squa
         CHIP_TRIPLE_CAPTAIN: inventory.triple_captain,
     }
     owned = len(squad.player_ids)
+    free_transfers = FreeTransferRules(season_start_year).at_start_of_gameweek(
+        gameweek, squad.free_transfers,
+    )
     mask = []
     for action in ACTIONS:
         chip = chip_for(action)
         if chip is None:
             count = transfer_count(action)
-            mask.append(count <= owned)
+            allowed = count <= owned
+            if count and not allow_hits:
+                allowed = allowed and count <= free_transfers
+            mask.append(allowed)
             continue
         start, end = chip_window(season_start_year, chip, gameweek)
         mask.append(bool(held[chip]) and start <= int(gameweek) <= end)

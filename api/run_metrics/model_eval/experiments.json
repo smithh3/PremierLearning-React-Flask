@@ -1,0 +1,767 @@
+{
+  "v1": {
+    "args": [
+      "--train-once-per-season",
+      "--no-horizon-model",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v1"
+    ],
+    "built_at": "2026-10-30T10:45:00",
+    "prediction_set_id": 7,
+    "seasons": [
+      25
+    ]
+  },
+  "v1_h5": {
+    "args": [
+      "--train-once-per-season",
+      "--seasons",
+      "23,24,25",
+      "--name",
+      "eval-v1_h5"
+    ],
+    "built_at": "2026-11-01T12:14:20",
+    "prediction_set_id": 29,
+    "seasons": [
+      23,
+      24,
+      25
+    ]
+  },
+  "v1_h5_tier": {
+    "args": [
+      "--train-once-per-season",
+      "--points-tier-weight",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v1_h5_tier"
+    ],
+    "built_at": "2026-10-30T17:28:23",
+    "prediction_set_id": 13,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_huber": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "none",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_huber"
+    ],
+    "built_at": "2026-10-30T12:44:29",
+    "prediction_set_id": 9,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_huber_d3": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "none",
+      "--huber-delta",
+      "3",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_huber_d3"
+    ],
+    "built_at": "2026-10-31T01:18:25",
+    "prediction_set_id": 18,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_huber_d5": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "none",
+      "--huber-delta",
+      "5",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_huber_d5"
+    ],
+    "built_at": "2026-10-31T02:29:17",
+    "prediction_set_id": 19,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_huber_seed2": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "none",
+      "--seed",
+      "43",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_huber_seed2"
+    ],
+    "built_at": "2026-10-30T16:25:58",
+    "prediction_set_id": 12,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_hump": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "hump",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_hump"
+    ],
+    "built_at": "2026-10-30T19:59:50",
+    "prediction_set_id": 15,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_hump_fast": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-patience-floor",
+      "9",
+      "--v2-weighting",
+      "hump",
+      "--v2-hump-peak",
+      "6",
+      "--v2-hump-height",
+      "2",
+      "--v2-hump-power",
+      "1",
+      "--v2-hump-width",
+      "15",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_hump_fast"
+    ],
+    "built_at": "2026-10-31T06:30:16",
+    "prediction_set_id": 23,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_hump_soft": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "hump",
+      "--v2-hump-peak",
+      "6",
+      "--v2-hump-height",
+      "1.2",
+      "--v2-hump-power",
+      "1",
+      "--v2-hump-width",
+      "10",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_hump_soft"
+    ],
+    "built_at": "2026-10-31T12:48:37",
+    "prediction_set_id": 25,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_log": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "none",
+      "--v2-loss",
+      "huber",
+      "--v2-smear",
+      "global",
+      "--seasons",
+      "23,24",
+      "--name",
+      "eval-v2_log"
+    ],
+    "built_at": "2026-11-01T14:34:05",
+    "prediction_set_id": 21,
+    "seasons": [
+      23,
+      24,
+      25
+    ]
+  },
+  "v2_log_cap": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "smooth",
+      "--v2-smooth-cap",
+      "2.4",
+      "--v2-loss",
+      "huber",
+      "--v2-smear",
+      "global",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_log_cap"
+    ],
+    "built_at": "2026-10-31T15:10:48",
+    "prediction_set_id": 27,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_log_cond": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "none",
+      "--v2-loss",
+      "huber",
+      "--v2-smear",
+      "conditional",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_log_cond"
+    ],
+    "built_at": "2026-10-31T05:44:34",
+    "prediction_set_id": 22,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_log_d1": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "none",
+      "--v2-loss",
+      "huber",
+      "--v2-smear",
+      "global",
+      "--huber-delta",
+      "1",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_log_d1"
+    ],
+    "built_at": "2026-10-31T14:03:34",
+    "prediction_set_id": 26,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_log_h5": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "none",
+      "--v2-loss",
+      "huber",
+      "--v2-smear",
+      "global",
+      "--v2-horizon",
+      "5",
+      "--seasons",
+      "23,24",
+      "--name",
+      "eval-v2_log_h5"
+    ],
+    "built_at": "2026-11-01T17:45:27",
+    "prediction_set_id": 28,
+    "seasons": [
+      23,
+      24,
+      25
+    ]
+  },
+  "v2_log_minbands": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "none",
+      "--v2-loss",
+      "huber",
+      "--v2-smear",
+      "global",
+      "--v2-minutes-head",
+      "0.1",
+      "--v2-minutes-target",
+      "bands",
+      "--seasons",
+      "23,24",
+      "--name",
+      "eval-v2_log_minbands"
+    ],
+    "built_at": "2026-11-02T02:40:22",
+    "prediction_set_id": 32,
+    "seasons": [
+      23,
+      24,
+      25
+    ]
+  },
+  "v2_log_minbands_teams": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "none",
+      "--v2-loss",
+      "huber",
+      "--v2-smear",
+      "global",
+      "--v2-minutes-head",
+      "0.1",
+      "--v2-minutes-target",
+      "bands",
+      "--model-plan",
+      "simple_h1_teams",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_log_minbands_teams"
+    ],
+    "built_at": "2026-11-03T03:26:04",
+    "prediction_set_id": 36,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_log_minbands_teams_attn": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "none",
+      "--v2-loss",
+      "huber",
+      "--v2-smear",
+      "global",
+      "--v2-minutes-head",
+      "0.1",
+      "--v2-minutes-target",
+      "bands",
+      "--model-plan",
+      "simple_h1_teams_attn",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_log_minbands_teams_attn"
+    ],
+    "built_at": "2026-11-03T07:07:52",
+    "prediction_set_id": 40,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_log_minbands_teams_pblocks": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "none",
+      "--v2-loss",
+      "huber",
+      "--v2-smear",
+      "global",
+      "--v2-minutes-head",
+      "0.1",
+      "--v2-minutes-target",
+      "bands",
+      "--model-plan",
+      "simple_h1_teams_pblocks",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_log_minbands_teams_pblocks"
+    ],
+    "built_at": "2026-11-03T05:57:56",
+    "prediction_set_id": 38,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_log_minbands_teams_recency": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "none",
+      "--v2-loss",
+      "huber",
+      "--v2-smear",
+      "global",
+      "--v2-minutes-head",
+      "0.1",
+      "--v2-minutes-target",
+      "bands",
+      "--model-plan",
+      "simple_h1_teams_recency",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_log_minbands_teams_recency"
+    ],
+    "built_at": "2026-11-03T19:02:06",
+    "prediction_set_id": 48,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_log_minbands_teams_recency_nodecay": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "none",
+      "--v2-loss",
+      "huber",
+      "--v2-smear",
+      "global",
+      "--v2-minutes-head",
+      "0.1",
+      "--v2-minutes-target",
+      "bands",
+      "--model-plan",
+      "simple_h1_teams_recency_nodecay",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_log_minbands_teams_recency_nodecay"
+    ],
+    "built_at": "2026-11-03T17:14:17",
+    "prediction_set_id": 46,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_log_minbands_teams_score": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "none",
+      "--v2-loss",
+      "huber",
+      "--v2-smear",
+      "global",
+      "--v2-minutes-head",
+      "0.1",
+      "--v2-minutes-target",
+      "bands",
+      "--model-plan",
+      "simple_h1_teams_score",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_log_minbands_teams_score"
+    ],
+    "built_at": "2026-11-03T11:27:48",
+    "prediction_set_id": 42,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_log_minbands_teams_scoreline": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "none",
+      "--v2-loss",
+      "huber",
+      "--v2-smear",
+      "global",
+      "--v2-minutes-head",
+      "0.1",
+      "--v2-minutes-target",
+      "bands",
+      "--model-plan",
+      "simple_h1_teams_scoreline",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_log_minbands_teams_scoreline"
+    ],
+    "built_at": "2026-11-03T14:19:38",
+    "prediction_set_id": 44,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_log_minbands_teams_staged": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "none",
+      "--v2-loss",
+      "huber",
+      "--v2-smear",
+      "global",
+      "--v2-minutes-head",
+      "0.1",
+      "--v2-minutes-target",
+      "bands",
+      "--model-plan",
+      "simple_h1_teams_staged",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_log_minbands_teams_staged"
+    ],
+    "built_at": "2026-11-03T21:52:04",
+    "prediction_set_id": 50,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_log_minlog": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "none",
+      "--v2-loss",
+      "huber",
+      "--v2-smear",
+      "global",
+      "--v2-minutes-head",
+      "1",
+      "--v2-minutes-target",
+      "log",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_log_minlog"
+    ],
+    "built_at": "2026-11-01T21:40:33",
+    "prediction_set_id": 33,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_log_oracle_minutes": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "none",
+      "--v2-loss",
+      "huber",
+      "--v2-smear",
+      "global",
+      "--model-plan",
+      "simple_h1_oracle_minutes",
+      "--seasons",
+      "23,24",
+      "--name",
+      "eval-v2_log_oracle_minutes"
+    ],
+    "built_at": "2026-11-02T04:42:09",
+    "prediction_set_id": 34,
+    "seasons": [
+      23,
+      24,
+      25
+    ]
+  },
+  "v2_mse": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "none",
+      "--v2-loss",
+      "mse",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_mse"
+    ],
+    "built_at": "2026-10-31T03:31:18",
+    "prediction_set_id": 20,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_plateau": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "plateau",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_plateau"
+    ],
+    "built_at": "2026-10-30T21:31:37",
+    "prediction_set_id": 16,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_poisson": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-patience-floor",
+      "9",
+      "--v2-weighting",
+      "none",
+      "--v2-loss",
+      "poisson",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_poisson"
+    ],
+    "built_at": "2026-10-31T07:36:26",
+    "prediction_set_id": 24,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_smooth": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "smooth",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_smooth"
+    ],
+    "built_at": "2026-10-30T15:16:57",
+    "prediction_set_id": 11,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_smooth_cap": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "smooth",
+      "--v2-smooth-cap",
+      "2.4",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_smooth_cap"
+    ],
+    "built_at": "2026-10-30T18:44:19",
+    "prediction_set_id": 14,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_tier": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "tier",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_tier"
+    ],
+    "built_at": "2026-10-30T14:00:17",
+    "prediction_set_id": 10,
+    "seasons": [
+      25
+    ]
+  }
+}
