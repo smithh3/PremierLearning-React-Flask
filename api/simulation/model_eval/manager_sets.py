@@ -147,6 +147,20 @@ def prepare_blend(db, manifest, base_names, seasons=DEFAULT_SEASONS):
     return sets
 
 
+def prepare_mix(db, manifest, pairs, weight, seasons=DEFAULT_SEASONS):
+    """Each (base, other) pair of built experiments blended: (1 - weight) base + weight other.
+
+    Named eval-<base>_mix<percent>_<other>, e.g. lgbm_v1_mix50_v2_b0_seed1.
+    """
+    sets = {}
+    for base_name, other_name in pairs:
+        name = 'eval-%s_mix%d_%s' % (base_name, int(round(weight * 100)), other_name)
+        base_id = int(manifest[base_name]['prediction_set_id'])
+        other_id = int(manifest[other_name]['prediction_set_id'])
+        sets[name[len('eval-'):]] = blend_sets(db, base_id, other_id, weight=weight, name=name, seasons=seasons)
+    return sets
+
+
 def main(argv=None):
     from simulation.prediction_builder import _parse_seasons
 
@@ -157,12 +171,19 @@ def main(argv=None):
         '--blend', action='append', metavar='EXPERIMENT',
         help='Blend this built experiment 25%% with v2_log_h5 (repeatable)',
     )
+    parser.add_argument(
+        '--mix', nargs=2, action='append', metavar=('BASE', 'OTHER'),
+        help='Blend two built experiments, OTHER at --mix-weight (repeatable)',
+    )
+    parser.add_argument('--mix-weight', type=float, default=0.5)
     args = parser.parse_args(argv)
     app = Flask(__name__)
     with app.app_context():
         db = DB_Handler()
         try:
-            if args.blend:
+            if args.mix:
+                sets = prepare_mix(db, load_manifest(), args.mix, args.mix_weight, args.seasons)
+            elif args.blend:
                 sets = prepare_blend(db, load_manifest(), args.blend, args.seasons)
             else:
                 sets = (prepare_next if args.next else prepare)(db, load_manifest(), args.seasons)

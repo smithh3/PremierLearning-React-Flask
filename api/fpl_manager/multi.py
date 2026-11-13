@@ -280,8 +280,12 @@ def _append_run_log(run: MultiSeasonRun):
     log_path = run.log_path.parent / EVALUATION_LOG if run.evaluation else run.log_path
     log_path.parent.mkdir(parents=True, exist_ok=True)
     fields = ['run']
+    # Runs on a mix of real seasons and synthetic copies say which version each was.
+    labelled = all(hasattr(season, 'data_label') for season in run.seasons)
     for season in run.seasons:
         year = int(season.season)
+        if labelled:
+            fields.append('%s_data' % year)
         fields.extend([
             '%s_points' % year,
             '%s_percentile' % year,
@@ -298,6 +302,8 @@ def _append_run_log(run: MultiSeasonRun):
         run.seasons, run.points, run.percentiles, run.solved, run.cached, run.seconds,
     ):
         year = int(season.season)
+        if labelled:
+            row['%s_data' % year] = season.data_label
         row['%s_points' % year] = _number(points)
         row['%s_percentile' % year] = _number(percentile)
         row['%s_optimisations' % year] = int(solved)

@@ -1,0 +1,288 @@
+ 
+===== Queued 10/11/2026  0:07:50.07, waiting for the points check ===== 
+Points check done 10/11/2026  0:33:33.01 
+Training one fixed LightGBM model on plan simple_h1_b1 as of GW1...
+  120609 train rows, 528 columns (1 categorical), feature set 4, 28 teams (vocab frozen)
+lightgbm regression: 120609 rows x 528 columns, 197 rounds
+  average of 3 seeds
+  held-out last 38 GWs (from 21 GW38) (27242 rows, actual mean 1.195): best round 179, RMSE 1.920, MAE 1.001, bias +0.002
+  top 30 columns by gain (share of all splits' gain):
+    1  hist.minutes_played.mean1                                27.9%
+    2  hist.minutes_played.faded1.5                             12.1%
+    3  hist.minutes_played.mean2                                 9.3%
+    4  hist.points_scored.faded10                                5.1%
+    5  hist.points_scored.faded1.5                               2.4%
+    6  hist.points_scored.faded3                                 1.7%
+    7  hist.points_scored.faded25                                1.6%
+    8  dc.goals.exp_for                                          1.2%
+    9  context.chance_of_playing                                 0.9%
+   10  player_load.in_squad_last_club_match                      0.9%
+   11  dc.goals.exp_against                                      0.6%
+   12  player_load.minutes_last_14d                              0.6%
+   13  current_opposition.team_features.xg_for_decay             0.5%
+   14  hist.points_scored.mean20                                 0.5%
+   15  opp_hist.days_before_current.last                         0.5%
+   16  fixture.attack_xg.decay                                   0.4%
+   17  hist.since_sixty                                          0.4%
+   18  player_load.days_since_last_played                        0.4%
+   19  hist.points_scored.mean2                                  0.4%
+   20  hist.points_scored.mean50                                 0.4%
+   21  news.chance                                               0.4%
+   22  opp_conceded.points.rel38                                 0.4%
+   23  opp_hist.goals_against.venue10                            0.4%
+   24  hist.goals.mean50                                         0.4%
+   25  dc.goals.cs                                               0.4%
+   26  player_load.days_since_last_started                       0.3%
+   27  hist.goals.shrunk90_50                                    0.3%
+   28  seasons.points_per_90.last                                0.3%
+   29  hist.minutes_played.mean3                                 0.3%
+   30  match_facts.home_away                                     0.3%
+season_23_24: v6 fitted in 238 s
+all-competition tables loaded in 10 s
+season_23_24 copy 001: 394025 forecast rows in 21 min -> C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\data\synthetic\season_23_24\copy_001\forecasts.csv.gz
+Training one fixed LightGBM model on plan simple_h1_b1 as of GW1...
+  150370 train rows, 528 columns (1 categorical), feature set 4, 29 teams (vocab frozen)
+lightgbm regression: 150370 rows x 528 columns, 207 rounds
+  average of 3 seeds
+  held-out season 23 (29761 rows, actual mean 1.051): best round 188, RMSE 1.849, MAE 0.908, bias +0.039
+  top 30 columns by gain (share of all splits' gain):
+    1  hist.minutes_played.mean1                                28.9%
+    2  hist.minutes_played.faded1.5                             11.5%
+    3  hist.minutes_played.mean2                                 9.9%
+    4  hist.points_scored.faded10                                5.0%
+    5  hist.points_scored.faded3                                 2.2%
+    6  hist.points_scored.faded1.5                               2.2%
+    7  hist.points_scored.faded25                                2.1%
+    8  context.chance_of_playing                                 1.4%
+    9  dc.goals.exp_for                                          1.3%
+   10  player_load.in_squad_last_club_match                      0.8%
+   11  dc.goals.exp_against                                      0.6%
+   12  news.chance                                               0.5%
+   13  dc.goals.cs                                               0.5%
+   14  player_load.minutes_last_14d                              0.5%
+   15  hist.since_sixty                                          0.5%
+   16  player_load.days_since_last_played                        0.5%
+   17  hist.points_scored.mean2                                  0.5%
+   18  hist.minutes_played.mean3                                 0.4%
+   19  opp_hist.days_before_current.last                         0.4%
+   20  opp_conceded.points.rel38                                 0.3%
+   21  player_load.days_since_last_started                       0.3%
+   22  hist.goals.mean50                                         0.3%
+   23  hist.points_scored.mean20                                 0.3%
+   24  news.days_flagged                                         0.3%
+   25  current_opposition.team_features.xg_for_decay             0.3%
+   26  opp_hist.goals_against.venue10                            0.3%
+   27  hist.played_share3                                        0.3%
+   28  hist.goals.shrunk90_50                                    0.3%
+   29  seasons.points_per_90.last                                0.3%
+   30  news.deadlines_since_flag                                 0.3%
+season_24_25: v6 fitted in 302 s
+all-competition tables loaded in 13 s
+season_24_25 copy 001: 369139 forecast rows in 25 min -> C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\data\synthetic\season_24_25\copy_001\forecasts.csv.gz
+Training one fixed LightGBM model on plan simple_h1_b1 as of GW1...
+  177984 train rows, 528 columns (1 categorical), feature set 4, 30 teams (vocab frozen)
+lightgbm regression: 177984 rows x 528 columns, 128 rounds
+  average of 3 seeds
+  held-out season 24 (27614 rows, actual mean 1.201): best round 116, RMSE 2.011, MAE 1.012, bias -0.045
+  top 30 columns by gain (share of all splits' gain):
+    1  hist.minutes_played.mean1                                30.8%
+    2  hist.points_scored.faded1.5                              15.4%
+    3  hist.minutes_played.faded1.5                              6.2%
+    4  hist.points_scored.faded10                                6.0%
+    5  hist.minutes_played.mean2                                 3.5%
+    6  hist.points_scored.mean2                                  2.5%
+    7  hist.points_scored.faded3                                 2.5%
+    8  hist.points_scored.faded25                                1.8%
+    9  context.chance_of_playing                                 1.6%
+   10  dc.goals.exp_for                                          1.0%
+   11  opp_conceded.points.league                                0.9%
+   12  news.chance                                               0.9%
+   13  player_load.in_squad_last_club_match                      0.6%
+   14  dc.goals.cs                                               0.6%
+   15  dc.goals.exp_against                                      0.5%
+   16  hist.since_sixty                                          0.5%
+   17  player_load.minutes_last_14d                              0.5%
+   18  hist.points_scored.mean20                                 0.5%
+   19  news.certainty                                            0.5%
+   20  opp_conceded.points.mean10                                0.4%
+   21  player_load.days_since_last_played                        0.4%
+   22  hist.goals.mean50                                         0.4%
+   23  news.days_flagged                                         0.3%
+   24  current_opposition.team_features.xg_for_decay             0.3%
+   25  news.deadlines_since_flag                                 0.3%
+   26  seasons.points_per_90.last                                0.3%
+   27  opp_hist.goals_against.venue10                            0.3%
+   28  opp_hist.days_before_current.last                         0.3%
+   29  fixture.attack_xg.decay                                   0.3%
+   30  seasons.points_per_90.before                              0.3%
+season_25_26: v6 fitted in 325 s
+all-competition tables loaded in 11 s
+season_25_26 copy 001: 373442 forecast rows in 29 min -> C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\data\synthetic\season_25_26\copy_001\forecasts.csv.gz
+Policy fpl_manager_runs\v3_lgbm_v6 at step 136800
+Run 1, season 1/3, 2023/24
+Season score 2387, 96th percentile of 2023/24 finishes. Squad optimisations run 0, from cache 653. 6s.
+Run 1, season 2/3, 2024/25
+Season score 2300, 87th percentile of 2024/25 finishes. Squad optimisations run 0, from cache 544. 5s.
+Run 1, season 3/3, 2025/26
+Season score 2185, 92nd percentile of 2025/26 finishes. Squad optimisations run 0, from cache 731. 6s.
+Run 1 finished. Points 2387 + 2300 + 2185 = 6872. Percentiles 96 + 87 + 92 = 275. Reward 9.62.
+{"data": "real", "manager": "policy", "policy_steps": 136800, "23_points": 2387.0, "23_percentile_on_real_curve": 96.1, "24_points": 2300.0, "24_percentile_on_real_curve": 86.8, "25_points": 2185.0, "25_percentile_on_real_curve": 91.8, "total_points": 6872.0, "minutes": 0.4}
+Run 2, season 1/3, 2023/24
+Season score 2318, 92nd percentile of 2023/24 finishes. Squad optimisations run 88, from cache 239. 33s.
+Run 2, season 2/3, 2024/25
+Season score 2209, 76th percentile of 2024/25 finishes. Squad optimisations run 107, from cache 263. 36s.
+Run 2, season 3/3, 2025/26
+Season score 2142, 87th percentile of 2025/26 finishes. Squad optimisations run 124, from cache 535. 36s.
+Run 2 finished. Points 2318 + 2209 + 2142 = 6669. Percentiles 92 + 76 + 87 = 256. Reward 9.23.
+{"data": "real", "manager": "rules", "policy_steps": 136800, "23_points": 2318.0, "23_percentile_on_real_curve": 91.9, "24_points": 2209.0, "24_percentile_on_real_curve": 76.3, "25_points": 2142.0, "25_percentile_on_real_curve": 87.5, "total_points": 6669.0, "minutes": 1.8}
+Run 3, season 1/3, 2023/24
+Season score 2496, 99th percentile of 2023/24 finishes. Squad optimisations run 325, from cache 288. 1m 16s.
+Run 3, season 2/3, 2024/25
+Season score 2016, 54th percentile of 2024/25 finishes. Squad optimisations run 341, from cache 328. 1m 17s.
+Run 3, season 3/3, 2025/26
+Season score 2138, 87th percentile of 2025/26 finishes. Squad optimisations run 367, from cache 361. 1m 16s.
+Run 3 finished. Points 2496 + 2016 + 2138 = 6650. Percentiles 99 + 54 + 87 = 240. Reward 9.05.
+{"data": "copy 001", "manager": "policy", "policy_steps": 136800, "23_points": 2496.0, "23_percentile_on_real_curve": 99.2, "24_points": 2016.0, "24_percentile_on_real_curve": 53.5, "25_points": 2138.0, "25_percentile_on_real_curve": 87.0, "total_points": 6650.0, "minutes": 4.1}
+Run 4, season 1/3, 2023/24
+Season score 2442, 98th percentile of 2023/24 finishes. Squad optimisations run 165, from cache 199. 38s.
+Run 4, season 2/3, 2024/25
+Season score 2114, 64th percentile of 2024/25 finishes. Squad optimisations run 173, from cache 227. 48s.
+Run 4, season 3/3, 2025/26
+Season score 2160, 89th percentile of 2025/26 finishes. Squad optimisations run 227, from cache 275. 30s.
+Run 4 finished. Points 2442 + 2114 + 2160 = 6716. Percentiles 98 + 64 + 89 = 252. Reward 9.23.
+{"data": "copy 001", "manager": "rules", "policy_steps": 136800, "23_points": 2442.0, "23_percentile_on_real_curve": 98.1, "24_points": 2114.0, "24_percentile_on_real_curve": 64.3, "25_points": 2160.0, "25_percentile_on_real_curve": 89.4, "total_points": 6716.0, "minutes": 2.2}
+Training one fixed LightGBM model on plan simple_h1_b1 as of GW1...
+  120609 train rows, 528 columns (1 categorical), feature set 4, 28 teams (vocab frozen)
+lightgbm regression: 120609 rows x 528 columns, 197 rounds
+  average of 3 seeds
+  held-out last 38 GWs (from 21 GW38) (27242 rows, actual mean 1.195): best round 179, RMSE 1.920, MAE 1.001, bias +0.002
+  top 30 columns by gain (share of all splits' gain):
+    1  hist.minutes_played.mean1                                27.9%
+    2  hist.minutes_played.faded1.5                             12.1%
+    3  hist.minutes_played.mean2                                 9.3%
+    4  hist.points_scored.faded10                                5.1%
+    5  hist.points_scored.faded1.5                               2.4%
+    6  hist.points_scored.faded3                                 1.7%
+    7  hist.points_scored.faded25                                1.6%
+    8  dc.goals.exp_for                                          1.2%
+    9  context.chance_of_playing                                 0.9%
+   10  player_load.in_squad_last_club_match                      0.9%
+   11  dc.goals.exp_against                                      0.6%
+   12  player_load.minutes_last_14d                              0.6%
+   13  current_opposition.team_features.xg_for_decay             0.5%
+   14  hist.points_scored.mean20                                 0.5%
+   15  opp_hist.days_before_current.last                         0.5%
+   16  fixture.attack_xg.decay                                   0.4%
+   17  hist.since_sixty                                          0.4%
+   18  player_load.days_since_last_played                        0.4%
+   19  hist.points_scored.mean2                                  0.4%
+   20  hist.points_scored.mean50                                 0.4%
+   21  news.chance                                               0.4%
+   22  opp_conceded.points.rel38                                 0.4%
+   23  opp_hist.goals_against.venue10                            0.4%
+   24  hist.goals.mean50                                         0.4%
+   25  dc.goals.cs                                               0.4%
+   26  player_load.days_since_last_started                       0.3%
+   27  hist.goals.shrunk90_50                                    0.3%
+   28  seasons.points_per_90.last                                0.3%
+   29  hist.minutes_played.mean3                                 0.3%
+   30  match_facts.home_away                                     0.3%
+season_23_24: v6 fitted in 238 s
+all-competition tables loaded in 10 s
+season_23_24 copy 002: 392332 forecast rows in 21 min -> C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\data\synthetic\season_23_24\copy_002\forecasts.csv.gz
+Training one fixed LightGBM model on plan simple_h1_b1 as of GW1...
+  150370 train rows, 528 columns (1 categorical), feature set 4, 29 teams (vocab frozen)
+lightgbm regression: 150370 rows x 528 columns, 207 rounds
+  average of 3 seeds
+  held-out season 23 (29761 rows, actual mean 1.051): best round 188, RMSE 1.849, MAE 0.908, bias +0.039
+  top 30 columns by gain (share of all splits' gain):
+    1  hist.minutes_played.mean1                                28.9%
+    2  hist.minutes_played.faded1.5                             11.5%
+    3  hist.minutes_played.mean2                                 9.9%
+    4  hist.points_scored.faded10                                5.0%
+    5  hist.points_scored.faded3                                 2.2%
+    6  hist.points_scored.faded1.5                               2.2%
+    7  hist.points_scored.faded25                                2.1%
+    8  context.chance_of_playing                                 1.4%
+    9  dc.goals.exp_for                                          1.3%
+   10  player_load.in_squad_last_club_match                      0.8%
+   11  dc.goals.exp_against                                      0.6%
+   12  news.chance                                               0.5%
+   13  dc.goals.cs                                               0.5%
+   14  player_load.minutes_last_14d                              0.5%
+   15  hist.since_sixty                                          0.5%
+   16  player_load.days_since_last_played                        0.5%
+   17  hist.points_scored.mean2                                  0.5%
+   18  hist.minutes_played.mean3                                 0.4%
+   19  opp_hist.days_before_current.last                         0.4%
+   20  opp_conceded.points.rel38                                 0.3%
+   21  player_load.days_since_last_started                       0.3%
+   22  hist.goals.mean50                                         0.3%
+   23  hist.points_scored.mean20                                 0.3%
+   24  news.days_flagged                                         0.3%
+   25  current_opposition.team_features.xg_for_decay             0.3%
+   26  opp_hist.goals_against.venue10                            0.3%
+   27  hist.played_share3                                        0.3%
+   28  hist.goals.shrunk90_50                                    0.3%
+   29  seasons.points_per_90.last                                0.3%
+   30  news.deadlines_since_flag                                 0.3%
+season_24_25: v6 fitted in 299 s
+all-competition tables loaded in 11 s
+season_24_25 copy 002: 368785 forecast rows in 25 min -> C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\data\synthetic\season_24_25\copy_002\forecasts.csv.gz
+Training one fixed LightGBM model on plan simple_h1_b1 as of GW1...
+  177984 train rows, 528 columns (1 categorical), feature set 4, 30 teams (vocab frozen)
+lightgbm regression: 177984 rows x 528 columns, 128 rounds
+  average of 3 seeds
+  held-out season 24 (27614 rows, actual mean 1.201): best round 116, RMSE 2.011, MAE 1.012, bias -0.045
+  top 30 columns by gain (share of all splits' gain):
+    1  hist.minutes_played.mean1                                30.8%
+    2  hist.points_scored.faded1.5                              15.4%
+    3  hist.minutes_played.faded1.5                              6.2%
+    4  hist.points_scored.faded10                                6.0%
+    5  hist.minutes_played.mean2                                 3.5%
+    6  hist.points_scored.mean2                                  2.5%
+    7  hist.points_scored.faded3                                 2.5%
+    8  hist.points_scored.faded25                                1.8%
+    9  context.chance_of_playing                                 1.6%
+   10  dc.goals.exp_for                                          1.0%
+   11  opp_conceded.points.league                                0.9%
+   12  news.chance                                               0.9%
+   13  player_load.in_squad_last_club_match                      0.6%
+   14  dc.goals.cs                                               0.6%
+   15  dc.goals.exp_against                                      0.5%
+   16  hist.since_sixty                                          0.5%
+   17  player_load.minutes_last_14d                              0.5%
+   18  hist.points_scored.mean20                                 0.5%
+   19  news.certainty                                            0.5%
+   20  opp_conceded.points.mean10                                0.4%
+   21  player_load.days_since_last_played                        0.4%
+   22  hist.goals.mean50                                         0.4%
+   23  news.days_flagged                                         0.3%
+   24  current_opposition.team_features.xg_for_decay             0.3%
+   25  news.deadlines_since_flag                                 0.3%
+   26  seasons.points_per_90.last                                0.3%
+   27  opp_hist.goals_against.venue10                            0.3%
+   28  opp_hist.days_before_current.last                         0.3%
+   29  fixture.attack_xg.decay                                   0.3%
+   30  seasons.points_per_90.before                              0.3%
+season_25_26: v6 fitted in 355 s
+all-competition tables loaded in 10 s
+season_25_26 copy 002: 374248 forecast rows in 28 min -> C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\data\synthetic\season_25_26\copy_002\forecasts.csv.gz
+Policy fpl_manager_runs\v3_lgbm_v6 at step 136800
+Run 1, season 1/3, 2023/24
+Season score 2195, 79th percentile of 2023/24 finishes. Squad optimisations run 307, from cache 269. 1m 10s.
+Run 1, season 2/3, 2024/25
+Season score 2140, 67th percentile of 2024/25 finishes. Squad optimisations run 357, from cache 420. 2m 34s.
+Run 1, season 3/3, 2025/26
+Season score 1983, 66th percentile of 2025/26 finishes. Squad optimisations run 372, from cache 368. 2m 19s.
+Run 1 finished. Points 2195 + 2140 + 1983 = 6318. Percentiles 79 + 67 + 66 = 213. Reward 8.45.
+{"data": "copy 002", "manager": "policy", "policy_steps": 136800, "23_points": 2195.0, "23_percentile_on_real_curve": 79.3, "24_points": 2140.0, "24_percentile_on_real_curve": 67.5, "25_points": 1983.0, "25_percentile_on_real_curve": 66.3, "total_points": 6318.0, "minutes": 6.4}
+Run 2, season 1/3, 2023/24
+Season score 2110, 69th percentile of 2023/24 finishes. Squad optimisations run 154, from cache 188. 35s.
+Run 2, season 2/3, 2024/25
+Season score 2184, 73rd percentile of 2024/25 finishes. Squad optimisations run 223, from cache 301. 1m 8s.
+Run 2, season 3/3, 2025/26
+Season score 2017, 71st percentile of 2025/26 finishes. Squad optimisations run 239, from cache 294. 1m 6s.
+Run 2 finished. Points 2110 + 2184 + 2017 = 6311. Percentiles 69 + 73 + 71 = 213. Reward 8.44.
+{"data": "copy 002", "manager": "rules", "policy_steps": 136800, "23_points": 2110.0, "23_percentile_on_real_curve": 68.7, "24_points": 2184.0, "24_percentile_on_real_curve": 73.1, "25_points": 2017.0, "25_percentile_on_real_curve": 71.2, "total_points": 6311.0, "minutes": 3.1}
+Exit 0 10/11/2026  3:52:52.37 

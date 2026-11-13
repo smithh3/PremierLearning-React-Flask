@@ -204,7 +204,8 @@ def evaluate_once(model) -> bool:
     if not started:
         print('Evaluation skipped: the first worker is part-way through a run.', flush=True)
         return False
-    observation = np.asarray(model._last_obs[0])
+    # Read again: an evaluation on synthetic copies starts on different seasons.
+    observation = np.asarray(env.env_method('current_observation', indices=[0])[0])
     mask = np.asarray(env.env_method('action_masks', indices=[0])[0], dtype=bool)
     finished = False
     steps = 0
@@ -308,6 +309,7 @@ def train_policy(
             raise FileNotFoundError('No checkpoint to resume at %s' % directory)
         model, _manifest = load_checkpoint(directory, env=env, features=feature_names)
         gamma = float(_manifest['gamma'])
+        _keep_runs_per_update(model, n_steps, batch_size)
     else:
         if manifest_path.is_file():
             raise CheckpointMismatch(
@@ -355,6 +357,32 @@ def train_policy(
             except (BrokenPipeError, EOFError, OSError):
                 pass
     return model
+
+
+def _keep_runs_per_update(model, n_steps, batch_size):
+    """Use this call's steps per process on a resumed policy.
+
+    The saved policy keeps the steps per process it was started with. Resumed
+    with more processes, each update would then hold more runs (4 per process
+    x 4 processes = 16 instead of 8). Rebuilding the rollout buffer with this
+    call's n_steps keeps the runs per update the same, so more processes only
+    make each update come sooner.
+    """
+    n_steps, batch_size = int(n_steps), int(batch_size)
+    if int(model.n_steps) == n_steps and int(model.batch_size) == batch_size:
+        return
+    model.n_steps = n_steps
+    model.batch_size = batch_size
+    model.rollout_buffer = model.rollout_buffer_class(
+        n_steps,
+        model.observation_space,
+        model.action_space,
+        model.device,
+        gamma=model.gamma,
+        gae_lambda=model.gae_lambda,
+        n_envs=model.n_envs,
+        **(model.rollout_buffer_kwargs or {}),
+    )
 
 
 def policy_weight_sum(model) -> float:

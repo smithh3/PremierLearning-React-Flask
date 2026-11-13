@@ -42,6 +42,13 @@ from premierlearning.runner import Runner
 from simulation.historical_data import VaastavSeasonData
 from simulation.season_model import FixedSeasonModels
 from simulation.season_model_v2 import FixedSeasonModelsV2
+from premierlearning.lgbm.features import DEFAULT_FEATURES as LGBM_DEFAULT_FEATURES
+from premierlearning.lgbm.features import FEATURE_SETS as LGBM_FEATURE_SETS
+from premierlearning.lgbm.model import DEFAULT_OBJECTIVE as LGBM_DEFAULT_OBJECTIVE
+from premierlearning.lgbm.model import OBJECTIVES as LGBM_OBJECTIVES
+from premierlearning.lgbm.model import RULE_SETS as LGBM_RULE_SETS
+from premierlearning.lgbm.model import params_for as lgbm_params_for
+from simulation.season_model_lgbm import DEFAULT_LGBM_PLAN, FixedSeasonModelsLGBM
 
 
 DEFAULT_SEASONS = (23, 24, 25)
@@ -61,6 +68,23 @@ V2_CODE_HASH_FILES = (
     'premierlearning/learning_v2/teams.py',
     'premierlearning/learning_v2/train.py',
     'simulation/season_model_v2.py',
+)
+# Hashed only for LightGBM builds: its own code plus the learning_v2 files that
+# build its rows (not the net's model or training code).
+LIGHTGBM_FLAG = '--lightgbm'
+LGBM_CODE_HASH_FILES = (
+    'premierlearning/lgbm/extras.py',
+    'premierlearning/lgbm/features.py',
+    'premierlearning/lgbm/model.py',
+    'premierlearning/lgbm/news.py',
+    'premierlearning/lgbm/staged.py',
+    'premierlearning/learning_v2/dataset.py',
+    'premierlearning/learning_v2/external_hook.py',
+    'premierlearning/learning_v2/external_inputs.py',
+    'premierlearning/learning_v2/kickoff.py',
+    'premierlearning/learning_v2/plan.py',
+    'premierlearning/learning_v2/teams.py',
+    'simulation/season_model_lgbm.py',
 )
 CODE_HASH_FILES = (
     'premierlearning/runner.py',
@@ -120,6 +144,29 @@ def _learning_v2_argv(enabled):
         yield
     finally:
         sys.argv[:] = previous
+
+
+def _release_models():
+    """Free the previous fit before the next one (net fits hold gigabytes)."""
+    import gc
+
+    gc.collect()
+    if 'tensorflow' in sys.modules:
+        sys.modules['tensorflow'].keras.backend.clear_session()
+        gc.collect()
+
+
+# Net fits leak memory across refits in one process (2026-11-07: epochs went from
+# 4.5 to 18 min over five B1 refits, 7 GB private). With this set, a retraining
+# build stops before fit N+1, so a .cmd loop can give each fit a fresh process.
+MAX_FITS_ENV = 'PL_RETRAIN_MAX_FITS'
+
+
+def _max_fits():
+    try:
+        return max(0, int(os.environ.get(MAX_FITS_ENV) or 0))
+    except ValueError:
+        return 0
 
 
 def _set_random_seed(seed):
@@ -222,6 +269,7 @@ class HistoricalPredictionBuilder:
         prediction_set_id=None,
         adopt_code_hash=False,
         train_once_per_season=False,
+        retrain_every=0,
         replace_cache=False,
         points_loss='huber',
         points_minutes_weight=False,
@@ -237,9 +285,40 @@ class HistoricalPredictionBuilder:
         v2_horizon=0,
         v2_minutes_head=0.0,
         v2_minutes_target='bands',
+        lightgbm=False,
+        lgbm_plan=DEFAULT_LGBM_PLAN,
+        lgbm_objective=LGBM_DEFAULT_OBJECTIVE,
+        lgbm_rules=None,
+        lgbm_features=LGBM_DEFAULT_FEATURES,
+        lgbm_ids=True,
+        lgbm_seeds=1,
+        lgbm_linear=False,
+        lgbm_id_stage=False,
+        lgbm_recency=0.0,
+        lgbm_staged=False,
     ):
         self.db = db_handler
         self.learning_v2 = bool(learning_v2)
+        self.lightgbm = bool(lightgbm)
+        self.lgbm_plan = str(lgbm_plan or DEFAULT_LGBM_PLAN)
+        self.lgbm_objective = str(lgbm_objective or LGBM_DEFAULT_OBJECTIVE)
+        self.lgbm_rules = lgbm_rules or None
+        self.lgbm_features = int(lgbm_features)
+        self.lgbm_ids = bool(lgbm_ids)
+        self.lgbm_seeds = max(1, int(lgbm_seeds))
+        self.lgbm_linear = bool(lgbm_linear)
+        self.lgbm_id_stage = bool(lgbm_id_stage)
+        self.lgbm_recency = float(lgbm_recency or 0.0)
+        self.lgbm_staged = bool(lgbm_staged)
+        if self.lgbm_staged and (self.lgbm_rules or self.lgbm_linear or self.lgbm_id_stage or self.lgbm_recency
+                                 or self.lgbm_objective != LGBM_DEFAULT_OBJECTIVE):
+            raise ValueError('--lgbm-staged takes none of the rules, linear, id-stage, recency or objective options')
+        if self.lgbm_id_stage and not self.lgbm_ids:
+            raise ValueError('the LightGBM id stage needs the id columns: drop --lgbm-no-ids')
+        if self.lightgbm and self.learning_v2:
+            raise ValueError('choose --lightgbm or --learning-v2, not both')
+        if self.lightgbm and not train_once_per_season:
+            raise ValueError('--lightgbm needs --train-once-per-season')
         self.model_plan = str(model_plan or DEFAULT_V2_PLAN)
         self.v2_weighting = v2_weighting or LossWeighting()
         self.v2_loss = resolve_loss_name(v2_loss)
@@ -257,6 +336,9 @@ class HistoricalPredictionBuilder:
         self.force = bool(force)
         self.name = name
         self.train_once_per_season = bool(train_once_per_season)
+        self.retrain_every = max(0, int(retrain_every or 0))
+        if self.retrain_every and not self.train_once_per_season:
+            raise ValueError('--retrain-every needs --train-once-per-season (fixed models refitted every N GWs)')
         self.replace_on_build = bool(replace_cache)
         self.points_loss = str(points_loss or 'huber').lower()
         self.points_minutes_weight = bool(points_minutes_weight)
@@ -287,6 +369,8 @@ class HistoricalPredictionBuilder:
                 else 'once_per_snapshot'
             ),
         }
+        if self.retrain_every:
+            self.config['training_schedule'] = 'every_%d_gameweeks' % self.retrain_every
         if self.points_tier_weight:
             # Only when set, so unweighted v1 configs hash as before.
             self.config['points_tier_weight'] = LOSS_TIER_MIX
@@ -318,6 +402,37 @@ class HistoricalPredictionBuilder:
                 self.config['v2_minutes_head'] = self.v2_minutes_head
                 self.config['v2_minutes_target'] = self.v2_minutes_target
             extra_hash_files = V2_CODE_HASH_FILES + (_v2_plan_file(self.model_plan),)
+        if self.lightgbm:
+            import lightgbm
+            params = lgbm_params_for(self.lgbm_objective, 0)
+            params.pop('seed')
+            self.config.update({
+                'model': 'lightgbm',
+                'lgbm_plan': self.lgbm_plan,
+                'lgbm_objective': self.lgbm_objective,
+                'lgbm_params': params,
+                'lightgbm_version': lightgbm.__version__,
+                'v2_chance_input': 'deadline_flags',
+            })
+            if self.lgbm_rules:
+                # Only when set, so rule-free LightGBM configs hash as before.
+                self.config['lgbm_rules'] = self.lgbm_rules
+            # Likewise only when not the default.
+            if self.lgbm_features != LGBM_DEFAULT_FEATURES:
+                self.config['lgbm_features'] = self.lgbm_features
+            if not self.lgbm_ids:
+                self.config['lgbm_ids'] = False
+            if self.lgbm_seeds != 1:
+                self.config['lgbm_seeds'] = self.lgbm_seeds
+            if self.lgbm_linear:
+                self.config['lgbm_linear'] = True
+            if self.lgbm_id_stage:
+                self.config['lgbm_id_stage'] = 'residual'
+            if self.lgbm_recency:
+                self.config['lgbm_recency'] = self.lgbm_recency
+            if self.lgbm_staged:
+                self.config['lgbm_staged'] = 'minutes_clean_sheet_rest'
+            extra_hash_files = LGBM_CODE_HASH_FILES + (_v2_plan_file(self.lgbm_plan),)
         self.metadata = {
             'name': self.name,
             'model_config_hash': _model_hash(self.config, extra_hash_files),
@@ -383,6 +498,21 @@ class HistoricalPredictionBuilder:
         return runner
 
     def _fit_fixed_models(self, training_runner):
+        if self.lightgbm:
+            return FixedSeasonModelsLGBM.fit(
+                training_runner,
+                plan_name=self.lgbm_plan,
+                objective=self.lgbm_objective,
+                seed=self.seed,
+                rules=self.lgbm_rules,
+                features=self.lgbm_features,
+                ids=self.lgbm_ids,
+                seeds=self.lgbm_seeds,
+                linear=self.lgbm_linear,
+                id_stage=self.lgbm_id_stage,
+                recency=self.lgbm_recency,
+                staged=self.lgbm_staged,
+            )
         if self.learning_v2:
             return FixedSeasonModelsV2.fit(
                 training_runner,
@@ -435,7 +565,7 @@ class HistoricalPredictionBuilder:
                 season_start_year,
                 as_of_gameweek,
             )
-            with _simulation_environment(), _learning_v2_argv(self.learning_v2):
+            with _simulation_environment(), _learning_v2_argv(self.learning_v2 or self.lightgbm):
                 if fixed_models is None:
                     _set_random_seed(
                         self.seed + season_start_year * 100 + as_of_gameweek
@@ -501,17 +631,84 @@ class HistoricalPredictionBuilder:
                 % self.prediction_set_id
             )
 
+    def fit_gameweek(self, gameweek):
+        """The gameweek whose fit predicts this snapshot: 1, 1+N, 1+2N, ..."""
+        if not self.retrain_every:
+            return 1
+        return 1 + ((int(gameweek) - 1) // self.retrain_every) * self.retrain_every
+
+    def _complete_snapshots(self):
+        rows = self.db.prediction_coverage(self.prediction_set_id)
+        return {
+            (row['season_start_year'], row['as_of_gameweek'])
+            for row in rows
+            if (
+                row['status'] == 'complete'
+                and row['row_count'] > 0
+                and row['stored_row_count'] == row['row_count']
+                and row['min_target_gameweek'] == row['as_of_gameweek']
+                and row['max_target_gameweek'] == 38
+            )
+        }
+
+    def _build_retraining(self, season_start_year, available):
+        """Refit the fixed models every N gameweeks; each fit predicts the next N snapshots.
+
+        A fit at GW g trains on every label before g (this season's too) and
+        predicts snapshots g .. g+N-1. Complete snapshots are skipped without
+        fitting, so a resumed build only refits what it still needs.
+        """
+        done = set() if self.force else self._complete_snapshots()
+        fixed_models = None
+        training_runner = None
+        fitted_at = None
+        built = 0
+        fits = 0
+        max_fits = _max_fits()
+        for gameweek in range(self.gameweek_from, self.gameweek_to + 1):
+            if gameweek not in available:
+                print(f'Skipping season {season_start_year} GW{gameweek}: no event in fixtures.csv')
+                continue
+            if (season_start_year, gameweek) in done:
+                print(f'Skipping complete snapshot {season_start_year}/{season_start_year + 1} GW{gameweek}')
+                continue
+            fit_at = self.fit_gameweek(gameweek)
+            if fit_at != fitted_at:
+                if max_fits and fits >= max_fits:
+                    print(f'Stopping after {fits} fit(s) ({MAX_FITS_ENV}={max_fits}); run again to continue')
+                    break
+                fits += 1
+                fixed_models = training_runner = None
+                _release_models()
+                _set_random_seed(self.seed + season_start_year * 100 + fit_at - 1)
+                print(f'\nRefitting for {season_start_year}/{season_start_year + 1} GW{fit_at}-'
+                      f'{fit_at + self.retrain_every - 1} (every {self.retrain_every} GWs)')
+                training_runner = self._new_runner(season_start_year, fit_at)
+                with _simulation_environment(), _learning_v2_argv(self.learning_v2 or self.lightgbm):
+                    fixed_models = self._fit_fixed_models(training_runner)
+                fitted_at = fit_at
+            built += int(self.build_one(
+                season_start_year,
+                gameweek,
+                fixed_models=fixed_models,
+                prepared_runner=training_runner if gameweek == fit_at else None,
+            ))
+        return built
+
     def build(self):
         self._ensure_prediction_set()
         built = 0
         for season_start_year in self.seasons:
             available = set(self.source(season_start_year).gameweeks)
+            if self.retrain_every:
+                built += self._build_retraining(season_start_year, available)
+                continue
             fixed_models = None
             training_runner = None
             if self.train_once_per_season:
                 _set_random_seed(self.seed + season_start_year * 100)
                 training_runner = self._new_runner(season_start_year, 1)
-                with _simulation_environment(), _learning_v2_argv(self.learning_v2):
+                with _simulation_environment(), _learning_v2_argv(self.learning_v2 or self.lightgbm):
                     fixed_models = self._fit_fixed_models(training_runner)
             for gameweek in range(self.gameweek_from, self.gameweek_to + 1):
                 if gameweek not in available:
@@ -630,6 +827,13 @@ def build_parser():
         help='Fit at the GW1 cutoff and reuse fixed weights for every GW snapshot',
     )
     parser.add_argument(
+        '--retrain-every',
+        type=int,
+        default=0,
+        help='With --train-once-per-season: refit every N gameweeks (GW1, 1+N, ...), each fit '
+             'trained on every label before its gameweek. Default 0 = once per season.',
+    )
+    parser.add_argument(
         '--points-loss',
         choices=('huber', 'poisson'),
         default='huber',
@@ -696,6 +900,32 @@ def build_parser():
     parser.add_argument('--points-tier-weight', action='store_true',
                         help='v1: weight h1 points rows by the blended score bands of the fixture, '
                              'and horizon rows by the bands of the window points per 90.')
+    parser.add_argument(LIGHTGBM_FLAG, dest='lightgbm', action='store_true',
+                        help='Predict with the LightGBM points model (needs --train-once-per-season).')
+    parser.add_argument('--lgbm-plan', default=DEFAULT_LGBM_PLAN,
+                        help='learning_v2 plan whose inputs LightGBM flattens. Default %s.' % DEFAULT_LGBM_PLAN)
+    parser.add_argument('--lgbm-objective', choices=LGBM_OBJECTIVES, default=LGBM_DEFAULT_OBJECTIVE,
+                        help='LightGBM objective on raw points. Default %s.' % LGBM_DEFAULT_OBJECTIVE)
+    parser.add_argument('--lgbm-rules', choices=sorted(LGBM_RULE_SETS), default=None,
+                        help='Monotone constraints on LightGBM columns (premierlearning/lgbm/model.py). Default none.')
+    parser.add_argument('--lgbm-features', type=int, choices=sorted(LGBM_FEATURE_SETS),
+                        default=LGBM_DEFAULT_FEATURES,
+                        help='LightGBM column set (premierlearning/lgbm/features.py). Default %s.'
+                             % LGBM_DEFAULT_FEATURES)
+    parser.add_argument('--lgbm-no-ids', action='store_true',
+                        help='Leave the team and opponent id columns out of LightGBM.')
+    parser.add_argument('--lgbm-seeds', type=int, default=1,
+                        help='Average this many LightGBM refits with different seeds. Default 1.')
+    parser.add_argument('--lgbm-linear', action='store_true',
+                        help='LightGBM linear leaves: each leaf fits a small line instead of a constant.')
+    parser.add_argument('--lgbm-id-stage', action='store_true',
+                        help='Keep team / opponent ids out of the main LightGBM model; add them as a small '
+                             'correction that must earn its rounds on the held-out season.')
+    parser.add_argument('--lgbm-recency', type=float, default=0.0,
+                        help='LightGBM row weights halve every this many seasons back (0 = off).')
+    parser.add_argument('--lgbm-staged', action='store_true',
+                        help='LightGBM in stages (premierlearning/lgbm/staged.py): minutes bands, clean sheet and '
+                             'the rest of the points, combined with FPL scoring.')
     return parser
 
 
@@ -744,6 +974,7 @@ def run(argv=None):
                 prediction_set_id=args.prediction_set_id,
                 adopt_code_hash=args.adopt_code_hash,
                 train_once_per_season=args.train_once_per_season,
+                retrain_every=args.retrain_every,
                 replace_cache=args.replace_cache,
                 points_loss=args.points_loss,
                 points_minutes_weight=args.points_minutes_weight,
@@ -770,6 +1001,17 @@ def run(argv=None):
                 v2_horizon=args.v2_horizon,
                 v2_minutes_head=args.v2_minutes_head,
                 v2_minutes_target=args.v2_minutes_target,
+                lightgbm=args.lightgbm,
+                lgbm_plan=args.lgbm_plan,
+                lgbm_objective=args.lgbm_objective,
+                lgbm_rules=args.lgbm_rules,
+                lgbm_features=args.lgbm_features,
+                lgbm_ids=not args.lgbm_no_ids,
+                lgbm_seeds=args.lgbm_seeds,
+                lgbm_linear=args.lgbm_linear,
+                lgbm_id_stage=args.lgbm_id_stage,
+                lgbm_recency=args.lgbm_recency,
+                lgbm_staged=args.lgbm_staged,
             )
             if not args.coverage_only:
                 builder.build()

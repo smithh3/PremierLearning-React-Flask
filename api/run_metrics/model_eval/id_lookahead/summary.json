@@ -1,0 +1,201 @@
+{
+  "baseline": "v1",
+  "categories": {
+    "lgbm_v3": {
+      "calibration": 3.0,
+      "fixtures": -0.035571419332879224,
+      "future": 0.7552722884513533,
+      "overall": 3.0,
+      "ranking": 2.36479080189161
+    },
+    "v1": {
+      "calibration": 0.0,
+      "fixtures": 0.0,
+      "future": 0.0,
+      "overall": 0.0,
+      "ranking": 0.0
+    },
+    "v1_cal": {
+      "calibration": 3.0,
+      "fixtures": -0.5430412787097553,
+      "future": 1.2877342391401299,
+      "overall": 2.655051991062528,
+      "ranking": 0.03257517086517894
+    },
+    "v2_b0_noids": {
+      "calibration": 3.0,
+      "fixtures": 0.2472189420218368,
+      "future": 2.0466332162397802,
+      "overall": 3.0,
+      "ranking": 2.361252276114282
+    },
+    "v2_b0_nopid": {
+      "calibration": 3.0,
+      "fixtures": 0.14105888388032112,
+      "future": 1.620413231991988,
+      "overall": 3.0,
+      "ranking": 2.4108142145444322
+    },
+    "v2_b0_seed1": {
+      "calibration": 3.0,
+      "fixtures": -0.01677507841768289,
+      "future": 1.3252216257784608,
+      "overall": 3.0,
+      "ranking": 1.1871143232148003
+    },
+    "v2_b0_seed2": {
+      "calibration": 3.0,
+      "fixtures": -0.2440333514303222,
+      "future": 1.316090215581463,
+      "overall": 2.9726464046132444,
+      "ranking": 1.4131005050526015
+    }
+  },
+  "dropped_origins": [],
+  "flags": {
+    "lgbm_v3": [],
+    "v1": [],
+    "v1_cal": [
+      "overall_mae is 6.5% worse than v1"
+    ],
+    "v2_b0_noids": [],
+    "v2_b0_nopid": [],
+    "v2_b0_seed1": [],
+    "v2_b0_seed2": []
+  },
+  "intervals": {
+    "lgbm_v3": {
+      "hi": 2.156191688952405,
+      "lo": 1.5347748127478185,
+      "p_above_zero": 1.0
+    },
+    "v1": {
+      "hi": 0.0,
+      "lo": 0.0,
+      "p_above_zero": 0.0
+    },
+    "v1_cal": {
+      "hi": 1.3346199727569619,
+      "lo": 1.075516102272454,
+      "p_above_zero": 1.0
+    },
+    "v2_b0_noids": {
+      "hi": 2.409498083291862,
+      "lo": 1.7530743647844624,
+      "p_above_zero": 1.0
+    },
+    "v2_b0_nopid": {
+      "hi": 2.2827064731943048,
+      "lo": 1.8006480567371377,
+      "p_above_zero": 1.0
+    },
+    "v2_b0_seed1": {
+      "hi": 2.038024097834877,
+      "lo": 1.110939010762436,
+      "p_above_zero": 1.0
+    },
+    "v2_b0_seed2": {
+      "hi": 2.031832625033286,
+      "lo": 1.109625310130798,
+      "p_above_zero": 1.0
+    }
+  },
+  "missing_predictions": {
+    "lgbm_v3": 0,
+    "v1": 0,
+    "v1_cal": 0,
+    "v2_b0_noids": 0,
+    "v2_b0_nopid": 0,
+    "v2_b0_seed1": 0,
+    "v2_b0_seed2": 0
+  },
+  "models": [
+    "v1",
+    "v2_b0_seed1",
+    "v2_b0_seed2",
+    "v2_b0_nopid",
+    "v2_b0_noids",
+    "lgbm_v3",
+    "v1_cal"
+  ],
+  "prediction_sets": {
+    "lgbm_v3": 68,
+    "v1": 7,
+    "v2_b0_noids": 86,
+    "v2_b0_nopid": 85,
+    "v2_b0_seed1": 52,
+    "v2_b0_seed2": 54
+  },
+  "ranking": [
+    "v2_b0_noids",
+    "v2_b0_nopid",
+    "lgbm_v3",
+    "v2_b0_seed2",
+    "v2_b0_seed1",
+    "v1_cal"
+  ],
+  "scorers": {
+    "lgbm_v3": "optimiser",
+    "v1": "optimiser",
+    "v2_b0_noids": "raw_points",
+    "v2_b0_nopid": "raw_points",
+    "v2_b0_seed1": "raw_points",
+    "v2_b0_seed2": "raw_points"
+  },
+  "season_scores": {
+    "lgbm_v3": {
+      "25": 1.872965615089017
+    },
+    "v1": {
+      "25": 0.0
+    },
+    "v1_cal": {
+      "25": 1.1850778266803714
+    },
+    "v2_b0_noids": {
+      "25": 2.1984927861880257
+    },
+    "v2_b0_nopid": {
+      "25": 2.1026777236927265
+    },
+    "v2_b0_seed1": {
+      "25": 1.6714245064087532
+    },
+    "v2_b0_seed2": {
+      "25": 1.6925851951430158
+    }
+  },
+  "seasons": [
+    25
+  ],
+  "sigmas": {
+    "2A_actual": 0.3724400743524714,
+    "2A_predicted": 0.4126431931911874,
+    "2B_actual": 0.12725942013619782,
+    "2B_predicted": 0.057791125731654736,
+    "calibration_gap": 0.02492237929876642,
+    "fixture_swing_corr": 0.02227589431386675,
+    "overall_mse": 0.17536366730084282,
+    "spearman_five_gw": 0.013747545991275445,
+    "spearman_single_gw": 0.015577193322179042
+  },
+  "totals": {
+    "lgbm_v3": 1.872965615089017,
+    "v1": 0.0,
+    "v1_cal": 1.1850778266803714,
+    "v2_b0_noids": 2.1984927861880257,
+    "v2_b0_nopid": 2.1026777236927265,
+    "v2_b0_seed1": 1.6714245064087532,
+    "v2_b0_seed2": 1.6925851951430158
+  },
+  "totals_uncapped": {
+    "lgbm_v3": 4.563418471953507,
+    "v1": 0.0,
+    "v1_cal": 3.1237655733447007,
+    "v2_b0_noids": 4.341863089517266,
+    "v2_b0_nopid": 3.8613932964287483,
+    "v2_b0_seed1": 3.313596321277961,
+    "v2_b0_seed2": 3.2833384389221596
+  },
+  "units": 38
+}

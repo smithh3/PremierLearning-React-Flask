@@ -87,7 +87,13 @@ def _monitor_class():
                 'every week and the result goes to eval.csv.' % run.run_id,
                 flush=True,
             )
+            # A run on synthetic copies swaps in the held-out versions here.
+            if hasattr(run, 'begin_evaluation'):
+                run.begin_evaluation()
             return True
+
+        def current_observation(self):
+            return self.env._observation()
 
         def evaluation_step(self, action):
             observation, _reward, terminated, _truncated, info = self.step(int(action))

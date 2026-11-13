@@ -1,0 +1,776 @@
+ 
+Queued 07/11/2026 10:30:46.23, waiting for process 4676 
+ 
+Queued 07/11/2026 12:49:58.69, waiting for process  
+Testing 07/11/2026 12:49:58.71 
+.<frozen importlib._bootstrap>:219: RuntimeWarning: numpy.ufunc size changed, may indicate binary incompatibility. Expected 216 from C header, got 232 from PyObject
+C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\venv\lib\site-packages\sklearn\utils\fixes.py:28: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  from pkg_resources import parse_version  # type: ignore
+C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\venv\lib\site-packages\pkg_resources\__init__.py:3154: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('mpl_toolkits')`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+<frozen importlib._bootstrap>:219: RuntimeWarning: numpy.ufunc size changed, may indicate binary incompatibility. Expected 216 from C header, got 232 from PyObject
+..............<frozen importlib._bootstrap>:219: RuntimeWarning: numpy.ufunc size changed, may indicate binary incompatibility. Expected 216 from C header, got 232 from PyObject
+.........LightGBM v3 live: plan simple_h1, feature set 2, team ids left out, 2 seeds
+  8 train rows, 1 predict rows
+lightgbm regression: 8 rows x 252 columns, 500 rounds
+  average of 2 seeds
+  one season only: no hold-out, 500 rounds
+  top 30 columns by gain (share of all splits' gain):
+    1  position                                                  0.0%
+    2  hist.assists.per90_5                                      0.0%
+    3  hist.assists.per90_10                                     0.0%
+    4  hist.assists.per90_20                                     0.0%
+    5  hist.assists.per90_50                                     0.0%
+    6  hist.defcon.per90_3                                       0.0%
+    7  hist.defcon.per90_5                                       0.0%
+    8  hist.defcon.per90_10                                      0.0%
+    9  hist.defcon.per90_20                                      0.0%
+   10  hist.defcon.per90_50                                      0.0%
+   11  hist.played_share3                                        0.0%
+   12  hist.sixty_share3                                         0.0%
+   13  hist.played_share5                                        0.0%
+   14  hist.sixty_share5                                         0.0%
+   15  hist.played_share10                                       0.0%
+   16  hist.sixty_share10                                        0.0%
+   17  hist.played_share20                                       0.0%
+   18  hist.sixty_share20                                        0.0%
+   19  hist.played_share50                                       0.0%
+   20  hist.sixty_share50                                        0.0%
+   21  hist.since_played                                         0.0%
+   22  hist.since_sixty                                          0.0%
+   23  seasons.count                                             0.0%
+   24  seasons.seasons_before.last                               0.0%
+   25  seasons.seasons_before.before                             0.0%
+   26  seasons.played.last                                       0.0%
+   27  seasons.played.before                                     0.0%
+   28  seasons.points_per_90.last                                0.0%
+   29  hist.assists.per90_3                                      0.0%
+   30  hist.goals.per90_50                                       0.0%
+Top 10 predicted points over the next 5 gameweeks (GW1-5), LightGBM v3
+    #  Player                       Team     Total    GW1    GW2    GW3    GW4    GW5
+    1  player                                 2.38      -      -      -   2.38      -
+....Skipping complete snapshot 25/26 GW1
+Skipping complete snapshot 25/26 GW2
+Skipping complete snapshot 25/26 GW3
+Skipping complete snapshot 25/26 GW4
+Skipping complete snapshot 25/26 GW5
+Skipping complete snapshot 25/26 GW6
+Skipping complete snapshot 25/26 GW7
+
+Refitting for 25/26 GW6-10 (every 5 GWs)
+Stopping after 1 fit(s) (PL_RETRAIN_MAX_FITS=1); run again to continue
+.Skipping complete snapshot 25/26 GW1
+Skipping complete snapshot 25/26 GW2
+Skipping complete snapshot 25/26 GW3
+Skipping complete snapshot 25/26 GW4
+Skipping complete snapshot 25/26 GW5
+Skipping complete snapshot 25/26 GW6
+Skipping complete snapshot 25/26 GW7
+
+Refitting for 25/26 GW6-10 (every 5 GWs)
+
+Refitting for 25/26 GW11-15 (every 5 GWs)
+...Training one fixed LightGBM model on plan simple_h1 as of GW1...
+  8 train rows, 173 columns (3 categorical), feature set 1, 2 teams (vocab frozen)
+lightgbm regression: 8 rows x 173 columns, 500 rounds
+  one season only: no hold-out, 500 rounds
+  top 30 columns by gain (share of all splits' gain):
+    1  position                                                  0.0%
+    2  seasons.points_per_90.before                              0.0%
+    3  seasons.xgi_per_90.last                                   0.0%
+    4  seasons.xgi_per_90.before                                 0.0%
+    5  seasons.minutes.last                                      0.0%
+    6  seasons.minutes.before                                    0.0%
+    7  team_squad.count                                          0.0%
+    8  team_squad.xG_last_n.sum                                  0.0%
+    9  team_squad.xG_last_n.mean                                 0.0%
+   10  team_squad.xG_last_n.top11                                0.0%
+   11  team_squad.xG_last_n.max                                  0.0%
+   12  team_squad.xA_last_n.sum                                  0.0%
+   13  team_squad.xA_last_n.mean                                 0.0%
+   14  team_squad.xA_last_n.top11                                0.0%
+   15  team_squad.xA_last_n.max                                  0.0%
+   16  team_squad.goals_last_n.sum                               0.0%
+   17  team_squad.goals_last_n.mean                              0.0%
+   18  team_squad.goals_last_n.top11                             0.0%
+   19  seasons.points_per_90.last                                0.0%
+   20  seasons.played.before                                     0.0%
+   21  seasons.played.last                                       0.0%
+   22  seasons.seasons_before.before                             0.0%
+   23  hist.xGC.per90_50                                         0.0%
+   24  hist.goals.per90_5                                        0.0%
+   25  hist.goals.per90_10                                       0.0%
+   26  hist.goals.per90_50                                       0.0%
+   27  hist.assists.per90_5                                      0.0%
+   28  hist.assists.per90_10                                     0.0%
+   29  hist.assists.per90_50                                     0.0%
+   30  hist.defcon.per90_5                                       0.0%
+..Training one fixed LightGBM model on plan simple_h1_teams as of GW1...
+  8 train rows, 469 columns (3 categorical), feature set 3, 2 teams (vocab frozen)
+lightgbm staged (minutes, clean sheet, rest of points): 8 rows x 469 columns
+  minutes            8 rows, 500 rounds
+  clean_sheet        3 rows, 500 rounds
+  rest               7 rows, 500 rounds
+  minutes stage:
+  top 15 columns by gain (share of all splits' gain):
+    1  position                                                  0.0%
+    2  team_hist.goals_against.mean114                           0.0%
+    3  team_hist.goals_against.mean76                            0.0%
+    4  team_hist.goals_against.mean38                            0.0%
+    5  team_hist.goals_against.mean19                            0.0%
+    6  team_hist.goals_against.mean10                            0.0%
+    7  team_hist.goals_against.mean5                             0.0%
+    8  team_hist.goals_against.mean3                             0.0%
+    9  team_hist.goals_against.mean1                             0.0%
+   10  team_hist.goals_for.venue10                               0.0%
+   11  team_hist.goals_for.trend5_38                             0.0%
+   12  team_hist.goals_for.faded38                               0.0%
+   13  team_hist.goals_for.faded10                               0.0%
+   14  team_hist.goals_for.faded3                                0.0%
+   15  team_hist.goals_for.mean114                               0.0%
+  rest-of-points stage:
+  top 15 columns by gain (share of all splits' gain):
+    1  position                                                  0.0%
+    2  team_hist.goals_against.faded3                            0.0%
+    3  team_hist.goals_against.mean114                           0.0%
+    4  team_hist.goals_against.mean76                            0.0%
+    5  team_hist.goals_against.mean38                            0.0%
+    6  team_hist.goals_against.mean19                            0.0%
+    7  team_hist.goals_against.mean10                            0.0%
+    8  team_hist.goals_against.mean5                             0.0%
+    9  team_hist.goals_against.mean3                             0.0%
+   10  team_hist.goals_against.mean1                             0.0%
+   11  team_hist.goals_for.venue10                               0.0%
+   12  team_hist.goals_for.trend5_38                             0.0%
+   13  team_hist.goals_for.faded38                               0.0%
+   14  team_hist.goals_for.faded10                               0.0%
+   15  team_hist.goals_for.faded3                                0.0%
+.......................................
+----------------------------------------------------------------------
+Ran 73 tests in 12.241s
+
+OK
+=== lgbm_v3_tweedie 07/11/2026 12:50:13.51 === 
+
+=== lgbm_v3_tweedie ===
+C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\venv\Scripts\python.exe -m simulation.model_eval build lgbm_v3_tweedie --seasons 25
+Building lgbm_v3_tweedie: --lightgbm --train-once-per-season --lgbm-plan simple_h1_b1 --lgbm-features 2 --lgbm-no-ids --lgbm-seeds 3 --lgbm-objective tweedie --seasons 25 --name eval-lgbm_v3_tweedie
+Using prediction set 92; existing season snapshots are kept
+Training one fixed LightGBM model on plan simple_h1_b1 as of GW1...
+  177984 train rows, 434 columns (1 categorical), feature set 2, 30 teams (vocab frozen)
+lightgbm tweedie: 177984 rows x 434 columns, 85 rounds
+  average of 3 seeds
+  held-out season 24 (27614 rows, actual mean 1.201): best round 77, RMSE 2.038, MAE 0.996, bias -0.119
+  top 30 columns by gain (share of all splits' gain):
+    1  hist.points_scored.faded1.5                              38.6%
+    2  hist.minutes_played.mean2                                16.7%
+    3  hist.points_scored.faded3                                11.4%
+    4  context.chance_of_playing                                 6.4%
+    5  player_load.in_squad_last_club_match                      3.8%
+    6  hist.minutes_played.mean1                                 3.8%
+    7  hist.points_scored.faded10                                2.5%
+    8  hist.minutes_played.mean3                                 2.3%
+    9  hist.minutes_played.faded1.5                              1.3%
+   10  player_load.days_since_last_played                        0.9%
+   11  hist.points_scored.mean3                                  0.9%
+   12  hist.points_scored.faded25                                0.7%
+   13  fixture.player_points_x_attack_goals                      0.5%
+   14  hist.minutes_played.faded3                                0.4%
+   15  position                                                  0.4%
+   16  player_load.minutes_last_14d                              0.3%
+   17  hist.since_played                                         0.3%
+   18  hist.points_scored.mean50                                 0.2%
+   19  fixture.attack_xg.decay                                   0.2%
+   20  hist.match_facts.days_before_current.last                 0.2%
+   21  player_load.days_since_last_started                       0.2%
+   22  hist.played_share3                                        0.2%
+   23  hist.minutes_played.venue10                               0.2%
+   24  hist.points_scored.mean10                                 0.2%
+   25  opp_hist.days_before_current.last                         0.2%
+   26  hist.count                                                0.2%
+   27  fixture.defence_goals.mean38                              0.2%
+   28  fixture.defence_xg.decay                                  0.2%
+   29  player_load.minutes_last_28d                              0.2%
+   30  hist.minutes_played.mean20                                0.2%
+
+Building prediction set 92: 25/26 GW1
+Persisted 18316 player-fixture predictions
+
+Building prediction set 92: 25/26 GW2
+Persisted 19573 player-fixture predictions
+
+Building prediction set 92: 25/26 GW3
+Persisted 19620 player-fixture predictions
+
+Building prediction set 92: 25/26 GW4
+Persisted 20230 player-fixture predictions
+
+Building prediction set 92: 25/26 GW5
+Persisted 19856 player-fixture predictions
+
+Building prediction set 92: 25/26 GW6
+Persisted 15411 player-fixture predictions
+
+Building prediction set 92: 25/26 GW7
+Persisted 15008 player-fixture predictions
+
+Building prediction set 92: 25/26 GW8
+Persisted 14384 player-fixture predictions
+
+Building prediction set 92: 25/26 GW9
+Persisted 13800 player-fixture predictions
+
+Building prediction set 92: 25/26 GW10
+Persisted 13485 player-fixture predictions
+
+Building prediction set 92: 25/26 GW11
+Persisted 13132 player-fixture predictions
+
+Building prediction set 92: 25/26 GW12
+Persisted 12609 player-fixture predictions
+
+Building prediction set 92: 25/26 GW13
+Persisted 12116 player-fixture predictions
+
+Building prediction set 92: 25/26 GW14
+Persisted 11500 player-fixture predictions
+
+Building prediction set 92: 25/26 GW15
+Persisted 11088 player-fixture predictions
+
+Building prediction set 92: 25/26 GW16
+Persisted 10580 player-fixture predictions
+
+Building prediction set 92: 25/26 GW17
+Persisted 10164 player-fixture predictions
+
+Building prediction set 92: 25/26 GW18
+Persisted 9891 player-fixture predictions
+
+Building prediction set 92: 25/26 GW19
+Persisted 9520 player-fixture predictions
+
+Building prediction set 92: 25/26 GW20
+Persisted 9120 player-fixture predictions
+
+Building prediction set 92: 25/26 GW21
+Persisted 8748 player-fixture predictions
+
+Building prediction set 92: 25/26 GW22
+Persisted 8381 player-fixture predictions
+
+Building prediction set 92: 25/26 GW23
+Persisted 7888 player-fixture predictions
+
+Building prediction set 92: 25/26 GW24
+Persisted 7350 player-fixture predictions
+
+Building prediction set 92: 25/26 GW25
+Persisted 6860 player-fixture predictions
+
+Building prediction set 92: 25/26 GW26
+Persisted 6383 player-fixture predictions
+
+Building prediction set 92: 25/26 GW27
+Persisted 5794 player-fixture predictions
+
+Building prediction set 92: 25/26 GW28
+Persisted 5307 player-fixture predictions
+
+Building prediction set 92: 25/26 GW29
+Persisted 4840 player-fixture predictions
+
+Building prediction set 92: 25/26 GW30
+Persisted 4342 player-fixture predictions
+
+Building prediction set 92: 25/26 GW31
+Persisted 3878 player-fixture predictions
+
+Building prediction set 92: 25/26 GW32
+Persisted 3487 player-fixture predictions
+
+Building prediction set 92: 25/26 GW33
+Persisted 3015 player-fixture predictions
+
+Building prediction set 92: 25/26 GW34
+Persisted 2361 player-fixture predictions
+
+Building prediction set 92: 25/26 GW35
+Persisted 1997 player-fixture predictions
+
+Building prediction set 92: 25/26 GW36
+Persisted 1516 player-fixture predictions
+
+Building prediction set 92: 25/26 GW37
+Persisted 984 player-fixture predictions
+
+Building prediction set 92: 25/26 GW38
+Persisted 493 player-fixture predictions
+Prediction set ID: 92
+{
+  "prediction_set_id": 92,
+  "expected_snapshots": 38,
+  "complete_snapshots": 38,
+  "missing": [],
+  "failed_or_empty": []
+}
+Recorded lgbm_v3_tweedie -> prediction set 92 in C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\run_metrics\model_eval\experiments.json
+=== lgbm_v4 07/11/2026 13:23:34.19 === 
+
+=== lgbm_v4 ===
+C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\venv\Scripts\python.exe -m simulation.model_eval build lgbm_v4 --seasons 25
+Building lgbm_v4: --lightgbm --train-once-per-season --lgbm-plan simple_h1_b1 --lgbm-features 3 --lgbm-no-ids --lgbm-seeds 3 --seasons 25 --name eval-lgbm_v4
+Using prediction set 93; existing season snapshots are kept
+Training one fixed LightGBM model on plan simple_h1_b1 as of GW1...
+  177984 train rows, 499 columns (1 categorical), feature set 3, 30 teams (vocab frozen)
+lightgbm regression: 177984 rows x 499 columns, 127 rounds
+  average of 3 seeds
+  held-out season 24 (27614 rows, actual mean 1.201): best round 115, RMSE 2.014, MAE 1.015, bias -0.046
+  top 30 columns by gain (share of all splits' gain):
+    1  hist.minutes_played.mean1                                38.0%
+    2  hist.points_scored.faded1.5                              11.1%
+    3  hist.points_scored.faded10                                7.2%
+    4  hist.minutes_played.faded1.5                              5.6%
+    5  context.chance_of_playing                                 3.3%
+    6  hist.minutes_played.mean2                                 2.4%
+    7  hist.points_scored.faded3                                 2.0%
+    8  hist.points_scored.faded25                                1.5%
+    9  hist.points_scored.mean2                                  1.3%
+   10  opp_conceded.points.league                                1.1%
+   11  dc.goals.exp_for                                          0.9%
+   12  player_load.in_squad_last_club_match                      0.7%
+   13  dc.goals.cs                                               0.6%
+   14  dc.goals.exp_against                                      0.5%
+   15  hist.points_scored.mean50                                 0.5%
+   16  player_load.minutes_last_14d                              0.4%
+   17  hist.goals.mean50                                         0.4%
+   18  player_load.days_since_last_played                        0.4%
+   19  fixture.attack_xg.decay                                   0.3%
+   20  opp_hist.goals_against.venue10                            0.3%
+   21  opp_conceded.points.mean10                                0.3%
+   22  seasons.points_per_90.last                                0.3%
+   23  opp_conceded.points.rel38                                 0.3%
+   24  seasons.points_per_90.before                              0.3%
+   25  opp_hist.days_before_current.last                         0.3%
+   26  current_opposition.team_features.xg_against_decay         0.2%
+   27  hist.minutes_played.mean3                                 0.2%
+   28  fixture.defence_xg.decay                                  0.2%
+   29  hist.points_scored.mean5                                  0.2%
+   30  current_opposition.team_features.xg_for_decay             0.2%
+
+Building prediction set 93: 25/26 GW1
+Persisted 18316 player-fixture predictions
+
+Building prediction set 93: 25/26 GW2
+Persisted 19573 player-fixture predictions
+
+Building prediction set 93: 25/26 GW3
+Persisted 19620 player-fixture predictions
+
+Building prediction set 93: 25/26 GW4
+Persisted 20230 player-fixture predictions
+
+Building prediction set 93: 25/26 GW5
+Persisted 19856 player-fixture predictions
+
+Building prediction set 93: 25/26 GW6
+Persisted 15411 player-fixture predictions
+
+Building prediction set 93: 25/26 GW7
+Persisted 15008 player-fixture predictions
+
+Building prediction set 93: 25/26 GW8
+Persisted 14384 player-fixture predictions
+
+Building prediction set 93: 25/26 GW9
+Persisted 13800 player-fixture predictions
+
+Building prediction set 93: 25/26 GW10
+Persisted 13485 player-fixture predictions
+
+Building prediction set 93: 25/26 GW11
+Persisted 13132 player-fixture predictions
+
+Building prediction set 93: 25/26 GW12
+Persisted 12609 player-fixture predictions
+
+Building prediction set 93: 25/26 GW13
+Persisted 12116 player-fixture predictions
+
+Building prediction set 93: 25/26 GW14
+Persisted 11500 player-fixture predictions
+
+Building prediction set 93: 25/26 GW15
+Persisted 11088 player-fixture predictions
+
+Building prediction set 93: 25/26 GW16
+Persisted 10580 player-fixture predictions
+
+Building prediction set 93: 25/26 GW17
+Persisted 10164 player-fixture predictions
+
+Building prediction set 93: 25/26 GW18
+Persisted 9891 player-fixture predictions
+
+Building prediction set 93: 25/26 GW19
+Persisted 9520 player-fixture predictions
+
+Building prediction set 93: 25/26 GW20
+Persisted 9120 player-fixture predictions
+
+Building prediction set 93: 25/26 GW21
+Persisted 8748 player-fixture predictions
+
+Building prediction set 93: 25/26 GW22
+Persisted 8381 player-fixture predictions
+
+Building prediction set 93: 25/26 GW23
+Persisted 7888 player-fixture predictions
+
+Building prediction set 93: 25/26 GW24
+Persisted 7350 player-fixture predictions
+
+Building prediction set 93: 25/26 GW25
+Persisted 6860 player-fixture predictions
+
+Building prediction set 93: 25/26 GW26
+Persisted 6383 player-fixture predictions
+
+Building prediction set 93: 25/26 GW27
+Persisted 5794 player-fixture predictions
+
+Building prediction set 93: 25/26 GW28
+Persisted 5307 player-fixture predictions
+
+Building prediction set 93: 25/26 GW29
+Persisted 4840 player-fixture predictions
+
+Building prediction set 93: 25/26 GW30
+Persisted 4342 player-fixture predictions
+
+Building prediction set 93: 25/26 GW31
+Persisted 3878 player-fixture predictions
+
+Building prediction set 93: 25/26 GW32
+Persisted 3487 player-fixture predictions
+
+Building prediction set 93: 25/26 GW33
+Persisted 3015 player-fixture predictions
+
+Building prediction set 93: 25/26 GW34
+Persisted 2361 player-fixture predictions
+
+Building prediction set 93: 25/26 GW35
+Persisted 1997 player-fixture predictions
+
+Building prediction set 93: 25/26 GW36
+Persisted 1516 player-fixture predictions
+
+Building prediction set 93: 25/26 GW37
+Persisted 984 player-fixture predictions
+
+Building prediction set 93: 25/26 GW38
+Persisted 493 player-fixture predictions
+Prediction set ID: 93
+{
+  "prediction_set_id": 93,
+  "expected_snapshots": 38,
+  "complete_snapshots": 38,
+  "missing": [],
+  "failed_or_empty": []
+}
+Recorded lgbm_v4 -> prediction set 93 in C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\run_metrics\model_eval\experiments.json
+=== lgbm_v5 07/11/2026 13:57:05.94 === 
+
+=== lgbm_v5 ===
+C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\venv\Scripts\python.exe -m simulation.model_eval build lgbm_v5 --seasons 25
+Building lgbm_v5: --lightgbm --train-once-per-season --lgbm-plan simple_h1_b1 --lgbm-features 3 --lgbm-no-ids --lgbm-seeds 3 --lgbm-staged --seasons 25 --name eval-lgbm_v5
+Using prediction set 94; existing season snapshots are kept
+Training one fixed LightGBM model on plan simple_h1_b1 as of GW1...
+  177984 train rows, 499 columns (1 categorical), feature set 3, 30 teams (vocab frozen)
+lightgbm staged (minutes, clean sheet, rest of points): 177984 rows x 499 columns
+  average of 3 seeds per stage
+  minutes       177984 rows, 399 rounds (best held-out round 363)
+  clean_sheet    49480 rows, 50 rounds (best held-out round 38)
+  rest           76277 rows, 102 rounds (best held-out round 93)
+  held-out (27614 rows, actual mean 1.201): RMSE 2.026, MAE 1.008, bias -0.020
+  minutes bands 0 / 1-59 / 60+: predicted 0.584 / 0.129 / 0.287, actual 0.581 / 0.136 / 0.283
+  minutes stage:
+  top 15 columns by gain (share of all splits' gain):
+    1  hist.minutes_played.faded1.5                             21.9%
+    2  hist.minutes_played.mean2                                17.5%
+    3  hist.minutes_played.mean1                                12.8%
+    4  context.chance_of_playing                                 5.6%
+    5  hist.since_played                                         5.6%
+    6  player_load.in_squad_last_club_match                      2.4%
+    7  hist.minutes_played.mean3                                 1.7%
+    8  hist.minutes_played.mean5                                 1.6%
+    9  hist.points_scored.faded1.5                               1.3%
+   10  hist.minutes_played.faded3                                1.1%
+   11  hist.xG.shrunk90_5                                        1.1%
+   12  hist.minutes_played.mean10                                0.8%
+   13  player_load.days_since_last_played                        0.7%
+   14  position                                                  0.6%
+   15  hist.since_sixty                                          0.6%
+  rest-of-points stage:
+  top 15 columns by gain (share of all splits' gain):
+    1  hist.goals.faded25                                       18.1%
+    2  stage.sixty                                               8.5%
+    3  hist.goals.shrunk90_50                                    4.8%
+    4  position                                                  4.5%
+    5  hist.goals.mean50                                         4.3%
+    6  hist.goals.faded10                                        3.6%
+    7  dc.goals.exp_for                                          2.4%
+    8  hist.points_scored.shrunk90_50                            2.4%
+    9  dc.goals.cs                                               2.0%
+   10  dc.goals.exp_against                                      1.3%
+   11  seasons.points_per_90.last                                1.1%
+   12  hist.assists.shrunk90_50                                  1.0%
+   13  fixture.attack_xg.decay                                   0.9%
+   14  fixture.defence_xg.decay                                  0.9%
+   15  hist.assists.per90_50                                     0.9%
+
+Building prediction set 94: 25/26 GW1
+Persisted 18316 player-fixture predictions
+
+Building prediction set 94: 25/26 GW2
+Persisted 19573 player-fixture predictions
+
+Building prediction set 94: 25/26 GW3
+Persisted 19620 player-fixture predictions
+
+Building prediction set 94: 25/26 GW4
+Persisted 20230 player-fixture predictions
+
+Building prediction set 94: 25/26 GW5
+Persisted 19856 player-fixture predictions
+
+Building prediction set 94: 25/26 GW6
+Persisted 15411 player-fixture predictions
+
+Building prediction set 94: 25/26 GW7
+Persisted 15008 player-fixture predictions
+
+Building prediction set 94: 25/26 GW8
+Persisted 14384 player-fixture predictions
+
+Building prediction set 94: 25/26 GW9
+Persisted 13800 player-fixture predictions
+
+Building prediction set 94: 25/26 GW10
+Persisted 13485 player-fixture predictions
+
+Building prediction set 94: 25/26 GW11
+Persisted 13132 player-fixture predictions
+
+Building prediction set 94: 25/26 GW12
+Persisted 12609 player-fixture predictions
+
+Building prediction set 94: 25/26 GW13
+Persisted 12116 player-fixture predictions
+
+Building prediction set 94: 25/26 GW14
+Persisted 11500 player-fixture predictions
+
+Building prediction set 94: 25/26 GW15
+Persisted 11088 player-fixture predictions
+
+Building prediction set 94: 25/26 GW16
+Persisted 10580 player-fixture predictions
+
+Building prediction set 94: 25/26 GW17
+Persisted 10164 player-fixture predictions
+
+Building prediction set 94: 25/26 GW18
+Persisted 9891 player-fixture predictions
+
+Building prediction set 94: 25/26 GW19
+Persisted 9520 player-fixture predictions
+
+Building prediction set 94: 25/26 GW20
+Persisted 9120 player-fixture predictions
+
+Building prediction set 94: 25/26 GW21
+Persisted 8748 player-fixture predictions
+
+Building prediction set 94: 25/26 GW22
+Persisted 8381 player-fixture predictions
+
+Building prediction set 94: 25/26 GW23
+Persisted 7888 player-fixture predictions
+
+Building prediction set 94: 25/26 GW24
+Persisted 7350 player-fixture predictions
+
+Building prediction set 94: 25/26 GW25
+Persisted 6860 player-fixture predictions
+
+Building prediction set 94: 25/26 GW26
+Persisted 6383 player-fixture predictions
+
+Building prediction set 94: 25/26 GW27
+Persisted 5794 player-fixture predictions
+
+Building prediction set 94: 25/26 GW28
+Persisted 5307 player-fixture predictions
+
+Building prediction set 94: 25/26 GW29
+Persisted 4840 player-fixture predictions
+
+Building prediction set 94: 25/26 GW30
+Persisted 4342 player-fixture predictions
+
+Building prediction set 94: 25/26 GW31
+Persisted 3878 player-fixture predictions
+
+Building prediction set 94: 25/26 GW32
+Persisted 3487 player-fixture predictions
+
+Building prediction set 94: 25/26 GW33
+Persisted 3015 player-fixture predictions
+
+Building prediction set 94: 25/26 GW34
+Persisted 2361 player-fixture predictions
+
+Building prediction set 94: 25/26 GW35
+Persisted 1997 player-fixture predictions
+
+Building prediction set 94: 25/26 GW36
+Persisted 1516 player-fixture predictions
+
+Building prediction set 94: 25/26 GW37
+Persisted 984 player-fixture predictions
+
+Building prediction set 94: 25/26 GW38
+Persisted 493 player-fixture predictions
+Prediction set ID: 94
+{
+  "prediction_set_id": 94,
+  "expected_snapshots": 38,
+  "complete_snapshots": 38,
+  "missing": [],
+  "failed_or_empty": []
+}
+Recorded lgbm_v5 -> prediction set 94 in C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\run_metrics\model_eval\experiments.json
+Built 07/11/2026 14:43:30.23 
+lgbm_v4_mix50_v2_b0_noids: set 95 {"25": {"snapshots": 38, "rows": 363027, "minutes_share": 0.0}}
+lgbm_v5_mix50_v2_b0_noids: set 96 {"25": {"snapshots": 38, "rows": 363027, "minutes_share": 0.0}}
+Evaluating seasons 25
+  lgbm_v3_mix50_v2_b0_noids: set eval-lgbm_v3_mix50_v2_b0_noids is 89
+  lgbm_v4_mix50_v2_b0_noids: set eval-lgbm_v4_mix50_v2_b0_noids is 95
+  lgbm_v5_mix50_v2_b0_noids: set eval-lgbm_v5_mix50_v2_b0_noids is 96
+  v1: prediction set 7, scored as optimiser
+  v2_b0_noids: prediction set 86, scored as raw_points
+  lgbm_v3: prediction set 68, scored as optimiser
+  lgbm_v3_tweedie: prediction set 92, scored as optimiser
+  lgbm_v4: prediction set 93, scored as optimiser
+  lgbm_v5: prediction set 94, scored as optimiser
+  lgbm_v3_mix50_v2_b0_noids: prediction set 89, scored as optimiser
+  lgbm_v4_mix50_v2_b0_noids: prediction set 95, scored as optimiser
+  lgbm_v5_mix50_v2_b0_noids: prediction set 96, scored as optimiser
+  season 25: 38 origins, 401.3 eligible players on average
+Deriving v1_cal from v1 (rolling linear calibration)
+Scoring 38 units for 10 models...
+Bootstrapping 200 resamples (blocks of 5 origins)...
+Model evaluation against v1, seasons 25, 38 origins
+Scores are in noise units: 1.0 = one bootstrap standard deviation of that metric for v1.
+Positive is better than v1; v1 scores 0 by definition.
+Each metric is capped at +-3 before weighting; "uncapped" is the old total.
+
+model               total       95% interval   P(>0)  overall   future    calib  ranking fixtures  uncapped
+v2_b0_noids         +2.20       [1.75, 2.41]    1.00    +3.00    +2.05    +3.00    +2.36    +0.25     +4.34
+lgbm_v5_mix50_v2_b0_noids    +2.12       [1.72, 2.38]    1.00    +3.00    +1.25    +3.00    +2.56    +0.51     +4.72
+lgbm_v4_mix50_v2_b0_noids    +2.11       [1.71, 2.34]    1.00    +3.00    +1.48    +3.00    +2.50    +0.21     +4.59
+lgbm_v3_mix50_v2_b0_noids    +2.09       [1.69, 2.34]    1.00    +3.00    +1.35    +3.00    +2.53    +0.24     +4.61
+lgbm_v3_tweedie     +1.98       [1.55, 2.21]    1.00    +3.00    +1.25    +3.00    +2.30    +0.11     +4.00
+lgbm_v5             +1.90       [1.57, 2.20]    1.00    +3.00    +0.60    +3.00    +2.41    +0.25     +4.76
+lgbm_v4             +1.88       [1.55, 2.14]    1.00    +3.00    +0.87    +3.00    +2.32    -0.08     +4.51
+lgbm_v3             +1.87       [1.53, 2.16]    1.00    +3.00    +0.76    +3.00    +2.36    -0.04     +4.56
+v1_cal              +1.19       [1.08, 1.33]    1.00    +2.66    +1.29    +3.00    +0.03    -0.54     +3.12
+
+What drove each score:
+  v2_b0_noids: helped most by overall +0.66, five_gw_rank +0.42
+    B0 without any id embeddings: players and teams only via their histories.
+  lgbm_v5_mix50_v2_b0_noids: helped most by overall +0.66, five_gw_rank +0.42; regressed on 2B_predicted (-1.16 sd)
+  lgbm_v4_mix50_v2_b0_noids: helped most by overall +0.66, five_gw_rank +0.42
+  lgbm_v3_mix50_v2_b0_noids: helped most by overall +0.66, five_gw_rank +0.42; regressed on 2B_predicted (-1.20 sd)
+  lgbm_v3_tweedie: helped most by overall +0.66, five_gw_rank +0.42
+    lgbm_v3 with the Tweedie objective (power 1.3; suits mostly-small, sometimes-large points).
+  lgbm_v5: helped most by overall +0.66, five_gw_rank +0.42; regressed on 2B_predicted (-3.00 sd)
+    lgbm_v4 inputs in stages: minutes bands, clean sheet and the rest of the points, combined with FPL scoring.
+  lgbm_v4: helped most by overall +0.66, five_gw_rank +0.42; regressed on 2B_predicted (-2.19 sd)
+    lgbm_v3 with feature set 3: team ratings (time-decayed Poisson, goals and xG), what the opponent concedes to each position, shrunk per-90s and competition for his place.
+  lgbm_v3: helped most by overall +0.66, five_gw_rank +0.42; regressed on 2B_predicted (-3.00 sd)
+    LightGBM v3: B1 inputs, feature set 2 (more windows, trends, venue, matchups), no team ids, 3 seeds.
+  v1_cal: helped most by overall +0.58, calibration +0.39
+    v1 plus the same rolling linear calibration.
+
+By season (total):
+  v2_b0_noids      25 +2.20
+  lgbm_v5_mix50_v2_b0_noids 25 +2.12
+  lgbm_v4_mix50_v2_b0_noids 25 +2.11
+  lgbm_v3_mix50_v2_b0_noids 25 +2.09
+  lgbm_v3_tweedie  25 +1.98
+  lgbm_v5          25 +1.90
+  lgbm_v4          25 +1.88
+  lgbm_v3          25 +1.87
+  v1_cal           25 +1.19
+
+Non-overlapping 5-GW origins only (sensitivity check, same sigmas):
+  v2_b0_noids      total +2.16, future +2.35, ranking +1.99
+  lgbm_v5_mix50_v2_b0_noids total +2.30, future +2.17, ranking +2.59
+  lgbm_v4_mix50_v2_b0_noids total +2.31, future +2.48, ranking +2.52
+  lgbm_v3_mix50_v2_b0_noids total +2.30, future +2.39, ranking +2.56
+  lgbm_v3_tweedie  total +2.18, future +2.20, ranking +2.36
+  lgbm_v5          total +2.11, future +1.55, ranking +2.55
+  lgbm_v4          total +2.16, future +2.23, ranking +2.36
+  lgbm_v3          total +2.16, future +2.14, ranking +2.40
+  v1_cal           total +1.23, future +1.34, ranking +0.03
+
+Guardrail flags:
+  v1_cal: overall_mae is 6.5% worse than v1
+
+Raw metrics (pooled):
+  model             overall_mse  overall_mae overall_bias    2A_actual 2A_predicted    2B_actual 2B_predicted calibration_ calibration_ spearman_sin spearman_fiv
+  v1                      7.615        1.653       -0.712       17.742        8.369        4.306        2.770        0.712        0.848        0.552        0.554
+  v2_b0_noids             6.960        1.680       -0.272       16.616        7.394        4.178        2.701        0.272        1.070        0.579        0.603
+  lgbm_v5_mix50_v2_b0_noids        6.878        1.677       -0.249       15.969        7.971        4.120        2.837        0.249        1.044        0.585        0.615
+  lgbm_v4_mix50_v2_b0_noids        6.900        1.679       -0.260       16.116        7.703        4.133        2.819        0.260        1.064        0.584        0.614
+  lgbm_v3_mix50_v2_b0_noids        6.892        1.678       -0.257       16.090        7.804        4.126        2.839        0.257        1.063        0.585        0.614
+  lgbm_v3_tweedie         6.962        1.669       -0.318       16.389        8.161        4.149        2.783        0.318        1.073        0.577        0.610
+  lgbm_v5                 6.878        1.682       -0.225       15.355        8.463        4.069        2.944        0.225        0.976        0.581        0.617
+  lgbm_v4                 6.911        1.686       -0.249       15.648        8.269        4.096        2.896        0.249        1.013        0.578        0.616
+  lgbm_v3                 6.895        1.686       -0.242       15.595        8.228        4.081        2.943        0.242        1.012        0.579        0.616
+  v1_cal                  7.149        1.760       -0.170       16.955        8.014        4.216        2.696        0.265        1.018        0.559        0.550
+
+Fixture swings: players who played 60+ minutes in each of the next five gameweeks,
+one fixture each. corr: predicted rises and falls vs real ones (higher is better).
+slope: real swing per point of predicted swing (1 is right; above 1, the model's
+swings are too small). mse: error on the swings.
+  model                    corr        slope          mse            n
+  v1                      0.150        1.246        7.996        14885
+  v2_b0_noids             0.156        2.707        8.053        14885
+  lgbm_v5_mix50_v2_b0_noids        0.161        1.894        8.007        14885
+  lgbm_v4_mix50_v2_b0_noids        0.155        1.735        8.012        14885
+  lgbm_v3_mix50_v2_b0_noids        0.155        1.732        8.010        14885
+  lgbm_v3_tweedie         0.152        1.461        8.001        14885
+  lgbm_v5                 0.156        1.304        7.985        14885
+  lgbm_v4                 0.148        1.179        7.997        14885
+  lgbm_v3                 0.149        1.179        7.994        14885
+  v1_cal                  0.138        1.906        8.052        14885
+
+Slices (next gameweek only; bias = predicted minus actual points, plain units):
+  slice                                      n  actual                     v1            v2_b0_noids                lgbm_v3        lgbm_v3_tweedie                lgbm_v4                lgbm_v5 lgbm_v3_mix50_v2_b0_no lgbm_v4_mix50_v2_b0_no lgbm_v5_mix50_v2_b0_no                 v1_cal
+                                                                   bias / MAE             bias / MAE             bias / MAE             bias / MAE             bias / MAE             bias / MAE             bias / MAE             bias / MAE             bias / MAE             bias / MAE
+  all_rows                               15052    2.21           -0.71 / 1.65           -0.27 / 1.68           -0.24 / 1.69           -0.32 / 1.67           -0.25 / 1.69           -0.23 / 1.68           -0.26 / 1.68           -0.26 / 1.68           -0.25 / 1.68           -0.17 / 1.76
+  slice_club_match_3_4d_before            5817    2.36           -0.80 / 1.78           -0.33 / 1.79           -0.28 / 1.80           -0.36 / 1.79           -0.29 / 1.80           -0.28 / 1.79           -0.30 / 1.79           -0.31 / 1.79           -0.30 / 1.79           -0.23 / 1.87
+  slice_club_match_le4d                   5835    2.35           -0.79 / 1.78           -0.33 / 1.79           -0.28 / 1.80           -0.36 / 1.79           -0.28 / 1.80           -0.27 / 1.79           -0.30 / 1.79           -0.30 / 1.79           -0.30 / 1.79           -0.23 / 1.87
+  slice_nonpl_match_le4d                  3095    2.35           -0.80 / 1.82           -0.32 / 1.85           -0.26 / 1.86           -0.35 / 1.84           -0.26 / 1.86           -0.27 / 1.85           -0.29 / 1.85           -0.29 / 1.85           -0.30 / 1.85           -0.26 / 1.92
+  slice_dgw_leg                            198    4.66           -1.38 / 2.91           -0.49 / 2.65           -0.44 / 2.63           -0.58 / 2.63           -0.45 / 2.64           -0.28 / 2.63           -0.46 / 2.63           -0.47 / 2.64           -0.39 / 2.62           -0.26 / 2.92
+  slice_gw_before_blank                    197    3.75           -1.08 / 2.40           -0.35 / 2.28           -0.31 / 2.29           -0.40 / 2.31           -0.33 / 2.29           -0.20 / 2.27           -0.33 / 2.28           -0.34 / 2.28           -0.27 / 2.27           -0.16 / 2.44
+  slice_new_manager_first10               2831    2.00           -0.74 / 1.55           -0.28 / 1.56           -0.30 / 1.56           -0.36 / 1.55           -0.31 / 1.56           -0.30 / 1.56           -0.29 / 1.55           -0.30 / 1.55           -0.29 / 1.56           -0.18 / 1.67
+  slice_after_intl_break_played            686    2.36           -0.64 / 1.72           -0.25 / 1.73           -0.21 / 1.78           -0.31 / 1.75           -0.21 / 1.78           -0.20 / 1.78           -0.23 / 1.75           -0.23 / 1.75           -0.22 / 1.75           -0.29 / 1.76
+
+Wrote C:\Users\hal\Documents\git\premierlearningweb\premier-learning-app\api\run_metrics\model_eval\lgbm_v4
+Finished 07/11/2026 14:46:11.90 

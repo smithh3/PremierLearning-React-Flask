@@ -47,3 +47,5 @@ infra/terraform/lambda/*.zip
 
 # fantasy manager checkpoints
 api/fpl_manager_runs/
+# Pre-fix (can_select bug) copy forecasts kept locally as backups; superseded by forecasts.csv.gz
+api/data/synthetic/**/forecasts_selectbug.csv.gz

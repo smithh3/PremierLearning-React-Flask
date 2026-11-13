@@ -541,6 +541,16 @@ class Runner:
         archived = archive_live_chances(self.target_season_year, fantasy_json_from_api)
         if archived is not None:
             print(f'Saved chance-of-playing flags to {archived}')
+        # FPL's full player news (LightGBM v6, premierlearning/lgbm/news.py): this
+        # deadline's from the live API, passed deadlines from fplcache.
+        try:
+            from premierlearning.lgbm.news import archive_live_news, backfill_live_news
+            news_path = archive_live_news(self.target_season_year, fantasy_json_from_api)
+            if news_path is not None:
+                print(f'Saved FPL player news to {news_path}')
+            backfill_live_news(self.target_season_year, fantasy_json_from_api.get('events'))
+        except Exception as error:  # noqa: BLE001 - news is extra; never stop the run
+            print(f'Could not save FPL player news: {error}')
 
         update_all = self.should_update_data(fantasy_json_from_api)
 
@@ -780,6 +790,11 @@ class Runner:
 
 
     def learn(self, horizon_only: bool = False, minutes_only: bool = False):
+        if '--learning-v2' in sys.argv and '--lightgbm' in sys.argv:
+            # LightGBM v3 live (premierlearning/lgbm/live.py); same raw-points output as v2.
+            from premierlearning.lgbm.live import learn_lightgbm
+            learn_lightgbm(self)
+            return
         if '--learning-v2' in sys.argv:
             from premierlearning.learning_v2.learn import BLEND_FLAG, learn_blend, learn_h1
             if BLEND_FLAG in sys.argv:

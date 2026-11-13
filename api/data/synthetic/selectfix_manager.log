@@ -1,0 +1,219 @@
+ 
+===== can_select fix + copies manager chain, started 11/11/2026 18:07:55.08 ===== 
+season_23_24 copy 001: 0 player-deadlines selectable again
+season_23_24 copy 002: 0 player-deadlines selectable again
+season_23_24 copy 003: 0 player-deadlines selectable again
+season_23_24 copy 004: 0 player-deadlines selectable again
+season_23_24 copy 005: 0 player-deadlines selectable again
+season_23_24 copy 006: 0 player-deadlines selectable again
+season_23_24 copy 007: 0 player-deadlines selectable again
+season_23_24 copy 008: 0 player-deadlines selectable again
+season_23_24 copy 009: 0 player-deadlines selectable again
+season_23_24 copy 010: 0 player-deadlines selectable again
+season_24_25 copy 001: already fixed (forecasts_selectbug.csv.gz exists)
+season_24_25 copy 002: 2343 player-deadlines selectable again
+season_24_25 copy 003: 2245 player-deadlines selectable again
+season_24_25 copy 004: 2275 player-deadlines selectable again
+season_24_25 copy 005: 2284 player-deadlines selectable again
+season_24_25 copy 006: 2218 player-deadlines selectable again
+season_24_25 copy 007: 2305 player-deadlines selectable again
+season_24_25 copy 008: 2305 player-deadlines selectable again
+season_24_25 copy 009: 2241 player-deadlines selectable again
+season_24_25 copy 010: 2356 player-deadlines selectable again
+season_25_26 copy 001: 2036 player-deadlines selectable again
+season_25_26 copy 002: 1978 player-deadlines selectable again
+season_25_26 copy 003: 1929 player-deadlines selectable again
+season_25_26 copy 004: 2048 player-deadlines selectable again
+season_25_26 copy 005: 2058 player-deadlines selectable again
+season_25_26 copy 006: 2083 player-deadlines selectable again
+season_25_26 copy 007: 2085 player-deadlines selectable again
+season_25_26 copy 008: 2004 player-deadlines selectable again
+season_25_26 copy 009: 1991 player-deadlines selectable again
+season_25_26 copy 010: 2054 player-deadlines selectable again
+set 97 (eval-lgbm_v6) -> set 105 (eval-lgbm_v6-selectfix1)
+  2023/24 GW1: 18620 rows, 0 players selectable again
+  2023/24 GW2: 19240 rows, 0 players selectable again
+  2023/24 GW3: 19625 rows, 0 players selectable again
+  2023/24 GW4: 19785 rows, 0 players selectable again
+  2023/24 GW5: 19938 rows, 0 players selectable again
+  2023/24 GW6: 15784 rows, 0 players selectable again
+  2023/24 GW7: 15241 rows, 0 players selectable again
+  2023/24 GW8: 14942 rows, 0 players selectable again
+  2023/24 GW9: 14340 rows, 0 players selectable again
+  2023/24 GW10: 13949 rows, 0 players selectable again
+  2023/24 GW11: 13692 rows, 0 players selectable again
+  2023/24 GW12: 13122 rows, 0 players selectable again
+  2023/24 GW13: 12740 rows, 0 players selectable again
+  2023/24 GW14: 12400 rows, 0 players selectable again
+  2023/24 GW15: 11952 rows, 0 players selectable again
+  2023/24 GW16: 11362 rows, 0 players selectable again
+  2023/24 GW17: 10802 rows, 0 players selectable again
+  2023/24 GW18: 10437 rows, 0 players selectable again
+  2023/24 GW19: 9972 rows, 0 players selectable again
+  2023/24 GW20: 9535 rows, 0 players selectable again
+  2023/24 GW21: 9022 rows, 0 players selectable again
+  2023/24 GW22: 8766 rows, 0 players selectable again
+  2023/24 GW23: 8370 rows, 0 players selectable again
+  2023/24 GW24: 7958 rows, 0 players selectable again
+  2023/24 GW25: 7404 rows, 0 players selectable again
+  2023/24 GW26: 6769 rows, 0 players selectable again
+  2023/24 GW27: 6323 rows, 0 players selectable again
+  2023/24 GW28: 5828 rows, 0 players selectable again
+  2023/24 GW29: 5259 rows, 0 players selectable again
+  2023/24 GW30: 4993 rows, 0 players selectable again
+  2023/24 GW31: 4479 rows, 0 players selectable again
+  2023/24 GW32: 3932 rows, 0 players selectable again
+  2023/24 GW33: 3400 rows, 0 players selectable again
+  2023/24 GW34: 2943 rows, 0 players selectable again
+  2023/24 GW35: 2301 rows, 0 players selectable again
+  2023/24 GW36: 1738 rows, 0 players selectable again
+  2023/24 GW37: 1212 rows, 0 players selectable again
+  2023/24 GW38: 533 rows, 0 players selectable again
+  2024/25 GW1: 17518 rows, 2 players selectable again
+  2024/25 GW2: 18204 rows, 3 players selectable again
+  2024/25 GW3: 18432 rows, 7 players selectable again
+  2024/25 GW4: 18550 rows, 10 players selectable again
+  2024/25 GW5: 18394 rows, 11 players selectable again
+  2024/25 GW6: 15543 rows, 13 players selectable again
+  2024/25 GW7: 14784 rows, 14 players selectable again
+  2024/25 GW8: 14229 rows, 19 players selectable again
+  2024/25 GW9: 13770 rows, 20 players selectable again
+  2024/25 GW10: 13340 rows, 23 players selectable again
+  2024/25 GW11: 12852 rows, 27 players selectable again
+  2024/25 GW12: 12420 rows, 39 players selectable again
+  2024/25 GW13: 12090 rows, 42 players selectable again
+  2024/25 GW14: 11800 rows, 46 players selectable again
+  2024/25 GW15: 11496 rows, 51 players selectable again
+  2024/25 GW16: 11083 rows, 55 players selectable again
+  2024/25 GW17: 10559 rows, 61 players selectable again
+  2024/25 GW18: 10102 rows, 69 players selectable again
+  2024/25 GW19: 9642 rows, 76 players selectable again
+  2024/25 GW20: 9142 rows, 82 players selectable again
+  2024/25 GW21: 8682 rows, 99 players selectable again
+  2024/25 GW22: 8288 rows, 109 players selectable again
+  2024/25 GW23: 7932 rows, 119 players selectable again
+  2024/25 GW24: 7530 rows, 128 players selectable again
+  2024/25 GW25: 7098 rows, 154 players selectable again
+  2024/25 GW26: 6567 rows, 159 players selectable again
+  2024/25 GW27: 6070 rows, 168 players selectable again
+  2024/25 GW28: 5559 rows, 191 players selectable again
+  2024/25 GW29: 4982 rows, 196 players selectable again
+  2024/25 GW30: 4564 rows, 213 players selectable again
+  2024/25 GW31: 4079 rows, 223 players selectable again
+  2024/25 GW32: 3589 rows, 241 players selectable again
+  2024/25 GW33: 3024 rows, 258 players selectable again
+  2024/25 GW34: 2442 rows, 268 players selectable again
+  2024/25 GW35: 2020 rows, 289 players selectable again
+  2024/25 GW36: 1518 rows, 295 players selectable again
+  2024/25 GW37: 1018 rows, 315 players selectable again
+  2024/25 GW38: 512 rows, 342 players selectable again
+  2025/26 GW1: 18316 rows, 4 players selectable again
+  2025/26 GW2: 19573 rows, 7 players selectable again
+  2025/26 GW3: 19620 rows, 9 players selectable again
+  2025/26 GW4: 20230 rows, 11 players selectable again
+  2025/26 GW5: 19856 rows, 17 players selectable again
+  2025/26 GW6: 15411 rows, 18 players selectable again
+  2025/26 GW7: 15008 rows, 19 players selectable again
+  2025/26 GW8: 14384 rows, 24 players selectable again
+  2025/26 GW9: 13800 rows, 27 players selectable again
+  2025/26 GW10: 13485 rows, 29 players selectable again
+  2025/26 GW11: 13132 rows, 30 players selectable again
+  2025/26 GW12: 12609 rows, 36 players selectable again
+  2025/26 GW13: 12116 rows, 39 players selectable again
+  2025/26 GW14: 11500 rows, 43 players selectable again
+  2025/26 GW15: 11088 rows, 43 players selectable again
+  2025/26 GW16: 10580 rows, 49 players selectable again
+  2025/26 GW17: 10164 rows, 52 players selectable again
+  2025/26 GW18: 9891 rows, 57 players selectable again
+  2025/26 GW19: 9520 rows, 67 players selectable again
+  2025/26 GW20: 9120 rows, 73 players selectable again
+  2025/26 GW21: 8748 rows, 80 players selectable again
+  2025/26 GW22: 8381 rows, 96 players selectable again
+  2025/26 GW23: 7888 rows, 109 players selectable again
+  2025/26 GW24: 7350 rows, 119 players selectable again
+  2025/26 GW25: 6860 rows, 129 players selectable again
+  2025/26 GW26: 6383 rows, 139 players selectable again
+  2025/26 GW27: 5794 rows, 145 players selectable again
+  2025/26 GW28: 5307 rows, 158 players selectable again
+  2025/26 GW29: 4840 rows, 166 players selectable again
+  2025/26 GW30: 4342 rows, 182 players selectable again
+  2025/26 GW31: 3878 rows, 199 players selectable again
+  2025/26 GW32: 3487 rows, 234 players selectable again
+  2025/26 GW33: 3015 rows, 250 players selectable again
+  2025/26 GW34: 2361 rows, 268 players selectable again
+  2025/26 GW35: 1997 rows, 284 players selectable again
+  2025/26 GW36: 1516 rows, 306 players selectable again
+  2025/26 GW37: 984 rows, 318 players selectable again
+  2025/26 GW38: 493 rows, 335 players selectable again
+done: set 105
+.........................Run 1, season 1/3, 2023/24
+Evaluation run 1 plays copy 006 of every season.
+Evaluation run 1, season 1/3, 2023/24
+..Run 1, season 1/3, 2023/24
+Run 1, season 2/3, 2024/25
+Run 1, season 3/3, 2025/26
+Run 1 finished. Points 100 + 100 + 100 = 300. Percentiles 3 + 0 + 0 = 3. Reward 0.33.
+Run 2, season 1/3, 2023/24
+Run 2, season 2/3, 2024/25
+Run 2, season 3/3, 2025/26
+Run 2 finished. Points 100 + 100 + 100 = 300. Percentiles 3 + 0 + 0 = 3. Reward 0.33.
+Run 3, season 1/3, 2023/24
+Run 3, season 2/3, 2024/25
+Run 3, season 3/3, 2025/26
+Run 3 finished. Points 100 + 100 + 100 = 300. Percentiles 3 + 0 + 0 = 3. Reward 0.33.
+Run 4, season 1/3, 2023/24
+Run 4, season 2/3, 2024/25
+Run 4, season 3/3, 2025/26
+Run 4 finished. Points 100 + 100 + 100 = 300. Percentiles 3 + 0 + 0 = 3. Reward 0.33.
+.Season score 12, 0th percentile of 2025/26 finishes. Squad optimisations run 0, from cache 0. 0s.
+.Season score 96, 0th percentile of 2025/26 finishes. Squad optimisations run 0, from cache 0. 0s.
+...Season score 12, 0th percentile of 2025/26 finishes. Squad optimisations run 0, from cache 0. 0s.
+Season score 12, 0th percentile of 2025/26 finishes. Squad optimisations run 0, from cache 0. 0s.
+Season score 12, 0th percentile of 2025/26 finishes. Squad optimisations run 0, from cache 0. 0s.
+Season score 13, 0th percentile of 2025/26 finishes. Squad optimisations run 0, from cache 0. 0s.
+Season score 8, 0th percentile of 2025/26 finishes. Squad optimisations run 0, from cache 0. 0s.
+Season score 4, 0th percentile of 2025/26 finishes. Squad optimisations run 0, from cache 0. 0s.
+Season score 12, 0th percentile of 2025/26 finishes. Squad optimisations run 0, from cache 0. 0s.
+Season score 16, 0th percentile of 2025/26 finishes. Squad optimisations run 0, from cache 0. 0s.
+.Season score 12, 0th percentile of 2025/26 finishes. Squad optimisations run 0, from cache 0. 0s.
+Season score 12, 0th percentile of 2025/26 finishes. Squad optimisations run 0, from cache 0. 0s.
+......Season score 10, 0th percentile of 2025/26 finishes. Squad optimisations run 0, from cache 0. 0s.
+.....Season score 96, 0th percentile of 2025/26 finishes. Squad optimisations run 0, from cache 0. 0s.
+...................Season score 6, 0th percentile of 2025/26 finishes. Squad optimisations run 0, from cache 0. 0s.
+Season score 6, 0th percentile of 2025/26 finishes. Squad optimisations run 0, from cache 0. 0s.
+......
+----------------------------------------------------------------------
+Ran 69 tests in 95.837s
+
+OK
+23/24 copy 001: GW1-38 pools ready in 8 s
+23/24 copy 002: GW1-38 pools ready in 8 s
+23/24 copy 003: GW1-38 pools ready in 8 s
+23/24 copy 004: GW1-38 pools ready in 8 s
+23/24 copy 005: GW1-38 pools ready in 8 s
+23/24 copy 006: GW1-38 pools ready in 8 s
+23/24 copy 007: GW1-38 pools ready in 8 s
+23/24 copy 008: GW1-38 pools ready in 8 s
+23/24 copy 009: GW1-38 pools ready in 8 s
+23/24 copy 010: GW1-38 pools ready in 8 s
+24/25 copy 001: GW1-38 pools ready in 8 s
+24/25 copy 002: GW1-38 pools ready in 8 s
+24/25 copy 003: GW1-38 pools ready in 8 s
+24/25 copy 004: GW1-38 pools ready in 8 s
+24/25 copy 005: GW1-38 pools ready in 8 s
+24/25 copy 006: GW1-38 pools ready in 8 s
+24/25 copy 007: GW1-38 pools ready in 8 s
+24/25 copy 008: GW1-38 pools ready in 7 s
+24/25 copy 009: GW1-38 pools ready in 8 s
+24/25 copy 010: GW1-38 pools ready in 8 s
+25/26 copy 001: GW1-38 pools ready in 8 s
+25/26 copy 002: GW1-38 pools ready in 8 s
+25/26 copy 003: GW1-38 pools ready in 8 s
+25/26 copy 004: GW1-38 pools ready in 8 s
+25/26 copy 005: GW1-38 pools ready in 8 s
+25/26 copy 006: GW1-38 pools ready in 8 s
+25/26 copy 007: GW1-38 pools ready in 8 s
+25/26 copy 008: GW1-38 pools ready in 8 s
+25/26 copy 009: GW1-38 pools ready in 8 s
+25/26 copy 010: GW1-38 pools ready in 8 s
+Manager run starting 11/11/2026 18:26:33.41, console in fpl_manager_runs\v3_lgbm_v6_copies_fixed\console.log 

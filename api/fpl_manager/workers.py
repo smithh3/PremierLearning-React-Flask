@@ -11,7 +11,8 @@ from pathlib import Path
 
 def multi_process_env(
     years, from_gw, to_gw, prediction_set_id, checkpoint, observation_version='v1',
-    allow_oracle=False, solver=None, ranged=None,
+    allow_oracle=False, solver=None, ranged=None, calendar=None,
+    copies=(), heldout_copies=(),
 ):
     """Build this process's environment. The database connection stays here.
 
@@ -43,12 +44,17 @@ def multi_process_env(
             allow_oracle=allow_oracle,
             solver=solver,
             ranged=ranged,
+            calendar=calendar,
         )
         for year in years
     ]
     log_path = Path(checkpoint) / 'runs.csv'
 
-    if observation_version == 'v3':
+    if copies:
+        from synthetic_seasons.training import mixed_factory
+
+        factory = mixed_factory(db, seasons, copies, heldout_copies, log_path)
+    elif observation_version == 'v3':
         factory = SeasonByRun(seasons, log_path=log_path)
     else:
         def factory():

@@ -1,0 +1,318 @@
+{
+  "baseline": "v1",
+  "categories": {
+    "lgbm_v3": {
+      "calibration": 3.0,
+      "fixtures": -0.035571419332879224,
+      "future": 0.7552722884513533,
+      "overall": 3.0,
+      "ranking": 2.36479080189161
+    },
+    "lgbm_v4": {
+      "calibration": 3.0,
+      "fixtures": -0.07990715442234711,
+      "future": 0.8650592576749665,
+      "overall": 3.0,
+      "ranking": 2.3205862500943146
+    },
+    "lgbm_v4_mix50_v2_b0_noids": {
+      "calibration": 3.0,
+      "fixtures": 0.20768450400974253,
+      "future": 1.482425948136687,
+      "overall": 3.0,
+      "ranking": 2.5041131004447745
+    },
+    "lgbm_v5": {
+      "calibration": 3.0,
+      "fixtures": 0.25122278093764294,
+      "future": 0.6043168682894405,
+      "overall": 3.0,
+      "ranking": 2.4117333348957914
+    },
+    "lgbm_v5_mix50_v2_b0_noids": {
+      "calibration": 3.0,
+      "fixtures": 0.5099356246482245,
+      "future": 1.2484841011044476,
+      "overall": 3.0,
+      "ranking": 2.555825303272245
+    },
+    "lgbm_v6": {
+      "calibration": 3.0,
+      "fixtures": 0.027428020001222138,
+      "future": 1.1055365956931884,
+      "overall": 3.0,
+      "ranking": 2.970730596012226
+    },
+    "lgbm_v6_mix50_v2_b0_noids": {
+      "calibration": 3.0,
+      "fixtures": 0.2900099691769492,
+      "future": 1.4501062403458915,
+      "overall": 3.0,
+      "ranking": 2.8773802757286306
+    },
+    "lgbm_v6_staged": {
+      "calibration": 3.0,
+      "fixtures": 0.15308550152079373,
+      "future": 1.0398147804369327,
+      "overall": 3.0,
+      "ranking": 3.0
+    },
+    "lgbm_v6_staged_mix50_v2_b0_noids": {
+      "calibration": 3.0,
+      "fixtures": 0.4366678882657906,
+      "future": 1.3039772998776107,
+      "overall": 3.0,
+      "ranking": 2.9031158390419964
+    },
+    "v1": {
+      "calibration": 0.0,
+      "fixtures": 0.0,
+      "future": 0.0,
+      "overall": 0.0,
+      "ranking": 0.0
+    },
+    "v1_cal": {
+      "calibration": 3.0,
+      "fixtures": -0.5430412787097553,
+      "future": 1.2877342391401299,
+      "overall": 2.655051991062528,
+      "ranking": 0.03257517086517894
+    },
+    "v2_b0_noids": {
+      "calibration": 3.0,
+      "fixtures": 0.2472189420218368,
+      "future": 2.0466332162397802,
+      "overall": 3.0,
+      "ranking": 2.361252276114282
+    }
+  },
+  "dropped_origins": [],
+  "flags": {
+    "lgbm_v3": [],
+    "lgbm_v4": [],
+    "lgbm_v4_mix50_v2_b0_noids": [],
+    "lgbm_v5": [],
+    "lgbm_v5_mix50_v2_b0_noids": [],
+    "lgbm_v6": [
+      "overpredicts its own top_5 picks by 3.48 points over 5 GWs"
+    ],
+    "lgbm_v6_mix50_v2_b0_noids": [],
+    "lgbm_v6_staged": [],
+    "lgbm_v6_staged_mix50_v2_b0_noids": [],
+    "v1": [],
+    "v1_cal": [
+      "overall_mae is 6.5% worse than v1"
+    ],
+    "v2_b0_noids": []
+  },
+  "intervals": {
+    "lgbm_v3": {
+      "hi": 2.156191688952405,
+      "lo": 1.5347748127478185,
+      "p_above_zero": 1.0
+    },
+    "lgbm_v4": {
+      "hi": 2.1384304075907794,
+      "lo": 1.554223529879809,
+      "p_above_zero": 1.0
+    },
+    "lgbm_v4_mix50_v2_b0_noids": {
+      "hi": 2.336148520176347,
+      "lo": 1.7054723609585225,
+      "p_above_zero": 1.0
+    },
+    "lgbm_v5": {
+      "hi": 2.201726676040659,
+      "lo": 1.5712158760251067,
+      "p_above_zero": 1.0
+    },
+    "lgbm_v5_mix50_v2_b0_noids": {
+      "hi": 2.376689798432423,
+      "lo": 1.72437765406357,
+      "p_above_zero": 1.0
+    },
+    "lgbm_v6": {
+      "hi": 2.3529203157308998,
+      "lo": 1.7478659857816419,
+      "p_above_zero": 1.0
+    },
+    "lgbm_v6_mix50_v2_b0_noids": {
+      "hi": 2.4269656380201248,
+      "lo": 1.8071163511863453,
+      "p_above_zero": 1.0
+    },
+    "lgbm_v6_staged": {
+      "hi": 2.4404079047629637,
+      "lo": 1.7653269815206134,
+      "p_above_zero": 1.0
+    },
+    "lgbm_v6_staged_mix50_v2_b0_noids": {
+      "hi": 2.4415132853484685,
+      "lo": 1.799092840232189,
+      "p_above_zero": 1.0
+    },
+    "v1": {
+      "hi": 0.0,
+      "lo": 0.0,
+      "p_above_zero": 0.0
+    },
+    "v1_cal": {
+      "hi": 1.3346199727569619,
+      "lo": 1.075516102272454,
+      "p_above_zero": 1.0
+    },
+    "v2_b0_noids": {
+      "hi": 2.409498083291862,
+      "lo": 1.7530743647844624,
+      "p_above_zero": 1.0
+    }
+  },
+  "missing_predictions": {
+    "lgbm_v3": 0,
+    "lgbm_v4": 0,
+    "lgbm_v4_mix50_v2_b0_noids": 0,
+    "lgbm_v5": 0,
+    "lgbm_v5_mix50_v2_b0_noids": 0,
+    "lgbm_v6": 0,
+    "lgbm_v6_mix50_v2_b0_noids": 0,
+    "lgbm_v6_staged": 0,
+    "lgbm_v6_staged_mix50_v2_b0_noids": 0,
+    "v1": 0,
+    "v1_cal": 0,
+    "v2_b0_noids": 0
+  },
+  "models": [
+    "v1",
+    "v2_b0_noids",
+    "lgbm_v3",
+    "lgbm_v4",
+    "lgbm_v5",
+    "lgbm_v6",
+    "lgbm_v6_staged",
+    "lgbm_v4_mix50_v2_b0_noids",
+    "lgbm_v5_mix50_v2_b0_noids",
+    "lgbm_v6_mix50_v2_b0_noids",
+    "lgbm_v6_staged_mix50_v2_b0_noids",
+    "v1_cal"
+  ],
+  "prediction_sets": {
+    "lgbm_v3": 68,
+    "lgbm_v4": 93,
+    "lgbm_v4_mix50_v2_b0_noids": 95,
+    "lgbm_v5": 94,
+    "lgbm_v5_mix50_v2_b0_noids": 96,
+    "lgbm_v6": 97,
+    "lgbm_v6_mix50_v2_b0_noids": 99,
+    "lgbm_v6_staged": 98,
+    "lgbm_v6_staged_mix50_v2_b0_noids": 100,
+    "v1": 7,
+    "v2_b0_noids": 86
+  },
+  "ranking": [
+    "lgbm_v6_mix50_v2_b0_noids",
+    "lgbm_v6_staged_mix50_v2_b0_noids",
+    "v2_b0_noids",
+    "lgbm_v6_staged",
+    "lgbm_v6",
+    "lgbm_v5_mix50_v2_b0_noids",
+    "lgbm_v4_mix50_v2_b0_noids",
+    "lgbm_v5",
+    "lgbm_v4",
+    "lgbm_v3",
+    "v1_cal"
+  ],
+  "scorers": {
+    "lgbm_v3": "optimiser",
+    "lgbm_v4": "optimiser",
+    "lgbm_v4_mix50_v2_b0_noids": "optimiser",
+    "lgbm_v5": "optimiser",
+    "lgbm_v5_mix50_v2_b0_noids": "optimiser",
+    "lgbm_v6": "optimiser",
+    "lgbm_v6_mix50_v2_b0_noids": "optimiser",
+    "lgbm_v6_staged": "optimiser",
+    "lgbm_v6_staged_mix50_v2_b0_noids": "optimiser",
+    "v1": "optimiser",
+    "v2_b0_noids": "raw_points"
+  },
+  "season_scores": {
+    "lgbm_v3": {
+      "25": 1.872965615089017
+    },
+    "lgbm_v4": {
+      "25": 1.8780911135515486
+    },
+    "lgbm_v4_mix50_v2_b0_noids": {
+      "25": 2.1084380523160693
+    },
+    "lgbm_v5": {
+      "25": 1.8959184619351452
+    },
+    "lgbm_v5_mix50_v2_b0_noids": {
+      "25": 2.1167879308564403
+    },
+    "lgbm_v6": {
+      "25": 2.1291368209361083
+    },
+    "lgbm_v6_mix50_v2_b0_noids": {
+      "25": 2.2181913454566553
+    },
+    "lgbm_v6_staged": {
+      "25": 2.1417220769242444
+    },
+    "lgbm_v6_staged_mix50_v2_b0_noids": {
+      "25": 2.2152476241447023
+    },
+    "v1": {
+      "25": 0.0
+    },
+    "v1_cal": {
+      "25": 1.1850778266803714
+    },
+    "v2_b0_noids": {
+      "25": 2.1984927861880257
+    }
+  },
+  "seasons": [
+    25
+  ],
+  "sigmas": {
+    "2A_actual": 0.3724400743524714,
+    "2A_predicted": 0.4126431931911874,
+    "2B_actual": 0.12725942013619782,
+    "2B_predicted": 0.057791125731654736,
+    "calibration_gap": 0.02492237929876642,
+    "fixture_swing_corr": 0.02227589431386675,
+    "overall_mse": 0.17536366730084282,
+    "spearman_five_gw": 0.013747545991275445,
+    "spearman_single_gw": 0.015577193322179042
+  },
+  "totals": {
+    "lgbm_v3": 1.872965615089017,
+    "lgbm_v4": 1.8780911135515486,
+    "lgbm_v4_mix50_v2_b0_noids": 2.1084380523160693,
+    "lgbm_v5": 1.8959184619351452,
+    "lgbm_v5_mix50_v2_b0_noids": 2.1167879308564403,
+    "lgbm_v6": 2.1291368209361083,
+    "lgbm_v6_mix50_v2_b0_noids": 2.2181913454566553,
+    "lgbm_v6_staged": 2.1417220769242444,
+    "lgbm_v6_staged_mix50_v2_b0_noids": 2.2152476241447023,
+    "v1": 0.0,
+    "v1_cal": 1.1850778266803714,
+    "v2_b0_noids": 2.1984927861880257
+  },
+  "totals_uncapped": {
+    "lgbm_v3": 4.563418471953507,
+    "lgbm_v4": 4.508518585625917,
+    "lgbm_v4_mix50_v2_b0_noids": 4.594308547736451,
+    "lgbm_v5": 4.756680526714947,
+    "lgbm_v5_mix50_v2_b0_noids": 4.724030480065212,
+    "lgbm_v6": 5.127129010543855,
+    "lgbm_v6_mix50_v2_b0_noids": 4.951326534796985,
+    "lgbm_v6_staged": 5.416775510731632,
+    "lgbm_v6_staged_mix50_v2_b0_noids": 5.051622329316022,
+    "v1": 0.0,
+    "v1_cal": 3.1237655733447007,
+    "v2_b0_noids": 4.341863089517266
+  },
+  "units": 38
+}

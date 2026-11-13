@@ -1,0 +1,287 @@
+ 
+===== Started 09/11/2026 23:16:38.57 ===== 
+Training one fixed LightGBM model on plan simple_h1_b1 as of GW1...
+  177984 train rows, 528 columns (1 categorical), feature set 4, 30 teams (vocab frozen)
+lightgbm regression: 177984 rows x 528 columns, 128 rounds
+  average of 3 seeds
+  held-out season 24 (27614 rows, actual mean 1.201): best round 116, RMSE 2.011, MAE 1.012, bias -0.045
+  top 30 columns by gain (share of all splits' gain):
+    1  hist.minutes_played.mean1                                30.8%
+    2  hist.points_scored.faded1.5                              15.4%
+    3  hist.minutes_played.faded1.5                              6.2%
+    4  hist.points_scored.faded10                                6.0%
+    5  hist.minutes_played.mean2                                 3.5%
+    6  hist.points_scored.mean2                                  2.5%
+    7  hist.points_scored.faded3                                 2.5%
+    8  hist.points_scored.faded25                                1.8%
+    9  context.chance_of_playing                                 1.6%
+   10  dc.goals.exp_for                                          1.0%
+   11  opp_conceded.points.league                                0.9%
+   12  news.chance                                               0.9%
+   13  player_load.in_squad_last_club_match                      0.6%
+   14  dc.goals.cs                                               0.6%
+   15  dc.goals.exp_against                                      0.5%
+   16  hist.since_sixty                                          0.5%
+   17  player_load.minutes_last_14d                              0.5%
+   18  hist.points_scored.mean20                                 0.5%
+   19  news.certainty                                            0.5%
+   20  opp_conceded.points.mean10                                0.4%
+   21  player_load.days_since_last_played                        0.4%
+   22  hist.goals.mean50                                         0.4%
+   23  news.days_flagged                                         0.3%
+   24  current_opposition.team_features.xg_for_decay             0.3%
+   25  news.deadlines_since_flag                                 0.3%
+   26  seasons.points_per_90.last                                0.3%
+   27  opp_hist.goals_against.venue10                            0.3%
+   28  opp_hist.days_before_current.last                         0.3%
+   29  fixture.attack_xg.decay                                   0.3%
+   30  seasons.points_per_90.before                              0.3%
+season_25_26: v6 fitted in 342 s
+season_25_26 real season
+  GW2: 381 players, 60 s
+  GW6: 414 players, 51 s
+  GW10: 408 players, 58 s
+  GW14: 393 players, 59 s
+  GW18: 404 players, 52 s
+  GW22: 389 players, 43 s
+  GW26: 424 players, 43 s
+  GW30: 393 players, 40 s
+  GW34: 407 players, 38 s
+{"season": "season_25_26", "kind": "real", "overall_n": 3491, "overall_rmse": 2.623539441707927, "overall_mae": 1.6763791950260567, "overall_bias": -0.21830881566691004, "mean_actual": 2.2073904325408193, "spearman_single_gw": 0.5882236007717155, "spearman_five_gw": 0.6292353716431759, "calibration_slope": 0.9833229090263744, "calibration_gap": 0.2794412516879059}
+all-competition tables loaded in 10 s
+season_25_26 copy 001 (18439 player-fixture loads rebuilt)
+  GW2: 382 players, 51 s
+  GW6: 418 players, 46 s
+  GW10: 415 players, 47 s
+  GW14: 418 players, 45 s
+  GW18: 425 players, 43 s
+  GW22: 414 players, 42 s
+  GW26: 429 players, 41 s
+  GW30: 421 players, 40 s
+  GW34: 429 players, 39 s
+{"season": "season_25_26", "kind": "copy 001", "overall_n": 3620, "overall_rmse": 2.618285496500462, "overall_mae": 1.7192005601299656, "overall_bias": -0.22461448240679838, "mean_actual": 2.150828729281768, "spearman_single_gw": 0.5502766515116284, "spearman_five_gw": 0.5972980002020497, "calibration_slope": 0.9649981486242896, "calibration_gap": 0.23929156381589523}
+season_25_26 copy 002 (17599 player-fixture loads rebuilt)
+  GW2: 380 players, 51 s
+  GW6: 432 players, 47 s
+  GW10: 432 players, 46 s
+  GW14: 417 players, 46 s
+  GW18: 423 players, 44 s
+  GW22: 408 players, 43 s
+  GW26: 426 players, 40 s
+  GW30: 415 players, 40 s
+  GW34: 419 players, 39 s
+{"season": "season_25_26", "kind": "copy 002", "overall_n": 3626, "overall_rmse": 2.5887191173040343, "overall_mae": 1.6961096476098887, "overall_bias": -0.18958018483182285, "mean_actual": 2.124931053502482, "spearman_single_gw": 0.5507067424503371, "spearman_five_gw": 0.592896363298073, "calibration_slope": 0.9523614923008844, "calibration_gap": 0.19943568875031675}
+Training one fixed LightGBM model on plan simple_h1_b1 as of GW1...
+  120609 train rows, 528 columns (1 categorical), feature set 4, 28 teams (vocab frozen)
+lightgbm regression: 120609 rows x 528 columns, 197 rounds
+  average of 3 seeds
+  held-out last 38 GWs (from 21 GW38) (27242 rows, actual mean 1.195): best round 179, RMSE 1.920, MAE 1.001, bias +0.002
+  top 30 columns by gain (share of all splits' gain):
+    1  hist.minutes_played.mean1                                27.9%
+    2  hist.minutes_played.faded1.5                             12.1%
+    3  hist.minutes_played.mean2                                 9.3%
+    4  hist.points_scored.faded10                                5.1%
+    5  hist.points_scored.faded1.5                               2.4%
+    6  hist.points_scored.faded3                                 1.7%
+    7  hist.points_scored.faded25                                1.6%
+    8  dc.goals.exp_for                                          1.2%
+    9  context.chance_of_playing                                 0.9%
+   10  player_load.in_squad_last_club_match                      0.9%
+   11  dc.goals.exp_against                                      0.6%
+   12  player_load.minutes_last_14d                              0.6%
+   13  current_opposition.team_features.xg_for_decay             0.5%
+   14  hist.points_scored.mean20                                 0.5%
+   15  opp_hist.days_before_current.last                         0.5%
+   16  fixture.attack_xg.decay                                   0.4%
+   17  hist.since_sixty                                          0.4%
+   18  player_load.days_since_last_played                        0.4%
+   19  hist.points_scored.mean2                                  0.4%
+   20  hist.points_scored.mean50                                 0.4%
+   21  news.chance                                               0.4%
+   22  opp_conceded.points.rel38                                 0.4%
+   23  opp_hist.goals_against.venue10                            0.4%
+   24  hist.goals.mean50                                         0.4%
+   25  dc.goals.cs                                               0.4%
+   26  player_load.days_since_last_started                       0.3%
+   27  hist.goals.shrunk90_50                                    0.3%
+   28  seasons.points_per_90.last                                0.3%
+   29  hist.minutes_played.mean3                                 0.3%
+   30  match_facts.home_away                                     0.3%
+season_23_24: v6 fitted in 238 s
+season_23_24 real season
+  GW2: 378 players, 43 s
+  GW6: 414 players, 39 s
+  GW10: 405 players, 37 s
+  GW14: 415 players, 37 s
+  GW18: 405 players, 33 s
+  GW22: 414 players, 32 s
+  GW26: 428 players, 30 s
+  GW30: 396 players, 29 s
+  GW34: 392 players, 28 s
+{"season": "season_23_24", "kind": "real", "overall_n": 3472, "overall_rmse": 2.6152370820210855, "overall_mae": 1.6673944231898845, "overall_bias": 0.005933403118290675, "mean_actual": 2.046658986175115, "spearman_single_gw": 0.6259900442879738, "spearman_five_gw": 0.6603318793681627, "calibration_slope": 1.0492606325365725, "calibration_gap": 0.09176838435928483}
+all-competition tables loaded in 13 s
+season_23_24 copy 001 (19408 player-fixture loads rebuilt)
+  GW2: 384 players, 50 s
+  GW6: 445 players, 52 s
+  GW10: 423 players, 45 s
+  GW14: 428 players, 36 s
+  GW18: 429 players, 35 s
+  GW22: 441 players, 32 s
+  GW26: 441 players, 31 s
+  GW30: 419 players, 29 s
+  GW34: 417 players, 28 s
+{"season": "season_23_24", "kind": "copy 001", "overall_n": 3645, "overall_rmse": 2.695856124175882, "overall_mae": 1.7457363196640288, "overall_bias": 0.03601375026113848, "mean_actual": 1.9371742112482853, "spearman_single_gw": 0.5258632905647989, "spearman_five_gw": 0.5827192884233372, "calibration_slope": 0.9262457062097907, "calibration_gap": 0.1360599357114307}
+season_23_24 copy 002 (19502 player-fixture loads rebuilt)
+  GW2: 382 players, 42 s
+  GW6: 435 players, 37 s
+  GW10: 427 players, 37 s
+  GW14: 429 players, 35 s
+  GW18: 432 players, 33 s
+  GW22: 430 players, 32 s
+  GW26: 450 players, 31 s
+  GW30: 417 players, 29 s
+  GW34: 403 players, 29 s
+{"season": "season_23_24", "kind": "copy 002", "overall_n": 3621, "overall_rmse": 2.555432349963702, "overall_mae": 1.7021756119205251, "overall_bias": 0.046635518603488114, "mean_actual": 1.944490472245236, "spearman_single_gw": 0.5412321588860262, "spearman_five_gw": 0.5904619168616939, "calibration_slope": 0.8659053463280565, "calibration_gap": 0.17241178825591236}
+Training one fixed LightGBM model on plan simple_h1_b1 as of GW1...
+  94104 train rows, 528 columns (1 categorical), feature set 4, 27 teams (vocab frozen)
+lightgbm regression: 94104 rows x 528 columns, 140 rounds
+  average of 3 seeds
+  held-out season 21 (25447 rows, actual mean 1.234): best round 127, RMSE 2.058, MAE 1.109, bias +0.009
+  top 30 columns by gain (share of all splits' gain):
+    1  hist.minutes_played.mean1                                30.1%
+    2  hist.minutes_played.faded1.5                             15.7%
+    3  hist.points_scored.faded10                                4.3%
+    4  hist.points_scored.faded1.5                               4.3%
+    5  hist.points_scored.faded3                                 2.9%
+    6  hist.minutes_played.mean2                                 2.3%
+    7  hist.points_scored.mean50                                 1.7%
+    8  hist.points_scored.faded25                                1.6%
+    9  dc.goals.exp_for                                          1.1%
+   10  player_load.in_squad_last_club_match                      1.0%
+   11  hist.minutes_played.mean3                                 0.8%
+   12  fixture.attack_goals.decay                                0.7%
+   13  dc.goals.exp_against                                      0.6%
+   14  context.chance_of_playing                                 0.6%
+   15  hist.points_scored.mean2                                  0.6%
+   16  player_load.minutes_last_14d                              0.5%
+   17  player_load.days_since_last_started                       0.5%
+   18  player_load.days_since_last_played                        0.5%
+   19  opp_conceded.points.rel38                                 0.4%
+   20  hist.goals.mean50                                         0.4%
+   21  dc.goals.cs                                               0.4%
+   22  opp_hist.days_before_current.last                         0.4%
+   23  seasons.points_per_90.last                                0.4%
+   24  opp_hist.goals_against.venue10                            0.4%
+   25  opp_hist.goals_against.trend5_38                          0.3%
+   26  team_hist.goals_for.trend5_38                             0.3%
+   27  opp_hist.goals_for.mean19                                 0.3%
+   28  team_hist.goals_against.trend5_38                         0.3%
+   29  hist.goals.shrunk90_50                                    0.3%
+   30  current_team.schedule.days_since_last_match               0.3%
+season_22_23: v6 fitted in 165 s
+season_22_23 real season
+  GW2: 378 players, 37 s
+  GW6: 390 players, 36 s
+  GW10: 373 players, 34 s
+  GW14: 385 players, 37 s
+  GW18: 416 players, 38 s
+  GW22: 415 players, 31 s
+  GW26: 420 players, 26 s
+  GW30: 417 players, 25 s
+  GW34: 405 players, 24 s
+{"season": "season_22_23", "kind": "real", "overall_n": 3599, "overall_rmse": 2.57213804315673, "overall_mae": 1.6835984974641605, "overall_bias": -0.06043143574528199, "mean_actual": 2.1147540983606556, "spearman_single_gw": 0.5924268114135605, "spearman_five_gw": 0.6543132254229692, "calibration_slope": 0.9893692423256644, "calibration_gap": 0.09946900603632916}
+all-competition tables loaded in 10 s
+season_22_23 copy 001 (17063 player-fixture loads rebuilt)
+  GW2: 382 players, 51 s
+  GW6: 407 players, 50 s
+  GW10: 389 players, 30 s
+  GW14: 413 players, 29 s
+  GW18: 417 players, 29 s
+  GW22: 428 players, 29 s
+  GW26: 432 players, 28 s
+  GW30: 421 players, 25 s
+  GW34: 425 players, 23 s
+{"season": "season_22_23", "kind": "copy 001", "overall_n": 3714, "overall_rmse": 2.569130851668637, "overall_mae": 1.6638098236468903, "overall_bias": -0.017887228032541676, "mean_actual": 1.9948842218632203, "spearman_single_gw": 0.5182424033133252, "spearman_five_gw": 0.6085223270913995, "calibration_slope": 0.865108716908091, "calibration_gap": 0.13039756031121158}
+season_22_23 copy 002 (17622 player-fixture loads rebuilt)
+  GW2: 376 players, 33 s
+  GW6: 402 players, 30 s
+  GW10: 388 players, 29 s
+  GW14: 415 players, 29 s
+  GW18: 422 players, 28 s
+  GW22: 427 players, 27 s
+  GW26: 436 players, 26 s
+  GW30: 431 players, 26 s
+  GW34: 426 players, 24 s
+{"season": "season_22_23", "kind": "copy 002", "overall_n": 3723, "overall_rmse": 2.585941246003425, "overall_mae": 1.67360593805315, "overall_bias": -0.035744291358244834, "mean_actual": 2.0059092130002685, "spearman_single_gw": 0.5358183522816585, "spearman_five_gw": 0.6156100455712183, "calibration_slope": 0.9829400698506865, "calibration_gap": 0.09283665366922292}
+Training one fixed LightGBM model on plan simple_h1_b1 as of GW1...
+  68657 train rows, 528 columns (1 categorical), feature set 4, 26 teams (vocab frozen)
+lightgbm regression: 68657 rows x 528 columns, 133 rounds
+  average of 3 seeds
+  held-out season 20 (24365 rows, actual mean 1.291): best round 121, RMSE 2.084, MAE 1.148, bias +0.019
+  top 30 columns by gain (share of all splits' gain):
+    1  hist.minutes_played.mean1                                25.2%
+    2  hist.minutes_played.faded1.5                             21.0%
+    3  hist.points_scored.faded10                                5.5%
+    4  hist.points_scored.faded1.5                               3.0%
+    5  hist.minutes_played.mean2                                 2.4%
+    6  hist.points_scored.faded3                                 2.1%
+    7  dc.goals.exp_for                                          1.3%
+    8  hist.points_scored.faded25                                1.3%
+    9  player_load.in_squad_last_club_match                      1.0%
+   10  hist.points_scored.mean50                                 1.0%
+   11  hist.points_scored.mean2                                  0.7%
+   12  player_load.minutes_last_14d                              0.6%
+   13  player_load.days_since_last_played                        0.5%
+   14  hist.points_scored.shrunk90_50                            0.5%
+   15  hist.minutes_played.mean3                                 0.5%
+   16  dc.goals.exp_against                                      0.5%
+   17  hist.goals.shrunk90_50                                    0.5%
+   18  opp_conceded.points.rel38                                 0.5%
+   19  player_load.days_since_last_started                       0.4%
+   20  opp_conceded.points.league                                0.4%
+   21  hist.goals.mean50                                         0.3%
+   22  team_hist.goals_for.trend5_38                             0.3%
+   23  current_opposition.schedule.days_since_last_match         0.3%
+   24  opp_squad.minutes_last_n.sum                              0.3%
+   25  opp_hist.goals_against.trend5_38                          0.3%
+   26  dc.goals.opp_attack                                       0.3%
+   27  opp_hist.goals_against.venue10                            0.3%
+   28  team_hist.goals_against.faded3                            0.3%
+   29  dc.goals.cs                                               0.3%
+   30  current_opposition.schedule.days_to_next_match            0.3%
+season_21_22: v6 fitted in 126 s
+season_21_22 real season
+  GW2: 280 players, 44 s
+  GW6: 405 players, 24 s
+  GW10: 381 players, 23 s
+  GW14: 384 players, 22 s
+  GW18: 378 players, 22 s
+  GW22: 379 players, 21 s
+  GW26: 405 players, 21 s
+  GW30: 386 players, 19 s
+  GW34: 379 players, 18 s
+{"season": "season_21_22", "kind": "real", "overall_n": 2872, "overall_rmse": 2.810807200556718, "overall_mae": 1.8801000339724985, "overall_bias": -0.017198934227210763, "mean_actual": 2.277158774373259, "spearman_single_gw": 0.5264599721265006, "spearman_five_gw": 0.6177036480501149, "calibration_slope": 1.0353914847648449, "calibration_gap": 0.08962635851733813}
+all-competition tables loaded in 10 s
+season_21_22 copy 001 (18093 player-fixture loads rebuilt)
+  GW2: 280 players, 30 s
+  GW6: 422 players, 25 s
+  GW10: 407 players, 24 s
+  GW14: 398 players, 22 s
+  GW18: 389 players, 21 s
+  GW22: 374 players, 21 s
+  GW26: 419 players, 20 s
+  GW30: 411 players, 19 s
+  GW34: 390 players, 19 s
+{"season": "season_21_22", "kind": "copy 001", "overall_n": 2969, "overall_rmse": 2.6734490659977794, "overall_mae": 1.8237462012356096, "overall_bias": 0.004944245157317424, "mean_actual": 2.1552711350623106, "spearman_single_gw": 0.4790500807370187, "spearman_five_gw": 0.5640177701406673, "calibration_slope": 0.8941631366561321, "calibration_gap": 0.1338889094902578}
+season_21_22 copy 002 (18183 player-fixture loads rebuilt)
+  GW2: 280 players, 31 s
+  GW6: 404 players, 24 s
+  GW10: 401 players, 23 s
+  GW14: 404 players, 22 s
+  GW18: 384 players, 21 s
+  GW22: 380 players, 22 s
+  GW26: 415 players, 20 s
+  GW30: 412 players, 19 s
+  GW34: 401 players, 18 s
+{"season": "season_21_22", "kind": "copy 002", "overall_n": 2962, "overall_rmse": 2.6877125399297848, "overall_mae": 1.8490463357760767, "overall_bias": 0.01713294690976128, "mean_actual": 2.1333558406482105, "spearman_single_gw": 0.47097509411969507, "spearman_five_gw": 0.5446993867031322, "calibration_slope": 0.8871668230689665, "calibration_gap": 0.09875210949671276}
+Exit 0 10/11/2026  0:33:32.91 

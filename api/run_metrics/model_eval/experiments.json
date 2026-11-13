@@ -1,4 +1,379 @@
 {
+  "lgbm_v1": {
+    "args": [
+      "--lightgbm",
+      "--train-once-per-season",
+      "--lgbm-plan",
+      "simple_h1",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-lgbm_v1"
+    ],
+    "built_at": "2026-11-04T17:46:22",
+    "prediction_set_id": 62,
+    "seasons": [
+      25
+    ]
+  },
+  "lgbm_v2": {
+    "args": [
+      "--lightgbm",
+      "--train-once-per-season",
+      "--lgbm-plan",
+      "simple_h1_b1",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-lgbm_v2"
+    ],
+    "built_at": "2026-11-04T18:16:13",
+    "prediction_set_id": 63,
+    "seasons": [
+      25
+    ]
+  },
+  "lgbm_v2_rules": {
+    "args": [
+      "--lightgbm",
+      "--train-once-per-season",
+      "--lgbm-plan",
+      "simple_h1_b1",
+      "--lgbm-rules",
+      "safe",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-lgbm_v2_rules"
+    ],
+    "built_at": "2026-11-04T18:52:55",
+    "prediction_set_id": 66,
+    "seasons": [
+      25
+    ]
+  },
+  "lgbm_v3": {
+    "args": [
+      "--lightgbm",
+      "--train-once-per-season",
+      "--lgbm-plan",
+      "simple_h1_b1",
+      "--lgbm-features",
+      "2",
+      "--lgbm-no-ids",
+      "--lgbm-seeds",
+      "3",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-lgbm_v3"
+    ],
+    "built_at": "2026-11-04T20:15:43",
+    "prediction_set_id": 68,
+    "seasons": [
+      25
+    ]
+  },
+  "lgbm_v3_every5": {
+    "args": [
+      "--lightgbm",
+      "--train-once-per-season",
+      "--lgbm-plan",
+      "simple_h1_b1",
+      "--lgbm-features",
+      "2",
+      "--lgbm-no-ids",
+      "--lgbm-seeds",
+      "3",
+      "--retrain-every",
+      "5",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-lgbm_v3_every5"
+    ],
+    "built_at": "2026-11-06T04:58:47",
+    "prediction_set_id": 87,
+    "seasons": [
+      25
+    ]
+  },
+  "lgbm_v3_id_stage": {
+    "args": [
+      "--lightgbm",
+      "--train-once-per-season",
+      "--lgbm-plan",
+      "simple_h1_b1",
+      "--lgbm-features",
+      "2",
+      "--lgbm-seeds",
+      "3",
+      "--lgbm-id-stage",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-lgbm_v3_id_stage"
+    ],
+    "built_at": "2026-11-05T16:38:28",
+    "prediction_set_id": 75,
+    "seasons": [
+      25
+    ]
+  },
+  "lgbm_v3_id_stage_recent": {
+    "args": [
+      "--lightgbm",
+      "--train-once-per-season",
+      "--lgbm-plan",
+      "simple_h1_b1",
+      "--lgbm-features",
+      "2",
+      "--lgbm-seeds",
+      "3",
+      "--lgbm-id-stage",
+      "--lgbm-recency",
+      "2",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-lgbm_v3_id_stage_recent"
+    ],
+    "built_at": "2026-11-05T18:34:51",
+    "prediction_set_id": 78,
+    "seasons": [
+      25
+    ]
+  },
+  "lgbm_v3_ids": {
+    "args": [
+      "--lightgbm",
+      "--train-once-per-season",
+      "--lgbm-plan",
+      "simple_h1_b1",
+      "--lgbm-features",
+      "2",
+      "--lgbm-seeds",
+      "3",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-lgbm_v3_ids"
+    ],
+    "built_at": "2026-11-04T20:46:54",
+    "prediction_set_id": 69,
+    "seasons": [
+      25
+    ]
+  },
+  "lgbm_v3_linear": {
+    "args": [
+      "--lightgbm",
+      "--train-once-per-season",
+      "--lgbm-plan",
+      "simple_h1_b1",
+      "--lgbm-features",
+      "2",
+      "--lgbm-no-ids",
+      "--lgbm-seeds",
+      "3",
+      "--lgbm-linear",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-lgbm_v3_linear"
+    ],
+    "built_at": "2026-11-05T17:52:58",
+    "prediction_set_id": 77,
+    "seasons": [
+      25
+    ]
+  },
+  "lgbm_v3_rank": {
+    "args": [
+      "--lightgbm",
+      "--train-once-per-season",
+      "--lgbm-plan",
+      "simple_h1_b1",
+      "--lgbm-features",
+      "2",
+      "--lgbm-no-ids",
+      "--lgbm-seeds",
+      "3",
+      "--lgbm-objective",
+      "lambdarank",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-lgbm_v3_rank"
+    ],
+    "built_at": "2026-11-05T16:06:05",
+    "prediction_set_id": 74,
+    "seasons": [
+      25
+    ]
+  },
+  "lgbm_v3_recent": {
+    "args": [
+      "--lightgbm",
+      "--train-once-per-season",
+      "--lgbm-plan",
+      "simple_h1_b1",
+      "--lgbm-features",
+      "2",
+      "--lgbm-no-ids",
+      "--lgbm-seeds",
+      "3",
+      "--lgbm-recency",
+      "2",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-lgbm_v3_recent"
+    ],
+    "built_at": "2026-11-05T17:10:16",
+    "prediction_set_id": 76,
+    "seasons": [
+      25
+    ]
+  },
+  "lgbm_v3_simple": {
+    "args": [
+      "--lightgbm",
+      "--train-once-per-season",
+      "--lgbm-plan",
+      "simple_h1",
+      "--lgbm-features",
+      "2",
+      "--lgbm-no-ids",
+      "--lgbm-seeds",
+      "3",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-lgbm_v3_simple"
+    ],
+    "built_at": "2026-11-04T21:13:36",
+    "prediction_set_id": 70,
+    "seasons": [
+      25
+    ]
+  },
+  "lgbm_v3_tweedie": {
+    "args": [
+      "--lightgbm",
+      "--train-once-per-season",
+      "--lgbm-plan",
+      "simple_h1_b1",
+      "--lgbm-features",
+      "2",
+      "--lgbm-no-ids",
+      "--lgbm-seeds",
+      "3",
+      "--lgbm-objective",
+      "tweedie",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-lgbm_v3_tweedie"
+    ],
+    "built_at": "2026-11-07T13:23:24",
+    "prediction_set_id": 92,
+    "seasons": [
+      25
+    ]
+  },
+  "lgbm_v4": {
+    "args": [
+      "--lightgbm",
+      "--train-once-per-season",
+      "--lgbm-plan",
+      "simple_h1_b1",
+      "--lgbm-features",
+      "3",
+      "--lgbm-no-ids",
+      "--lgbm-seeds",
+      "3",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-lgbm_v4"
+    ],
+    "built_at": "2026-11-07T13:56:54",
+    "prediction_set_id": 93,
+    "seasons": [
+      25
+    ]
+  },
+  "lgbm_v5": {
+    "args": [
+      "--lightgbm",
+      "--train-once-per-season",
+      "--lgbm-plan",
+      "simple_h1_b1",
+      "--lgbm-features",
+      "3",
+      "--lgbm-no-ids",
+      "--lgbm-seeds",
+      "3",
+      "--lgbm-staged",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-lgbm_v5"
+    ],
+    "built_at": "2026-11-07T14:43:18",
+    "prediction_set_id": 94,
+    "seasons": [
+      25
+    ]
+  },
+  "lgbm_v6": {
+    "args": [
+      "--lightgbm",
+      "--train-once-per-season",
+      "--lgbm-plan",
+      "simple_h1_b1",
+      "--lgbm-features",
+      "4",
+      "--lgbm-no-ids",
+      "--lgbm-seeds",
+      "3",
+      "--seasons",
+      "23,24,25",
+      "--name",
+      "eval-lgbm_v6"
+    ],
+    "built_at": "2026-11-08T02:45:09",
+    "prediction_set_id": 97,
+    "seasons": [
+      23,
+      24,
+      25
+    ]
+  },
+  "lgbm_v6_staged": {
+    "args": [
+      "--lightgbm",
+      "--train-once-per-season",
+      "--lgbm-plan",
+      "simple_h1_b1",
+      "--lgbm-features",
+      "4",
+      "--lgbm-no-ids",
+      "--lgbm-seeds",
+      "3",
+      "--lgbm-staged",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-lgbm_v6_staged"
+    ],
+    "built_at": "2026-11-07T16:08:15",
+    "prediction_set_id": 98,
+    "seasons": [
+      25
+    ]
+  },
   "v1": {
     "args": [
       "--train-once-per-season",
@@ -41,6 +416,320 @@
     ],
     "built_at": "2026-10-30T17:28:23",
     "prediction_set_id": 13,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_b0_noids": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "none",
+      "--v2-loss",
+      "huber",
+      "--v2-smear",
+      "global",
+      "--v2-minutes-head",
+      "0.1",
+      "--v2-minutes-target",
+      "bands",
+      "--model-plan",
+      "simple_h1_b0_noids",
+      "--seed",
+      "42",
+      "--seasons",
+      "23,24,25",
+      "--name",
+      "eval-v2_b0_noids"
+    ],
+    "built_at": "2026-11-09T01:47:27",
+    "prediction_set_id": 104,
+    "seasons": [
+      23,
+      24,
+      25
+    ]
+  },
+  "v2_b0_noids_staged": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "none",
+      "--v2-loss",
+      "huber",
+      "--v2-smear",
+      "global",
+      "--v2-minutes-head",
+      "0.1",
+      "--v2-minutes-target",
+      "bands",
+      "--model-plan",
+      "simple_h1_b0_noids_staged",
+      "--seed",
+      "42",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_b0_noids_staged"
+    ],
+    "built_at": "2026-11-06T03:56:06",
+    "prediction_set_id": 88,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_b0_nopid": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "none",
+      "--v2-loss",
+      "huber",
+      "--v2-smear",
+      "global",
+      "--v2-minutes-head",
+      "0.1",
+      "--v2-minutes-target",
+      "bands",
+      "--model-plan",
+      "simple_h1_b0_nopid",
+      "--seed",
+      "42",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_b0_nopid"
+    ],
+    "built_at": "2026-11-05T21:45:30",
+    "prediction_set_id": 85,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_b0_seed1": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "none",
+      "--v2-loss",
+      "huber",
+      "--v2-smear",
+      "global",
+      "--v2-minutes-head",
+      "0.1",
+      "--v2-minutes-target",
+      "bands",
+      "--model-plan",
+      "simple_h1_b0",
+      "--seed",
+      "42",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_b0_seed1"
+    ],
+    "built_at": "2026-11-04T01:56:07",
+    "prediction_set_id": 52,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_b0_seed2": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "none",
+      "--v2-loss",
+      "huber",
+      "--v2-smear",
+      "global",
+      "--v2-minutes-head",
+      "0.1",
+      "--v2-minutes-target",
+      "bands",
+      "--model-plan",
+      "simple_h1_b0",
+      "--seed",
+      "43",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_b0_seed2"
+    ],
+    "built_at": "2026-11-04T04:59:27",
+    "prediction_set_id": 54,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_b1_context": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "none",
+      "--v2-loss",
+      "huber",
+      "--v2-smear",
+      "global",
+      "--v2-minutes-head",
+      "0.1",
+      "--v2-minutes-target",
+      "bands",
+      "--model-plan",
+      "simple_h1_b1",
+      "--seed",
+      "42",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_b1_context"
+    ],
+    "built_at": "2026-11-04T08:50:58",
+    "prediction_set_id": 56,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_b1_every5": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "none",
+      "--v2-loss",
+      "huber",
+      "--v2-smear",
+      "global",
+      "--v2-minutes-head",
+      "0.1",
+      "--v2-minutes-target",
+      "bands",
+      "--model-plan",
+      "simple_h1_b1",
+      "--seed",
+      "42",
+      "--retrain-every",
+      "5",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_b1_every5"
+    ],
+    "built_at": "2026-11-08T01:41:01",
+    "prediction_set_id": 91,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_b1_noids": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "none",
+      "--v2-loss",
+      "huber",
+      "--v2-smear",
+      "global",
+      "--v2-minutes-head",
+      "0.1",
+      "--v2-minutes-target",
+      "bands",
+      "--model-plan",
+      "simple_h1_b1_noids",
+      "--seed",
+      "42",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_b1_noids"
+    ],
+    "built_at": "2026-11-08T06:33:09",
+    "prediction_set_id": 103,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_b1_staged": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "none",
+      "--v2-loss",
+      "huber",
+      "--v2-smear",
+      "global",
+      "--v2-minutes-head",
+      "0.1",
+      "--v2-minutes-target",
+      "bands",
+      "--model-plan",
+      "simple_h1_b1_staged",
+      "--seed",
+      "42",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_b1_staged"
+    ],
+    "built_at": "2026-11-04T12:55:14",
+    "prediction_set_id": 58,
+    "seasons": [
+      25
+    ]
+  },
+  "v2_b1_staged_v2": {
+    "args": [
+      "--learning-v2",
+      "--train-once-per-season",
+      "--points-reps",
+      "1",
+      "--v2-weighting",
+      "none",
+      "--v2-loss",
+      "huber",
+      "--v2-smear",
+      "global",
+      "--v2-minutes-head",
+      "0.1",
+      "--v2-minutes-target",
+      "bands",
+      "--model-plan",
+      "simple_h1_b1_staged_v2",
+      "--seed",
+      "42",
+      "--seasons",
+      "25",
+      "--name",
+      "eval-v2_b1_staged_v2"
+    ],
+    "built_at": "2026-11-04T17:13:04",
+    "prediction_set_id": 60,
     "seasons": [
       25
     ]

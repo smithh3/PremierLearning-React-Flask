@@ -108,6 +108,8 @@ class ExampleBatch:
     years: list = field(default_factory=list)
     tables: dict = field(default_factory=dict)
     table_inputs: dict = field(default_factory=dict)
+    # Per row [team xG for, xG against, known]: staged plans with score_xg_weight.
+    team_xg: numpy.ndarray = None
 
 
 @dataclass(frozen=True)
@@ -279,17 +281,20 @@ def minutes_targets(matches, target=MINUTES_TARGET_BANDS) -> numpy.ndarray:
     return numpy.asarray(bands, dtype=numpy.int32).reshape(-1, 1)
 
 
-def score_targets(matches, weighted=False) -> numpy.ndarray:
+def score_targets(matches, weighted=False, team_xg=None) -> numpy.ndarray:
     """One row per match: [team goals for, team goals against], or -1s when unknown.
 
     The score head's loss skips negative targets. weighted adds a third column
     so each team's fixture counts once however many player rows it has: the
     rows of one team fixture share 1 / their count, scaled so known rows
-    average 1.
+    average 1. team_xg (rows of [xG for, xG against, known], see
+    ExampleBatch.team_xg) adds those three columns after the weight.
     """
     out = numpy.full((len(matches), 2), -1.0, dtype=numpy.float32)
     out = _fill_scores(matches, out)
     if not weighted:
+        if team_xg is not None:
+            raise ValueError('team_xg targets need weighted=True')
         return out
     weights = numpy.zeros((len(matches), 1), dtype=numpy.float32)
     groups = defaultdict(list)
@@ -301,7 +306,33 @@ def score_targets(matches, weighted=False) -> numpy.ndarray:
         scale = known / float(len(groups))
         for rows in groups.values():
             weights[rows, 0] = scale / len(rows)
-    return numpy.concatenate([out, weights], axis=1)
+    parts = [out, weights]
+    if team_xg is not None:
+        team_xg = numpy.asarray(team_xg, dtype=numpy.float32).reshape(len(matches), 3)
+        parts.append(team_xg)
+    return numpy.concatenate(parts, axis=1)
+
+
+def team_xg_rows(catalog, rows) -> numpy.ndarray:
+    """[xG for, xG against, known] of each row's team in that fixture (zeros when unknown)."""
+    out = numpy.zeros((len(rows), 3), dtype=numpy.float32)
+    timelines = getattr(catalog, 'team_timelines', None)
+    if timelines is None:
+        return out
+    lookup = {}
+    for items in timelines.records.values():
+        for record in items:
+            lookup[(record.year, record.fixture_id, record.code)] = record
+    for index, row in enumerate(rows):
+        fixture_id = getattr(row.match, 'fixture_id', None)
+        code = _team_code(row.match)
+        if fixture_id is None or code is None:
+            continue
+        record = lookup.get((row.year, int(fixture_id), code))
+        if record is None or not record.xg_known:
+            continue
+        out[index] = (record.xg_for, record.xg_against, 1.0)
+    return out
 
 
 def _fill_scores(matches, out):
@@ -894,6 +925,10 @@ class _Catalog:
         prior = timeline.prior(match)
         fixture_id = getattr(match, 'fixture_id', None)
         limit = self.plan.config.max_squad
+        # scoreline_squads keeps the player in their own teammates list, so the
+        # list is the same for every player in the team (the staged scoreline
+        # reads it as the team's squad).
+        own = None if getattr(self.plan.config, 'scoreline_squads', False) else player
         teammates = []
         opponents = []
         if fixture_id is not None:
@@ -902,7 +937,7 @@ class _Catalog:
             if team_code is not None:
                 teammates = _squad_from_ranked(
                     self.ranked(self.squads.get((year, int(fixture_id), int(team_code)), []), match),
-                    player, limit,
+                    own, limit,
                 )
             if opp_code is not None:
                 opponents = _squad_from_ranked(
@@ -1215,6 +1250,7 @@ def window_rate_batch(batch: ExampleBatch, horizon: int):
         [batch.years[index] for index in keep],
         tables=getattr(batch, 'tables', None) or {},
         table_inputs=getattr(batch, 'table_inputs', None) or {},
+        team_xg=None if getattr(batch, 'team_xg', None) is None else batch.team_xg[keep],
     ), numpy.asarray(groups)
 
 
@@ -1292,6 +1328,8 @@ def build_dataset(seasons, plan, predict_season=None, cutoff_gameweek=None, repo
         train_rows.extend(_label_rows(season, cutoff, catalog))
     predict_rows = _predict_rows(predict_season, catalog)
     train_batch = _write_rows(catalog, train_rows, specs)
+    if float(getattr(plan.config, 'score_xg_weight', 0.0) or 0.0) > 0:
+        train_batch.team_xg = team_xg_rows(catalog, train_rows)
     predict_batch = _write_rows(catalog, predict_rows, specs)
     if report_gameweeks is None:
         _attach_team_tables(catalog, specs, (train_batch, predict_batch))

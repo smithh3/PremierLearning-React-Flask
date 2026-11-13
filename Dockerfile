@@ -19,6 +19,10 @@ RUN sed -i \
     && python -m playwright install-deps chromium \
     && python -m playwright install chromium
 
+# LightGBM (--learning-v2 --lightgbm), the same version as the evaluation venv. Its own
+# layer so the TensorFlow / Playwright layer above stays cached.
+RUN pip install --no-cache-dir lightgbm==4.6.0
+
 # Schema SQL only — sqlite files are excluded by .dockerignore and filled at runtime.
 COPY database ./database
 COPY api ./api

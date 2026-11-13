@@ -26,13 +26,34 @@ V3_BENCH_WEIGHT = 0.1
 # season.
 POOL_FILE_DIR = Path(__file__).resolve().parent.parent / 'fpl_manager_runs' / 'pool_files'
 
+# Which fixture calendar the forecasts are laid out on.
+# 'known': each fixture in the gameweek FPL showed at that deadline (blanks and
+# doubles appear only once FPL announced them; see simulation.fixture_calendar).
+# 'final': every fixture in the week it was finally played, as the prediction
+# sets store it. That knows reschedules before they happened.
+CALENDARS = ('known', 'final')
+# Squad answers and pool files are stored by snapshot id. A known-calendar week
+# uses this id plus the snapshot's, so it never reuses a final-calendar answer.
+KNOWN_CALENDAR_ID_OFFSET = 1_000_000_000
+
+
+def default_calendar(observation_version) -> str:
+    return 'known' if str(observation_version or 'v1') == 'v3' else 'final'
+
+
+def cache_snapshot_id(snapshot_id, calendar) -> int:
+    snapshot_id = int(snapshot_id)
+    if calendar == 'known' and snapshot_id:
+        return KNOWN_CALENDAR_ID_OFFSET + snapshot_id
+    return snapshot_id
+
 
 class ManagedSeason:
     """Saved per-gameweek forecasts and the historical points for that season."""
 
     def __init__(
         self, db, prediction_set_id, season, first, last, observation_version='v1',
-        solver=None, ranged=None, pool_files=None,
+        solver=None, ranged=None, pool_files=None, calendar=None,
     ):
         self.db = db
         self.prediction_set_id = int(prediction_set_id)
@@ -41,10 +62,17 @@ class ManagedSeason:
         self.observation_version = str(observation_version or 'v1')
         v3 = self.observation_version == 'v3'
         self.pool_files = v3 if pool_files is None else bool(pool_files)
-        self.pool = load_forecast_pool(db, prediction_set_id, self.season, self.first)
+        self.calendar = default_calendar(self.observation_version) if calendar is None else str(calendar)
+        if self.calendar not in CALENDARS:
+            raise ValueError('calendar is one of %s, not %r' % (CALENDARS, self.calendar))
+        self._actuals = VaastavSeasonData(self.season)
+        self.pool = load_forecast_pool(
+            db, prediction_set_id, self.season, self.first,
+            calendar=self.calendar_at(self.first),
+        )
         self.last = _last_predicted_week(self.pool, self.first, int(last))
         snapshot = db.get_prediction_snapshot(prediction_set_id, self.season, self.first)
-        snapshot_id = 0 if snapshot is None else int(snapshot['id'])
+        snapshot_id = 0 if snapshot is None else cache_snapshot_id(snapshot['id'], self.calendar)
         self.optimiser = MipOptimiser(
             horizon_gameweeks=5 if self.observation_version in ('v2', 'fast', 'v3') else 6,
             cache=OptimiserCache(db),
@@ -55,33 +83,45 @@ class ManagedSeason:
             ranged=v3 if ranged is None else bool(ranged),
             bench_weight=V3_BENCH_WEIGHT if v3 else 0.0,
         )
-        self._actuals = VaastavSeasonData(self.season)
         self._points = {}
         self._minutes = {}
         self._squad = None
 
+    def calendar_at(self, gameweek):
+        """fixture id -> gameweek FPL showed at this deadline, or None for 'final'."""
+        if self.calendar != 'known':
+            return None
+        from simulation.fixture_calendar import known_calendar
+
+        deadline = self._actuals.deadline_for_gameweek(int(gameweek))
+        if deadline is None:
+            raise ValueError('No GW%s deadline for %s/%s' % (gameweek, self.season, self.season + 1))
+        return known_calendar(self.season, deadline)
+
+    def _decision_forecast(self, gameweek):
+        pool, snapshot_id = load_decision_forecast(
+            self.db, self.prediction_set_id, self.season, int(gameweek),
+            calendar=self.calendar_at(gameweek),
+        )
+        return pool, cache_snapshot_id(snapshot_id, self.calendar)
+
     def forecast_at(self, gameweek):
         if not self.pool_files:
-            return load_decision_forecast(
-                self.db, self.prediction_set_id, self.season, int(gameweek),
-            )
+            return self._decision_forecast(gameweek)
         snapshot = self.db.get_prediction_snapshot(
             self.prediction_set_id, self.season, int(gameweek),
         )
         if snapshot is None:
-            return load_decision_forecast(
-                self.db, self.prediction_set_id, self.season, int(gameweek),
-            )
-        path = POOL_FILE_DIR / ('snapshot_%s.pkl' % int(snapshot['id']))
+            return self._decision_forecast(gameweek)
+        cache_id = cache_snapshot_id(snapshot['id'], self.calendar)
+        path = POOL_FILE_DIR / ('snapshot_%s.pkl' % cache_id)
         if path.is_file():
             try:
                 with path.open('rb') as handle:
-                    return pickle.load(handle), int(snapshot['id'])
+                    return pickle.load(handle), cache_id
             except Exception:  # noqa: BLE001 - a half-written file is rebuilt
                 pass
-        pool, snapshot_id = load_decision_forecast(
-            self.db, self.prediction_set_id, self.season, int(gameweek),
-        )
+        pool, snapshot_id = self._decision_forecast(gameweek)
         POOL_FILE_DIR.mkdir(parents=True, exist_ok=True)
         partial = path.with_suffix('.%s.tmp' % id(self))
         with partial.open('wb') as handle:
@@ -139,7 +179,7 @@ def is_oracle_set(db, prediction_set_id) -> bool:
 
 def load_managed_season(
     db, prediction_set_id, year, first, last, observation_version='v1', allow_oracle=False,
-    solver=None, ranged=None,
+    solver=None, ranged=None, calendar=None,
 ):
     if prediction_set_id is None:
         prediction_set_id = db.latest_prediction_set_id(year)
@@ -156,7 +196,7 @@ def load_managed_season(
         )
     return ManagedSeason(
         db, prediction_set_id, year, first, last, observation_version=observation_version,
-        solver=solver, ranged=ranged,
+        solver=solver, ranged=ranged, calendar=calendar,
     )
 
 

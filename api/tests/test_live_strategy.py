@@ -134,6 +134,21 @@ class DeadlineDayTests(unittest.TestCase):
         booked = deadline_for_following_run(events, ordinary)
         self.assertEqual(datetime(2026, 10, 31, 11, 0, tzinfo=timezone.utc), booked)
 
+    def test_a_run_ending_just_outside_the_window_books_the_following_deadline(self):
+        from squadtools.fpl_deadline import deadline_for_following_run
+        events = [
+            {'id': 10, 'deadline_time': '2026-11-06T18:30:00Z'},
+            {'id': 11, 'deadline_time': '2026-11-21T11:00:00Z'},
+        ]
+        # The GW10 run started 13:30 (5 hours early) and finished 15:28.
+        finished = datetime(2026, 11, 6, 15, 28, tzinfo=timezone.utc)
+        self.assertEqual(datetime(2026, 11, 21, 11, 0, tzinfo=timezone.utc),
+                         deadline_for_following_run(events, finished, hours_before=5))
+        # A run more than 5 hours ahead still books GW10 itself.
+        early = datetime(2026, 11, 6, 9, 0, tzinfo=timezone.utc)
+        self.assertEqual(datetime(2026, 11, 6, 18, 30, tzinfo=timezone.utc),
+                         deadline_for_following_run(events, early, hours_before=5))
+
 
 class PlayedChipsTests(unittest.TestCase):
     def test_parses_fpl_my_team_chip_names(self):

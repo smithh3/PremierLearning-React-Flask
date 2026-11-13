@@ -435,13 +435,35 @@ def build_model(plan, vocab, hparams, loss_name='huber', minutes_head=None):
             history_cache[node.path] = out
         return out
 
-    def team_side(side, id_name):
-        """Team-level inputs of one side: id, fading averages and match history.
+    def squad_summary(node):
+        """A side's squad, the same for every row of that team: shared layers, no player query.
 
-        Squads are left out: a player's teammates list leaves that player out,
-        so it differs between teammates, and the scoreline must not.
+        Only with scoreline_squads, where the teammates list keeps the player,
+        so a team's list matches the one its opponents see.
         """
-        parts = [encode(side.child(id_name), None, None)]
+        length = set_length(plan.config, node)
+        token = encode(node.item, length, None)
+        mask = keras_input(node.path + '.mask', (length,), 'float32')
+        weights = tf.expand_dims(mask, -1)
+        proj = _shared('squad', lambda: Dense(
+            plan.config.d_model, activation='relu', kernel_regularizer=regularizer, name='squad_proj_team_shared',
+        ))
+        projected = proj(token * weights) * weights
+        count = tf.reduce_sum(weights, axis=1)
+        mean = tf.reduce_sum(projected, axis=1) / tf.maximum(count, 1.0)
+        # relu outputs are >= 0, so masked slots at 0 never win the max.
+        peak = tf.reduce_max(projected, axis=1)
+        return tf.concat([mean, peak, count / float(length)], axis=-1)
+
+    def team_side(side, id_name):
+        """Team-level inputs of one side: id (if the plan has one), fading
+        averages and match history.
+
+        Squads join only with scoreline_squads: otherwise a player's teammates
+        list leaves that player out, so it differs between teammates, and the
+        scoreline must not.
+        """
+        parts = [encode(child, None, None) for child in side.children if child.name == id_name]
         for child in side.children:
             if child.name in ('team_features', 'schedule', 'gameweek', 'manager_features'):
                 parts.append(encode(child, None, None))
@@ -449,6 +471,8 @@ def build_model(plan, vocab, hparams, loss_name='huber', minutes_head=None):
                 if child.kind != 'transformer':
                     raise ValueError('the staged structure reads team histories with a transformer')
                 parts.append(encode_history(child))
+            elif child.kind == 'attention' and getattr(config, 'scoreline_squads', False):
+                parts.append(squad_summary(child))
         return tf.concat(parts, axis=-1)
 
     def encode_squad(node, query_d):

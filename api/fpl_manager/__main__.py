@@ -13,7 +13,12 @@ from persistence import DB_Handler
 
 from fpl_manager.multi import MultiSeasonRun, SeasonByRun, note_completed_runs
 from fpl_manager.observation import features_for, version_for_features
-from fpl_manager.season_source import is_oracle_set, load_managed_season
+from fpl_manager.season_source import (
+    CALENDARS,
+    default_calendar,
+    is_oracle_set,
+    load_managed_season,
+)
 from fpl_manager.train import CheckpointMismatch, train_policy
 from fpl_manager.workers import multi_process_env
 
@@ -38,6 +43,18 @@ def _season_list(value: str):
     if not years:
         raise argparse.ArgumentTypeError('name at least one season')
     return years
+
+
+def _copy_list(value: str):
+    numbers = []
+    for part in str(value).split(','):
+        part = part.strip()
+        if '-' in part:
+            low, high = part.split('-')
+            numbers.extend(range(int(low), int(high) + 1))
+        elif part:
+            numbers.append(int(part))
+    return tuple(numbers)
 
 
 def build_parser():
@@ -81,6 +98,21 @@ def build_parser():
              '0 turns it off. Default 0, or 5 for v3 (one per 40 training runs).',
     )
     parser.add_argument(
+        '--calendar', choices=CALENDARS,
+        help='known: each fixture in the gameweek FPL showed at that deadline, so blanks '
+             'and doubles appear only once FPL announced them. final: the gameweek it was '
+             'finally played in (knows reschedules early). Default known for v3, else final.',
+    )
+    parser.add_argument(
+        '--copies', type=_copy_list, default=(),
+        help='v3: synthetic copies to train on, e.g. 1-5. Each season of a run is then '
+             'the real one or one of these, at random (synthetic_seasons/training.py).',
+    )
+    parser.add_argument(
+        '--heldout-copies', type=_copy_list, default=(),
+        help='With --copies: copies never trained on; evaluation runs cycle through them.',
+    )
+    parser.add_argument(
         '--allow-oracle', action='store_true',
         help='Accept a set fed real future minutes. The checkpoint name must say oracle.',
     )
@@ -105,6 +137,11 @@ def main(argv=None) -> int:
             )
             solver = args.solver or ('highs' if v3 else 'cbc')
             ranged = True if v3 else bool(args.ranged_cache)
+            calendar = args.calendar or default_calendar(version)
+            if args.copies and not v3:
+                raise ValueError('Training on synthetic copies is a v3 run.')
+            if args.heldout_copies and not args.copies:
+                raise ValueError('--heldout-copies needs --copies.')
             oracle = args.allow_oracle and is_oracle_set(db, args.prediction_set_id)
             if oracle and 'oracle' not in Path(args.checkpoint).name.lower():
                 raise ValueError('An oracle run needs oracle in its checkpoint name.')
@@ -112,7 +149,7 @@ def main(argv=None) -> int:
                 load_managed_season(
                     db, args.prediction_set_id, year, args.from_gw, args.to_gw,
                     observation_version=version, allow_oracle=args.allow_oracle,
-                    solver=solver, ranged=ranged,
+                    solver=solver, ranged=ranged, calendar=calendar,
                 )
                 for year in years
             ]
@@ -154,6 +191,14 @@ def main(argv=None) -> int:
             print(
                 'Fantasy manager %s, %s, gamma %s, checkpoint %s'
                 % (described, budget_text, gamma, args.checkpoint)
+            )
+            print(
+                'Fixture calendar: known. Each week\'s forecasts use the gameweeks FPL '
+                'showed at that deadline, so blanks and doubles appear only once FPL '
+                'announced them.'
+                if calendar == 'known' else
+                'Fixture calendar: final. Forecasts use the gameweek each fixture was '
+                'finally played in, so the manager knows reschedules before they happen.'
             )
             if v3:
                 print(
@@ -204,6 +249,10 @@ def main(argv=None) -> int:
                         'Each run plays all %s seasons and is one row in runs.csv.'
                         % len(seasons)
                     )
+                if args.copies:
+                    from synthetic_seasons.training import describe
+
+                    print(describe(args.copies, args.heldout_copies))
                 elif multi:
                     print(
                         'Each run plays all %s seasons. The reward is their summed '
@@ -232,13 +281,22 @@ def main(argv=None) -> int:
                             args.allow_oracle,
                             solver,
                             ranged,
+                            calendar=calendar,
+                            copies=tuple(args.copies),
+                            heldout_copies=tuple(args.heldout_copies),
                         )
                         for _worker in range(workers)
                     ]
                     factory = None
                 else:
                     log_path = Path(args.checkpoint) / 'runs.csv'
-                    if v3:
+                    if args.copies:
+                        from synthetic_seasons.training import mixed_factory
+
+                        factory = mixed_factory(
+                            db, seasons, args.copies, args.heldout_copies, log_path, seed=args.seed,
+                        )
+                    elif v3:
                         factory = SeasonByRun(seasons, log_path=log_path)
                     else:
                         factory = lambda: MultiSeasonRun(seasons, log_path=log_path)

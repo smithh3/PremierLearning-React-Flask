@@ -7,23 +7,31 @@ from run_pipeline import _learning_argv
 
 class LiveDataUpdateTests(unittest.TestCase):
     def test_pipeline_always_prepends_update(self):
-        blend = ['--learning-v2', '--v2-blend']
+        # The default model is LightGBM v6 since 2026-11-09.
+        lightgbm = ['--learning-v2', '--lightgbm']
         self.assertEqual(
-            ['--update'] + blend + ['--horizon-reps', '5'],
+            ['--update'] + lightgbm + ['--horizon-reps', '5'],
             _learning_argv(['--horizon-reps', '5']),
         )
-        self.assertEqual(['--update'] + blend, _learning_argv([]))
+        self.assertEqual(['--update'] + lightgbm, _learning_argv([]))
         self.assertEqual(
-            blend + ['--update', '--horizon-reps', '5'],
+            lightgbm + ['--update', '--horizon-reps', '5'],
             _learning_argv(['--update', '--horizon-reps', '5']),
         )
 
     def test_pipeline_honours_no_update(self):
         self.assertEqual(
-            ['--learning-v2', '--v2-blend', '--horizon-reps', '5'],
+            ['--learning-v2', '--lightgbm', '--horizon-reps', '5'],
             _learning_argv(['--horizon-reps', '5', '--no-update']),
         )
-        self.assertEqual(['--learning-v2', '--v2-blend'], _learning_argv(['-no-update']))
+        self.assertEqual(['--learning-v2', '--lightgbm'], _learning_argv(['-no-update']))
+
+    def test_other_v2_models_can_still_be_chosen(self):
+        self.assertEqual(['--update', '--learning-v2', '--v2-blend'], _learning_argv(['--v2-blend']))
+        self.assertEqual(['--update', '--learning-v2', '--v2-blend'],
+                         _learning_argv(['--learning-v2', '--v2-blend']))
+        self.assertEqual(['--update', '--learning-v2', '--lightgbm', '--lgbm-version', 'v3'],
+                         _learning_argv(['--learning-v2', '--lightgbm', '--lgbm-version', 'v3']))
 
     def test_v1_and_v1_recipes_keep_the_old_model(self):
         self.assertEqual(

@@ -32,11 +32,14 @@ class FixedSeasonModelsV2:
     def fit(cls, runner, plan_name=None, weighting=None, points_reps=1, loss_name=None,
             smear_mode='off', patience_floor=PATIENCE_FLOOR, horizon_gameweeks=0,
             minutes_weight=0.0, minutes_target='bands'):
-        """Train on pre-season data only; the supplied runner must be at GW1."""
-        if int(runner.as_of_gameweek) != 1:
-            raise ValueError('Fixed season models must be fitted from the GW1 cutoff')
+        """Train on everything before the runner's gameweek (GW1: pre-season data only).
+
+        Mid-season fits (--retrain-every) include this season's played
+        gameweeks, with a fresh vocab (new players get embeddings) and team
+        time blocks counted back from this fit's cutoff.
+        """
         plan = load_plan(plan_name or _parse_string_flag('--model-plan', 'simple_h1'))
-        print('Training one fixed learning_v2 %s model for the simulated season...' % plan.name)
+        print('Training one fixed learning_v2 %s model as of GW%s...' % (plan.name, runner.as_of_gameweek))
         runner.process_player_matches()
         train_batch, _predict, vocab = build_dataset(
             _seasons(runner), plan,
@@ -44,7 +47,7 @@ class FixedSeasonModelsV2:
             cutoff_gameweek=runner._trained_through_gameweek(),
         )
         if not train_batch.matches:
-            raise ValueError('learning_v2 found no training fixtures before GW1')
+            raise ValueError('learning_v2 found no training fixtures before GW%s' % runner.as_of_gameweek)
         vocab.freeze()
         print(
             '  %s train rows, %s players, %s teams (vocab frozen)'

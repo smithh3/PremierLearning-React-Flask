@@ -5,14 +5,16 @@ Environment:
   APPLY_TRANSFERS=true    Submit transfers + starting XI to FPL.
   APPLY_TEAM_SELECTION=true  Submit captain/starters only.
   SUGGEST_TRANSFERS=true  Print suggestions without submitting (default if no apply flag).
-  PREMIERLEARNING_ARGS    Extra argv for learning. The model is the learning_v2
-                          blend the fantasy manager evaluation scored best
-                          (--learning-v2 --v2-blend: 75% v2_log with a
-                          minutes-bands head, 25% v2_log with a 5-GW net)
-                          unless these args pick another: --v1 for the old
-                          model (e.g. "--v1 --horizon-reps 5"), or a v1 recipe
-                          such as --h1-poisson or --horizon-only. v1-only flags
-                          like --horizon-reps are ignored by the blend.
+  PREMIERLEARNING_ARGS    Extra argv for learning. The model is LightGBM v6
+                          (--learning-v2 --lightgbm, since 2026-11-09: best
+                          over 2023/24-2025/26 and in the fantasy manager runs)
+                          unless these args pick another: --v2-blend for the
+                          previous learning_v2 blend, --lgbm-version v3 for the
+                          previous LightGBM, --v1 for the old model (e.g.
+                          "--v1 --horizon-reps 5"), or a v1 recipe such as
+                          --h1-poisson or --horizon-only. v1-only flags like
+                          --horizon-reps are ignored by the v2 models.
+                          See premierlearning/live_model.py.
                           Pipeline/Fargate always prepends --update so injury
                           news is pulled live; pass --no-update to keep the
                           files copied into the image.
@@ -169,28 +171,20 @@ def _publish_learning_done():
         raise SystemExit('Learning finished but SQS publish failed: %s' % exc)
 
 
-V1_FLAG = '--v1'
-BLEND_ARGS = ['--learning-v2', '--v2-blend']
-# Args that choose a model themselves; the blend is only added without them.
-_MODEL_CHOICES = {
-    V1_FLAG, '--learning-v2', '--h1-poisson', '--horizon-only', '--minutes-only',
-    '--team-only', '--linear',
-}
-
-
 def _learning_argv(extra=None):
     """Fargate always refreshes FPL bootstrap unless --no-update is set.
 
     Injury / chance-of-playing news changes without a finished gameweek, so the
     image's copied season JSON is not a safe cache on a live pipeline run.
-    The model is the learning_v2 blend unless the args choose another.
+    The model is LightGBM v6 unless the args choose another
+    (premierlearning/live_model.py).
     """
-    extra = list(
+    from premierlearning.live_model import V1_FLAG, with_model
+
+    extra = with_model(
         extra if extra is not None
         else shlex.split(os.environ.get('PREMIERLEARNING_ARGS', ''))
     )
-    if not _MODEL_CHOICES.intersection(extra):
-        extra = BLEND_ARGS + extra
     extra = [arg for arg in extra if arg != V1_FLAG]
     skip = {'--no-update', '-no-update'}
     if skip.intersection(extra):
@@ -354,7 +348,7 @@ def _schedule_next_deadline_run():
         )
         events = requests.get(GENERAL, timeout=30).json().get('events') or []
         now = datetime.now(timezone.utc)
-        deadline = deadline_for_following_run(events, now)
+        deadline = deadline_for_following_run(events, now, hours_before=hours)
         if deadline is None:
             print('No future FPL deadline; leaving schedule %s unchanged' % name)
             return

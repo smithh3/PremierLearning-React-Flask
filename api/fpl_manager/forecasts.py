@@ -10,15 +10,20 @@ class MissingPredictionSnapshot(LookupError):
     """No complete historical_player_predictions snapshot for this decision."""
 
 
-def load_decision_forecast(db, prediction_set_id: int, season_start_year: int, as_of_gameweek: int):
+def load_decision_forecast(
+    db, prediction_set_id: int, season_start_year: int, as_of_gameweek: int, calendar=None,
+):
     """The saved snapshot for this gameweek, and its id.
 
     That snapshot was built with results only through the previous week.
     It already holds a prediction for every remaining fixture. The squad
     optimiser reads the next six of those weeks; this does not retrain the
-    points model.
+    points model. `calendar` (fixture id -> gameweek FPL showed at this
+    deadline, see simulation.fixture_calendar) moves each fixture to that week.
     """
-    pool = load_forecast_pool(db, prediction_set_id, season_start_year, as_of_gameweek)
+    pool = load_forecast_pool(
+        db, prediction_set_id, season_start_year, as_of_gameweek, calendar=calendar,
+    )
     snapshot = db.get_prediction_snapshot(
         int(prediction_set_id),
         int(season_start_year),
@@ -38,6 +43,7 @@ def load_forecast_pool(
     season_start_year: int,
     as_of_gameweek: int,
     minutes_scale=None,
+    calendar=None,
 ) -> PredictionPool:
     rows = db.get_historical_predictions(
         int(prediction_set_id),
@@ -50,6 +56,10 @@ def load_forecast_pool(
             'Final points are not a forecast.'
             % (prediction_set_id, season_start_year, as_of_gameweek)
         )
+    if calendar is not None:
+        from simulation.fixture_calendar import apply_known_calendar
+
+        rows = apply_known_calendar(rows, calendar, int(as_of_gameweek))
     return PredictionPool.from_rows(rows, minutes_scale=minutes_scale)
 
 

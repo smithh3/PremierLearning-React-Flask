@@ -21,6 +21,33 @@ PAST_SEASON_RAW_DATA_LOCATION = 'data/season_%i_%i/raw.json'
 LAST_SEASON_TEAM_STANDINGS_LOCATION = 'data/season_%i_%i/last_season_team_standings.json'
 
 
+def player_folders(players_dir) -> dict:
+    """element id -> the one players/<name>_<id> folder to read for that player.
+
+    A player renamed during a season can have two folders with the same id: a
+    stale one with the matches up to the rename and a full one (2023/24
+    Michale_Olakigbe_620 with 4 rows next to Michael_Olakigbe_620 with 38;
+    also Petrovic, Kinsey, Yarmoliuk in 2023/24, Doak and Kroupi in 2025/26).
+    Keep the folder whose gw.csv has the most rows, the last name in sorted
+    order on a tie. Before 2026-11-10 PastSeason read both (two Player objects
+    for one id) and VaastavSeasonData kept whichever it listed last.
+    """
+    best = {}
+    for name in sorted(os.listdir(players_dir)):
+        try:
+            element = int(name.rsplit('_', 1)[-1])
+        except ValueError:
+            continue
+        path = os.path.join(players_dir, name, 'gw.csv')
+        if not os.path.isfile(path):
+            continue
+        with open(path, encoding='utf-8-sig') as handle:
+            rows = sum(1 for _line in handle)
+        if element not in best or rows >= best[element][0]:
+            best[element] = (rows, name)
+    return {element: name for element, (_rows, name) in best.items()}
+
+
 
 # def get_next_gameweek():
 #         fantasy_json = read_json(FANTASY_JSON_FILE_LOCATION % (SEASON_YR, SEASON_YR + 1))
@@ -152,9 +179,13 @@ class PastSeason(Season):
             for element in elements:
                 elements_dict[int(element['id'])] = element
 
-            player_dir_list = os.listdir(PAST_SEASON_PLAYERS_DIR % self.years)
-            for player_dir in player_dir_list:
-                player_gameweeks = self.read_csv(PAST_SEASON_PLAYERS_DIR % self.years + '/' + player_dir + '/gw.csv')
+            players_dir = PAST_SEASON_PLAYERS_DIR % self.years
+            chosen = set(player_folders(players_dir).values())
+            # Same order as before; only a renamed player's stale second folder is skipped.
+            for player_dir in os.listdir(players_dir):
+                if player_dir not in chosen:
+                    continue
+                player_gameweeks = self.read_csv(players_dir + '/' + player_dir + '/gw.csv')
                 player_id = int(player_dir.split('_')[-1])
                 player_json = {'history': player_gameweeks, 'fixtures': []}
                 self.players.append(Player(

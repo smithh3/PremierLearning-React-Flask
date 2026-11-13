@@ -57,13 +57,21 @@ def future_deadlines(events, now_utc):
     return deadlines
 
 
-def deadline_for_following_run(events, now_utc, this_run_window_hours=3):
+def deadline_for_following_run(events, now_utc, this_run_window_hours=3, hours_before=None):
     """Deadline the next scheduled run should sit ahead of.
 
     A run that starts shortly before a deadline is for that deadline, so the
     following booking skips it. A run on any other day books the soonest one.
+    hours_before: how long before its deadline a run is booked; a deadline
+    whose run time has already passed is skipped (2026-11-06: a 5-hour-early
+    run that trained for 2 hours ended 3h02 before the deadline, just outside
+    the 3-hour window, tried to rebook the same deadline and booked nothing).
     """
     deadlines = future_deadlines(events, now_utc)
+    if hours_before is not None:
+        now = now_utc.astimezone(timezone.utc)
+        deadlines = [deadline for deadline in deadlines
+                     if deadline - timedelta(hours=float(hours_before)) > now]
     if not deadlines:
         return None
     soonest = deadlines[0]

@@ -35,7 +35,7 @@ from premierlearning.learning import (
 from premierlearning.learning_v2.dataset import MINUTES_TARGET_BANDS, mask_array, minutes_targets, score_targets
 from premierlearning.learning_v2.model import build_model, masked_poisson, minutes_only, points_only
 from premierlearning.learning_v2.plan import POINTS_STAGED
-from premierlearning.learning_v2.staged import masked_goal_band_ce
+from premierlearning.learning_v2.staged import goal_band_loss
 from premierlearning.learning_v2.plan import input_specs
 from premierlearning.learning_v2.score import (
     LOSS_TIER_MIX,
@@ -477,9 +477,16 @@ def fit_points(plan, vocab, train_batch, hparams=None, loss_name=None, reps=None
     if minutes_weight:
         extra_targets['minutes'] = minutes_targets(train_batch.matches, minutes_target)
     staged = getattr(plan.config, 'points_structure', 'direct') == POINTS_STAGED
+    xg_weight = 0.0
     if score_weight:
         # Staged: goal bands, each team fixture counted once; otherwise Poisson per row.
-        extra_targets['score'] = score_targets(train_batch.matches, weighted=staged)
+        xg_weight = float(getattr(plan.config, 'score_xg_weight', 0.0) or 0.0) if staged else 0.0
+        extra_targets['score'] = score_targets(
+            train_batch.matches, weighted=staged,
+            team_xg=getattr(train_batch, 'team_xg', None) if xg_weight > 0 else None,
+        )
+        if xg_weight > 0 and extra_targets['score'].shape[1] < 6:
+            raise ValueError('score_xg_weight is set but the training batch has no team xG')
     if extra_targets:
         fit_y = {'points': y_train}
         eval_y = {'points': y_test}
@@ -515,7 +522,10 @@ def fit_points(plan, vocab, train_batch, hparams=None, loss_name=None, reps=None
                 )
                 loss_weights['minutes'] = minutes_weight
             if score_weight:
-                losses['score'] = masked_goal_band_ce if staged else masked_poisson
+                if staged:
+                    losses['score'] = goal_band_loss(float(getattr(plan.config, 'score_xg_weight', 0.0) or 0.0))
+                else:
+                    losses['score'] = masked_poisson
                 loss_weights['score'] = score_weight
             model.compile(
                 loss=losses,
@@ -542,6 +552,12 @@ def fit_points(plan, vocab, train_batch, hparams=None, loss_name=None, reps=None
                 'goal bands 0-4+, one weight per team fixture' if staged else 'Poisson', score_weight))
         if getattr(plan.config, 'points_structure', 'direct') != 'direct':
             print('learning_v2 points structure: %s' % plan.config.points_structure)
+        if staged and getattr(plan.config, 'scoreline_squads', False):
+            print('learning_v2 scoreline squads: each side\'s squad summary feeds the scoreline')
+        if staged and xg_weight > 0:
+            known = float(extra_targets['score'][:, 5].mean()) if 'score' in extra_targets else 0.0
+            print('learning_v2 scoreline xG: band means fitted to match xG at weight %s (%.0f%% of rows have xG)'
+                  % (xg_weight, 100.0 * known))
         callbacks = []
         if val_split > 0 or validation_data is not None:
             # RMSE, not MAE: MAE is best at the median and stopped fits within a

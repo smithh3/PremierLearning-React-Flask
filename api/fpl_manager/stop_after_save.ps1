@@ -3,14 +3,14 @@
 # continues from its checkpoint. A run that has not saved within
 # $MaxWaitMinutes (it may be hung) is stopped anyway; it resumes from its last
 # save.
-param([int]$MaxWaitMinutes = 40)
+# -Names picks other checkpoint folders under fpl_manager_runs (default: the three paused runs).
+param(
+    [int]$MaxWaitMinutes = 40,
+    [string[]]$Names = @('v3_v2_log_minbands_blend25', 'v3_ORACLE_v2_log_real_minutes', 'v3_v1_h5')
+)
 
 $api = Split-Path -Parent $PSScriptRoot
-$runs = @(
-    @{ Name = 'v3_v2_log_minbands_blend25' },
-    @{ Name = 'v3_ORACLE_v2_log_real_minutes' },
-    @{ Name = 'v3_v1_h5' }
-)
+$runs = @($Names | ForEach-Object { @{ Name = $_ } })
 $log = Join-Path $api 'fpl_manager_runs\stop_after_save.log'
 function Say($text) { Add-Content -Path $log -Value ('{0} {1}' -f (Get-Date -Format 'HH:mm:ss'), $text) }
 
@@ -31,11 +31,28 @@ while (@($runs | Where-Object { -not $_.Done }).Count -gt 0) {
         else { Say ('{0}: saved at {1:HH:mm:ss}' -f $run.Name, $saved) }
         # Let the save and the range cache's batched writes finish.
         Start-Sleep 15
-        $checkpoint = 'fpl_manager_runs/' + $run.Name
+        # Either slash: run_three_v3.cmd passes fpl_manager_runs/..., others fpl_manager_runs\...
+        $checkpoint = 'fpl_manager_runs[\\/]' + [regex]::Escape($run.Name)
         $all = Get-CimInstance Win32_Process
-        $roots = $all | Where-Object {
+        $roots = @($all | Where-Object {
             $_.Name -eq 'cmd.exe' -and $_.CommandLine -match 'run_manager_v3\.cmd' -and
-            $_.CommandLine -match ([regex]::Escape($checkpoint) + '(\s|"|$)')
+            $_.CommandLine -match ($checkpoint + '(\s|"|$)')
+        })
+        if (-not $roots) {
+            # Started with "call run_manager_v3.cmd" from another .cmd (such as
+            # swap_b0_for_lgbm_seed1.cmd): no cmd.exe names the checkpoint, so stop
+            # the nearest cmd.exe above the run's python processes instead.
+            $byId = @{}
+            foreach ($p in $all) { $byId[[int]$p.ProcessId] = $p }
+            $pythons = $all | Where-Object {
+                $_.Name -eq 'python.exe' -and $_.CommandLine -match '-m fpl_manager' -and
+                $_.CommandLine -match ('--checkpoint\s+"?' + $checkpoint + '(\s|"|$)')
+            }
+            $roots = @(foreach ($p in $pythons) {
+                $up = $byId[[int]$p.ParentProcessId]
+                while ($up -and $up.Name -ne 'cmd.exe') { $up = $byId[[int]$up.ParentProcessId] }
+                if ($up) { $up }
+            }) | Sort-Object ProcessId -Unique
         }
         foreach ($root in $roots) {
             & taskkill.exe /T /F /PID $root.ProcessId | Out-Null

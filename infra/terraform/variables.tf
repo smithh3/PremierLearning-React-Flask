@@ -72,7 +72,7 @@ variable "run_learning" {
 variable "premierlearning_args" {
   type        = string
   default     = ""
-  description = "Extra argv for premierlearning. The model is the learning_v2 blend the fantasy manager evaluation scored best (75% v2_log with a minutes-bands head, 25% v2_log with a 5-GW net) unless these args choose another: --v1 for the old model (e.g. \"--v1 --horizon-reps 5\"), or a v1 recipe such as --h1-poisson. v1-only flags like --horizon-reps are ignored by the blend. The pipeline always prepends --update so Fargate pulls live FPL injury/chance news; pass --no-update to skip."
+  description = "Extra argv for premierlearning. The model is LightGBM v6 (--learning-v2 --lightgbm, default since 2026-11-09; see api/premierlearning/live_model.py) unless these args choose another: --v2-blend for the previous learning_v2 blend, --lgbm-version v3 for the previous LightGBM, --v1 for the old model (e.g. \"--v1 --horizon-reps 5\"), or a v1 recipe such as --h1-poisson. v1-only flags like --horizon-reps are ignored by the v2 models. The pipeline always prepends --update so Fargate pulls live FPL injury/chance news; pass --no-update to skip."
 }
 
 variable "apply_within_hours" {

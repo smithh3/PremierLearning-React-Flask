@@ -1,5 +1,6 @@
 import unittest
 from collections import Counter, defaultdict
+from datetime import timedelta
 from types import SimpleNamespace
 from unittest.mock import patch
 
@@ -264,6 +265,19 @@ class HistoricalDataTests(unittest.TestCase):
             if not player.historical_selectable
         }
         self.assertTrue(unavailable_ids & flagged)
+
+    def test_end_of_season_can_select_false_is_ignored(self):
+        # 24/25's players_raw.csv was downloaded after the season: can_select
+        # is False for everyone, which is not deadline news.
+        source = VaastavSeasonData(24)
+        self.assertFalse(source.can_select_usable)
+        deadline = source.deadline_for_gameweek(20)
+        fit = {'status': 'a', 'can_select': 'False',
+               'news_added': (deadline - timedelta(days=30)).isoformat()}
+        self.assertFalse(source.known_unavailable(fit, 20))
+        self.assertTrue(source.known_unavailable(dict(fit, status='i'), 20))
+        source.can_select_usable = True
+        self.assertTrue(source.known_unavailable(fit, 20))
 
 
 if __name__ == '__main__':

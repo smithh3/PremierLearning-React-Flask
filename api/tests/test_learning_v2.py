@@ -1068,6 +1068,45 @@ class TeamHistoryTests(unittest.TestCase):
             )
         self.assertTrue(numpy.isfinite(fitted.predict(predict)).all())
 
+    def test_b0_plans_without_identity_embeddings_train(self):
+        """The id-free B0 plans: identity only from the as-of history encoders."""
+        from unittest import mock
+
+        from premierlearning.learning import PlayerNetHParams
+        from premierlearning.learning_v2 import train as train_module
+        from premierlearning.learning_v2.plan import input_specs
+        from premierlearning.learning_v2.score import LossWeighting
+
+        for name, gone in (('simple_h1_b0_nopid', ('player_id_embedding',)),
+                           ('simple_h1_b0_noids', ('player_id_embedding', 'team_id_embedding')),
+                           # Staged scoreline with no team ids: each side's goal bands
+                           # come from its fading averages and match history only.
+                           ('simple_h1_b0_noids_staged', ('player_id_embedding', 'team_id_embedding')),
+                           # B1 inputs (all-competition rest, load, DGW flags) with no ids.
+                           ('simple_h1_b1_noids', ('player_id_embedding', 'team_id_embedding'))):
+            season, _saka = _fixture_world()
+            plan = load_plan(name)
+            paths = [spec.path for spec in input_specs(plan)]
+            for suffix in gone:
+                self.assertFalse([path for path in paths if path.endswith(suffix)], name)
+            plan.config.history_len = 4
+            plan.config.max_squad = 3
+            plan.config.team_history_len = 4
+            plan.config.d_model = 8
+            plan.config.n_heads = 2
+            train, predict, vocab = build_dataset([season], plan, predict_season=season)
+            hparams = PlayerNetHParams()
+            hparams.n_hidden = 1
+            hparams.batch_size = 4
+            with mock.patch.object(train_module, 'EPOCHS', 1), \
+                    mock.patch.object(train_module.sys, 'argv', ['test', '--quick']):
+                fitted = train_module.fit_points(
+                    plan, vocab, train, hparams=hparams, loss_name='huber', reps=1,
+                    weighting=LossWeighting('none'), smear_mode='global',
+                    minutes_weight=0.1, minutes_target='bands',
+                )
+            self.assertTrue(numpy.isfinite(fitted.predict(predict)).all(), name)
+
     def test_old_plan_has_no_shared_tables(self):
         season, _saka = _fixture_world()
         plan = load_plan('simple_h1')
@@ -1742,6 +1781,135 @@ class StagedTests(unittest.TestCase):
                 minutes_weight=0.1, minutes_target='bands',
             )
         self.assertEqual(['points'], fitted.models[0].output_names)
+        points = fitted.predict(predict)
+        self.assertEqual((len(predict.matches),), points.shape)
+        self.assertTrue(numpy.isfinite(points).all())
+
+
+def _small_staged_v2_plan():
+    plan = _small_staged_plan()
+    plan.config.scoreline_squads = True
+    plan.config.score_xg_weight = 1.0
+    return plan
+
+
+class StagedV2Tests(unittest.TestCase):
+    """Staged with a squad summary in the scoreline and xG as a second scoreline target."""
+
+    def test_settings_parse_and_need_the_staged_structure(self):
+        from premierlearning.learning_v2.plan import PlanConfig
+
+        config = PlanConfig.from_dict({'points_structure': 'staged', 'scoreline_squads': True, 'score_xg_weight': 1})
+        self.assertTrue(config.scoreline_squads)
+        self.assertEqual(1.0, config.score_xg_weight)
+        with self.assertRaises(ValueError):
+            PlanConfig.from_dict({'points_structure': 'direct', 'scoreline_squads': True})
+        with self.assertRaises(ValueError):
+            PlanConfig.from_dict({'points_structure': 'staged', 'score_xg_weight': -1})
+
+    def test_score_targets_carry_the_team_xg_columns(self):
+        from types import SimpleNamespace
+
+        from premierlearning.learning_v2.dataset import score_targets
+
+        team = SimpleNamespace(scored=2, conceded=1)
+        matches = [SimpleNamespace(team_match=team)] * 2
+        xg = numpy.array([[1.7, 0.4, 1.0], [1.7, 0.4, 1.0]], dtype=numpy.float32)
+        targets = score_targets(matches, weighted=True, team_xg=xg)
+        self.assertEqual((2, 6), targets.shape)
+        numpy.testing.assert_allclose([2.0, 1.0, 1.0, 1.7, 0.4, 1.0], targets[0], rtol=1e-6)
+        with self.assertRaises(ValueError):
+            score_targets(matches, weighted=False, team_xg=xg)
+
+    def test_xg_term_is_zero_at_the_xg_and_skipped_without_it(self):
+        import tensorflow as tf
+
+        from premierlearning.learning_v2.staged import goal_band_loss, masked_goal_band_ce
+
+        self.assertIs(masked_goal_band_ce, goal_band_loss(0.0))
+        loss = goal_band_loss(1.0)
+        # Band means: for = 0.5 + 2 * 0.5 = 1.5; against = 1.0.
+        bands = numpy.array([[0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0]] * 3, dtype=numpy.float32)
+        y_true = tf.constant([
+            [1.0, 1.0, 1.0, 1.5, 1.0, 1.0],    # xG equals the means: only the band term
+            [1.0, 1.0, 1.0, 0.5, 2.0, 1.0],    # xG away from the means: adds deviance
+            [1.0, 1.0, 1.0, 0.5, 2.0, 0.0],    # xG unknown: only the band term
+        ])
+        values = loss(y_true, tf.constant(bands)).numpy()
+        base = masked_goal_band_ce(y_true[:, :3], tf.constant(bands)).numpy()
+        self.assertAlmostEqual(float(base[0]), float(values[0]), places=4)
+        deviance = (1.5 - 0.5 + 0.5 * numpy.log(0.5 / 1.5)) + (1.0 - 2.0 + 2.0 * numpy.log(2.0 / 1.0))
+        self.assertAlmostEqual(float(base[1]) + 0.5 * deviance, float(values[1]), places=4)
+        self.assertAlmostEqual(float(base[2]), float(values[2]), places=4)
+
+    def test_teammates_list_keeps_the_player_only_with_scoreline_squads(self):
+        season, saka = _fixture_world()
+        for flag in (False, True):
+            plan = _small_staged_plan()
+            plan.config.max_squad = 30
+            plan.config.scoreline_squads = flag
+            from premierlearning.learning_v2.dataset import _Catalog, Vocab
+
+            catalog = _Catalog([season], plan, Vocab())
+            match = saka.matches[-1]
+            row = catalog.row(saka, match, int(season.years[0]), False)
+            self.assertEqual(flag, any(player is saka for player in row.teammates))
+
+    def test_squad_scoreline_is_team_level_and_mirrored(self):
+        from premierlearning.learning import PlayerNetHParams
+        from premierlearning.learning_v2.model import build_model
+
+        season, _saka = _fixture_world()
+        plan = _small_staged_v2_plan()
+        train, _predict, vocab = build_dataset([season], plan, predict_season=season)
+        model = build_model(plan, vocab, PlayerNetHParams(), loss_name='huber', minutes_head='bands')
+        self.assertIn('squad_proj_team_shared', [layer.name for layer in model.layers])
+        x = {}
+        for spec in input_specs(plan):
+            if spec.key in train.table_inputs:
+                table, field, ref = train.table_inputs[spec.key]
+                x[spec.key] = train.tables[table][field][train.arrays[ref]]
+            else:
+                x[spec.key] = train.arrays[spec.key]
+        _points, _minutes, score = model.predict(x, verbose=0)
+        rows_by_side = {}
+        for index, match in enumerate(train.matches):
+            rows_by_side.setdefault((match.fixture_id, match.team.code), []).append(index)
+        checked = 0
+        for (fixture_id, code), rows in rows_by_side.items():
+            for row in rows[1:]:
+                numpy.testing.assert_allclose(score[rows[0]], score[row], atol=1e-5)
+                checked += 1
+            for (other_fixture, other_code), other_rows in rows_by_side.items():
+                if other_fixture == fixture_id and other_code != code:
+                    mine = score[rows[0]].reshape(2, 5)
+                    theirs = score[other_rows[0]].reshape(2, 5)
+                    numpy.testing.assert_allclose(mine[0], theirs[1], atol=1e-5)
+                    numpy.testing.assert_allclose(mine[1], theirs[0], atol=1e-5)
+                    checked += 1
+        self.assertTrue(checked)
+
+    def test_staged_v2_trains_with_xg_and_predicts_points_only(self):
+        from unittest import mock
+
+        from premierlearning.learning import PlayerNetHParams
+        from premierlearning.learning_v2 import train as train_module
+        from premierlearning.learning_v2.score import LossWeighting
+
+        season, _saka = _fixture_world()
+        plan = _small_staged_v2_plan()
+        train, predict, vocab = build_dataset([season], plan, predict_season=season)
+        self.assertEqual((len(train.matches), 3), train.team_xg.shape)
+        hparams = PlayerNetHParams()
+        hparams.n_hidden = 1
+        hparams.batch_size = 4
+        with mock.patch.object(train_module, 'EPOCHS', 1), \
+                mock.patch.object(train_module.sys, 'argv', ['test', '--quick']):
+            fitted = train_module.fit_points(
+                plan, vocab, train, hparams=hparams, loss_name='huber', reps=1,
+                weighting=LossWeighting('none'), smear_mode='global',
+                minutes_weight=0.1, minutes_target='bands',
+            )
         points = fitted.predict(predict)
         self.assertEqual((len(predict.matches),), points.shape)
         self.assertTrue(numpy.isfinite(points).all())

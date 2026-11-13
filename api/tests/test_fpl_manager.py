@@ -677,6 +677,22 @@ class CheckpointTests(unittest.TestCase):
         self.assertEqual(first, second)
         self.assertEqual(int(reloaded.num_timesteps), int(continued.num_timesteps))
 
+        # Resumed with other steps per process (more processes, same runs per
+        # update), the policy uses the new value, not the saved one.
+        regrouped = train_policy(
+            tiny_hold_factory,
+            directory,
+            total_timesteps=3,
+            resume=True,
+            n_steps=3,
+            batch_size=3,
+            n_epochs=1,
+        )
+        self.assertEqual(3, int(regrouped.n_steps))
+        self.assertEqual(3, int(regrouped.batch_size))
+        self.assertEqual(3, int(regrouped.rollout_buffer.buffer_size))
+        self.assertGreater(int(regrouped.num_timesteps), int(continued.num_timesteps))
+
         manifest_path = Path(directory) / 'manifest.json'
         manifest = json.loads(manifest_path.read_text())
         manifest['features'] = ['not-a-real-field']

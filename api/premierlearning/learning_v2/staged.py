@@ -3,9 +3,12 @@
 All three stages train together in one network (no out-of-fold stacking). The
 scoreline stage reads only team-level inputs: team and opponent ids, their
 fading averages and their match histories through one reader shared by both
-sides. Squads stay out of it (a player's teammates list leaves that player
-out, so it differs between teammates); they reach points through the
-player's own attention. One pair net gives goals for as f(us, them, home) and goals against
+sides. By default squads stay out of it (a player's teammates list leaves that
+player out, so it differs between teammates); they reach points through the
+player's own attention. With scoreline_squads the teammates list keeps the
+player, and one shared squad summary (projection, masked mean and max) joins
+each side. With score_xg_weight the bands' means are also fitted to match xG.
+One pair net gives goals for as f(us, them, home) and goals against
 as f(them, us, away), so a fixture's two sides are mirror images and every
 player in a team gets the same scoreline. Its loss weights each team fixture
 once (dataset.score_targets(weighted=True)).
@@ -42,6 +45,39 @@ def masked_goal_band_ce(y_true, y_pred):
         + tf.reduce_sum(tf.one_hot(goals_against, GOAL_BANDS) * log_against, axis=-1)
     )
     return -0.5 * picked * weight
+
+
+def band_means(y_pred):
+    """Expected goals for and against from the two band softmaxes, [n, 2]."""
+    values = tf.constant(GOAL_BAND_VALUES, dtype=y_pred.dtype)
+    goals_for = tf.reduce_sum(y_pred[:, :GOAL_BANDS] * values, axis=-1)
+    goals_against = tf.reduce_sum(y_pred[:, GOAL_BANDS:] * values, axis=-1)
+    return tf.stack([goals_for, goals_against], axis=-1)
+
+
+def goal_band_loss(xg_weight=0.0):
+    """masked_goal_band_ce, plus a Poisson deviance between each side's band mean and its xG.
+
+    With xg_weight above 0, y_true is [goals for, goals against, weight,
+    xG for, xG against, xG known]: rows without xG (FPL has it from 2022/23)
+    add nothing to that term. xG is far less noisy than goals, so it tells
+    the scoreline more about which side is likely to create chances.
+    """
+    xg_weight = float(xg_weight or 0.0)
+    if xg_weight <= 0:
+        return masked_goal_band_ce
+
+    def loss(y_true, y_pred):
+        base = masked_goal_band_ce(y_true[:, :3], y_pred)
+        known = tf.cast(y_true[:, 0] >= 0.0, y_pred.dtype) * y_true[:, 5]
+        weight = y_true[:, 2] * known
+        mean = tf.maximum(band_means(y_pred), 1e-4)
+        xg = tf.maximum(y_true[:, 3:5], 0.0)
+        deviance = mean - xg + tf.math.xlogy(xg, xg / mean)
+        return base + xg_weight * 0.5 * tf.reduce_sum(deviance, axis=-1) * weight
+
+    loss.__name__ = 'goal_band_xg_loss'
+    return loss
 
 
 class BandScorelinePoints(tf.keras.layers.Layer):

@@ -569,6 +569,7 @@ def build_html_report(opt, applied=False, n=POINTS_HORIZON) -> str:
 
     shown = relevant_players(opt, players, n)
     bands = uses_minutes_bands(shown)
+    gameweeks = window_gameweeks(shown, gameweek, n)
     parts.append(
         '<h2 style="margin:24px 0 8px">Player predictions (%d of %d)</h2>'
         '<p style="margin:0 0 10px;color:#444">Your squad, this week\'s and planned '
@@ -597,8 +598,8 @@ def build_html_report(opt, applied=False, n=POINTS_HORIZON) -> str:
         '<th rowspan="2">Price</th><th rowspan="2">Yours</th>'
         '<th rowspan="2">%dGW pts</th><th rowspan="2">Prev pp90</th>' % n
     )
-    for i in range(1, n + 1):
-        parts.append('<th colspan="3">Match %d</th>' % i)
+    for week in gameweeks:
+        parts.append('<th colspan="3">GW%d</th>' % week)
     parts.append('</tr><tr style="background:#374151;color:#fff">')
     for _ in range(n):
         parts.append('<th>Opp</th><th>Pts</th><th>%s</th>' % ('Mins 0/1-59/60+' if bands else 'Mins'))
@@ -615,7 +616,7 @@ def build_html_report(opt, applied=False, n=POINTS_HORIZON) -> str:
             last_position = position
         tag = tags.get(_player_id(player), '')
         style = 'background:%s' % ('#fef9c3' if tag else ('#f3f4f6' if idx % 2 else '#ffffff'))
-        cells = email_player_row(player, n, tag)
+        cells = email_player_row(player, n, tag, gameweeks=gameweeks)
         tds = ''.join('<td>%s</td>' % _esc(c) for c in cells)
         parts.append('<tr style="%s">%s</tr>' % (style, tds))
     parts.append('</tbody></table>')
@@ -701,6 +702,16 @@ def _points_note(players) -> str:
         for player in players or []
         for match in (getattr(player, 'future_matches', None) or [])
     )
+    from premierlearning.live_model import lightgbm_version, uses_lightgbm
+
+    if raw and uses_lightgbm():
+        version = lightgbm_version()
+        news = (', and FPL\'s injury and suspension news' if version == 'v6' else '')
+        return (
+            '<b>Pts</b> is LightGBM %s\'s expected points for the match (gradient-boosted '
+            'trees on the player\'s and both teams\' recent form%s). It already includes the '
+            'risk of not playing, so the optimiser uses it as it is.' % (version, news)
+        )
     if raw:
         return (
             '<b>Pts</b> is the blend model\'s expected points for the match (75% v2_log '
@@ -713,9 +724,44 @@ def _points_note(players) -> str:
     )
 
 
-def email_player_row(player, n: int, tag=''):
-    """One row per player: who, then opponent, points and minutes for each match."""
-    futs = _future_matches(player, n)
+BLANK = '-'
+
+
+def _match_gameweek(match):
+    try:
+        return int(getattr(match, 'gameweek', None))
+    except (TypeError, ValueError):
+        return None
+
+
+def window_gameweeks(players, start, n: int):
+    """The n gameweeks the table shows: from the next deadline (or the earliest fixture)."""
+    try:
+        first = int(start)
+    except (TypeError, ValueError):
+        weeks = [
+            week for player in players or []
+            for week in (_match_gameweek(m) for m in (getattr(player, 'future_matches', None) or []))
+            if week is not None
+        ]
+        first = min(weeks) if weeks else 1
+    return list(range(first, first + int(n)))
+
+
+def _minutes_cell(match) -> str:
+    bands = _match_bands(match)
+    if bands is None:
+        return '%.0f' % _match_minutes(match)
+    return '/'.join('%.0f' % (100.0 * value) for value in bands)
+
+
+def email_player_row(player, n: int, tag='', gameweeks=None):
+    """One row per player: who, then opponent, points and minutes in each gameweek.
+
+    With gameweeks, columns are those gameweeks: a double shows both fixtures
+    (opponents and minutes joined with " + ", points summed) and a blank shows
+    "-". Without, columns are the player's next n fixtures (the old layout).
+    """
     row = [
         _player_name(player),
         _player_team(player),
@@ -725,20 +771,20 @@ def email_player_row(player, n: int, tag=''):
         '%.1f' % _horizon_adj(player, n),
         '%.1f' % _last_n_appearance_pp90(player, LAST_5_WINDOW),
     ]
-    for i in range(n):
-        if i >= len(futs):
-            row.extend(['', '', ''])
+    if gameweeks is None:
+        futs = _future_matches(player, n)
+        groups = [[futs[i]] if i < len(futs) else [] for i in range(n)]
+    else:
+        futs = list(getattr(player, 'future_matches', None) or [])
+        groups = [[m for m in futs if _match_gameweek(m) == int(week)] for week in gameweeks]
+    for matches in groups:
+        if not matches:
+            row.extend([BLANK, '', ''] if gameweeks is not None else ['', '', ''])
             continue
-        match = futs[i]
-        bands = _match_bands(match)
-        if bands is None:
-            minutes = '%.0f' % _match_minutes(match)
-        else:
-            minutes = '/'.join('%.0f' % (100.0 * value) for value in bands)
         row.extend([
-            str(getattr(match, 'opponent', '') or ''),
-            '%.1f' % _match_adj(match),
-            minutes,
+            ' + '.join(str(getattr(m, 'opponent', '') or '') for m in matches),
+            '%.1f' % sum(_match_adj(m) for m in matches),
+            ' + '.join(_minutes_cell(m) for m in matches),
         ])
     return row
 

@@ -157,12 +157,42 @@ class EmailTests(unittest.TestCase):
             self.assertIn('<td>%s</td>' % tag, html)
 
     def test_minutes_bands_are_shown_as_percentages(self):
+        from unittest import mock
+
         from squadtools.predictions_report import build_html_report
 
-        html = build_html_report(self._opt(), applied=False)
+        with mock.patch.dict('os.environ', {'PREMIERLEARNING_ARGS': '--v2-blend'}):
+            html = build_html_report(self._opt(), applied=False)
         self.assertIn('Mins 0/1-59/60+', html)
         self.assertIn('<td>10/20/70</td>', html)
         self.assertIn('blend model', html)
+
+    def test_columns_are_gameweeks_with_doubles_and_blanks(self):
+        from unittest import mock
+
+        from squadtools.predictions_report import build_html_report, email_player_row
+
+        html = build_html_report(self._opt(), applied=False)
+        for week in range(10, 15):
+            self.assertIn('<th colspan="3">GW%d</th>' % week, html)
+        self.assertNotIn('Match 1', html)
+        player = _player(5, 3, 10.0)
+        # GW11 blank, GW12 double.
+        player.future_matches[1].gameweek = 12
+        player.future_matches[1].opponent = 'TWO'
+        row = email_player_row(player, 5, gameweeks=[10, 11, 12, 13, 14])
+        cells = row[7:]
+        self.assertEqual(['OPP', '2.0', '10/20/70'], cells[0:3])
+        self.assertEqual(['-', '', ''], cells[3:6])
+        # Fixture order (the moved fixture comes first in the list).
+        self.assertEqual(['TWO + OPP', '4.0', '10/20/70 + 10/20/70'], cells[6:9])
+        with mock.patch.dict('os.environ', {'PREMIERLEARNING_ARGS': '--learning-v2 --lightgbm'}):
+            self.assertIn('LightGBM v6', build_html_report(self._opt(), applied=False))
+        # The default (no model in the args) is LightGBM v6 too; v3 on request.
+        with mock.patch.dict('os.environ', {'PREMIERLEARNING_ARGS': '--horizon-reps 5'}):
+            self.assertIn('LightGBM v6', build_html_report(self._opt(), applied=False))
+        with mock.patch.dict('os.environ', {'PREMIERLEARNING_ARGS': '--lightgbm --lgbm-version v3'}):
+            self.assertIn('LightGBM v3', build_html_report(self._opt(), applied=False))
 
     def test_text_email_has_no_scorelines(self):
         from squadtools.predictions_report import build_text_report

@@ -261,10 +261,150 @@ EXPERIMENTS = {
         ],
         'note': 'v2_b1_context with a team-level scoreline in goal bands feeding points (minutes, scoreline, points).',
     },
+    'v2_b1_staged_v2': {
+        'args': _V2 + [
+            '--v2-weighting', 'none', '--v2-loss', 'huber', '--v2-smear', 'global',
+            '--v2-minutes-head', '0.1', '--v2-minutes-target', 'bands',
+            '--model-plan', 'simple_h1_b1_staged_v2', '--seed', '42',
+        ],
+        'note': 'v2_b1_staged whose scoreline also reads both squads and fits match xG as well as goals.',
+    },
+    # LightGBM (gradient-boosted trees, not a net) on the rows and inputs the net
+    # with that plan sees, flattened into columns by premierlearning/lgbm. Squared
+    # error on raw points, so it predicts expected points directly. LIGHTGBM_PLAN.md.
+    'lgbm_v1': {
+        'args': ['--lightgbm', '--train-once-per-season', '--lgbm-plan', 'simple_h1'],
+        'note': 'LightGBM v1: the original v2 inputs (player history, past seasons, squads, team form) as columns.',
+    },
+    'lgbm_v2': {
+        'args': ['--lightgbm', '--train-once-per-season', '--lgbm-plan', 'simple_h1_b1'],
+        'note': 'LightGBM v2: B1 inputs (adds 3-season team histories with xG, rest / congestion, DGW flags, minutes load).',
+    },
+    'lgbm_v2_rules': {
+        'args': ['--lightgbm', '--train-once-per-season', '--lgbm-plan', 'simple_h1_b1', '--lgbm-rules', 'safe'],
+        'note': 'lgbm_v2 with the safe monotone rules (e.g. more recent xG or a weaker opponent never lowers points).',
+    },
+    # Feature set 2: many windows on every history, trends, same-venue form,
+    # fixture matchup columns and xG shares; 3 seeds averaged.
+    'lgbm_v3': {
+        'args': ['--lightgbm', '--train-once-per-season', '--lgbm-plan', 'simple_h1_b1',
+                 '--lgbm-features', '2', '--lgbm-no-ids', '--lgbm-seeds', '3'],
+        'note': 'LightGBM v3: B1 inputs, feature set 2 (more windows, trends, venue, matchups), no team ids, 3 seeds.',
+    },
+    'lgbm_v3_ids': {
+        'args': ['--lightgbm', '--train-once-per-season', '--lgbm-plan', 'simple_h1_b1',
+                 '--lgbm-features', '2', '--lgbm-seeds', '3'],
+        'note': 'lgbm_v3 with the team and opponent id columns kept: isolates the ids.',
+    },
+    'lgbm_v3_simple': {
+        'args': ['--lightgbm', '--train-once-per-season', '--lgbm-plan', 'simple_h1',
+                 '--lgbm-features', '2', '--lgbm-no-ids', '--lgbm-seeds', '3'],
+        'note': 'lgbm_v3 on the v1 inputs (no team histories, rest or load): is the best LightGBM the simple one?',
+    },
+    # v3 variants (2026-11-05): ranking objective, linear leaves, and ways to
+    # let the team ids back in without the trees memorising stale identities.
+    'lgbm_v3_rank': {
+        'args': ['--lightgbm', '--train-once-per-season', '--lgbm-plan', 'simple_h1_b1',
+                 '--lgbm-features', '2', '--lgbm-no-ids', '--lgbm-seeds', '3', '--lgbm-objective', 'lambdarank'],
+        'note': 'lgbm_v3 trained to order players within each gameweek (lambdarank); scores mapped to points by percentile.',
+    },
+    'lgbm_v3_linear': {
+        'args': ['--lightgbm', '--train-once-per-season', '--lgbm-plan', 'simple_h1_b1',
+                 '--lgbm-features', '2', '--lgbm-no-ids', '--lgbm-seeds', '3', '--lgbm-linear'],
+        'note': 'lgbm_v3 with linear leaves (each leaf a small line, not a constant).',
+    },
+    'lgbm_v3_id_stage': {
+        'args': ['--lightgbm', '--train-once-per-season', '--lgbm-plan', 'simple_h1_b1',
+                 '--lgbm-features', '2', '--lgbm-seeds', '3', '--lgbm-id-stage'],
+        'note': 'lgbm_v3 plus a separate team-id correction that must earn its rounds on the held-out season.',
+    },
+    'lgbm_v3_recent': {
+        'args': ['--lightgbm', '--train-once-per-season', '--lgbm-plan', 'simple_h1_b1',
+                 '--lgbm-features', '2', '--lgbm-no-ids', '--lgbm-seeds', '3', '--lgbm-recency', '2'],
+        'note': 'lgbm_v3 with older seasons down-weighted (weight halves every 2 seasons back).',
+    },
+    'lgbm_v3_id_stage_recent': {
+        'args': ['--lightgbm', '--train-once-per-season', '--lgbm-plan', 'simple_h1_b1',
+                 '--lgbm-features', '2', '--lgbm-seeds', '3', '--lgbm-id-stage', '--lgbm-recency', '2'],
+        'note': 'lgbm_v3_id_stage with recency weights, so the ids reflect recent seasons more.',
+    },
     'v2_poisson': {
         'args': _V2_TEST + ['--v2-weighting', 'none', '--v2-loss', 'poisson'],
         'note': 'v2, no weights, Poisson loss: fits the mean, softplus output, negative scores floored at 0.',
     },
+}
+
+# Retraining every 5 gameweeks (2026-11-05, Hal asked): refit at GW1, 6, ..., 36,
+# each fit trained on every label before its gameweek. For the net this also
+# rebuilds the vocab (new players get embeddings) and slides the team time
+# blocks, so block 0 is always the 38 gameweeks before the fit. Same settings as
+# the once-per-season originals otherwise, so the schedule is the only change.
+EXPERIMENTS['v2_b1_every5'] = {
+    'args': EXPERIMENTS['v2_b1_context']['args'] + ['--retrain-every', '5'],
+    'note': 'v2_b1_context refitted every 5 GWs: recent-season team blocks and player embeddings kept current.',
+}
+# Identity look-ahead (2026-11-05, Hal asked): a lookup embedding is learned from
+# all of a player's (or team's) training rows, later ones included, so on older
+# rows it "knows" his future level, and the random validation split cannot see
+# that. These B0 copies drop the lookups, so identity comes only from the
+# history encoders, which read matches before each row. Same settings as
+# v2_b0_seed1 / seed2 (the noise floor), only the plan differs.
+for _name, _plan, _note in (
+        ('v2_b0_nopid', 'simple_h1_b0_nopid', 'B0 without player id embeddings (player, teammates, opponents).'),
+        ('v2_b0_noids', 'simple_h1_b0_noids', 'B0 without any id embeddings: players and teams only via their histories.'),
+        # 2026-11-06, Hal asked: the no-id B0 with the scoreline built into points
+        # (minutes bands -> team goal bands from both histories -> points), as v2_b1_staged.
+        ('v2_b0_noids_staged', 'simple_h1_b0_noids_staged',
+         'v2_b0_noids with a staged scoreline: minutes bands and team goal bands (from both histories) feed points.')):
+    _args = list(EXPERIMENTS['v2_b0_seed1']['args'])
+    _args[_args.index('--model-plan') + 1] = _plan
+    EXPERIMENTS[_name] = {'args': _args, 'note': _note}
+# 2026-11-07, Hal asked for the best net, preferring one that uses more data, over
+# three seasons: v2_b1_context's inputs (B0 plus all-competition rest, load and
+# DGW flags) without the id embeddings that held B0 back. Plan made from
+# simple_h1_b1 by dropping every *_id_embedding key, as simple_h1_b0_noids was.
+_args = list(EXPERIMENTS['v2_b1_context']['args'])
+_args[_args.index('--model-plan') + 1] = 'simple_h1_b1_noids'
+EXPERIMENTS['v2_b1_noids'] = {
+    'args': _args,
+    'note': 'B1 (B0 plus all-competition rest / congestion, DGW flags, minutes load) without any id embeddings.',
+}
+for _name in [name for name in EXPERIMENTS if name.startswith('lgbm_v3')]:
+    EXPERIMENTS[_name + '_every5'] = {
+        'args': EXPERIMENTS[_name]['args'] + ['--retrain-every', '5'],
+        'note': '%s refitted every 5 GWs (hold-out: the newest 38 GWs before each fit).' % _name,
+    }
+# 2026-11-07, Hal asked for all three: aimed at LightGBM's overrated top picks
+# (its top 5 by prediction score ~2.7 fewer points over 5 GWs than predicted)
+# and its flat fixture swings. Defined after the _every5 loop: no twins.
+EXPERIMENTS['lgbm_v3_tweedie'] = {
+    'args': EXPERIMENTS['lgbm_v3']['args'] + ['--lgbm-objective', 'tweedie'],
+    'note': 'lgbm_v3 with the Tweedie objective (power 1.3; suits mostly-small, sometimes-large points).',
+}
+_args = list(EXPERIMENTS['lgbm_v3']['args'])
+_args[_args.index('--lgbm-features') + 1] = '3'
+EXPERIMENTS['lgbm_v4'] = {
+    'args': _args,
+    'note': 'lgbm_v3 with feature set 3: team ratings (time-decayed Poisson, goals and xG), what the opponent '
+            'concedes to each position, shrunk per-90s and competition for his place.',
+}
+EXPERIMENTS['lgbm_v5'] = {
+    'args': EXPERIMENTS['lgbm_v4']['args'] + ['--lgbm-staged'],
+    'note': 'lgbm_v4 inputs in stages: minutes bands, clean sheet and the rest of the points, combined with FPL scoring.',
+}
+# 2026-11-07, Hal asked: FPL's own player news beyond the flat chance (status,
+# injury type, days to the expected return, how long flagged, a 0-10 certainty).
+# Data: python -m premierlearning.lgbm.news (21/22-25/26 deadlines).
+_args = list(EXPERIMENTS['lgbm_v4']['args'])
+_args[_args.index('--lgbm-features') + 1] = '4'
+EXPERIMENTS['lgbm_v6'] = {
+    'args': _args,
+    'note': 'lgbm_v4 with feature set 4: FPL player news (status, injury type, days to expected return, '
+            'days flagged, chance change, 0-10 certainty).',
+}
+EXPERIMENTS['lgbm_v6_staged'] = {
+    'args': EXPERIMENTS['lgbm_v6']['args'] + ['--lgbm-staged'],
+    'note': 'lgbm_v5 (staged) with feature set 4: the news columns feed the minutes stage too.',
 }
 
 DERIVED = {

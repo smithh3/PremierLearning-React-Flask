@@ -1,0 +1,80 @@
+Model evaluation against v1, seasons 25, 38 origins
+Scores are in noise units: 1.0 = one bootstrap standard deviation of that metric for v1.
+Positive is better than v1; v1 scores 0 by definition.
+Each metric is capped at +-3 before weighting; "uncapped" is the old total.
+
+model               total       95% interval   P(>0)  overall   future    calib  ranking fixtures  uncapped
+v2_b0_noids         +2.20       [1.75, 2.41]    1.00    +3.00    +2.05    +3.00    +2.36    +0.25     +4.34
+v2_b0_nopid         +2.10       [1.80, 2.28]    1.00    +3.00    +1.62    +3.00    +2.41    +0.14     +3.86
+lgbm_v3             +1.87       [1.53, 2.16]    1.00    +3.00    +0.76    +3.00    +2.36    -0.04     +4.56
+v2_b0_seed2         +1.69       [1.11, 2.03]    1.00    +2.97    +1.32    +3.00    +1.41    -0.24     +3.28
+v2_b0_seed1         +1.67       [1.11, 2.04]    1.00    +3.00    +1.33    +3.00    +1.19    -0.02     +3.31
+v1_cal              +1.19       [1.08, 1.33]    1.00    +2.66    +1.29    +3.00    +0.03    -0.54     +3.12
+
+What drove each score:
+  v2_b0_noids: helped most by overall +0.66, five_gw_rank +0.42
+    B0 without any id embeddings: players and teams only via their histories.
+  v2_b0_nopid: helped most by overall +0.66, five_gw_rank +0.42
+    B0 without player id embeddings (player, teammates, opponents).
+  lgbm_v3: helped most by overall +0.66, five_gw_rank +0.42; regressed on 2B_predicted (-3.00 sd)
+    LightGBM v3: B1 inputs, feature set 2 (more windows, trends, venue, matchups), no team ids, 3 seeds.
+  v2_b0_seed2: helped most by overall +0.65, calibration +0.39
+    v2_b0_seed1 with seed 43: the training-noise floor.
+  v2_b0_seed1: helped most by overall +0.66, calibration +0.39
+    Wave A winner retrained on the full 2021/22 data, seed 42: base for the external-data runs.
+  v1_cal: helped most by overall +0.58, calibration +0.39
+    v1 plus the same rolling linear calibration.
+
+By season (total):
+  v2_b0_noids      25 +2.20
+  v2_b0_nopid      25 +2.10
+  lgbm_v3          25 +1.87
+  v2_b0_seed2      25 +1.69
+  v2_b0_seed1      25 +1.67
+  v1_cal           25 +1.19
+
+Non-overlapping 5-GW origins only (sensitivity check, same sigmas):
+  v2_b0_noids      total +2.16, future +2.35, ranking +1.99
+  v2_b0_nopid      total +2.18, future +2.34, ranking +2.21
+  lgbm_v3          total +2.16, future +2.14, ranking +2.40
+  v2_b0_seed2      total +1.75, future +2.02, ranking +1.10
+  v2_b0_seed1      total +1.70, future +1.84, ranking +0.73
+  v1_cal           total +1.23, future +1.34, ranking +0.03
+
+Guardrail flags:
+  v1_cal: overall_mae is 6.5% worse than v1
+
+Raw metrics (pooled):
+  model             overall_mse  overall_mae overall_bias    2A_actual 2A_predicted    2B_actual 2B_predicted calibration_ calibration_ spearman_sin spearman_fiv
+  v1                      7.615        1.653       -0.712       17.742        8.369        4.306        2.770        0.712        0.848        0.552        0.554
+  v2_b0_noids             6.960        1.680       -0.272       16.616        7.394        4.178        2.701        0.272        1.070        0.579        0.603
+  v2_b0_nopid             7.006        1.660       -0.337       16.979        7.494        4.197        2.712        0.337        1.099        0.581        0.604
+  lgbm_v3                 6.895        1.686       -0.242       15.595        8.228        4.081        2.943        0.242        1.012        0.579        0.616
+  v2_b0_seed2             7.094        1.684       -0.332       16.896        7.867        4.194        2.742        0.332        1.043        0.564        0.583
+  v2_b0_seed1             7.086        1.686       -0.331       16.391        7.972        4.165        2.794        0.331        0.993        0.559        0.581
+  v1_cal                  7.149        1.760       -0.170       16.955        8.014        4.216        2.696        0.265        1.018        0.559        0.550
+
+Fixture swings: players who played 60+ minutes in each of the next five gameweeks,
+one fixture each. corr: predicted rises and falls vs real ones (higher is better).
+slope: real swing per point of predicted swing (1 is right; above 1, the model's
+swings are too small). mse: error on the swings.
+  model                    corr        slope          mse            n
+  v1                      0.150        1.246        7.996        14885
+  v2_b0_noids             0.156        2.707        8.053        14885
+  v2_b0_nopid             0.153        2.923        8.064        14885
+  lgbm_v3                 0.149        1.179        7.994        14885
+  v2_b0_seed2             0.145        2.116        8.049        14885
+  v2_b0_seed1             0.150        1.924        8.031        14885
+  v1_cal                  0.138        1.906        8.052        14885
+
+Slices (next gameweek only; bias = predicted minus actual points, plain units):
+  slice                                      n  actual                     v1            v2_b0_seed1            v2_b0_seed2            v2_b0_nopid            v2_b0_noids                lgbm_v3                 v1_cal
+                                                                   bias / MAE             bias / MAE             bias / MAE             bias / MAE             bias / MAE             bias / MAE             bias / MAE
+  all_rows                               15052    2.21           -0.71 / 1.65           -0.33 / 1.69           -0.33 / 1.68           -0.34 / 1.66           -0.27 / 1.68           -0.24 / 1.69           -0.17 / 1.76
+  slice_club_match_3_4d_before            5817    2.36           -0.80 / 1.78           -0.38 / 1.80           -0.39 / 1.80           -0.40 / 1.78           -0.33 / 1.79           -0.28 / 1.80           -0.23 / 1.87
+  slice_club_match_le4d                   5835    2.35           -0.79 / 1.78           -0.38 / 1.80           -0.39 / 1.80           -0.40 / 1.78           -0.33 / 1.79           -0.28 / 1.80           -0.23 / 1.87
+  slice_nonpl_match_le4d                  3095    2.35           -0.80 / 1.82           -0.36 / 1.86           -0.36 / 1.85           -0.39 / 1.83           -0.32 / 1.85           -0.26 / 1.86           -0.26 / 1.92
+  slice_dgw_leg                            198    4.66           -1.38 / 2.91           -0.78 / 2.74           -0.76 / 2.78           -0.71 / 2.67           -0.49 / 2.65           -0.44 / 2.63           -0.26 / 2.92
+  slice_gw_before_blank                    197    3.75           -1.08 / 2.40           -0.57 / 2.35           -0.55 / 2.39           -0.52 / 2.29           -0.35 / 2.28           -0.31 / 2.29           -0.16 / 2.44
+  slice_new_manager_first10               2831    2.00           -0.74 / 1.55           -0.34 / 1.56           -0.33 / 1.56           -0.35 / 1.54           -0.28 / 1.56           -0.30 / 1.56           -0.18 / 1.67
+  slice_after_intl_break_played            686    2.36           -0.64 / 1.72           -0.28 / 1.77           -0.30 / 1.76           -0.32 / 1.71           -0.25 / 1.73           -0.21 / 1.78           -0.29 / 1.76

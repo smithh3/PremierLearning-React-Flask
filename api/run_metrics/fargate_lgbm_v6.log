@@ -1,0 +1,312 @@
+2026-11-09 10:36:49 ===== Started
+2026-11-09 10:49:57 Crawl: ==== crawl exit 0 09/11/2026 10:49:45.58 
+2026-11-09 10:59:04 Paused v3_lgbm_v6_seed1; free MB 1533
+2026-11-09 10:59:32 Docker ready
+Login Succeeded
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.20kB 0.0s done
+#1 WARN: FromPlatformFlagConstDisallowed: FROM --platform flag should not use constant value "linux/amd64" (line 1)
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/python:3.8-bullseye
+#2 DONE 4.3s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 385B done
+#3 DONE 0.1s
+
+#4 [1/8] FROM docker.io/library/python:3.8-bullseye@sha256:11da1db2f485e2560be9817f92932a29f68fefc332b0167e8c51ae308ee23337
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 16.68MB 4.6s
+#5 transferring context: 64.42MB 9.7s
+#5 transferring context: 65.71MB 15.6s
+#5 transferring context: 65.72MB 25.5s
+#5 transferring context: 87.99MB 30.5s
+#5 transferring context: 101.98MB 34.0s done
+#5 DONE 34.5s
+
+#6 [2/8] WORKDIR /app
+#6 CACHED
+
+#7 [3/8] COPY requirements.txt requirements-pipeline.txt ./
+#7 CACHED
+
+#8 [4/8] RUN sed -i         -e 's/^h5py==3.2.1/h5py==2.10.0/'         -e 's/^numpy==1.20.1/numpy==1.19.5/'         requirements.txt     && pip install --no-cache-dir --use-deprecated=legacy-resolver -r requirements-pipeline.txt     && python -m playwright install-deps chromium     && python -m playwright install chromium
+#8 CACHED
+
+#9 [5/8] RUN pip install --no-cache-dir lightgbm==4.6.0
+#9 CACHED
+
+#10 [6/8] COPY database ./database
+#10 CACHED
+
+#11 [7/8] COPY api ./api
+#11 DONE 69.6s
+
+#12 [8/8] WORKDIR /app/api
+#12 DONE 0.0s
+
+#13 exporting to image
+#13 exporting layers
+#13 exporting layers 11.5s done
+#13 writing image sha256:c3b9afde146e12cc3fbac001705d3afbb67c7045337f50b5c57b693ecebfd023 0.0s done
+#13 naming to 497087878047.dkr.ecr.eu-west-2.amazonaws.com/premierlearning:lgbm 0.0s done
+#13 DONE 11.7s
+
+ [33m1 warning found (use docker --debug to expand):
+[0m - FromPlatformFlagConstDisallowed: FROM --platform flag should not use constant value "linux/amd64" (line 1)
+2026-11-09 11:01:45 Build exit 0
+..................................LightGBM v3 live: plan simple_h1, feature set 2, team ids left out, 2 seeds
+  8 train rows, 1 predict rows
+lightgbm regression: 8 rows x 252 columns, 500 rounds
+  average of 2 seeds
+  one season only: no hold-out, 500 rounds
+  top 30 columns by gain (share of all splits' gain):
+    1  position                                                  0.0%
+    2  hist.assists.per90_5                                      0.0%
+    3  hist.assists.per90_10                                     0.0%
+    4  hist.assists.per90_20                                     0.0%
+    5  hist.assists.per90_50                                     0.0%
+    6  hist.defcon.per90_3                                       0.0%
+    7  hist.defcon.per90_5                                       0.0%
+    8  hist.defcon.per90_10                                      0.0%
+    9  hist.defcon.per90_20                                      0.0%
+   10  hist.defcon.per90_50                                      0.0%
+   11  hist.played_share3                                        0.0%
+   12  hist.sixty_share3                                         0.0%
+   13  hist.played_share5                                        0.0%
+   14  hist.sixty_share5                                         0.0%
+   15  hist.played_share10                                       0.0%
+   16  hist.sixty_share10                                        0.0%
+   17  hist.played_share20                                       0.0%
+   18  hist.sixty_share20                                        0.0%
+   19  hist.played_share50                                       0.0%
+   20  hist.sixty_share50                                        0.0%
+   21  hist.since_played                                         0.0%
+   22  hist.since_sixty                                          0.0%
+   23  seasons.count                                             0.0%
+   24  seasons.seasons_before.last                               0.0%
+   25  seasons.seasons_before.before                             0.0%
+   26  seasons.played.last                                       0.0%
+   27  seasons.played.before                                     0.0%
+   28  seasons.points_per_90.last                                0.0%
+   29  hist.assists.per90_3                                      0.0%
+   30  hist.goals.per90_50                                       0.0%
+Top 10 predicted points over the next 5 gameweeks (GW1-5), LightGBM v3
+    #  Player                       Team     Total    GW1    GW2    GW3    GW4    GW5
+    1  player                                 2.38      -      -      -   2.38      -
+LightGBM v6 live: plan simple_h1_teams, feature set 4, team ids left out, 2 seeds
+  8 train rows, 1 predict rows
+lightgbm regression: 8 rows x 496 columns, 500 rounds
+  average of 2 seeds
+  one season only: no hold-out, 500 rounds
+  top 30 columns by gain (share of all splits' gain):
+    1  position                                                  0.0%
+    2  team_hist.xg_against.mean5                                0.0%
+    3  team_hist.xg_against.mean3                                0.0%
+    4  team_hist.xg_against.mean1                                0.0%
+    5  team_hist.xg_for.venue10                                  0.0%
+    6  team_hist.xg_for.trend5_38                                0.0%
+    7  team_hist.xg_for.faded38                                  0.0%
+    8  team_hist.xg_for.faded10                                  0.0%
+    9  team_hist.xg_for.faded3                                   0.0%
+   10  team_hist.xg_for.mean114                                  0.0%
+   11  team_hist.xg_for.mean76                                   0.0%
+   12  team_hist.xg_for.mean38                                   0.0%
+   13  team_hist.xg_for.mean19                                   0.0%
+   14  team_hist.xg_for.mean10                                   0.0%
+   15  team_hist.xg_for.mean5                                    0.0%
+   16  team_hist.xg_for.mean3                                    0.0%
+   17  team_hist.xg_for.mean1                                    0.0%
+   18  team_hist.goals_against.venue10                           0.0%
+   19  team_hist.goals_against.trend5_38                         0.0%
+   20  team_hist.goals_against.faded38                           0.0%
+   21  team_hist.goals_against.faded10                           0.0%
+   22  team_hist.goals_against.faded3                            0.0%
+   23  team_hist.goals_against.mean114                           0.0%
+   24  team_hist.goals_against.mean76                            0.0%
+   25  team_hist.goals_against.mean38                            0.0%
+   26  team_hist.goals_against.mean19                            0.0%
+   27  team_hist.goals_against.mean10                            0.0%
+   28  team_hist.goals_against.mean5                             0.0%
+   29  team_hist.xg_against.mean10                               0.0%
+   30  team_hist.goals_against.mean3                             0.0%
+Top 10 predicted points over the next 5 gameweeks (GW1-5), LightGBM v6
+    #  Player                       Team     Total    GW1    GW2    GW3    GW4    GW5
+    1  player                                 2.38      -      -      -   2.38      -
+.....Skipping complete snapshot 25/26 GW1
+Skipping complete snapshot 25/26 GW2
+Skipping complete snapshot 25/26 GW3
+Skipping complete snapshot 25/26 GW4
+Skipping complete snapshot 25/26 GW5
+Skipping complete snapshot 25/26 GW6
+Skipping complete snapshot 25/26 GW7
+
+Refitting for 25/26 GW6-10 (every 5 GWs)
+Stopping after 1 fit(s) (PL_RETRAIN_MAX_FITS=1); run again to continue
+.Skipping complete snapshot 25/26 GW1
+Skipping complete snapshot 25/26 GW2
+Skipping complete snapshot 25/26 GW3
+Skipping complete snapshot 25/26 GW4
+Skipping complete snapshot 25/26 GW5
+Skipping complete snapshot 25/26 GW6
+Skipping complete snapshot 25/26 GW7
+
+Refitting for 25/26 GW6-10 (every 5 GWs)
+
+Refitting for 25/26 GW11-15 (every 5 GWs)
+...Training one fixed LightGBM model on plan simple_h1 as of GW1...
+  8 train rows, 173 columns (3 categorical), feature set 1, 2 teams (vocab frozen)
+lightgbm regression: 8 rows x 173 columns, 500 rounds
+  one season only: no hold-out, 500 rounds
+  top 30 columns by gain (share of all splits' gain):
+    1  position                                                  0.0%
+    2  seasons.points_per_90.before                              0.0%
+    3  seasons.xgi_per_90.last                                   0.0%
+    4  seasons.xgi_per_90.before                                 0.0%
+    5  seasons.minutes.last                                      0.0%
+    6  seasons.minutes.before                                    0.0%
+    7  team_squad.count                                          0.0%
+    8  team_squad.xG_last_n.sum                                  0.0%
+    9  team_squad.xG_last_n.mean                                 0.0%
+   10  team_squad.xG_last_n.top11                                0.0%
+   11  team_squad.xG_last_n.max                                  0.0%
+   12  team_squad.xA_last_n.sum                                  0.0%
+   13  team_squad.xA_last_n.mean                                 0.0%
+   14  team_squad.xA_last_n.top11                                0.0%
+   15  team_squad.xA_last_n.max                                  0.0%
+   16  team_squad.goals_last_n.sum                               0.0%
+   17  team_squad.goals_last_n.mean                              0.0%
+   18  team_squad.goals_last_n.top11                             0.0%
+   19  seasons.points_per_90.last                                0.0%
+   20  seasons.played.before                                     0.0%
+   21  seasons.played.last                                       0.0%
+   22  seasons.seasons_before.before                             0.0%
+   23  hist.xGC.per90_50                                         0.0%
+   24  hist.goals.per90_5                                        0.0%
+   25  hist.goals.per90_10                                       0.0%
+   26  hist.goals.per90_50                                       0.0%
+   27  hist.assists.per90_5                                      0.0%
+   28  hist.assists.per90_10                                     0.0%
+   29  hist.assists.per90_50                                     0.0%
+   30  hist.defcon.per90_5                                       0.0%
+..Training one fixed LightGBM model on plan simple_h1_teams as of GW1...
+  8 train rows, 469 columns (3 categorical), feature set 3, 2 teams (vocab frozen)
+lightgbm staged (minutes, clean sheet, rest of points): 8 rows x 469 columns
+  minutes            8 rows, 500 rounds
+  clean_sheet        3 rows, 500 rounds
+  rest               7 rows, 500 rounds
+  minutes stage:
+  top 15 columns by gain (share of all splits' gain):
+    1  position                                                  0.0%
+    2  team_hist.goals_against.mean114                           0.0%
+    3  team_hist.goals_against.mean76                            0.0%
+    4  team_hist.goals_against.mean38                            0.0%
+    5  team_hist.goals_against.mean19                            0.0%
+    6  team_hist.goals_against.mean10                            0.0%
+    7  team_hist.goals_against.mean5                             0.0%
+    8  team_hist.goals_against.mean3                             0.0%
+    9  team_hist.goals_against.mean1                             0.0%
+   10  team_hist.goals_for.venue10                               0.0%
+   11  team_hist.goals_for.trend5_38                             0.0%
+   12  team_hist.goals_for.faded38                               0.0%
+   13  team_hist.goals_for.faded10                               0.0%
+   14  team_hist.goals_for.faded3                                0.0%
+   15  team_hist.goals_for.mean114                               0.0%
+  rest-of-points stage:
+  top 15 columns by gain (share of all splits' gain):
+    1  position                                                  0.0%
+    2  team_hist.goals_against.faded3                            0.0%
+    3  team_hist.goals_against.mean114                           0.0%
+    4  team_hist.goals_against.mean76                            0.0%
+    5  team_hist.goals_against.mean38                            0.0%
+    6  team_hist.goals_against.mean19                            0.0%
+    7  team_hist.goals_against.mean10                            0.0%
+    8  team_hist.goals_against.mean5                             0.0%
+    9  team_hist.goals_against.mean3                             0.0%
+   10  team_hist.goals_against.mean1                             0.0%
+   11  team_hist.goals_for.venue10                               0.0%
+   12  team_hist.goals_for.trend5_38                             0.0%
+   13  team_hist.goals_for.faded38                               0.0%
+   14  team_hist.goals_for.faded10                               0.0%
+   15  team_hist.goals_for.faded3                                0.0%
+.........................Live strategy: sweep trial 39_stuck_rot, planning 6 weeks ahead
+Live strategy: first two bench slots 0.25, other bench slots 0
+.Live strategy: sweep trial 39_stuck_rot, planning 6 weeks ahead
+Live strategy: first two bench slots 0.25, other bench slots 0
+.Live strategy: sweep trial 39_stuck_rot, planning 6 weeks ahead
+Live strategy: first two bench slots 0.25, other bench slots 0
+.Live strategy: sweep trial 39_stuck_rot, planning 6 weeks ahead
+Live strategy: first two bench slots 0.25, other bench slots 0
+.Live strategy: sweep trial 39_stuck_rot, planning 6 weeks ahead
+Live strategy: first two bench slots 0.25, other bench slots 0
+.Live strategy: sweep trial 39_stuck_rot, planning 6 weeks ahead
+Live strategy: skipping bench fill pass (SKIP_BENCH_FILL)
+.........................
+----------------------------------------------------------------------
+Ran 100 tests in 7.369s
+
+OK
+2026-11-09 11:02:34 Tests inside the image exit 0
+The push refers to repository [497087878047.dkr.ecr.eu-west-2.amazonaws.com/premierlearning]
+5f70bf18a086: Preparing
+3f33a36fd11d: Preparing
+13b90fcdd3a6: Preparing
+a9bac66bccf0: Preparing
+652edc052a6e: Preparing
+9182aac14b05: Preparing
+f3f9d1dbae11: Preparing
+9182aac14b05: Waiting
+c0df3d2ba15a: Preparing
+f3f9d1dbae11: Waiting
+eeb8dfdae942: Preparing
+c0df3d2ba15a: Waiting
+eeb8dfdae942: Waiting
+02c8e9e369bc: Preparing
+7f74bd7a20aa: Preparing
+02c8e9e369bc: Waiting
+7f74bd7a20aa: Waiting
+28284e7d7233: Preparing
+c79ad3cc3bfa: Preparing
+28284e7d7233: Waiting
+315317d32d9b: Preparing
+c79ad3cc3bfa: Waiting
+315317d32d9b: Waiting
+5f70bf18a086: Layer already exists
+13b90fcdd3a6: Layer already exists
+a9bac66bccf0: Layer already exists
+652edc052a6e: Layer already exists
+9182aac14b05: Layer already exists
+f3f9d1dbae11: Layer already exists
+eeb8dfdae942: Layer already exists
+c0df3d2ba15a: Layer already exists
+02c8e9e369bc: Layer already exists
+7f74bd7a20aa: Layer already exists
+28284e7d7233: Layer already exists
+c79ad3cc3bfa: Layer already exists
+315317d32d9b: Layer already exists
+3f33a36fd11d: Pushed
+lgbm: digest: sha256:80c36bf907318838ea998184eb599cfddea106ce9e3582a627532a9f10b23fd3 size: 3264
+2026-11-09 11:03:29 Push exit 0
+2026-11-09 11:03:32 Docker shut down
+2026-11-09 11:03:32 Resumed manager run v3_lgbm_v6_seed1, PID 15008
+2026-11-09 11:03:38 Fargate test task arn:aws:ecs:eu-west-2:497087878047:task/premierlearning/c8f92ab31c6e4198aeb330221da04f1c
+2026-11-09 11:22:27 Fargate test: status STOPPED, exit 0, Essential container in task exited
+{
+    "image": {
+        "registryId": "497087878047",
+        "repositoryName": "premierlearning",
+        "imageId": {
+            "imageDigest": "sha256:80c36bf907318838ea998184eb599cfddea106ce9e3582a627532a9f10b23fd3",
+            "imageTag": "latest"
+        },
+        "imageManifest": "{\n   \"schemaVersion\": 2,\n   \"mediaType\": \"application/vnd.docker.distribution.manifest.v2+json\",\n   \"config\": {\n      \"mediaType\": \"application/vnd.docker.container.image.v1+json\",\n      \"size\": 8400,\n      \"digest\": \"sha256:c3b9afde146e12cc3fbac001705d3afbb67c7045337f50b5c57b693ecebfd023\"\n   },\n   \"layers\": [\n      {\n         \"mediaType\": \"application/vnd.docker.image.rootfs.diff.tar.gzip\",\n         \"size\": 55081391,\n         \"digest\": \"sha256:014ac6453c34f79cc163f6567c184e5eb0b48cdc07ecbfb1388d90e95ac90b02\"\n      },\n      {\n         \"mediaType\": \"application/vnd.docker.image.rootfs.diff.tar.gzip\",\n         \"size\": 15764314,\n         \"digest\": \"sha256:21912b76607d1849ada521d53cc1be42bcc38d6583bd385a1bbd91babc6745f8\"\n      },\n      {\n         \"mediaType\": \"application/vnd.docker.image.rootfs.diff.tar.gzip\",\n         \"size\": 54723654,\n         \"digest\": \"sha256:ee27f1f94c19451b787e3a7d81f5eefbd7aed799349b4208bb04c1ce8880ccb2\"\n      },\n      {\n         \"mediaType\": \"application/vnd.docker.image.rootfs.diff.tar.gzip\",\n         \"size\": 197069002,\n         \"digest\": \"sha256:fa7a7fe5b36fbd67e153a5a6e8ec36c41c1fb931871662835b9abdd59e785fdb\"\n      },\n      {\n         \"mediaType\": \"application/vnd.docker.image.rootfs.diff.tar.gzip\",\n         \"size\": 6051807,\n         \"digest\": \"sha256:8ab681d69fe03f79c53d8094d5bb7f1e274d224ca4d1c13d558946f6c8bcb6bb\"\n      },\n      {\n         \"mediaType\": \"application/vnd.docker.image.rootfs.diff.tar.gzip\",\n         \"size\": 18324470,\n         \"digest\": \"sha256:1c0a2e0009cae2b6f1c65de92e2636a3958bd8ccc0e1865edb1bc77cc9493e20\"\n      },\n      {\n         \"mediaType\": \"application/vnd.docker.image.rootfs.diff.tar.gzip\",\n         \"size\": 249,\n         \"digest\": \"sha256:da9cb9c3f456fefb6e405e5a3d574347b9d4a2dd44833394d92d40b87dd1affa\"\n      },\n      {\n         \"mediaType\": \"application/vnd.docker.image.rootfs.diff.tar.gzip\",\n         \"size\": 93,\n         \"digest\": \"sha256:49febc63a58ae6795e580969d54c72f73ffe0218b1228a2be6c7fc38f2fb5fb8\"\n      },\n      {\n         \"mediaType\": \"application/vnd.docker.image.rootfs.diff.tar.gzip\",\n         \"size\": 916,\n         \"digest\": \"sha256:42e909df6addff82289baafb3a7fe11eb0d4f7d7f8de863e9feb5f4da1d6371e\"\n      },\n      {\n         \"mediaType\": \"application/vnd.docker.image.rootfs.diff.tar.gzip\",\n         \"size\": 908285113,\n         \"digest\": \"sha256:8d433405ed24951beb2bc81a80d5873625a638d1d57b715a11180a4217970dbc\"\n      },\n      {\n         \"mediaType\": \"application/vnd.docker.image.rootfs.diff.tar.gzip\",\n         \"size\": 3764347,\n         \"digest\": \"sha256:e83e816ec480d206398163877b7cd13f591a10d78aa5b5d508749a82648f4278\"\n      },\n      {\n         \"mediaType\": \"application/vnd.docker.image.rootfs.diff.tar.gzip\",\n         \"size\": 38637323,\n         \"digest\": \"sha256:3b4a00cc198d1c94e5f6db9e86af5604100e1e6a204aec9e7a51b16653a0391b\"\n      },\n      {\n         \"mediaType\": \"application/vnd.docker.image.rootfs.diff.tar.gzip\",\n         \"size\": 101351636,\n         \"digest\": \"sha256:cc59d79d202e732096d5c50018ed485427223ef0e1cdcdd582e36465629bcbdd\"\n      },\n      {\n         \"mediaType\": \"application/vnd.docker.image.rootfs.diff.tar.gzip\",\n         \"size\": 32,\n         \"digest\": \"sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1\"\n      }\n   ]\n}",
+        "imageManifestMediaType": "application/vnd.docker.distribution.manifest.v2+json"
+    }
+}
+2026-11-09 11:22:34 latest -> lgbm image, exit 0
+2026-11-09 11:22:34 ===== Finished

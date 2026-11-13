@@ -118,6 +118,13 @@ class PlanConfig:
     # 'recency' pools with learned queries whose weights fade with each match's
     # age (one learned rate per head) and adds a match count.
     history_pool: str = 'mean'
+    # Staged only. score_xg_weight above 0 also fits each side's expected goals
+    # (the goal bands' mean) to the match's xG, where xG is known, at this
+    # weight next to the goal-band cross-entropy. scoreline_squads gives the
+    # team scoreline a summary of each side's squad; the teammates list then
+    # keeps the player in it, so every player of a team sees the same squad.
+    score_xg_weight: float = 0.0
+    scoreline_squads: bool = False
 
     @classmethod
     def from_dict(cls, raw) -> 'PlanConfig':
@@ -145,8 +152,14 @@ class PlanConfig:
             config.history_pool = str(raw['history_pool']).strip().lower()
         if config.history_pool not in HISTORY_POOLS:
             raise ValueError('history_pool must be one of %s' % ', '.join(HISTORY_POOLS))
-        if config.score_head_weight < 0:
-            raise ValueError('score_head_weight must not be negative')
+        if raw.get('score_xg_weight') is not None:
+            config.score_xg_weight = float(raw['score_xg_weight'])
+        if raw.get('scoreline_squads') is not None:
+            config.scoreline_squads = bool(raw['scoreline_squads'])
+        if config.score_head_weight < 0 or config.score_xg_weight < 0:
+            raise ValueError('score_head_weight and score_xg_weight must not be negative')
+        if (config.score_xg_weight > 0 or config.scoreline_squads) and config.points_structure != POINTS_STAGED:
+            raise ValueError('score_xg_weight and scoreline_squads need points_structure staged')
         if (
             config.history_len < 1 or config.max_squad < 1
             or config.team_form_n < 1 or config.season_len < 1

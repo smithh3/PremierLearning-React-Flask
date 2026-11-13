@@ -18,7 +18,7 @@ from typing import Dict, Iterable, List, Optional
 
 from premierlearning.helper_functions import coerce_bool, coerce_optional_int
 from premierlearning.player import Player, mark_most_expensive_in_position
-from premierlearning.season import Season
+from premierlearning.season import Season, player_folders
 from premierlearning.team import Team
 from squadtools.chance_to_play import ensure_gameweek_chances
 
@@ -143,6 +143,14 @@ class VaastavSeasonData:
             raise ValueError(
                 f'{self.season_dir} must contain fixtures.csv, teams.csv and players_raw.csv'
             )
+        # A players_raw.csv downloaded after the season ends has can_select
+        # False for every player (24/25, 25/26): that is FPL closing the game,
+        # not news known at any deadline, so the flag is only used when some
+        # player in the file is still selectable.
+        self.can_select_usable = any(
+            row.get('can_select') not in (None, '') and coerce_bool(row.get('can_select'))
+            for row in self.players_raw.values()
+        )
 
         self.fixtures_by_id = {
             int(float(row['id'])): row for row in self.fixtures
@@ -166,12 +174,13 @@ class VaastavSeasonData:
         players_dir = self.season_dir / 'players'
         if not players_dir.is_dir():
             return result
+        # One folder per id: a renamed player's stale second folder used to win
+        # whenever it was listed last (premierlearning.season.player_folders).
+        chosen = set(player_folders(players_dir).values())
         for path in players_dir.glob('*/gw.csv'):
-            suffix = path.parent.name.rsplit('_', 1)[-1]
-            try:
-                player_id = int(suffix)
-            except ValueError:
+            if path.parent.name not in chosen:
                 continue
+            player_id = int(path.parent.name.rsplit('_', 1)[-1])
             rows = _read_csv(path)
             rows.sort(
                 key=lambda row: (
@@ -305,7 +314,11 @@ class VaastavSeasonData:
         if str(raw.get('status') or '').strip().lower() in UNFIT_STATUSES:
             return True
         can_select = raw.get('can_select')
-        if can_select not in (None, '') and not coerce_bool(can_select):
+        if (
+            getattr(self, 'can_select_usable', True)
+            and can_select not in (None, '')
+            and not coerce_bool(can_select)
+        ):
             return True
         return False
 
